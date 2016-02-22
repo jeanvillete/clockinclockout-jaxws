@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-4.2.xsd
+						http://www.springframework.org/schema/tx
+						http://www.springframework.org/schema/tx/spring-tx-4.2.xsd" >
+	
+	<beans>
+		<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+			<property name="properties" ref="propertyFactory" />
+		</bean>
+		
+		<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+			<property name="basename">
+				<value>locale/messages</value>
+			</property>
+		</bean>
+		
+		<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" >
+			<property name="dataSource" ref="dataSource" />
+		</bean>
+	    <tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager" />
+		
+		<context:annotation-config />
+		<context:component-scan base-package="org.com.clockinclockout.service,org.com.clockinclockout.repository" />
+	</beans>
+	
+	<beans profile="devtest">
+		<bean id="propertyFactory" class="org.springframework.beans.factory.config.PropertiesFactoryBean" >
+			<property name="locations" value="classpath:application.properties" />
+		</bean>
+	</beans>
+	
+	<beans profile="default">
+		<bean id="propertyFactory" class="org.springframework.beans.factory.config.PropertiesFactoryBean" >
+			<property name="locations" value="file:/opt/etc/clockinclockout-jaxws/application.properties" />
+		</bean>
+	</beans>
+	
+</beans>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration>
+	<appender name="appAppender" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="/logs/clockinclockout-jaxws/archive/clockinclockout_%d{yyyy-MM-dd}.log.zip"/>
+			<param name="ActiveFileName" value="/logs/clockinclockout-jaxws/clockinclockout.log"/>
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd'T'HH:mm:ss}] [%t] [%p] %m %n"/>
+		</layout>
+	</appender>
+	<appender name="sendingEmailAppender" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="/logs/clockinclockout-jaxws/archive/sendingemail_%d{yyyy-MM-dd}.log.zip"/>
+			<param name="ActiveFileName" value="/logs/clockinclockout-jaxws/sendingemail.log"/>
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd'T'HH:mm:ss}] [%t] [%p] %m %n"/>
+		</layout>
+	</appender>
+	<appender name="springAppender" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="/logs/clockinclockout-jaxws/archive/springframework_%d{yyyy-MM-dd}.log.zip"/>
+			<param name="ActiveFileName" value="/logs/clockinclockout-jaxws/springframework.log"/>
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd'T'HH:mm:ss}] [%t] [%p] %m %n"/>
+		</layout>
+	</appender>
+	
+	<logger name="org.springframework" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="springAppender"/>
+	</logger>
+	<logger name="sendingEmailLogger" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="sendingEmailAppender"/>
+	</logger>
+	<root>
+		<level value="DEBUG"/>
+		<appender-ref ref="appAppender"/>
+	</root>
+</log4j:configuration>

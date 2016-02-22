@@ -1,0 +1,44 @@
+<html>
+	<head>
+		<title>${emailContent.subject}</title>
+		<style type="text/css">
+			.clockInClockOutTitleDIV {
+				padding: 10px;
+				font-family: 'HelveticaNeue',Arial,Helvetica,sans-serif;
+				font-size: 16px;
+				line-height: 18px;
+				color: #000000;
+				font-weight: bold;
+			}
+			.clockInClockOutDIV {
+				padding: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="clockInClockOutTitleDIV">
+			Por favor, confirme o seu endereço de email.
+		</div>
+		
+		<div class="clockInClockOutDIV">
+			Recebemos a solicitação de inclusão de um novo usuário no
+			${linkSite} referente ao endereço de email <b>${emailContent.email.address}</b>.
+		</div>
+		
+		<div class="clockInClockOutDIV">
+			Por favor, clique no link abaixo para confirmar o seu endereço de email e ativar a sua conta no ${linkSite}.
+		</div>
+		
+		<div class="clockInClockOutDIV">
+			<a href="${linkSite}/checkemail/${emailContent.encodedEmailAddress}?q=${emailContent.hash}" target="_blank">Confirmar email.</a>
+		</div>
+		
+		<div class="clockInClockOutDIV">
+			Se você não fez esta solicitação de cadastro no ${linkSite}, por favor, nos desculpe e desconsidere esta mensagem.
+		</div>
+		
+		<div class="clockInClockOutDIV">
+			Nós do ${linkSite} agradecemos muito seu interesse em nossa comunidade.
+		</div>
+	</body>
+</html>

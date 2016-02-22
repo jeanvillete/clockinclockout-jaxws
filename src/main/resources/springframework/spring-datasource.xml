@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+						http://www.springframework.org/schema/jee
+						http://www.springframework.org/schema/jee/spring-jee-4.2.xsd
+						http://www.springframework.org/schema/jdbc
+						http://www.springframework.org/schema/jdbc/spring-jdbc.xsd" >
+
+	<beans profile="devtest">
+		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+			<property name="driverClassName" value="org.postgresql.Driver" />
+			<property name="url" value="jdbc:postgresql://192.168.1.101:5432/db4app" />
+			<property name="username" value="clockinclockout" />
+			<property name="password" value="clockinclockoutpw" />
+			<property name="maxActive" value="5" />
+			<property name="initialSize" value="1" />
+			<property name="maxIdle" value="4" />
+			<property name="minIdle" value="1" />
+			<property name="testOnBorrow" value="true" />
+			<property name="removeAbandoned" value="true" />
+			<property name="removeAbandonedTimeout" value="150000" />
+			<property name="logAbandoned" value="true" />
+		</bean>
+	</beans>
+	
+	<beans profile="default">
+		<jee:jndi-lookup id="dataSource" jndi-name="jdbc/clockinclockout" />
+	</beans>
+	
+</beans>
