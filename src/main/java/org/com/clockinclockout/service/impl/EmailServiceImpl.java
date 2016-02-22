@@ -128,7 +128,7 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
 	public void confirm( Email email ) {
-		// TODO Auto-generated method stub
+		Assert.state(  this.repository.confirm( email ), "Problems while performing email confirmation." );
 	}
 
 }
