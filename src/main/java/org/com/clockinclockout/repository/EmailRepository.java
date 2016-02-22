@@ -18,4 +18,8 @@ public class EmailRepository extends CommonRepository {
 						email.isPrimary(), });
 	}
 
+	public boolean exists( Email email ) {
+		return this.jdbcTemplate.queryForObject( " SELECT COUNT( ID ) FROM EMAIL WHERE ADDRESS = ? ", new Object[]{ email.getAddress() }, Integer.class ) > 0;
+	}
+
 }

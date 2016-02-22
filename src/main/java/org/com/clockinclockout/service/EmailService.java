@@ -16,7 +16,4 @@ public interface EmailService {
 	
 	void confirm( Email email );
 	
-	Email get( String address );
-	
-	Email get( Email email );
 }

@@ -63,12 +63,10 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	@Transactional( propagation = Propagation.REQUIRED )
 	public void insert( final Email email ) {
 		Assert.notNull( email, "Argument email cannot be null." );
+		Assert.state( email.getAddress().matches( "^([a-zA-Z0-9_.+-])+\\@(([a-zA-Z0-9-])+\\.)+([a-zA-Z0-9]{2,4})+$" ), "The provided email address is not valid." );
 		Assert.state( email.getRecordedTime() != null, "No recordedTime was provided to argument email." );
 		Assert.state( StringUtils.hasText( email.getConfirmationCode() ), "No confirmationCode was provided to argument email." );
-		
-		// TODO
-		// check if the email address has a valid format
-		// check if the email is not already in use on the database
+		Assert.state( !this.exists( email ), "The provided email address is already in use." );
 		
 		this.repository.insert( email );
 	}
@@ -123,23 +121,8 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public boolean exists(Email email) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public Email get(String address) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public Email get(Email email) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean exists( Email email ) {
+		return this.repository.exists( email );
 	}
 
 	@Override
