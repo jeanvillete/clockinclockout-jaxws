@@ -1,7 +1,9 @@
 package org.com.clockinclockout.service.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
@@ -14,6 +16,7 @@ import org.com.clockinclockout.domain.EmailContent;
 import org.com.clockinclockout.domain.EmailResetPassword;
 import org.com.clockinclockout.repository.EmailRepository;
 import org.com.clockinclockout.service.EmailService;
+import org.com.clockinclockout.service.UserService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,6 +31,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 @Service
@@ -54,9 +58,17 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	@Qualifier( "messageSource" )
 	private MessageSource messageSource;
 	
+	private UserService userService;
+
+	@Autowired
+	void setUserService( UserService userService ) {
+		this.userService = userService;
+	}
+	
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		Assert.notNull( this.repository, "The field repository shouldn't be null." );
+		Assert.notNull( this.userService, "The field userService shouldn't be null." );
 	}
 	
 	@Override
@@ -75,6 +87,7 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	@Async
 	@Transactional( propagation = Propagation.NOT_SUPPORTED )
 	public void send( EmailConfirmation emailConfirmation ) {
+		Assert.notNull( emailConfirmation );
 		String velocityResource = "velocity-email-confirmation_" + emailConfirmation.getEmail().getUser().getLocale().getLanguage().toLowerCase() + ".vm";
 		emailConfirmation.setSubject( this.messageSource.getMessage( "email.confirmation.title", null, emailConfirmation.getEmail().getUser().getLocale() ) );
 		this.send( emailConfirmation, velocityResource );
@@ -84,6 +97,7 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	@Async
 	@Transactional( propagation = Propagation.NOT_SUPPORTED )
 	public void send( EmailResetPassword emailResetPassword ) {
+		Assert.notNull( emailResetPassword );
 		String velocityResource = "velocity-reset-password_" + emailResetPassword.getEmail().getUser().getLocale().getLanguage().toLowerCase() + ".vm";
 		emailResetPassword.setSubject( this.messageSource.getMessage( "email.resetpassword.title", null, emailResetPassword.getEmail().getUser().getLocale() ) );
 		this.send( emailResetPassword, velocityResource );
@@ -122,13 +136,39 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
 	public boolean exists( Email email ) {
+		Assert.notNull( email );
 		return this.repository.exists( email );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
 	public void confirm( Email email ) {
+		Assert.notNull( email );
 		Assert.state(  this.repository.confirm( email ), "Problems while performing email confirmation." );
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.REQUIRED )
+	public void cleanNotConfirmed() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.add( Calendar.DATE, 1 );
+		
+		List< Email > emails = this.repository.listPrimaryNotConfirmed( calendar.getTime() );
+		if ( !CollectionUtils.isEmpty( emails ) ) {
+			for ( Email email : emails ) {
+				this.delete( email );
+				this.userService.delete( email.getUser() );
+			}
+		}
+		
+		// TODO this.repository.deleteNotPrimaryNotConfirmed()
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.REQUIRED )
+	public void delete( Email email ) {
+		Assert.notNull( email );
+		this.repository.delete( email );
 	}
 
 }

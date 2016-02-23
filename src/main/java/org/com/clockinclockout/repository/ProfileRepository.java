@@ -1,6 +1,10 @@
 package org.com.clockinclockout.repository;
 
+import java.util.List;
+
 import org.com.clockinclockout.domain.Profile;
+import org.com.clockinclockout.domain.User;
+import org.com.clockinclockout.rowmapper.ProfileRowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -33,6 +37,30 @@ public class ProfileRepository extends CommonRepository {
 						profile.getDefaultExpectedThursday(),
 						profile.getDefaultExpectedFriday(),
 						profile.getDefaultExpectedSaturday() });
+	}
+
+	public List< Profile > listBy( User user ) {
+		return this.jdbcTemplate.query( 
+				" SELECT ID, "
+				+ " ID_CLK_USER, "
+				+ " DESCRIPTION, "
+				+ " HOURS_FORMAT, "
+				+ " DATE_FORMAT, "
+				+ " DEFAULT_EXPECTED_SUNDAY, "
+				+ " DEFAULT_EXPECTED_MONDAY, "
+				+ " DEFAULT_EXPECTED_TUESDAY, "
+				+ " DEFAULT_EXPECTED_WEDNESDAY, "
+				+ " DEFAULT_EXPECTED_THURSDAY, "
+				+ " DEFAULT_EXPECTED_FRIDAY, "
+				+ " DEFAULT_EXPECTED_SATURDAY "
+				+ " FROM PROFILE "
+				+ " WHERE ID_CLK_USER = ? ",
+				new Object[]{ user.getId() },
+				new ProfileRowMapper() );
+	}
+
+	public void delete( Profile profile ) {
+		this.jdbcTemplate.update( " DELETE FROM PROFILE WHERE ID = ? ", new Object[]{ profile.getId() } );
 	}
 
 }

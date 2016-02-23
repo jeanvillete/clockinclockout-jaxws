@@ -1,6 +1,9 @@
 package org.com.clockinclockout.service.impl;
 
+import java.util.List;
+
 import org.com.clockinclockout.domain.Profile;
+import org.com.clockinclockout.domain.User;
 import org.com.clockinclockout.repository.ProfileRepository;
 import org.com.clockinclockout.service.ProfileService;
 import org.springframework.beans.factory.InitializingBean;
@@ -24,7 +27,27 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
 	public void insert( final Profile profile ) {
+		Assert.notNull( profile );
 		this.repository.insert( profile );
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true)
+	public List< Profile > listBy( User user ) {
+		Assert.notNull( user );
+		return this.repository.listBy( user );
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.REQUIRED )
+	public void delete( Profile profile ) {
+		Assert.notNull( profile );
+		
+		// TODO invoke adjustingService.delete( profile.getAdjustings() )
+		// TODO invoke dayService.delete( profile.getDays() )
+		// TODO ivoke manualEnteringReason.delete( profile.getManualEnteringReasons() )
+		
+		this.repository.delete( profile );
 	}
 
 

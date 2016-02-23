@@ -21,6 +21,7 @@ abstract class CommonDomain {
 	}
 	
 	public Integer getId() {
+		Assert.state( id != null && id > 0, "Field id has not been initialized yet." );
 		return id;
 	}
 	

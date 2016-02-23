@@ -15,5 +15,12 @@ public interface EmailService {
 	boolean exists( Email email );
 	
 	void confirm( Email email );
+
+	/**
+	 * Service invoked by a job that runs once a day looking for
+	 * confirm email requests which were not met by the user.
+	 */
+	void cleanNotConfirmed();
 	
+	void delete( Email email );
 }

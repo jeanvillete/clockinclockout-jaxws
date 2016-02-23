@@ -1,7 +1,9 @@
 package org.com.clockinclockout.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
+import org.com.clockinclockout.domain.Email;
 import org.com.clockinclockout.domain.EmailConfirmation;
 import org.com.clockinclockout.domain.Profile;
 import org.com.clockinclockout.domain.User;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 @Service
 public class UserServiceImpl implements UserService, InitializingBean {
@@ -53,6 +56,32 @@ public class UserServiceImpl implements UserService, InitializingBean {
 		this.emailService.insert( user.getEmail() );
 		
 		this.emailService.send( emailConfirmation );
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
+	public User getBy( Email email ) {
+		Assert.notNull( email );
+		
+		User user = this.repository.getBy( email );
+		user.setProfiles( this.profileService.listBy( user ) );
+		
+		return user;
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.REQUIRED )
+	public void delete( User user ) {
+		Assert.notNull( user );
+		
+		List< Profile > profiles = this.profileService.listBy( user );
+		if ( !CollectionUtils.isEmpty( profiles ) ) {
+			for ( Profile profile : profiles ) {
+				this.profileService.delete( profile );
+			}
+		}
+		
+		this.repository.delete( user );
 	}
 	
 }

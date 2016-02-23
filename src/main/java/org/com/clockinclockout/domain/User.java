@@ -1,5 +1,6 @@
 package org.com.clockinclockout.domain;
 
+import java.util.List;
 import java.util.Locale;
 
 import org.springframework.util.Assert;
@@ -9,12 +10,17 @@ public class User extends CommonDomain {
 	private Email email;
 	private String password;
 	private Locale locale;
+	private List< Profile > profiles;
 	
-	public User(Email email, Locale locale) {
+	public User( Email email, Locale locale ) {
 		this(null, email, locale);
 	}
 	
-	public User(Integer id, Email email, Locale locale) {
+	public User( Integer id ) {
+		super( id );
+	}
+	
+	public User( Integer id, Email email, Locale locale ) {
 		super( id );
 		
 		this.setEmail(email);
@@ -42,11 +48,21 @@ public class User extends CommonDomain {
 		return password;
 	}
 	public Email getEmail() {
+		Assert.state( email != null, "Field email has not been initialized yet." );
 		return email;
 	}
 
 	public Locale getLocale() {
+		Assert.state( locale != null, "Field locale has not been initialized yet." );
 		return locale;
+	}
+
+	public List< Profile > getProfiles() {
+		return profiles;
+	}
+
+	public void setProfiles( List< Profile > profiles ) {
+		this.profiles = profiles;
 	}
 
 }

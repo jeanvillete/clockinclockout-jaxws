@@ -1,6 +1,8 @@
 package org.com.clockinclockout.repository;
 
+import org.com.clockinclockout.domain.Email;
 import org.com.clockinclockout.domain.User;
+import org.com.clockinclockout.rowmapper.UserRowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -12,6 +14,18 @@ public class UserRepository extends CommonRepository {
 				new Object[]{ user.getId(),
 						user.getLocale().getLanguage(),
 						user.getPassword() });
+	}
+
+	public User getBy( Email email ) {
+		return this.jdbcTemplate.queryForObject( " SELECT USR.ID, USR.LOCALE FROM CLK_USER USR "
+				+ " LEFT JOIN EMAIL EML ON USR.ID = EML.ID_CLK_USER "
+				+ " WHERE EML.ID = ? ",
+				new Object[]{ email.getId() },
+				new UserRowMapper() );
+	}
+
+	public void delete( User user ) {
+		this.jdbcTemplate.update( " DELETE FROM CLK_USER WHERE ID = ? ", new Object[]{ user.getId() } );
 	}
 	
 }
