@@ -103,7 +103,7 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 		this.send( emailResetPassword, velocityResource );
 	}
 	
-	private void send( EmailContent emailContent, String velocityResource ) {
+	private void send( final EmailContent emailContent, final String velocityResource ) {
 		try {
 			this.javaMailSender.send( new MimeMessagePreparator() {
 				@Override
