@@ -161,7 +161,7 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 			}
 		}
 		
-		// TODO this.repository.deleteNotPrimaryNotConfirmed()
+		this.repository.deleteNotPrimaryNotConfirmed( calendar.getTime() );
 	}
 
 	@Override

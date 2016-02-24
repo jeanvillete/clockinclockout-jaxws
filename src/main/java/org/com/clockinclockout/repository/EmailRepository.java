@@ -51,4 +51,9 @@ public class EmailRepository extends CommonRepository {
 		this.jdbcTemplate.update( " DELETE FROM EMAIL WHERE ID = ? ", new Object[]{ email.getId() } );
 	}
 
+	public void deleteNotPrimaryNotConfirmed( Date date ) {
+		this.jdbcTemplate.update( " DELETE FROM EMAIL WHERE CONFIRMATION_DATE IS NULL AND RECORDED_TIME < ? AND IS_PRIMARY = ? ",
+				new Object[]{ date, false } );
+	}
+
 }
