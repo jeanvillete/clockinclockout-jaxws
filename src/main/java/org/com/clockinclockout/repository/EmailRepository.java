@@ -36,13 +36,13 @@ public class EmailRepository extends CommonRepository {
 	}
 
 	/**
-	 * List all the email confirmation request related to primaries ones which were not met by the user.
+	 * List all the email confirmation request related to primaries ones which were confirmed by the user.
 	 * @param date 
 	 * @return
 	 */
 	public List< Email > listPrimaryNotConfirmed( Date date ) {
 		return this.jdbcTemplate.query(  " SELECT ID, ADDRESS, RECORDED_TIME, CONFIRMATION_CODE, CONFIRMATION_DATE, IS_PRIMARY, ID_CLK_USER FROM EMAIL "
-				+ " WHERE CONFIRMATION_DATE IS NULL AND RECORDED_TIME > ? AND IS_PRIMARY = ? ",
+				+ " WHERE CONFIRMATION_DATE IS NULL AND RECORDED_TIME < ? AND IS_PRIMARY = ? ",
 				new Object[]{ date, true },
 				new EmailRowMapper() );
 	}

@@ -151,7 +151,7 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	@Transactional( propagation = Propagation.REQUIRED )
 	public void cleanNotConfirmed() {
 		Calendar calendar = Calendar.getInstance();
-		calendar.add( Calendar.DATE, 1 );
+		calendar.add( Calendar.DATE, -1 );
 		
 		List< Email > emails = this.repository.listPrimaryNotConfirmed( calendar.getTime() );
 		if ( !CollectionUtils.isEmpty( emails ) ) {
