@@ -1,6 +1,7 @@
 package org.com.clockinclockout.domain;
 
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 public class Profile extends CommonDomain {
 	
@@ -16,6 +17,10 @@ public class Profile extends CommonDomain {
 	private Integer defaultExpectedFriday;
 	private Integer defaultExpectedSaturday;
 
+	public Profile( Integer id ) {
+		super( id );
+	}
+	
 	public Profile( User user, String description, String hoursFormat, String dateFormat ) {
 		this( null, user, description, hoursFormat, dateFormat );
 	}
@@ -67,15 +72,19 @@ public class Profile extends CommonDomain {
 		this.defaultExpectedSaturday = defaultExpectedSaturday;
 	}
 	public User getUser() {
+		Assert.state( user != null, "The field 'user' was not properly initialized." );
 		return user;
 	}
 	public String getDescription() {
+		Assert.state( StringUtils.hasText( description ), "The field 'description' was not properly initialized." );
 		return description;
 	}
 	public String getHoursFormat() {
+		Assert.state( StringUtils.hasText( hoursFormat ), "The field 'hoursFormat' was not properly initialized." );
 		return hoursFormat;
 	}
 	public String getDateFormat() {
+		Assert.state( StringUtils.hasText( dateFormat ), "The field 'dateFormat' was not properly initialized." );
 		return dateFormat;
 	}
 	public Integer getDefaultExpectedSunday() {
