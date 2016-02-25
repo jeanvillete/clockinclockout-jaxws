@@ -67,7 +67,6 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 				this.dayService.delete( day );
 			}
 		}
-		// TODO invoke dayService.delete( profile.getDays() )
 		// TODO ivoke manualEnteringReasonService.delete( profile.getManualEnteringReasons() )
 		
 		this.repository.delete( profile );
