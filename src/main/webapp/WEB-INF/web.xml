@@ -14,6 +14,7 @@
 			/WEB-INF/springframework/spring-datasource.xml
 			/WEB-INF/springframework/spring-java-mail.xml
 			/WEB-INF/springframework/spring-velocity.xml
+			/WEB-INF/springframework/spring-quartz.xml
 		</param-value>
 	</context-param>
 	<listener>
