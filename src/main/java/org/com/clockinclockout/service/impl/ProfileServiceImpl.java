@@ -3,10 +3,12 @@ package org.com.clockinclockout.service.impl;
 import java.util.List;
 
 import org.com.clockinclockout.domain.Adjusting;
+import org.com.clockinclockout.domain.Day;
 import org.com.clockinclockout.domain.Profile;
 import org.com.clockinclockout.domain.User;
 import org.com.clockinclockout.repository.ProfileRepository;
 import org.com.clockinclockout.service.AdjustingService;
+import org.com.clockinclockout.service.DayService;
 import org.com.clockinclockout.service.ProfileService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 	
 	@Autowired
 	private AdjustingService adjustingService;
+	
+	@Autowired
+	private DayService dayService;
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -55,7 +60,13 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 				this.adjustingService.delete( adjusting );
 			}
 		}
-		
+
+		List< Day > listDay = this.dayService.listBy( profile );
+		if ( !CollectionUtils.isEmpty( listDay )) {
+			for ( Day day : listDay ) {
+				this.dayService.delete( day );
+			}
+		}
 		// TODO invoke dayService.delete( profile.getDays() )
 		// TODO ivoke manualEnteringReasonService.delete( profile.getManualEnteringReasons() )
 		
