@@ -28,6 +28,7 @@ public class AdjustingServiceImpl implements AdjustingService, InitializingBean 
 	@Transactional( propagation = Propagation.REQUIRED )
 	public void insert(Adjusting adjusting) {
 		Assert.notNull( adjusting );
+		// TODO apply validations
 		this.repository.insert( adjusting );
 	}
 
