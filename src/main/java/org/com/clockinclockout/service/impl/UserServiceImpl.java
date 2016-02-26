@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public User getBy( Email email ) {
+	public User getBy( final Email email ) {
 		Assert.notNull( email );
 		
 		User user = this.repository.getBy( email );
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void delete( User user ) {
+	public void delete( final User user ) {
 		Assert.notNull( user );
 		
 		List< Profile > profiles = this.profileService.listBy( user );
