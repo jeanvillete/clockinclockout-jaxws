@@ -28,6 +28,9 @@ public class DayServiceImpl implements DayService, InitializingBean {
 	@Transactional( propagation = Propagation.REQUIRED )
 	public void insert( Day day ) {
 		Assert.notNull( day );
+		
+		// TODO apply validations as defined on requirements
+		
 		this.repository.insert( day );
 	}
 
@@ -35,6 +38,10 @@ public class DayServiceImpl implements DayService, InitializingBean {
 	@Transactional( propagation = Propagation.REQUIRED )
 	public void delete( Day day ) {
 		Assert.notNull( day );
+		
+		// TODO clockinclockoutService.delete( day.getListClockinClockout() ) 
+		// TODO manualEnteringService.delete( day.getListManualEntering() ) 
+		
 		this.repository.delete( day );
 	}
 
