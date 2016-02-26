@@ -13,7 +13,7 @@ public class DayRepository extends CommonRepository {
 	public void insert( final Day day ) {
 		day.setId( this.nextVal( "DAY_SEQ" ) );
 		this.jdbcTemplate.update( " INSERT INTO DAY ( ID, DATE, EXPECTED_HOURS, NOTES, ID_PROFILE )"
-				+ " VALUES ( ?, ?, ?, ? ) ",
+				+ " VALUES ( ?, ?, ?, ?, ? ) ",
 				new Object[]{ day.getId(),
 						day.getDate(),
 						day.getNotes(),
