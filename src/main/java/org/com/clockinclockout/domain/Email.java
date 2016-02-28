@@ -60,6 +60,7 @@ public class Email extends CommonDomain {
 		return address;
 	}
 	public Date getRecordedTime() {
+		Assert.notNull( recordedTime, "Argument 'recordedTime' cannot be null." );
 		return recordedTime;
 	}
 	public Date getConfirmationDate() {
