@@ -44,5 +44,12 @@ public class RequestResetPasswordRepository extends CommonRepository {
 						requestResetPassword.getRequestCodeValue(),
 						requestResetPassword.getUser().getId() }) == 1;
 	}
+
+	public void cleanNotConfirmed( Date date ) {
+		this.jdbcTemplate.update( " DELETE FROM REQUEST_RESET_PASSWORD "
+				+ " WHERE REQUEST_DATE < ? "
+				+ " AND ( CONFIRMATION_CODE_VALUE IS NULL OR CONFIRMATION_DATE IS NULL OR CHANGE_DATE IS NULL ) ",
+				new Object[]{ date });
+	}
 	
 }

@@ -71,6 +71,15 @@ public class RequestResetPasswordServiceImpl implements RequestResetPasswordServ
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
+	public void cleanNotConfirmed() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.add( Calendar.DATE, -1 );
+		
+		this.repository.cleanNotConfirmed( calendar.getTime() );
+	}
+	
+	@Override
+	@Transactional( propagation = Propagation.REQUIRED )
 	public String confirm( RequestResetPassword requestResetPassword ) {
 		Assert.notNull( requestResetPassword );
 		Assert.state( StringUtils.hasText( requestResetPassword.getRequestCodeValue() ), "Invalid parameters. No 'requestCodeValue' was provided." );

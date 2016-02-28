@@ -12,6 +12,12 @@ public interface RequestResetPasswordService {
 	void deleteNotConfirmed( User user );
 	
 	/**
+	 * Deletes all the requests for reset password requested <b>longer than one day </b>
+	 * but were not confirmed/proceeded by the user.
+	 */
+	void cleanNotConfirmed();
+	
+	/**
 	 * This service is meant to be used when the user requests a reset password.
 	 * @param requestResetPassword
 	 */

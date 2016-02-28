@@ -10,30 +10,41 @@
 						http://www.springframework.org/schema/tx
 						http://www.springframework.org/schema/tx/spring-tx-4.2.xsd" >
 	
-	<bean id="clkIOEmailCleanNotConfirmedJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	<bean id="emailCleanNotConfirmedJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="emailServiceImpl"/>
 		<property name="targetMethod" value="cleanNotConfirmed"/>
 	</bean>
+
+	<bean id="requestResetPasswordCleanNotConfirmedJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="requestResetPasswordServiceImpl"/>
+		<property name="targetMethod" value="cleanNotConfirmed"/>
+	</bean>
 	
-	<bean id="clkIOEmailCleanNotConfirmedCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="clkIOEmailCleanNotConfirmedJobDetail" />
+	<bean id="emailCleanNotConfirmedCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="emailCleanNotConfirmedJobDetail" />
 		<property name="cronExpression" value="${clockinclockout.quartz.emailNotConfirmedJob.cronExepression}" />
 	</bean>
 	
-	<bean id="clkIOSincronizaScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	<bean id="requestResetPasswordCleanNotConfirmedCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="requestResetPasswordCleanNotConfirmedJobDetail" />
+		<property name="cronExpression" value="${clockinclockout.quartz.resetPasswordNotConfirmedJob.cronExepression}" />
+	</bean>
+	
+	<bean id="clkioScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="autoStartup" value="true" />
-		<property name="waitForJobsToCompleteOnShutdown" value="true" />
+		<property name="waitForJobsToCompleteOnShutdown" value="false" />
 		<property name="overwriteExistingJobs" value="true" />
 		<property name="dataSource" ref="dataSource" />
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="triggers">
 			<list>
-				<ref bean="clkIOEmailCleanNotConfirmedCronTrigger" />
+				<ref bean="emailCleanNotConfirmedCronTrigger" />
+				<ref bean="requestResetPasswordCleanNotConfirmedCronTrigger" />
 			</list>
 		</property>
 		<property name="quartzProperties">
 			<props>
-				<prop key="org.quartz.scheduler.instanceName">CLOCKINCLOCKOUT_QUARTZ</prop>
+				<prop key="org.quartz.scheduler.instanceName">CLKIO_QUARTZ</prop>
 				<prop key="org.quartz.scheduler.instanceId">AUTO</prop>
 				<prop key="org.quartz.jobStore.tablePrefix">QRTZ_</prop>
 				<prop key="org.quartz.jobStore.isClustered">true</prop>
