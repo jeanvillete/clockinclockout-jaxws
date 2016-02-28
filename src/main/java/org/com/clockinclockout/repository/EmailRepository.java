@@ -26,10 +26,12 @@ public class EmailRepository extends CommonRepository {
 		return this.jdbcTemplate.queryForObject( " SELECT COUNT( ID ) FROM EMAIL WHERE ADDRESS = ? ", new Object[]{ email.getAddress() }, Integer.class ) > 0;
 	}
 	
-	public boolean confirm( Email email ) {
-		return this.jdbcTemplate.update( " UPDATE EMAIL SET CONFIRMATION_DATE = ? WHERE ADDRESS = ? AND CONFIRMATION_CODE = ? AND CONFIRMATION_DATE IS NULL ",
+	public boolean confirm( Email email, Date validRange ) {
+		return this.jdbcTemplate.update( " UPDATE EMAIL SET CONFIRMATION_DATE = ? "
+				+ " WHERE RECORDED_TIME > ? AND ADDRESS = ? AND CONFIRMATION_CODE = ? AND CONFIRMATION_DATE IS NULL ",
 				new Object[]{
 					new Date(),
+					validRange,
 					email.getAddress(),
 					email.getConfirmationCode()
 				}) == 1;
@@ -58,7 +60,7 @@ public class EmailRepository extends CommonRepository {
 
 	public Email getBy( String emailAddress, boolean isPrimary ) {
 		return this.jdbcTemplate.queryForObject( " SELECT ID, ADDRESS, RECORDED_TIME, CONFIRMATION_CODE, CONFIRMATION_DATE, IS_PRIMARY, ID_CLK_USER FROM EMAIL "
-				+ " WHERE ADDRESS = ? AND IS_PRIMARY = ? ",
+				+ " WHERE CONFIRMATION_DATE IS NOT NULL AND ADDRESS = ? AND IS_PRIMARY = ? ",
 				new Object[]{ emailAddress, isPrimary },
 				new EmailRowMapper() );
 	}
