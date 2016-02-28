@@ -2,10 +2,12 @@ package org.com.clockinclockout.service.impl;
 
 import java.util.List;
 
+import org.com.clockinclockout.domain.ClockinClockout;
 import org.com.clockinclockout.domain.Day;
 import org.com.clockinclockout.domain.ManualEntering;
 import org.com.clockinclockout.domain.Profile;
 import org.com.clockinclockout.repository.DayRepository;
+import org.com.clockinclockout.service.ClockinClockoutService;
 import org.com.clockinclockout.service.DayService;
 import org.com.clockinclockout.service.ManualEnteringService;
 import org.springframework.beans.factory.InitializingBean;
@@ -24,6 +26,9 @@ public class DayServiceImpl implements DayService, InitializingBean {
 	
 	@Autowired
 	private ManualEnteringService manualEnteringService;
+	
+	@Autowired
+	private ClockinClockoutService clockinClockoutService;
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -46,7 +51,10 @@ public class DayServiceImpl implements DayService, InitializingBean {
 	public void delete( Day day ) {
 		Assert.notNull( day );
 		
-		// TODO clockinclockoutService.delete( day.getListClockinClockout() ) 
+		List< ClockinClockout > listClockinClockout = this.clockinClockoutService.listBy( day );
+		if ( !CollectionUtils.isEmpty( listClockinClockout ) )
+			for ( ClockinClockout clockinClockout : listClockinClockout )
+				this.clockinClockoutService.delete( clockinClockout );
 		
 		List< ManualEntering > listManualEntering = this.manualEnteringService.listBy( day );
 		if ( !CollectionUtils.isEmpty( listManualEntering ) )

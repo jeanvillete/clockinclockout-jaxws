@@ -11,6 +11,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ManualEnteringRepository extends CommonRepository {
 
+	public void insert( final ManualEntering manualEntering ) {
+		// TODO implement
+		throw new IllegalStateException( "method not implemented yet" );
+	}
+	
 	public void delete( final ManualEntering manualEntering ) {
 		this.jdbcTemplate.update( " DELETE FROM MANUAL_ENTERING WHERE ID = ? ", new Object[]{ manualEntering.getId() } );
 	}
