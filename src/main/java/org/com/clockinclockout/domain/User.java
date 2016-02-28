@@ -14,7 +14,7 @@ public class User extends CommonDomain {
 	private List< Profile > profiles;
 	
 	public User( Email email, Locale locale ) {
-		this(null, email, locale);
+		this( null, email, locale );
 	}
 	
 	public User( Integer id ) {

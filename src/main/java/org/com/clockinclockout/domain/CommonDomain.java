@@ -10,12 +10,12 @@ abstract class CommonDomain {
 		super();
 	}
 	
-	CommonDomain(Integer id) {
+	CommonDomain( Integer id ) {
 		super();
 		this.setId( id );
 	}
 	
-	public void setId(Integer id) {
+	public void setId( Integer id ) {
 		Assert.state( id == null || id > 0, "Argument id has to be greater than 0." );
 		this.id = id;
 	}

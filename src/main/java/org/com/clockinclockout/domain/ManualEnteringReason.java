@@ -1,11 +1,16 @@
 package org.com.clockinclockout.domain;
 
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 public class ManualEnteringReason extends CommonDomain {
 
 	private Profile profile;
 	private String reason;
+	
+	public ManualEnteringReason( Integer id ) {
+		super( id );
+	}
 	
 	public ManualEnteringReason(Profile profile, String reason) {
 		this( null, profile, reason );
@@ -17,7 +22,7 @@ public class ManualEnteringReason extends CommonDomain {
 		this.setProfile(profile);
 		this.setReason(reason);
 	}
-	
+
 	public void setProfile(Profile profile) {
 		Assert.notNull( profile, "Argument profile cannot be null." );
 		this.profile = profile;
@@ -27,9 +32,11 @@ public class ManualEnteringReason extends CommonDomain {
 		this.reason = reason;
 	}	
 	public Profile getProfile() {
+		Assert.state( profile != null, "The property 'profile' has not been initialized yet." );
 		return profile;
 	}
 	public String getReason() {
+		Assert.state( StringUtils.hasText( reason ), "The property 'reason' has not been initialized yet." );
 		return reason;
 	}
 }

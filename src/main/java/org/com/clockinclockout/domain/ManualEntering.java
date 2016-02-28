@@ -2,14 +2,22 @@ package org.com.clockinclockout.domain;
 
 import org.springframework.util.Assert;
 
-public class ManualEntering {
+public class ManualEntering extends CommonDomain {
 
 	private Day day;
 	private ManualEnteringReason reason;
 	private Integer timeInterval;
 	
-	public ManualEntering(Day day, ManualEnteringReason reason, Integer timeInterval) {
-		super();
+	public ManualEntering( Integer id ) {
+		super( id );
+	}
+	
+	public ManualEntering( Day day, ManualEnteringReason reason, Integer timeInterval ) {
+		this( null, day, reason, timeInterval );
+	}
+	
+	public ManualEntering( Integer id, Day day, ManualEnteringReason reason, Integer timeInterval ) {
+		super( id );
 		
 		this.setDay(day);
 		this.setReason(reason);
