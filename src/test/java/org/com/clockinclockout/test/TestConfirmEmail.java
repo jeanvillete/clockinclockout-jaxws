@@ -1,10 +1,7 @@
 package org.com.clockinclockout.test;
 
-import java.util.Locale;
-
 import org.com.clockinclockout.domain.Email;
-import org.com.clockinclockout.domain.User;
-import org.com.clockinclockout.service.UserService;
+import org.com.clockinclockout.service.EmailService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,18 +18,17 @@ import org.springframework.util.Assert;
 	"classpath:springframework/spring-java-mail.xml",
 	"classpath:springframework/spring-velocity.xml"
 })
-public class TestNewUser {
+public class TestConfirmEmail {
 
 	@Autowired
-	UserService userService;
+	private EmailService emailService;
 	
 	@Test
 	public void test() {
-		Assert.notNull( userService, "No instance was assigned to userService." );
+		Assert.notNull( emailService, "No instance was assigned to emailService." );
 		
-		User jean = new User( new Email( "jean.villete@gmail.com" ), new Locale( "en" ) );
-		jean.setPassword( "passwordtest" );
-		
-		this.userService.insert( jean );
+		Email email = new Email( "jean.villete@gmail.com" );
+		email.setConfirmationCode( "%242a%2410%24yyoAoA35TO3PzqZb%2FYTstOa.g9rgNVzfO9pasuBUkmPZryU%2Fdjdcy" );
+		this.emailService.confirm( email );
 	}
 }

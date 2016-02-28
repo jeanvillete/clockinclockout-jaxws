@@ -3,7 +3,9 @@ package org.com.clockinclockout.test;
 import java.util.Locale;
 
 import org.com.clockinclockout.domain.Email;
+import org.com.clockinclockout.domain.RequestResetPassword;
 import org.com.clockinclockout.domain.User;
+import org.com.clockinclockout.service.RequestResetPasswordService;
 import org.com.clockinclockout.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,18 +23,21 @@ import org.springframework.util.Assert;
 	"classpath:springframework/spring-java-mail.xml",
 	"classpath:springframework/spring-velocity.xml"
 })
-public class TestNewUser {
+public class TestCofirmRequestResetPassword {
 
 	@Autowired
 	UserService userService;
 	
+	@Autowired
+	RequestResetPasswordService resetPasswordService;
+	
 	@Test
 	public void test() {
-		Assert.notNull( userService, "No instance was assigned to userService." );
+		Assert.notNull( resetPasswordService, "No instance was assigned to resetPasswordService." );
 		
 		User jean = new User( new Email( "jean.villete@gmail.com" ), new Locale( "en" ) );
-		jean.setPassword( "passwordtest" );
-		
-		this.userService.insert( jean );
+		RequestResetPassword requestResetPassword = new RequestResetPassword( jean );
+		requestResetPassword.setRequestCodeValue( "%242a%2410%24pJ3bsGaNGXV3EqJc3rdiyetwhULBd02HV.AqkG%2FGXsZe0FCiHwLXW" );
+		this.resetPasswordService.confirm( requestResetPassword );
 	}
 }
