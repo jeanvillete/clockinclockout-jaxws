@@ -14,8 +14,8 @@
 		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 			<property name="driverClassName" value="org.postgresql.Driver" />
 			<property name="url" value="jdbc:postgresql://192.168.1.101:5432/db4app" />
-			<property name="username" value="clockinclockout" />
-			<property name="password" value="clockinclockoutpw" />
+			<property name="username" value="clkio" />
+			<property name="password" value="clkiopw" />
 			<property name="maxActive" value="5" />
 			<property name="initialSize" value="1" />
 			<property name="maxIdle" value="4" />
