@@ -16,7 +16,7 @@ DROP TABLE clkio_schm.email;
 DROP TABLE clkio_schm.request_reset_password;
 DROP TABLE clkio_schm.clk_user;
 
--- sequence clk_user
+-- sequence clk_user_seq
 CREATE SEQUENCE clkio_schm.clk_user_seq
 INCREMENT BY 1
 MINVALUE 1
@@ -28,32 +28,44 @@ INCREMENT BY 1
 MINVALUE 1
 START WITH 1;
 
--- sequence email
+-- sequence email_seq
 CREATE SEQUENCE clkio_schm.email_seq
 INCREMENT BY 1
 MINVALUE 1
 START WITH 1;
 
--- sequence profile
+-- sequence profile_seq
 CREATE SEQUENCE clkio_schm.profile_seq
 INCREMENT BY 1
 MINVALUE 1
 START WITH 1;
 
--- sequence adjusting
+-- sequence adjusting_seq
 CREATE SEQUENCE clkio_schm.adjusting_seq
 INCREMENT BY 1
 MINVALUE 1
 START WITH 1;
 
--- sequence manual_entering_reason
+-- sequence manual_entering_reason_seq
 CREATE SEQUENCE clkio_schm.manual_entering_reason_seq
 INCREMENT BY 1
 MINVALUE 1
 START WITH 1;
 
--- sequence day
+-- sequence day_seq
 CREATE SEQUENCE clkio_schm.day_seq
+INCREMENT BY 1
+MINVALUE 1
+START WITH 1;
+
+-- sequence manual_entering_seq
+CREATE SEQUENCE clkio_schm.manual_entering_seq
+INCREMENT BY 1
+MINVALUE 1
+START WITH 1;
+
+-- sequence clockinclockout_seq
+CREATE SEQUENCE clkio_schm.clockinclockout_seq
 INCREMENT BY 1
 MINVALUE 1
 START WITH 1;
@@ -136,19 +148,23 @@ ALTER SEQUENCE clkio_schm.manual_entering_reason_seq OWNED BY clkio_schm.manual_
 
 -- table manual entering
 CREATE TABLE clkio_schm.manual_entering (
+  id INT NOT NULL PRIMARY KEY,
   id_day INT NOT NULL REFERENCES clkio_schm.day( id ) ON UPDATE RESTRICT ON DELETE RESTRICT,
   id_manual_entering_reason INT NOT NULL REFERENCES clkio_schm.manual_entering_reason( id ) ON UPDATE RESTRICT ON DELETE RESTRICT,
   time_interval INTERVAL NOT NULL CHECK ( time_interval > '0' )
 );
+ALTER SEQUENCE clkio_schm.manual_entering_seq OWNED BY clkio_schm.manual_entering.id;
 
 -- table clockinclockout
 CREATE TABLE clkio_schm.clockinclockout (
+  id INT NOT NULL PRIMARY KEY,
   id_day INT NOT NULL REFERENCES clkio_schm.day( id ) ON UPDATE RESTRICT ON DELETE RESTRICT,
   clockin TIMESTAMP NULL,
   clockout TIMESTAMP NULL,
   CONSTRAINT clockinclockout_at_least_one_not_null CHECK ( clockin IS NOT NULL OR clockout IS NOT NULL ),
   CONSTRAINT clockinclockout_clockout_not_greater_than_clockin CHECK ( ( clockin IS NULL OR clockout IS NULL ) OR ( clockout > clockin ) )
 );
+ALTER SEQUENCE clkio_schm.clockinclockout_seq OWNED BY clkio_schm.clockinclockout.id;
 
 -- adding the schema as default along side the "$user", public searching paths
 -- ALTER ROLE clkio SET search_path TO clkio_schm,"$user",public;
