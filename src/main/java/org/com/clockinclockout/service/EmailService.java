@@ -12,6 +12,11 @@ public interface EmailService {
 
 	void send( EmailResetPassword email );
 	
+	/**
+	 * Checks if the emailAddress exists on the database.
+	 * @param email
+	 * @return
+	 */
 	boolean exists( Email email );
 	
 	void confirm( Email email );
@@ -23,4 +28,6 @@ public interface EmailService {
 	void cleanNotConfirmed();
 	
 	void delete( Email email );
+	
+	Email getBy( String emailAddress, boolean isPrimary );
 }

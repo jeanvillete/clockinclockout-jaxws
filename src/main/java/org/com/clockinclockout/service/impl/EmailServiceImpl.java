@@ -171,4 +171,11 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 		this.repository.delete( email );
 	}
 
+	@Override
+	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
+	public Email getBy( String emailAddress, boolean isPrimary ) {
+		Assert.hasText( emailAddress );
+		return this.repository.getBy( emailAddress, isPrimary );
+	}
+
 }

@@ -56,4 +56,11 @@ public class EmailRepository extends CommonRepository {
 				new Object[]{ date, false } );
 	}
 
+	public Email getBy( String emailAddress, boolean isPrimary ) {
+		return this.jdbcTemplate.queryForObject( " SELECT ID, ADDRESS, RECORDED_TIME, CONFIRMATION_CODE, CONFIRMATION_DATE, IS_PRIMARY, ID_CLK_USER FROM EMAIL "
+				+ " WHERE ADDRESS = ? AND IS_PRIMARY = ? ",
+				new Object[]{ emailAddress, isPrimary },
+				new EmailRowMapper() );
+	}
+
 }
