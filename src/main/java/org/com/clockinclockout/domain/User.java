@@ -9,16 +9,20 @@ import org.springframework.util.Assert;
 public class User extends CommonDomain {
 
 	private Email email;
-	private String password;
+	private transient String password;
 	private Locale locale;
 	private List< Profile > profiles;
 	
-	public User( Email email, Locale locale ) {
-		this( null, email, locale );
-	}
-	
 	public User( Integer id ) {
 		super( id );
+	}
+	
+	public User( Email email ) {
+		this( null, email, Locale.getDefault() );
+	}
+	
+	public User( Email email, Locale locale ) {
+		this( null, email, locale );
 	}
 	
 	public User( Integer id, Email email, Locale locale ) {
@@ -29,8 +33,12 @@ public class User extends CommonDomain {
 	}
 	
 	public void setPassword(String password) {
+		this.setPassword( password, true );
+	}
+	
+	public void setPassword( String password, boolean toBeEncoded ) {
 		Assert.hasLength( password, "Argument password cannot be null nor empty." );
-		this.password = new BCryptPasswordEncoder().encode( password );
+		this.password = toBeEncoded ? new BCryptPasswordEncoder().encode( password ) : password;
 	}
 	
 	public void setEmail(Email email) {

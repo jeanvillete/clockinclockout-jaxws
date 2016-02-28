@@ -17,7 +17,7 @@ public class UserRepository extends CommonRepository {
 	}
 
 	public User getBy( Email email ) {
-		return this.jdbcTemplate.queryForObject( " SELECT USR.ID, USR.LOCALE FROM CLK_USER USR "
+		return this.jdbcTemplate.queryForObject( " SELECT USR.ID, USR.LOCALE, USR.PASSWORD FROM CLK_USER USR "
 				+ " LEFT JOIN EMAIL EML ON USR.ID = EML.ID_CLK_USER "
 				+ " WHERE EML.ID = ? ",
 				new Object[]{ email.getId() },

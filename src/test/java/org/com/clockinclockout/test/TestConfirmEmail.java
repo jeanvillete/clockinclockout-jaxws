@@ -28,7 +28,7 @@ public class TestConfirmEmail {
 		Assert.notNull( emailService, "No instance was assigned to emailService." );
 		
 		Email email = new Email( "jean.villete@gmail.com" );
-		email.setConfirmationCode( "%242a%2410%24yyoAoA35TO3PzqZb%2FYTstOa.g9rgNVzfO9pasuBUkmPZryU%2Fdjdcy" );
+		email.setConfirmationCode( "%242a%2410%24tAuuQRy4kKLQwDTsFA%2FvR.trvC9c7UijU2h8jMOs2KeYyou0pSoOS" );
 		this.emailService.confirm( email );
 	}
 }

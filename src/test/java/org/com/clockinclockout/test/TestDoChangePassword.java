@@ -33,7 +33,7 @@ public class TestDoChangePassword {
 		Assert.notNull( resetPasswordService, "No instance was assigned to resetPasswordService." );
 		
 		RequestResetPassword requestResetPassword = new RequestResetPassword( new User( new Email( "jean.villete@gmail.com" ), new Locale( "en" ) ) );
-		requestResetPassword.setConfirmationCodeValue( "$2a$10$QVUS0kPTptRMLpZLRYkCTOZ7na1BKePVciU/eEmg.pxea0NC.e8Z." );
+		requestResetPassword.setConfirmationCodeValue( "$2a$10$4cVRd/C6omc4LGcHUHx.LuApY6K8ZntmrAiV7EdzY1q8oKkMlL3Ja" );
 		requestResetPassword.setNewPassword( "mynewpassword" );
 		
 		this.resetPasswordService.changePassword( requestResetPassword );

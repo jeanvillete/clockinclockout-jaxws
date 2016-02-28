@@ -1,11 +1,8 @@
 package org.com.clockinclockout.test;
 
-import java.util.Locale;
-
 import org.com.clockinclockout.domain.Email;
-import org.com.clockinclockout.domain.RequestResetPassword;
 import org.com.clockinclockout.domain.User;
-import org.com.clockinclockout.service.RequestResetPasswordService;
+import org.com.clockinclockout.service.LoginService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,19 +19,21 @@ import org.springframework.util.Assert;
 	"classpath:springframework/spring-java-mail.xml",
 	"classpath:springframework/spring-velocity.xml"
 })
-public class TestCofirmRequestResetPassword {
+public class TestDoLogin {
 
 	@Autowired
-	RequestResetPasswordService resetPasswordService;
+	LoginService loginService;
 	
 	@Test
 	public void test() {
-		Assert.notNull( resetPasswordService, "No instance was assigned to resetPasswordService." );
+		Assert.notNull( loginService, "No instance was assigned to loginService." );
 		
-		User jean = new User( new Email( "jean.villete@gmail.com" ), new Locale( "en" ) );
-		RequestResetPassword requestResetPassword = new RequestResetPassword( jean );
-		requestResetPassword.setRequestCodeValue( "%242a%2410%24lf78i1Et8nVUvfsjiAqVS.GR35VNh0yCjFLBUjSSS8SJSi7nfaNlm" );
-		String confirmationCodeValue = this.resetPasswordService.confirm( requestResetPassword );
-		System.out.println( "Confirmation code value received from the confirmation invoking: " + confirmationCodeValue );
+		User jean = new User( new Email( "jean.villete@gmail.com" ) );
+		jean.setPassword( "mynewpassword", false );
+		User syncUser = this.loginService.login( jean );
+		
+		Assert.notNull( syncUser );
+		
+		System.out.println( "[User logged successfully] id:" + syncUser.getId() );
 	}
 }
