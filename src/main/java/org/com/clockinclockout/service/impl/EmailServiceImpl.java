@@ -144,7 +144,12 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	@Transactional( propagation = Propagation.REQUIRED )
 	public void confirm( Email email ) {
 		Assert.notNull( email );
-		Assert.state(  this.repository.confirm( email ), "Problems while performing email confirmation." );
+		Assert.hasText( email.getConfirmationCode() );
+		
+		Calendar validRange = Calendar.getInstance();
+		validRange.add( Calendar.DATE, -1 );
+		
+		Assert.state(  this.repository.confirm( email, validRange.getTime() ), "Problems while performing email confirmation." );
 	}
 
 	@Override

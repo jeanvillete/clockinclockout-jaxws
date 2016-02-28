@@ -11,6 +11,19 @@ public interface RequestResetPasswordService {
 	 */
 	void deleteNotConfirmed( User user );
 	
+	/**
+	 * This service is meant to be used when the user requests a reset password.
+	 * @param requestResetPassword
+	 */
 	void processRequest( RequestResetPassword requestResetPassword );
+
+	/**
+	 * This service is responsable to deal with a confirmation step from the user, that is, the user received the
+	 * email on his inbox and clicked the link.
+	 * @param requestResetPassword
+	 * @return The return is the value for <b>confirmationCodeValue</b> and means a valid identifier to be used
+	 *  later by the user with the new password.
+	 */
+	String confirm( RequestResetPassword requestResetPassword );
 	
 }

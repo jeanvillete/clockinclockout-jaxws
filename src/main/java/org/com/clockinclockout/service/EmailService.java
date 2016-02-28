@@ -29,5 +29,12 @@ public interface EmailService {
 	
 	void delete( Email email );
 	
+	/**
+	 * This is meant for bring a synchronized instance from database based and the parameters 'emailAddress' and 'isPrimary',
+	 * but behind scenes it also considers only email record that is already confirmed (CONFIRMATION_DATE NOT NULL).
+	 * @param emailAddress
+	 * @param isPrimary
+	 * @return
+	 */
 	Email getBy( String emailAddress, boolean isPrimary );
 }

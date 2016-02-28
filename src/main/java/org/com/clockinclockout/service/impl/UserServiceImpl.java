@@ -62,7 +62,9 @@ public class UserServiceImpl implements UserService, InitializingBean {
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
 	public User getBy( final Email email ) {
 		Assert.notNull( email );
-		return this.repository.getBy( email );
+		User syncUser = this.repository.getBy( email );
+		syncUser.setEmail( email );
+		return syncUser;
 	}
 
 	@Override
