@@ -6,7 +6,6 @@ import org.com.clockinclockout.domain.Email;
 import org.com.clockinclockout.domain.RequestResetPassword;
 import org.com.clockinclockout.domain.User;
 import org.com.clockinclockout.service.RequestResetPasswordService;
-import org.com.clockinclockout.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +25,6 @@ import org.springframework.util.Assert;
 public class TestCofirmRequestResetPassword {
 
 	@Autowired
-	UserService userService;
-	
-	@Autowired
 	RequestResetPasswordService resetPasswordService;
 	
 	@Test
@@ -37,7 +33,8 @@ public class TestCofirmRequestResetPassword {
 		
 		User jean = new User( new Email( "jean.villete@gmail.com" ), new Locale( "en" ) );
 		RequestResetPassword requestResetPassword = new RequestResetPassword( jean );
-		requestResetPassword.setRequestCodeValue( "%242a%2410%24pJ3bsGaNGXV3EqJc3rdiyetwhULBd02HV.AqkG%2FGXsZe0FCiHwLXW" );
-		this.resetPasswordService.confirm( requestResetPassword );
+		requestResetPassword.setRequestCodeValue( "%242a%2410%24q8f59bIjqu%2FkYn4PSoi%2Fq.cWIbhGHriMrGs0IkZ%2F2DzbI24fvwtj2" );
+		String confirmationCodeValue = this.resetPasswordService.confirm( requestResetPassword );
+		System.out.println( "Confirmation code value received from the confirmation invoking: " + confirmationCodeValue );
 	}
 }
