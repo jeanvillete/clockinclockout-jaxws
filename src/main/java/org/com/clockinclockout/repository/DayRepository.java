@@ -24,7 +24,7 @@ public class DayRepository extends CommonRepository {
 		this.jdbcTemplate.update( " DELETE FROM DAY WHERE ID = ? ", new Object[]{ day.getId() } );
 	}
 
-	public List< Day > listBy( Profile profile ) {
+	public List< Day > listBy( final Profile profile ) {
 		return this.jdbcTemplate.query( " SELECT ID, DATE, EXPECTED_HOURS, NOTES, ID_PROFILE "
 				+ " FROM DAY WHERE ID_PROFILE = ? ",
 				new Object[]{ profile.getId() }, new DayRowMaper() );
