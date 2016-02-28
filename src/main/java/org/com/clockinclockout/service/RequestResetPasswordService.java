@@ -32,4 +32,12 @@ public interface RequestResetPasswordService {
 	 */
 	String confirm( RequestResetPassword requestResetPassword );
 	
+	/**
+	 * Service responsable to effectively change a user's password.
+	 * It has to consider mainly the properties 'emailAddress', 'confirmationCodeValue' and 'newPassword'.
+	 * 
+	 * @param requestResetPassword
+	 * @return
+	 */
+	boolean changePassword( RequestResetPassword requestResetPassword );
 }

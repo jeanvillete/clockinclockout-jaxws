@@ -101,4 +101,29 @@ public class RequestResetPasswordServiceImpl implements RequestResetPasswordServ
 		return requestResetPassword.getConfirmationCodeValue();
 	}
 
+	@Override
+	@Transactional( propagation = Propagation.REQUIRED )
+	public boolean changePassword( RequestResetPassword requestResetPassword ) {
+		Assert.notNull( requestResetPassword );
+		Assert.state( StringUtils.hasText( requestResetPassword.getConfirmationCodeValue() ) );
+		Assert.state( StringUtils.hasText( requestResetPassword.getNewPassword() ) );
+		
+		Email syncEmail = this.emailService.getBy( requestResetPassword.getUser().getEmail().getAddress(), true ); // email's database synchronized reference
+		Assert.notNull( syncEmail, "No record found for the provided emailAddress." );
+		
+		User syncUser = this.userService.getBy( syncEmail ); // user's database synchronized reference
+		requestResetPassword.setUser( syncUser );
+		requestResetPassword.setChangeDate( new Date() );
+
+		Calendar validRange = Calendar.getInstance();
+		validRange.add( Calendar.MINUTE, -10 );
+		
+		Assert.state( this.repository.changePassword( requestResetPassword, validRange.getTime() ), "Invalid request. It was not possible to perform the request." );
+		
+		syncUser.setPassword( requestResetPassword.getNewPassword() );
+		Assert.state( this.userService.changePassword( syncUser ), "Invalid request. It was not possible to perform the request." );
+		
+		return true;
+	}
+
 }

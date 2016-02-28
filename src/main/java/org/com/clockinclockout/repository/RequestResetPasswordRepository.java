@@ -51,5 +51,18 @@ public class RequestResetPasswordRepository extends CommonRepository {
 				+ " AND ( CONFIRMATION_CODE_VALUE IS NULL OR CONFIRMATION_DATE IS NULL OR CHANGE_DATE IS NULL ) ",
 				new Object[]{ date });
 	}
+
+	public boolean changePassword( RequestResetPassword requestResetPassword, Date validRange ) {
+		return this.jdbcTemplate.update( " UPDATE REQUEST_RESET_PASSWORD SET CHANGE_DATE = ? "
+				+ " WHERE CONFIRMATION_CODE_VALUE = ?"
+				+ " AND CONFIRMATION_DATE > ? "
+				+ " AND CHANGE_DATE IS NULL "
+				+ " AND ID_CLK_USER = ? ",
+				new Object[]{
+						requestResetPassword.getChangeDate(),
+						requestResetPassword.getConfirmationCodeValue(),
+						validRange,
+						requestResetPassword.getUser().getId() }) == 1;
+	}
 	
 }

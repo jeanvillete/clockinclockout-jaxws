@@ -10,4 +10,6 @@ public interface UserService {
 	User getBy( Email email );
 	
 	void delete( User user );
+
+	boolean changePassword( User syncUser );
 }

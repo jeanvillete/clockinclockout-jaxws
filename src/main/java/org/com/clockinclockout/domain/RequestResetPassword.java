@@ -13,6 +13,8 @@ public class RequestResetPassword extends CommonDomain {
 	private String confirmationCodeValue;
 	private Date changeDate;
 	
+	private transient String newPassword;
+	
 	public RequestResetPassword( User user ) {
 		this( null, user );
 	}	
@@ -65,5 +67,14 @@ public class RequestResetPassword extends CommonDomain {
 
 	public void setRequestDate( Date requestDate ) {
 		this.requestDate = requestDate;
+	}
+
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	public void setNewPassword( String newPassword ) {
+		Assert.hasText( newPassword );
+		this.newPassword = newPassword;
 	}
 }

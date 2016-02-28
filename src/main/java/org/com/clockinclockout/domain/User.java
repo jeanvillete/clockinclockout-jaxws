@@ -3,6 +3,7 @@ package org.com.clockinclockout.domain;
 import java.util.List;
 import java.util.Locale;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.Assert;
 
 public class User extends CommonDomain {
@@ -29,7 +30,7 @@ public class User extends CommonDomain {
 	
 	public void setPassword(String password) {
 		Assert.hasLength( password, "Argument password cannot be null nor empty." );
-		this.password = password;
+		this.password = new BCryptPasswordEncoder().encode( password );
 	}
 	
 	public void setEmail(Email email) {

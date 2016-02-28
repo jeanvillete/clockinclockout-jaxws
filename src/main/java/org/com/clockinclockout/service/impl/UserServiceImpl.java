@@ -13,7 +13,6 @@ import org.com.clockinclockout.service.ProfileService;
 import org.com.clockinclockout.service.UserService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +42,6 @@ public class UserServiceImpl implements UserService, InitializingBean {
 	public void insert( final User user ) {
 		Assert.state( user.getLocale() != null, "No locale was provided to argument user.");
 		
-		user.setPassword( new BCryptPasswordEncoder().encode( user.getPassword() ) );
 		this.repository.insert( user );
 		
 		Profile profile = new Profile( user, "default profile", "HH:mm", "yyyy-MM-dd" );
@@ -80,6 +78,13 @@ public class UserServiceImpl implements UserService, InitializingBean {
 		}
 		
 		this.repository.delete( user );
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.MANDATORY )
+	public boolean changePassword( User syncUser ) {
+		Assert.notNull( syncUser );
+		return this.repository.changePassword( syncUser );
 	}
 	
 }

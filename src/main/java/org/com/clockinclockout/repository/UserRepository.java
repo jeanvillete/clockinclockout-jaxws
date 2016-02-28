@@ -27,5 +27,10 @@ public class UserRepository extends CommonRepository {
 	public void delete( User user ) {
 		this.jdbcTemplate.update( " DELETE FROM CLK_USER WHERE ID = ? ", new Object[]{ user.getId() } );
 	}
+
+	public boolean changePassword( User user ) {
+		return this.jdbcTemplate.update( " UPDATE CLK_USER SET PASSWORD = ? WHERE ID = ? ",
+				new Object[]{ user.getPassword(), user.getId() }) == 1;
+	}
 	
 }
