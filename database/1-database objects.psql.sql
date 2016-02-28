@@ -13,10 +13,17 @@ DROP TABLE clockinclockout_schm.day;
 DROP TABLE clockinclockout_schm.adjusting;
 DROP TABLE clockinclockout_schm.profile;
 DROP TABLE clockinclockout_schm.email;
+DROP TABLE clockinclockout_schm.request_reset_password;
 DROP TABLE clockinclockout_schm.clk_user;
 
 -- sequence clk_user
 CREATE SEQUENCE clockinclockout_schm.clk_user_seq
+INCREMENT BY 1
+MINVALUE 1
+START WITH 1;
+
+-- sequence request_reset_password_seq 
+CREATE SEQUENCE clockinclockout_schm.request_reset_password_seq
 INCREMENT BY 1
 MINVALUE 1
 START WITH 1;
@@ -59,13 +66,25 @@ CREATE TABLE clockinclockout_schm.clk_user (
 );
 ALTER SEQUENCE clockinclockout_schm.clk_user_seq OWNED BY clockinclockout_schm.clk_user.id;
 
+-- table request_reset_password
+CREATE TABLE clockinclockout_schm.request_reset_password (
+  id INT NOT NULL PRIMARY KEY,
+  id_clk_user INT NOT NULL REFERENCES clockinclockout_schm.clk_user( id ) ON UPDATE RESTRICT ON DELETE RESTRICT,
+  request_code_value VARCHAR( 150 ) NOT NULL CHECK( request_code_value <> '' ),
+  request_date TIMESTAMP NOT NULL,
+  confirmation_code_value VARCHAR( 150 ) NULL,
+  confirmation_date TIMESTAMP NULL,
+  change_date TIMESTAMP NULL
+);
+ALTER SEQUENCE clockinclockout_schm.request_reset_password_seq OWNED BY clockinclockout_schm.request_reset_password.id;
+
 -- table email
 CREATE TABLE clockinclockout_schm.email (
   id INT NOT NULL PRIMARY KEY,
   id_clk_user INT NOT NULL REFERENCES clockinclockout_schm.clk_user( id ) ON UPDATE RESTRICT ON DELETE RESTRICT,
   address VARCHAR( 50 ) NOT NULL CHECK( address <> '' ),
   recorded_time TIMESTAMP NOT NULL,
-  confirmation_code VARCHAR( 150 ) NOT NULL,
+  confirmation_code VARCHAR( 150 ) NOT NULL CHECK( confirmation_code <> '' ),
   confirmation_date TIMESTAMP NULL DEFAULT NULL,
   is_primary BOOLEAN NOT NULL DEFAULT FALSE
 );

@@ -1,0 +1,85 @@
+Nota 1: As informações do banco de horas são apresentadas sempre mensalmente, onde o mês em questão é sempre apresentado em uma tabela, sendo que a tabela contêm TODOS os dias do mês em questão, e cada dia com seus lançamentos específicos e seus correspondentes saldos.
+De primeira instância, as colunas a serem apresentadas são;
+  DATA - determinado dia do mês, e.g; 31/12/1999.
+  LANÇAMENTOS - os lançamentos de batidas de pontos para determinada data, podendo ser uma batida de ponto de fato ou um lançamento manual do dia.
+  HORAS ESPERADAS - as horas esperadas para determinado dia, e.g; se for dia da semana, pode ser 8h, se final de semana 0h...
+  SALDO - basicamente é a subtração das horas trabalhadas menos as horas esperadas para o dia em questão.
+  NOTAS - um texto de no máximo 150 caracteres que represente uma observação relevante para o dia em questão.
+
+case:1-Initial Loading
+#Carregamento das informações a serem apresentadas após o usuário efetuar login.
+#O banco de horas é totalmente dependente da existência de um 'PROFILE' correspondente, então na hora que se estiver fazendo a carga inicial (HOME) o primeiro registro de 'PROFILE' deverá ser carregado também e apresentado para o usuário a qual 'PROFILE' o banco de horas está sendo apresentado.
+[ public:getProfiles() ] No loading inicial, deverá ser trazido todos os profiles existentes associados ao usuário em questão, e também o profile sendo utilizado no momento para a apresentação do banco de horas em questão (atualmente carregado).
+[ public:getAvailableMonths(Profile) ] Deverá haver a possibilidade do usuário navegar entre os meses, a aplicação deve fornecer um componente datepicker para selecionar ANO e MÊS. Seria interessante no datepicker, poder enfatizar MESES onde existem registros (e.g; colocar em negrito, ou com background diferente), para tal, a aplicação deverá disponibilizar algum serviço que traga os meses em que existem registros. Uma query deverá ser executada na tabela "DAY", onde existem relacionado ou um registro "CLOCKINCLOCKOUT" ou "MANUAL_ENTERING" NOT NULL.
+[ internal:getMostRecentMonth(Profile) ] Por padrão, o mês a ser apresentado é o mês mais recente onde existe no mínimo um registro de batida de ponto. Para isto deve ser feito uma query na tabela de "DAY" buscando pela maior data onde existe para esta data pelo ao menos um registro de "CLOCKINCLOCKOUT" ou "MANUAL_ENTERING" NOT NULL.
+[ public:getBalance(Month) ] O serviço base de carregamento do banco de horas deve ser fornecido trazendo;
+  1-Todos os dias para o mês em questão, com suas datas, os lançamentos de batidas de ponto, as horas esperadas, o saldo do dia e as notas.
+  2-O saldo do banco até o fim do mês em questão.
+  3-O saldo total do banco.
+
+case:2-Efetuar Lançamento de Horas (batida de ponto, 'CLOCKINCLOCKOUT')
+[ punchClock(TIMESTAMP) ] bater ponto; A funcionalidade base e mais curta no ponto de vista do usuário. Simplesmente invoca a funcionalidade e o serviço é responsável por capiturar a hora que houve a batida de ponto, então o serviço calcula como armazena o TIMESTAMP fornecido;
+---> se não houver um registro "DAY", insere um na base e insere também um registro na tabela "CLOCKINCLOCKOUT" com o valor para "clockin" preenchido.
+---> se houver um registro "DAY", então busca pelo registro mais velho de "CLOCKINCLOCKOUT";
+------> senão houver nenhum registro para "CLOCKINCLOCKOUT", insere um novo com o valor para "clockin" preenchido.
+------> se houver um registro para "CLOCKINCLOCKOUT" e o campo "clockout" não estiver preenchido, então preencher este com o TIMESTAMP fornecido.
+------> se houver um registro para "CLOCKINCLOCKOUT" e o campo "clockout" já estiver preenchido, então inserir um outro registro para "CLOCKINCLOCKOUT" com o TIMESTAMP fornecido para o valor "clockin".
+[ new(ClockinClockout) ] clockin clockout; Esta funcionalidade trabalha em cima da idéia simples de um CRUD para registros de "CLOCKINCLOCKOUT". O usuário irá preencher um formulário com as informações para registro do "CLOCKINCLOCKOUT" (importante frisar que para novo registro, nenhuma informação do tipo "id/identifier" será fornecido, indicando assim um novo registro);
+---> se não for fornecido nem "clockin" e nem "clockout", então o serviço através da validação correspondente retornará uma mensagem de erro, informando que ao menos um dos dois campos é mandatório para prosseguir com a operação.
+---> se tiver tanto entrada (clockin) quanto saída (clockout) preenchidos; o serviço deverá procurar um registro "DAY" que corresponda a data de entrada, caso o registro "DAY" não exista, um novo deve ser criado, e então registrar também as informações do "CLOCKINCLOCKOUT".
+---> se apenas entrada (clockin) for fornecida; o serviço deverá procurar um registro "DAY" que corresponda a data de entrada, caso o registro "DAY" não exista, um novo deve ser criado, e a informação de "clockin" armazenda em um novo registro de "CLOCKINCLOCKOUT".
+---> se apenas saída (clockout) for fornecida; o serviço deverá procurar um registro "DAY" que corresponda a data de entrada, caso o registro "DAY" não exista, um novo deve ser criado, e a informação de "clockout" armazenda em um novo registro de "CLOCKINCLOCKOUT".
+
+case:3-Efetuar Lançamento de Horas (justificativa, lançamento manual para o dia, 'MANUAL_ENTERING' e.g; SERVIÇO EXTERNO, FÉRIAS, FALTA, ATESTADO MÉDICO)
+#A funcionalidade basica de registros de ajustes ou justificativa, onde não houve batida de ponto como procedimento rotineiro, mas exceções como SERVIÇO EXTERNO, FÉRIAS, FALTA, ATESTADO MÉDICO entre outros motivos (importante notar que para novo registro, nenhuma informação do tipo "id/identifier" será fornecida, indicando assim um novo registro).
+#Todas as informações (date, reason, time_interval) são mandatórias, então o serviço deve validar a mesma.
+[ new(ManualEntering) ] A funcionalidade trabalha em cima da idéia basica de CRUD para tabela 'MANUAL_ENTERING', onde o usuário irá preencher o formulário fornecendo a data do ocorrido, uma razão/motivo e o tempo/intervalo do ocorrido. O serviço deverá buscar por um registro de "DAY" referente a data fornecida pelo usuário, caso não exista, então deve-se inserir um, e inserir também as informações do 'MANUAL_ENTERING' em questão.
+
+case:4-Adição/alteração de notas para determinado dia.
+#A idéia básica para esta funcionalidade é permitir que o usuário forneça um texto de no máximo 150 caracteres de alguma informação relavante ou de destaque para determinado dia.
+[ setNotes(DATE, TEXT) ]: O usuário deve fornecer apenas o texto desejado, visto que encapsulado e fora da visão do usuário também é fornecido a data do dia em questão; O serviço tem a responsabilidade de procurar por um registro "DAY" para a data fornecida;
+---> senão houver um registro DAY; inserir um novo na tabela "DAY" já com a coluna "notes" preenchida.
+---> se houver um registro DAY; atualizar este registro "DAY" encontrado com a coluna "notes" preenchida.
+
+case:5-Alteração de 'Horas Esperadas' em determinado dia.
+#O usuário tem a possibilidade de alterar o intervalo de horas esperadas para determinado dia, uma vez que o padrão para esta informação estará cadastrado no perfil do usuário para o dia da semana em questão.
+#A aplicação não gerencia as férias, feriado ou algo do gênero, portanto o input e gerência deste tipo de informação está totalmente a cargo do usuário.
+[ setExpectedHours(DATE, INTERVAL) ]; Funcionalidade na qual o usuário escolhe uma data e fornece para esta um novo intervalo das horas esperadas, que servirá de base para o calculo de quantas horas foram trabalhadas no dia inferindo informação de quanto tempo passou ou faltou para as tais horas esperadas. O serviço tem a responsabilidade de buscar pelo registro "DAY" para a data fornecida;
+---> senão houver um registro DAY; inserir um novo na tabela "DAY" já com a coluna "expected_hours" preenchida com o intervalo fornecido.
+---> se houver um registro DAY; atualizar este registro "DAY" encontrado com a coluna "expected_hours" preenchida com o intervalo fornecido.
+
+case:6-Alteração de Lançamentos de Horas do tipo 'CLOCKINCLOCKOUT', modificação no valor antes inputado.
+#Seguindo a idéia de operações CRUD para "CLOCKINCLOCKOUT", o usuário deve ter a possibilidade de selecionar um registro "CLOCKINCLOCKOUT", fazer alterações desejadas e persistir estas alterações (é necessário fornecer o "id/identifier" do registro "CLOCKINCLOCKOUT" a ser modificado, indicando que para este uma operação de atualização/update está a ser executada).
+#Vale frisar que não há nenhuma operação disponível para exclusão/remoção apenas do clockin ou do clockout, mas sim apenas para remoção de todo o registro (dos dois de uma única vez), que excluí assim tanto a informação de entrada/clockin quanto saída/clockout.
+#O usuário não pode alterar a data (dia, mês e ano) de entrada, pois esta deve bater sempre com o registro "DAY" correspondente; O serviço deve então fazer a validação de que a data de entrada continua respeitando o registro "DAY" correspondente.
+[ update(ClockinClockout) ] O usuário "PODE" (não é obrigado) fornecer valores diferentes para "clockin", "clockout" e/ou "data saída". O serviço deve então encontrar o registro "CLOCKINCLOCKOUT" referente ao "id/identifier" fornecido e armazenar os novos valores solicitados.
+
+case:7-Exclusão de Lançamento de Horas do tipo 'CLOCKINCLOCKOUT' de valor antes inputado.
+#Vale frisar que não há nenhuma operação disponível para exclusão/remoção apenas do clockin ou do clockout, mas sim apenas para remoção de todo o registro (dos dois de uma única vez), que excluí assim tanto a informação de entrada/clockin quanto saída/clockout.
+#Seguindo a idéia de operações CRUD para "CLOCKINCLOCKOUT", o usuário deve ter a possibilidade de selecionar um registro "CLOCKINCLOCKOUT", e solicitar a exclusão do mesmo (é necessário fornecer o "id/identifier" do registro "CLOCKINCLOCKOUT" a ser excluído).
+[ delete(ClockinClockout) ] O serviço deve encontrar o registro "CLOCKINCLOCKOUT" referente ao "id/identifier" fornecido e efetuar a exclusão do mesmo.
+
+case:8-Alteração de Lançamento de Horas do tipo 'MANUAL_ENTERING', modificação do 'MANUAL_ENTERING_REASON'.
+#Seguindo a idéia de operações CRUD para "MANUAL_ENTERING", o usuário deve ter a possibilidade de selecionar um registro "MANUAL_ENTERING", fazer alterações desejadas e persistir estas alterações (é necessário fornecer o "id/identifier" do registro "MANUAL_ENTERING" a ser modificado, indicando que para este uma operação de atualização/update está a ser executada).
+#Todas as informações (date, reason, time_interval) são mandatórias, então o serviço deve validar a mesma.
+[ update(ManualEntering) ] O usuário poderá selecionar uma razão/reason diferente e/ou alterar o valor para o tempo do ocorrido (time_interval); O serviço deve encontrar o registro referente ao "MANUAL_ENTERING" e armazenar as informações alteradas conforme fornecido.
+
+case:9-Exclusão do Lançamento de Horas do tipo 'MANUAL_ENTERING'.
+#Seguindo a idéia da possibilidade de operações CRUD para "MANUAL_ENTERING", o usuário deve ter a possibilidade de selecionar um registro "MANUAL_ENTERING", e solicitar a exclusão do mesmo (é necessário fornecer o "id/identifier" do registro "MANUAL_ENTERING" a ser excluído).
+[ delete(ManualEntering) ] O serviço deve encontrar o registro "MANUAL_ENTERING" referente ao "id/identifier" fornecido e efetuar a exclusão do mesmo.
+
+case:10-Escolha de outro 'PROFILE' (selecionando e carregando outro 'PROFILE')
+#O usuário deverá ter a possibilidade de visualizar os vários registros de "PROFILE" armazenados e ao selecionar um diferente do que está atualmente carregado, toda a lógica de carregamento do banco de horas descrita no "Initial Loading" deverá ser executada porém levando em consideração o registro de "PROFILE" agora selecionado.
+
+case:11-Alteração de 'PROFILE' (listando/selecionando um 'PROFILE' para alteração)
+#A alteração de cada campo do 'PROFILE' reflete uma mudança diferente no banco de horas em questão. Os campos disponíveis para alteração são;
+  DESCRIPTION - o nome ou uma curta descrição do banco em questão
+  HOURS_FORMAT - o formato de horas que deverá ser apresentado por toda a aplicação onde se aplica determinada hora (e.g; HH:mm:ss formato longo, e HH:mm para formato curto). Importante notar que este formato será utilizado tanto para apresentação de informação quanto também para capiturar informações fornecidas pelo usuário.
+  DATE_FORMAT - o formato de datas que deverá ser apresentado por toda a aplicação onde se aplica determinada data (e.g; yyyy-MM-dd, ou dd/MM/yyyy, etc.). Importante notar que este formato será utilizado tanto para apresentação de informação quanto também para capiturar informações fornecidas pelo usuário.
+  DEFAULT_EXPECTED_SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY... - o intervalo de horas comum para jornada de trabalho em cada dia da semana.
+
+case:12-Ajuste de banco de horas.
+#A idéia é fornecer ao usuário operações CRUD que o permita fazer ajustes ao banco, como por exemplo; "informar o saldo inicial do banco de horas", "informar horas recebidas como percentual a mais de horas extras", "horas provindas do tempo gasta em uma viagem", emfim, informar qualquer adição/subtração de intervalo de horas que são inputadas no banco de horas e não são registradas com batidas rotineiras.
+#O ajuste de horas é totalmente atrelado a determinado "PROFILE", e as operações de CRUD para "ajustes" serão feitas na mesma tela de alteração de seu "PROFILE" correspondente.
+  DESCRIPTION - 50 caracteres para curta descrição da operação de ajuste.
+  TIME_INTERVAL - o valor em intervalo de horas (e.g; -11:35:00 para negativo, ou 06:05:00 para positivo)
