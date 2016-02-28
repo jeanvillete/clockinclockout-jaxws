@@ -1,6 +1,7 @@
 package org.com.clockinclockout.repository;
 
 import org.com.clockinclockout.domain.RequestResetPassword;
+import org.com.clockinclockout.domain.User;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -20,6 +21,13 @@ public class RequestResetPasswordRepository extends CommonRepository {
 					requestResetPassword.getConfirmationDate(),
 					requestResetPassword.getChangeDate()
 				});
+	}
+
+	public void deleteNotConfirmed( User user ) {
+		this.jdbcTemplate.update( " DELETE FROM REQUEST_RESET_PASSWORD "
+				+ " WHERE ID_CLK_USER = ? AND "
+				+ " ( CONFIRMATION_CODE_VALUE IS NULL OR CONFIRMATION_DATE IS NULL OR CHANGE_DATE IS NULL ) ",
+				new Object[]{ user.getId() });
 	}
 	
 }

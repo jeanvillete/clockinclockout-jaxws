@@ -44,11 +44,20 @@ public class RequestResetPasswordServiceImpl implements RequestResetPasswordServ
 		User syncUser = this.userService.getBy( syncEmail ); // user's database synchronized reference
 		requestResetPassword.setUser( syncUser );
 		
+		this.deleteNotConfirmed( syncUser );
+		
 		EmailResetPassword emailResetPassword = new EmailResetPassword( syncEmail );
 		requestResetPassword.setRequestCodeValue( emailResetPassword.getHash() );
 		this.repository.insert( requestResetPassword );
 		
 		this.emailService.send( emailResetPassword );
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.REQUIRED )
+	public void deleteNotConfirmed( User user ) {
+		Assert.notNull( user );
+		this.repository.deleteNotConfirmed( user );
 	}
 
 }
