@@ -3,15 +3,18 @@ package org.com.clockinclockout.service.impl;
 import java.util.List;
 
 import org.com.clockinclockout.domain.Day;
+import org.com.clockinclockout.domain.ManualEntering;
 import org.com.clockinclockout.domain.Profile;
 import org.com.clockinclockout.repository.DayRepository;
 import org.com.clockinclockout.service.DayService;
+import org.com.clockinclockout.service.ManualEnteringService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 @Service
 public class DayServiceImpl implements DayService, InitializingBean {
@@ -19,9 +22,13 @@ public class DayServiceImpl implements DayService, InitializingBean {
 	@Autowired
 	private DayRepository repository;
 	
+	@Autowired
+	private ManualEnteringService manualEnteringService;
+	
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		Assert.state( repository != null, "The property repository has not been properly initialized." );
+		Assert.state( repository != null, "The property 'repository' has not been properly initialized." );
+		Assert.state( manualEnteringService != null, "The property 'manualEnteringService' has not been properly initialized." );
 	}
 	
 	@Override
@@ -40,7 +47,11 @@ public class DayServiceImpl implements DayService, InitializingBean {
 		Assert.notNull( day );
 		
 		// TODO clockinclockoutService.delete( day.getListClockinClockout() ) 
-		// TODO manualEnteringService.delete( day.getListManualEntering() ) 
+		
+		List< ManualEntering > listManualEntering = this.manualEnteringService.listBy( day );
+		if ( !CollectionUtils.isEmpty( listManualEntering ) )
+			for ( ManualEntering manualEntering : listManualEntering )
+				this.manualEnteringService.delete( manualEntering );
 		
 		this.repository.delete( day );
 	}
