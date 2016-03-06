@@ -1,5 +1,7 @@
 package org.com.clockinclockout.domain;
 
+import java.time.Duration;
+
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -9,13 +11,13 @@ public class Profile extends CommonDomain {
 	private String description;
 	private String hoursFormat;
 	private String dateFormat;
-	private Integer defaultExpectedSunday;
-	private Integer defaultExpectedMonday;
-	private Integer defaultExpectedTuesday;
-	private Integer defaultExpectedWednesday;
-	private Integer defaultExpectedThursday;
-	private Integer defaultExpectedFriday;
-	private Integer defaultExpectedSaturday;
+	private Duration defaultExpectedSunday;
+	private Duration defaultExpectedMonday;
+	private Duration defaultExpectedTuesday;
+	private Duration defaultExpectedWednesday;
+	private Duration defaultExpectedThursday;
+	private Duration defaultExpectedFriday;
+	private Duration defaultExpectedSaturday;
 
 	public Profile( Integer id ) {
 		super( id );
@@ -50,25 +52,25 @@ public class Profile extends CommonDomain {
 		Assert.hasLength( dateFormat, "Argument dateFormat cannot be null nor empty." );
 		this.dateFormat = dateFormat;
 	}
-	public void setDefaultExpectedSunday(Integer defaultExpectedSunday) {
+	public void setDefaultExpectedSunday(Duration defaultExpectedSunday) {
 		this.defaultExpectedSunday = defaultExpectedSunday;
 	}
-	public void setDefaultExpectedMonday(Integer defaultExpectedMonday) {
+	public void setDefaultExpectedMonday(Duration defaultExpectedMonday) {
 		this.defaultExpectedMonday = defaultExpectedMonday;
 	}
-	public void setDefaultExpectedTuesday(Integer defaultExpectedTuesday) {
+	public void setDefaultExpectedTuesday(Duration defaultExpectedTuesday) {
 		this.defaultExpectedTuesday = defaultExpectedTuesday;
 	}
-	public void setDefaultExpectedWednesday(Integer defaultExpectedWednesday) {
+	public void setDefaultExpectedWednesday(Duration defaultExpectedWednesday) {
 		this.defaultExpectedWednesday = defaultExpectedWednesday;
 	}
-	public void setDefaultExpectedThursday(Integer defaultExpectedThursday) {
+	public void setDefaultExpectedThursday(Duration defaultExpectedThursday) {
 		this.defaultExpectedThursday = defaultExpectedThursday;
 	}
-	public void setDefaultExpectedFriday(Integer defaultExpectedFriday) {
+	public void setDefaultExpectedFriday(Duration defaultExpectedFriday) {
 		this.defaultExpectedFriday = defaultExpectedFriday;
 	}
-	public void setDefaultExpectedSaturday(Integer defaultExpectedSaturday) {
+	public void setDefaultExpectedSaturday(Duration defaultExpectedSaturday) {
 		this.defaultExpectedSaturday = defaultExpectedSaturday;
 	}
 	public User getUser() {
@@ -87,25 +89,25 @@ public class Profile extends CommonDomain {
 		Assert.state( StringUtils.hasText( dateFormat ), "The field 'dateFormat' was not properly initialized." );
 		return dateFormat;
 	}
-	public Integer getDefaultExpectedSunday() {
+	public Duration getDefaultExpectedSunday() {
 		return defaultExpectedSunday;
 	}
-	public Integer getDefaultExpectedMonday() {
+	public Duration getDefaultExpectedMonday() {
 		return defaultExpectedMonday;
 	}
-	public Integer getDefaultExpectedTuesday() {
+	public Duration getDefaultExpectedTuesday() {
 		return defaultExpectedTuesday;
 	}
-	public Integer getDefaultExpectedWednesday() {
+	public Duration getDefaultExpectedWednesday() {
 		return defaultExpectedWednesday;
 	}
-	public Integer getDefaultExpectedThursday() {
+	public Duration getDefaultExpectedThursday() {
 		return defaultExpectedThursday;
 	}
-	public Integer getDefaultExpectedFriday() {
+	public Duration getDefaultExpectedFriday() {
 		return defaultExpectedFriday;
 	}
-	public Integer getDefaultExpectedSaturday() {
+	public Duration getDefaultExpectedSaturday() {
 		return defaultExpectedSaturday;
 	}
 }
