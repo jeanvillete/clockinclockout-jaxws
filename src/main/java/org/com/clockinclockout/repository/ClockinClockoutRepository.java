@@ -11,8 +11,13 @@ import org.springframework.stereotype.Repository;
 public class ClockinClockoutRepository extends CommonRepository {
 
 	public void insert( final ClockinClockout clockinClockout ) {
-		// TODO implement
-		throw new IllegalStateException( "method not implemented yet" );
+		clockinClockout.setId( this.nextVal( "CLOCKINCLOCKOUT_SEQ" ) );
+		this.jdbcTemplate.update( " INSERT INTO CLOCKINCLOCKOUT ( ID, ID_DAY, CLOCKIN, CLOCKOUT ) "
+				+ " VALUES ( ?, ?, ?, ?) ",
+				new Object[]{ clockinClockout.getId(),
+						clockinClockout.getDay().getId(),
+						clockinClockout.getClockin(),
+						clockinClockout.getClockout() });
 	}
 
 	public void delete( final ClockinClockout clockinClockout ) {

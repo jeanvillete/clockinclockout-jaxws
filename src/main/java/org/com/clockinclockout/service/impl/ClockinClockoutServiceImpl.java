@@ -26,6 +26,16 @@ public class ClockinClockoutServiceImpl implements ClockinClockoutService, Initi
 	
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
+	public void insert( ClockinClockout clockinClockout ) {
+		Assert.notNull( clockinClockout );
+		
+		//TODO apply/implement proper validations
+		
+		this.repository.insert( clockinClockout );
+	}
+	
+	@Override
+	@Transactional( propagation = Propagation.REQUIRED )
 	public void delete( ClockinClockout clockinClockout ) {
 		Assert.notNull( clockinClockout );
 		this.repository.delete( clockinClockout );
