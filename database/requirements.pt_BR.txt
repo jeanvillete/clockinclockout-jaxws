@@ -1,84 +1,167 @@
-Nota 1: As informações do banco de horas são apresentadas sempre mensalmente, onde o mês em questão é sempre apresentado em uma tabela, sendo que a tabela contêm TODOS os dias do mês em questão, e cada dia com seus lançamentos específicos e seus correspondentes saldos.
+case:Cadastro novo usuário
+#Envio do código de confirmação de cadastro e do endereço de email.
+#A aplicação permite que o usuário cadastre vários endereços de email para o determinado usuário, mas apenas um único endereço de email pode ser utilizado para login, que é conhecido como endereço primário; tabela 'EMAIL', coluna 'IS_PRIMARY = TRUE'. No momento do cadastro do usuário, o email fornecido será considerado o email primário, que deverá de primeira instância ser utilizado para fins de login.
+Nota: Vale resaltar que o password fornecido pelo usuário é criptografado, ou melhor, é tirado um hash do mesmo e sempre que o usuário efetuar login, o password fornecido é comparado ao hash tirado, o que coloca a aplicação em uma situação que mesmo queesta venha a ser hackeada ou invadida, ou pior, a base de dados seja violada, o password do usuário nunca será exposto.
+[ UserService.insert(User) ] O serviço é reponsável por adicionar o usuário na base de dados e enviar para o endereço de email fornecido o código de confirmação. Até que usuário entre em sua caixa de entrada e confirme o endereço de email, o registro do usuário em base de dados permanece desabilitado, e ainda, o usuário tem um período de 24h a partir da hora de registro para efetuar a confirmação do endereço de email, de maneira contrária, o registro do usuário não confirmado é excluído da base de dados. Dentre as validações para persistir o usuário em base de dados, é que o usuário deve ter fornecido um endereço de email válido (validado via devido regex), o password não pode ser vazio e deve ter no mínimo 6 caracteres.
+
+case:Cadastro de novo endereço de email. Adição de novo registro 'EMAIL'.
+#A aplicação permite que o usuário cadastre vários endereços de email para o determinado usuário, mas apenas um único endereço de email pode ser utilizado para login, que é conhecido como endereço primário; tabela 'EMAIL', coluna 'IS_PRIMARY'.
+[ EmailService.insert(Email) ] O serviço é responsável por adicionar o 'EMAIL' na base de dados e enviar para o endereço de email fornecido um código de confirmação. Até que o usuário entre em sua caixa de entrada e confirme o endereço de email, este registro de 'EMAIL' permanece desabilitado na aplicação. O usuário não pode usar o endereço de email não confirmado em nenhuma funcionalidade dentro da aplicação.
+
+case:Confirmação de cadastro e endereço de email.
+#Quando é cadastrado um novo usuário um email é enviado para o usuário agradecendo o registro no sistema, e no meio tem um link com um código de confirmação, que o usuário deve clicar no link para efetivar a conta na aplicação. A mesma lógica é aplicada para quando o usuário já cadastrado e ativo no sistema quer cadastrar um novo endereço de email, talvez por querer mudar o endereço de email primário, para fazer login com outro endereço de email.
+#Vale mencionar que existe um serviço que roda em background diariamente excluindo todos os endereços de emails não confirmados dentro de um período de 24h, independentemente se email não confirmado provém de um cadastro de usuário (excluí o usuário também) ou da inclusão de um endereço de email adicional.
+[ EmailService.confirm(Email) ] O serviço tem a responsabilidade de verificar contra a base de dados se o endereço de email existe na base de dados, se ainda não foi confirmado anteriormente e se o 'CONFIRMATION_CODE' fornecido bate com o que está armazenado. Uma vez superado as validação, o registro de email é então atualizado com a informação 'CONFIRMATION_DATE' recebendo o TIMESTAMP da hora, do ato da confirmação, e isto assim significando que o usuário e/ou endereço de email é válido na aplicação.
+
+case:Exclusão de registro de 'EMAIL'.
+#Observa-se o fato de não haver uma edição do endereço de email (principalmente para endereço de email já confirmado) mas apenas a opção de exclusão. Além disto, não há a possibilidade de se excluir um email primário. Se houver a necessidade de excluir um email que por momento seja primário, é necessário fornecer um segundo email para ser primário e remover o desejado/primeiro.
+[ EmailService.delete(Email) ] O serviço deve confirmar que o email passado como parâmetro de fato pertence ao usuário logado e que este email não é primário. Outros fatores como se o endereço de email já foi confirmado ou algo assim não deve ser relevante.
+
+case:Alterando Email primário.
+#É possível que o usuário tenha mais de um email registrado na aplicação, mas apenas um registro de email pode ser primário para um usuário, coluna 'IS_PRIMARY' para tabela 'EMAIL'.
+#Email primário é basicamente o endereço de email que o usuário deve usar para fazer login, e também, quando o usuário solicitar um reset no password, ou qualquer outra coisa que seja necessário enviar email para o usuário, é para o email primário que isto será feito.
+[ EmailService.setAsPrimary(Email) ] O serviço tem a responsabilidade de colocar o email passado como parâmetro como email primário. O serviço deverá confirmar que o email passado como parâmetro de fato perternce ao usuário logado, que este email já foi confirmado (CONFIRMATION_DATE IS NOT NULL) e que não é o email primário atualmente, desta maneira a atualização pode ser feita devidamente. Caso alguma das validações falhe, por questões de segurança nenhuma mensagem de erro específica deve voltar ao usuário, apenas um erro com a mensagem 'processamento não efetuado, erro no parâmetro'.
+
+case:Login
+#O usuário deve ter a possibilidade de criar uma sessão com a aplicação, para que a maioria das funcionalidades que dependam de usuário estar logado possam ser efetuadas.
+Nota: Vale resaltar que o password fornecido pelo usuário é criptografado, ou melhor, é tirado um hash do mesmo e sempre que o usuário efetuar login, o password fornecido é comparado ao hash tirado, o que coloca a aplicação em uma situação que mesmo que a mesma seja hackeada ou invadida, ou pior, a base de dados seja violada, o password do usuário nunca será exposto.
+[ LoginService.doLogin(User) ] O serviço deve validar se o endereço de email fornecido no objeto User existe na base de dados, se este endereço de email é primário e já confirmado (CONFIRMATION_DATE IS NOT NULL), e por ultimo verificar se o password contido no parâmetro bate com o password CRIPTOGRAFADO e armazenado em base de dados.
+
+case:Listagem de perfis, registros 'PROFILE'
+#O objetivo é apresentar para o usuário os registros de 'PROFILE' associados ao usuário logado. Como é uma lista, apenas informações de fato importantes serão trazidas, como id/identificador e a descrição do profile. Outras informações podem ser buscadas de acordo com a demanda no serviço [ProfileService.get] (no singular).
+[ ProfileService.list(User) ] Serviço responsável por trazer todos os profiles associados ao usuário passado como parâmetro. O necessário para que o serviço seja executado é que o usuário tenha um login válido.
+
+case:Adição de registro 'PROFILE'
+#O usuário pode ter vários perfis (registros 'PROFILE') associados, uma vez que o usuário poderia usar a aplicação para mais de um serviço ao mesmo tempo, ou na troca de empresa, continuar usando a aplicação para um novo perfil, para este novo emprego.
+#Os campos disponíveis para alteração são;
+  DESCRIPTION - o nome ou uma curta descrição do banco em questão
+  HOURS_FORMAT - o formato de horas que deverá ser apresentado por toda a aplicação onde se aplica determinada hora (e.g; HH:mm:ss formato longo, e HH:mm para formato curto). Importante notar que este formato será utilizado tanto para apresentação de informação quanto também para capiturar informações fornecidas pelo usuário.
+  DATE_FORMAT - o formato de datas que deverá ser apresentado por toda a aplicação onde se aplica determinada data (e.g; yyyy-MM-dd, ou dd/MM/yyyy, etc.). Importante notar que este formato será utilizado tanto para apresentação de informação quanto também para capiturar informações fornecidas pelo usuário.
+  DEFAULT_EXPECTED_SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY... - o intervalo de horas comum para jornada de trabalho em cada dia da semana.
+[ ProfileService.insert(Profile) ] Serviço responsável por registrar na base de dados um novo profile para o usuário corrente. As informações mandatórias são; id do usuário (id_clk_user), descrição e padrão de horas esperadas para os dias da semana, de domingo a sábado. As informações do formato de hora (HH:mm) e data (yyyy-MM-dd) são definidas por padrão, mas podem ser editadas em um segundo momento.
+
+case:Detalhes do registro 'PROFILE'
+Nota: Observa-se o nome do serviço no singular. O que deve ser utilizado para sincronização de um profile com as informações atualmente em base de dados.
+[ ProfileService.get(Profile) ] O objetivo é trazar todas as informações sincronizadas do Profile em questão, onde deverá receber o parâmetro Profile com o id/identificador preenchido e devolver um objeto com todas as informações em base de dados do Profile preenchidas.
+
+case:Edição/Alteração de registro 'PROFILE'
+#A alteração de cada campo do 'PROFILE' reflete uma mudança diferente no banco de horas em questão. Os campos disponíveis para alteração são;
+  DESCRIPTION - o nome ou uma curta descrição do banco em questão
+  HOURS_FORMAT - o formato de horas que deverá ser apresentado por toda a aplicação onde se aplica determinada hora (e.g; HH:mm:ss formato longo, e HH:mm para formato curto). Importante notar que este formato será utilizado tanto para apresentação de informação quanto também para capiturar informações fornecidas pelo usuário.
+  DATE_FORMAT - o formato de datas que deverá ser apresentado por toda a aplicação onde se aplica determinada data (e.g; yyyy-MM-dd, ou dd/MM/yyyy, etc.). Importante notar que este formato será utilizado tanto para apresentação de informação quanto também para capiturar informações fornecidas pelo usuário.
+  DEFAULT_EXPECTED_SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY... - o intervalo de horas comum para jornada de trabalho em cada dia da semana.
+[ ProfileService.update(Profile) ]
+
+case:Exclusão de registro 'PROFILE'
+[ ProfileService.delete(Profile) ] Serviço responsável por excluir da base de dados o Profile passado como parâmetro. Não há muitas validações a serem feitas, além do fato de verificar se o Profile (id/identificador) pertence ao usuário logado.
+
+case:Listagem de registros 'ADJUSTING', para ajuste de banco de horas
+#A idéia é fornecer ao usuário operações CRUD que o permita fazer ajustes ao banco, como por exemplo; "informar o saldo inicial do banco de horas", "informar horas recebidas como percentual a mais de horas extras", "horas provindas do tempo gasta em uma viagem", emfim, informar qualquer adição/subtração de intervalo de horas que são inputadas no banco de horas e não são registradas com batidas rotineiras.
+#O ajuste de horas é totalmente atrelado a determinado "PROFILE", e as operações de CRUD para "ajustes" serão feitas na mesma tela de alteração de seu "PROFILE" correspondente.
+  DESCRIPTION - 50 caracteres para curta descrição da operação de ajuste.
+  TIME_INTERVAL - o valor em intervalo de horas (e.g; -11:35:00 para negativo, ou 06:05:00 para positivo)
+[ AdjustingService.list(Profile) ]
+
+case:Adição de um registro 'ADJUSTING'
+[ AdjustingService.insert(Adjusting) ]
+
+case:Alteração/Atualização de um registro 'ADJUSTING'
+[ AdjustingService.update(Adjusting) ]
+
+case:Exclusão de um registro 'ADJUSTING'
+[ AdjustingService.delete(Adjusting) ]
+
+case:Listagem de registros 'MANUAL_ENTERING_REASON' (Cadastro de 'razões' para 'entradas ou justificativas manuais')
+#A idéia é fornecer ao usuário operações de CRUD que permita definir razões para lançamentos manuais, como FÉRIAS, SERVIÇO EXTERNO, FALTA, ATESTADO MÉDICO, etc. A única informação a ser fornecida é um campo chamado de razão (REASON), o que com certeza o coloca como mandatório. A informação deste cadastro servirá para no futuro, efetivar lançamentos de horas com razões pré cadastradas.
+[ ManualEnteringReason.list(ManualEnteringReason) ]
+
+case:Adição de novo registro 'MANUAL_ENTERING_REASON'
+[ ManualEnteringReason.insert(ManualEnteringReason) ]
+
+case:Atualização de registro 'MANUAL_ENTERING_REASON'
+[ ManualEnteringReason.update(ManualEnteringReason) ]
+
+case:Exclusão de registro 'MANUAL_ENTERING_REASON'
+[ ManualEnteringReason.delete(ManualEnteringReason) ]
+
+case:Carregamento inicial, busca do TimeCard
+Nota 1: As informações do banco de horas são apresentadas sempre mensalmente, onde o mês em questão é sempre apresentado em uma tabela, e esta a tabela contêm TODOS os dias do mês em questão, cada dia com seus lançamentos específicos e seus correspondentes saldos.
 De primeira instância, as colunas a serem apresentadas são;
   DATA - determinado dia do mês, e.g; 31/12/1999.
   LANÇAMENTOS - os lançamentos de batidas de pontos para determinada data, podendo ser uma batida de ponto de fato ou um lançamento manual do dia.
   HORAS ESPERADAS - as horas esperadas para determinado dia, e.g; se for dia da semana, pode ser 8h, se final de semana 0h...
   SALDO - basicamente é a subtração das horas trabalhadas menos as horas esperadas para o dia em questão.
   NOTAS - um texto de no máximo 150 caracteres que represente uma observação relevante para o dia em questão.
-
-case:1-Initial Loading
-#Carregamento das informações a serem apresentadas após o usuário efetuar login.
-#O banco de horas é totalmente dependente da existência de um 'PROFILE' correspondente, então na hora que se estiver fazendo a carga inicial (HOME) o primeiro registro de 'PROFILE' deverá ser carregado também e apresentado para o usuário a qual 'PROFILE' o banco de horas está sendo apresentado.
-[ public:getProfiles(User) ] No loading inicial, deverá ser trazido todos os profiles existentes associados ao usuário em questão, e também o profile sendo utilizado no momento para a apresentação do banco de horas em questão (atualmente carregado).
-[ public:getTimeCard(BaseCalendar) ] O serviço base de carregamento do banco de horas deve ser fornecido trazendo;
+Nota 2: Utilizar o serviço supracitado ProfileService.list(User) no loading inicial, este deverá trazer todos os profiles existentes associados ao usuário em questão, a aplicação cliente deve pegar o primeiro registro de profile para invocar o serviço TimeCardService.getTimeCard(BaseCalendar, Profile) mencionado a seguir.
+[ TimeCard.getTimeCard(BaseCalendar, Profile) ] O serviço base de carregamento do banco de horas deve ser fornecido trazendo;
   1-Todos os dias para o mês em questão, com suas datas, os lançamentos de batidas de ponto, as horas esperadas, o saldo do dia e as notas.
   2-O saldo do banco até o fim do mês em questão.
-  3-O saldo total do banco.
-[ public:getTotalTime(User) ] Serviço responsável por buscar o valor total do banco de horas do usuário passado como parâmetro.
 
-case:2-Efetuar Lançamento de Horas (batida de ponto, 'CLOCKINCLOCKOUT')
-[ punchClock(TIMESTAMP) ] bater ponto; A funcionalidade base e mais curta no ponto de vista do usuário. Simplesmente invoca a funcionalidade e o serviço é responsável por capiturar a hora que houve a batida de ponto, então o serviço calcula como armazena o TIMESTAMP fornecido;
+case:Obter total do banco de horas
+[ TimeCard.getTotalTime(User) ] Serviço responsável por buscar o saldo/valor total do banco de horas do usuário passado como parâmetro. O valor retornado é uma string pura que contém o valor já formatado para apresentação.
+
+case:Bater ponto; Lançamento rápido de horas (CLOCKINCLOCKOUT)
+[ TimeCard.punchClock(TIMESTAMP) ] bater ponto; A funcionalidade base e mais curta no ponto de vista do usuário. Simplesmente invoca a funcionalidade e o serviço é responsável por capiturar a hora que houve a batida de ponto, então o serviço calcula como armazena o TIMESTAMP fornecido;
 ---> se não houver um registro "DAY", insere um na base e insere também um registro na tabela "CLOCKINCLOCKOUT" com o valor para "clockin" preenchido.
 ---> se houver um registro "DAY", então busca pelo registro mais velho de "CLOCKINCLOCKOUT";
 ------> senão houver nenhum registro para "CLOCKINCLOCKOUT", insere um novo com o valor para "clockin" preenchido.
 ------> se houver um registro para "CLOCKINCLOCKOUT" e o campo "clockout" não estiver preenchido, então preencher este com o TIMESTAMP fornecido.
 ------> se houver um registro para "CLOCKINCLOCKOUT" e o campo "clockout" já estiver preenchido, então inserir um outro registro para "CLOCKINCLOCKOUT" com o TIMESTAMP fornecido para o valor "clockin".
-[ new(ClockinClockout) ] clockin clockout; Esta funcionalidade trabalha em cima da idéia simples de um CRUD para registros de "CLOCKINCLOCKOUT". O usuário irá preencher um formulário com as informações para registro do "CLOCKINCLOCKOUT" (importante frisar que para novo registro, nenhuma informação do tipo "id/identifier" será fornecido, indicando assim um novo registro);
+
+case:Efetuar Lançamento de Horas (CLOCKINCLOCKOUT)
+[ TimeCard.insert(ClockinClockout) ] clockin clockout; Esta funcionalidade trabalha em cima da idéia simples de um CRUD para registros de "CLOCKINCLOCKOUT". O usuário irá preencher um formulário com as informações para registro do "CLOCKINCLOCKOUT" (importante frisar que para novo registro, nenhuma informação do tipo "id/identifier" será fornecido, indicando assim um novo registro);
 ---> se não for fornecido nem "clockin" e nem "clockout", então o serviço através da validação correspondente retornará uma mensagem de erro, informando que ao menos um dos dois campos é mandatório para prosseguir com a operação.
 ---> se tiver tanto entrada (clockin) quanto saída (clockout) preenchidos; o serviço deverá procurar um registro "DAY" que corresponda a data de entrada, caso o registro "DAY" não exista, um novo deve ser criado, e então registrar também as informações do "CLOCKINCLOCKOUT".
 ---> se apenas entrada (clockin) for fornecida; o serviço deverá procurar um registro "DAY" que corresponda a data de entrada, caso o registro "DAY" não exista, um novo deve ser criado, e a informação de "clockin" armazenda em um novo registro de "CLOCKINCLOCKOUT".
 ---> se apenas saída (clockout) for fornecida; o serviço deverá procurar um registro "DAY" que corresponda a data de entrada, caso o registro "DAY" não exista, um novo deve ser criado, e a informação de "clockout" armazenda em um novo registro de "CLOCKINCLOCKOUT".
 
-case:3-Efetuar Lançamento de Horas (justificativa, lançamento manual para o dia, 'MANUAL_ENTERING' e.g; SERVIÇO EXTERNO, FÉRIAS, FALTA, ATESTADO MÉDICO)
+case:Efetuar Lançamento de Horas (justificativa, lançamento manual para o dia, 'MANUAL_ENTERING' e.g; SERVIÇO EXTERNO, FÉRIAS, FALTA, ATESTADO MÉDICO)
 #A funcionalidade basica de registros de ajustes ou justificativa, onde não houve batida de ponto como procedimento rotineiro, mas exceções como SERVIÇO EXTERNO, FÉRIAS, FALTA, ATESTADO MÉDICO entre outros motivos (importante notar que para novo registro, nenhuma informação do tipo "id/identifier" será fornecida, indicando assim um novo registro).
 #Todas as informações (date, reason, time_interval) são mandatórias, então o serviço deve validar a mesma.
-[ new(ManualEntering) ] A funcionalidade trabalha em cima da idéia basica de CRUD para tabela 'MANUAL_ENTERING', onde o usuário irá preencher o formulário fornecendo a data do ocorrido, uma razão/motivo e o tempo/intervalo do ocorrido. O serviço deverá buscar por um registro de "DAY" referente a data fornecida pelo usuário, caso não exista, então deve-se inserir um, e inserir também as informações do 'MANUAL_ENTERING' em questão.
+[ TimeCard.insert(ManualEntering) ] A funcionalidade trabalha em cima da idéia basica de CRUD para tabela 'MANUAL_ENTERING', onde o usuário irá preencher o formulário fornecendo a data do ocorrido, uma razão/motivo e o tempo/intervalo do ocorrido. O serviço deverá buscar por um registro de "DAY" referente a data fornecida pelo usuário, caso não exista, então deve-se inserir um, e inserir também as informações do 'MANUAL_ENTERING' em questão.
 
-case:4-Adição/alteração de notas para determinado dia.
+case:Adição/alteração de notas para determinado dia.
 #A idéia básica para esta funcionalidade é permitir que o usuário forneça um texto de no máximo 150 caracteres de alguma informação relavante ou de destaque para determinado dia.
-[ setNotes(DATE, TEXT) ]: O usuário deve fornecer apenas o texto desejado, visto que encapsulado e fora da visão do usuário também é fornecido a data do dia em questão; O serviço tem a responsabilidade de procurar por um registro "DAY" para a data fornecida;
+[ TimeCard.setNotes(DATE, TEXT) ]: O usuário deve fornecer apenas o texto desejado, visto que encapsulado e fora da visão do usuário também é fornecido a data do dia em questão; O serviço tem a responsabilidade de procurar por um registro "DAY" para a data fornecida;
 ---> senão houver um registro DAY; inserir um novo na tabela "DAY" já com a coluna "notes" preenchida.
 ---> se houver um registro DAY; atualizar este registro "DAY" encontrado com a coluna "notes" preenchida.
 
-case:5-Alteração de 'Horas Esperadas' em determinado dia.
+case:Alteração de 'Horas Esperadas' em determinado dia.
 #O usuário tem a possibilidade de alterar o intervalo de horas esperadas para determinado dia, uma vez que o padrão para esta informação estará cadastrado no perfil do usuário para o dia da semana em questão.
 #A aplicação não gerencia as férias, feriado ou algo do gênero, portanto o input e gerência deste tipo de informação está totalmente a cargo do usuário.
-[ setExpectedHours(DATE, INTERVAL) ]; Funcionalidade na qual o usuário escolhe uma data e fornece para esta um novo intervalo das horas esperadas, que servirá de base para o calculo de quantas horas foram trabalhadas no dia inferindo informação de quanto tempo passou ou faltou para as tais horas esperadas. O serviço tem a responsabilidade de buscar pelo registro "DAY" para a data fornecida;
+[ TimeCard.setExpectedHours(DATE, INTERVAL) ]; Funcionalidade na qual o usuário escolhe uma data e fornece para esta um novo intervalo das horas esperadas, que servirá de base para o calculo de quantas horas foram trabalhadas no dia inferindo informação de quanto tempo passou ou faltou para as tais horas esperadas. O serviço tem a responsabilidade de buscar pelo registro "DAY" para a data fornecida;
 ---> senão houver um registro DAY; inserir um novo na tabela "DAY" já com a coluna "expected_hours" preenchida com o intervalo fornecido.
 ---> se houver um registro DAY; atualizar este registro "DAY" encontrado com a coluna "expected_hours" preenchida com o intervalo fornecido.
 
-case:6-Alteração de Lançamentos de Horas do tipo 'CLOCKINCLOCKOUT', modificação no valor antes inputado.
+case:Alteração de Lançamentos de Horas do tipo 'CLOCKINCLOCKOUT', modificação no valor antes inputado.
 #Seguindo a idéia de operações CRUD para "CLOCKINCLOCKOUT", o usuário deve ter a possibilidade de selecionar um registro "CLOCKINCLOCKOUT", fazer alterações desejadas e persistir estas alterações (é necessário fornecer o "id/identifier" do registro "CLOCKINCLOCKOUT" a ser modificado, indicando que para este uma operação de atualização/update está a ser executada).
 #Vale frisar que não há nenhuma operação disponível para exclusão/remoção apenas do clockin ou do clockout, mas sim apenas para remoção de todo o registro (dos dois de uma única vez), que excluí assim tanto a informação de entrada/clockin quanto saída/clockout.
 #O usuário não pode alterar a data (dia, mês e ano) de entrada, pois esta deve bater sempre com o registro "DAY" correspondente; O serviço deve então fazer a validação de que a data de entrada continua respeitando o registro "DAY" correspondente.
-[ update(ClockinClockout) ] O usuário "PODE" (não é obrigado) fornecer valores diferentes para "clockin", "clockout" e/ou "data saída". O serviço deve então encontrar o registro "CLOCKINCLOCKOUT" referente ao "id/identifier" fornecido e armazenar os novos valores solicitados.
+[ TimeCard.update(ClockinClockout) ] O usuário "PODE" (não é obrigado) fornecer valores diferentes para "clockin", "clockout" e/ou "data saída". O serviço deve então encontrar o registro "CLOCKINCLOCKOUT" referente ao "id/identifier" fornecido e armazenar os novos valores solicitados.
 
-case:7-Exclusão de Lançamento de Horas do tipo 'CLOCKINCLOCKOUT' de valor antes inputado.
+case:Exclusão de Lançamento de Horas do tipo 'CLOCKINCLOCKOUT' de valor antes inputado.
 #Vale frisar que não há nenhuma operação disponível para exclusão/remoção apenas do clockin ou do clockout, mas sim apenas para remoção de todo o registro (dos dois de uma única vez), que excluí assim tanto a informação de entrada/clockin quanto saída/clockout.
 #Seguindo a idéia de operações CRUD para "CLOCKINCLOCKOUT", o usuário deve ter a possibilidade de selecionar um registro "CLOCKINCLOCKOUT", e solicitar a exclusão do mesmo (é necessário fornecer o "id/identifier" do registro "CLOCKINCLOCKOUT" a ser excluído).
-[ delete(ClockinClockout) ] O serviço deve encontrar o registro "CLOCKINCLOCKOUT" referente ao "id/identifier" fornecido e efetuar a exclusão do mesmo.
+[ TimeCard.delete(ClockinClockout) ] O serviço deve encontrar o registro "CLOCKINCLOCKOUT" referente ao "id/identifier" fornecido e efetuar a exclusão do mesmo.
 
-case:8-Alteração de Lançamento de Horas do tipo 'MANUAL_ENTERING', modificação do 'MANUAL_ENTERING_REASON'.
+case:Alteração de Lançamento de Horas do tipo 'MANUAL_ENTERING', modificação do 'MANUAL_ENTERING_REASON'.
 #Seguindo a idéia de operações CRUD para "MANUAL_ENTERING", o usuário deve ter a possibilidade de selecionar um registro "MANUAL_ENTERING", fazer alterações desejadas e persistir estas alterações (é necessário fornecer o "id/identifier" do registro "MANUAL_ENTERING" a ser modificado, indicando que para este uma operação de atualização/update está a ser executada).
 #Todas as informações (date, reason, time_interval) são mandatórias, então o serviço deve validar a mesma.
-[ update(ManualEntering) ] O usuário poderá selecionar uma razão/reason diferente e/ou alterar o valor para o tempo do ocorrido (time_interval); O serviço deve encontrar o registro referente ao "MANUAL_ENTERING" e armazenar as informações alteradas conforme fornecido.
+[ TimeCard.update(ManualEntering) ] O usuário poderá selecionar uma razão/reason diferente e/ou alterar o valor para o tempo do ocorrido (time_interval); O serviço deve encontrar o registro referente ao "MANUAL_ENTERING" e armazenar as informações alteradas conforme fornecido.
 
-case:9-Exclusão do Lançamento de Horas do tipo 'MANUAL_ENTERING'.
+case:Exclusão do Lançamento de Horas do tipo 'MANUAL_ENTERING'.
 #Seguindo a idéia da possibilidade de operações CRUD para "MANUAL_ENTERING", o usuário deve ter a possibilidade de selecionar um registro "MANUAL_ENTERING", e solicitar a exclusão do mesmo (é necessário fornecer o "id/identifier" do registro "MANUAL_ENTERING" a ser excluído).
-[ delete(ManualEntering) ] O serviço deve encontrar o registro "MANUAL_ENTERING" referente ao "id/identifier" fornecido e efetuar a exclusão do mesmo.
+[ TimeCard.delete(ManualEntering) ] O serviço deve encontrar o registro "MANUAL_ENTERING" referente ao "id/identifier" fornecido e efetuar a exclusão do mesmo.
 
-case:10-Escolha de outro 'PROFILE' (selecionando e carregando outro 'PROFILE')
-#O usuário deverá ter a possibilidade de visualizar os vários registros de "PROFILE" armazenados e ao selecionar um diferente do que está atualmente carregado, toda a lógica de carregamento do banco de horas descrita no "Initial Loading" deverá ser executada porém levando em consideração o registro de "PROFILE" agora selecionado.
+case:Redefinição de senha 'REQUEST_RESET_PASSWORD' ( NÃO NECESSÁRIO ESTAR LOGADO )
+#Solicitação do envio de email para caixa de entrada do usuário, solicitando o cadastro de nova senha. É enviado para caixa de entrada do usuário a informação conhecida pela aplicação como "REQUEST_CODE_VALUE", no qual é uma coluna da tabela 'REQUEST_RESET_PASSWORD'.
+[ ResetPasswordService.request(Email) ]
 
-case:11-Alteração de 'PROFILE' (listando/selecionando um 'PROFILE' para alteração)
-#A alteração de cada campo do 'PROFILE' reflete uma mudança diferente no banco de horas em questão. Os campos disponíveis para alteração são;
-  DESCRIPTION - o nome ou uma curta descrição do banco em questão
-  HOURS_FORMAT - o formato de horas que deverá ser apresentado por toda a aplicação onde se aplica determinada hora (e.g; HH:mm:ss formato longo, e HH:mm para formato curto). Importante notar que este formato será utilizado tanto para apresentação de informação quanto também para capiturar informações fornecidas pelo usuário.
-  DATE_FORMAT - o formato de datas que deverá ser apresentado por toda a aplicação onde se aplica determinada data (e.g; yyyy-MM-dd, ou dd/MM/yyyy, etc.). Importante notar que este formato será utilizado tanto para apresentação de informação quanto também para capiturar informações fornecidas pelo usuário.
-  DEFAULT_EXPECTED_SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY... - o intervalo de horas comum para jornada de trabalho em cada dia da semana.
+case:Confirmação do código para Redefinição de senha. ( NÃO NECESSÁRIO ESTAR LOGADO )
+#O usuário vai até a caixa de entrada, e clica no link que confirma o código de redefinição de senha. O usuário recebe como resposta deste serviço um código válido por 10 minutos que permite que o mesmo de fato redefina a sua senha.
+#A informação de confirmação para então posteriormente solicitação a redefinição da senha é gerenciada na coluna 'CONFIRMATION_CODE_VALUE' da tabela 'REQUEST_RESET_PASSWORD'.
+[ ResetPasswordService.confirm(RequestResetPassword) ]
 
-case:12-Ajuste de banco de horas.
-#A idéia é fornecer ao usuário operações CRUD que o permita fazer ajustes ao banco, como por exemplo; "informar o saldo inicial do banco de horas", "informar horas recebidas como percentual a mais de horas extras", "horas provindas do tempo gasta em uma viagem", emfim, informar qualquer adição/subtração de intervalo de horas que são inputadas no banco de horas e não são registradas com batidas rotineiras.
-#O ajuste de horas é totalmente atrelado a determinado "PROFILE", e as operações de CRUD para "ajustes" serão feitas na mesma tela de alteração de seu "PROFILE" correspondente.
-  DESCRIPTION - 50 caracteres para curta descrição da operação de ajuste.
-  TIME_INTERVAL - o valor em intervalo de horas (e.g; -11:35:00 para negativo, ou 06:05:00 para positivo)
+case:Redefinição de senha. ( NÃO NECESSÁRIO ESTAR LOGADO )
+#Com o código 'CONFIRMATION_CODE_VALUE' em mãos, pode-se então invocar o serviço de redefinição de senha, fornecendo como parâmetro a nova senha e o 'CONFIRMATION_CODE_VALUE', observando que este código é válido por apenas 10 minutos, e pode ser utilizado para redefinição da senha uma única vez.
+[ ResetPasswordService.reset(RequestResetPassword) ]
