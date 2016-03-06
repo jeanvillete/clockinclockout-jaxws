@@ -1,5 +1,6 @@
 package org.com.clockinclockout.service.impl;
 
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 
@@ -45,6 +46,13 @@ public class UserServiceImpl implements UserService, InitializingBean {
 		this.repository.insert( user );
 		
 		Profile profile = new Profile( user, "default profile", "HH:mm", "yyyy-MM-dd" );
+		profile.setDefaultExpectedSunday( Duration.ofHours( 0 ) );
+		profile.setDefaultExpectedMonday( Duration.ofHours( 8 ) );
+		profile.setDefaultExpectedTuesday( Duration.ofHours( 8 ) );
+		profile.setDefaultExpectedWednesday( Duration.ofHours( 8 ) );
+		profile.setDefaultExpectedThursday( Duration.ofHours( 8 ) );
+		profile.setDefaultExpectedFriday( Duration.ofHours( 8 ) );
+		profile.setDefaultExpectedSaturday( Duration.ofHours( 0 ) );
 		this.profileService.insert( profile );
 		
 		user.getEmail().setPrimary( true );
