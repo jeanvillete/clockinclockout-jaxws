@@ -1,5 +1,6 @@
 package org.com.clockinclockout.domain;
 
+import java.time.Duration;
 import java.util.Date;
 
 import org.springframework.util.Assert;
@@ -8,7 +9,7 @@ import org.springframework.util.StringUtils;
 public class Day extends CommonDomain {
 
 	private Date date;
-	private Integer expectedHours;
+	private Duration expectedHours;
 	private String notes;
 	private Profile profile;
 	
@@ -16,11 +17,11 @@ public class Day extends CommonDomain {
 		super( id );
 	}
 
-	public Day( Date date, Integer expectedHours, String notes, Profile profile ) {
+	public Day( Date date, Duration expectedHours, String notes, Profile profile ) {
 		this(null, date, expectedHours, notes, profile);
 	}
 	
-	public Day( Integer id, Date date, Integer expectedHours, String notes, Profile profile ) {
+	public Day( Integer id, Date date, Duration expectedHours, String notes, Profile profile ) {
 		super(id);
 		this.setDate(date);
 		this.setExpectedHours(expectedHours);
@@ -32,8 +33,8 @@ public class Day extends CommonDomain {
 		Assert.notNull( date, "Argument date cannot be null." );
 		this.date = date;
 	}
-	public void setExpectedHours(Integer expectedHours) {
-		Assert.state( expectedHours != null && expectedHours > 0, "Argument expectedHours has to be not null and greater than 0." );
+	public void setExpectedHours( Duration expectedHours ) {
+		Assert.state( expectedHours != null, "Argument expectedHours has to be not null and greater than 0." );
 		this.expectedHours = expectedHours;
 	}
 	public void setNotes(String notes) {
@@ -48,8 +49,8 @@ public class Day extends CommonDomain {
 		Assert.state( date != null, "The property 'date' has not been properly initialized." );
 		return date;
 	}
-	public Integer getExpectedHours() {
-		Assert.state( expectedHours != null && expectedHours > 0, "The property 'expectedHours' has not been properly initialized." );
+	public Duration getExpectedHours() {
+		Assert.state( expectedHours != null, "The property 'expectedHours' has not been properly initialized." );
 		return expectedHours;
 	}
 	public String getNotes() {

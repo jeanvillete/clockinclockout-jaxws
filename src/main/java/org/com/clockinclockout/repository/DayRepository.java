@@ -16,6 +16,7 @@ public class DayRepository extends CommonRepository {
 				+ " VALUES ( ?, ?, ?, ?, ? ) ",
 				new Object[]{ day.getId(),
 						day.getDate(),
+						durationToPG( day.getExpectedHours() ),
 						day.getNotes(),
 						day.getProfile().getId() });
 	}
