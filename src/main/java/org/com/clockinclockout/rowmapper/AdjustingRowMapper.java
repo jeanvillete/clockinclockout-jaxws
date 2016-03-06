@@ -13,7 +13,7 @@ public class AdjustingRowMapper implements RowMapper< Adjusting > {
 	public Adjusting mapRow( ResultSet rs, int rowNum ) throws SQLException {
 		return new Adjusting( RowMapperUtil.getInteger( rs, "ID" ),
 				rs.getString( "DESCRIPTION" ),
-				RowMapperUtil.getInteger( rs, "TIME_INTERVAL" ),
+				RowMapperUtil.getDuration( rs, "TIME_INTERVAL" ),
 				new Profile( RowMapperUtil.getInteger( rs, "ID_PROFILE" ) ) );
 	}
 

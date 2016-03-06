@@ -16,7 +16,7 @@ public class AdjustingRepository extends CommonRepository {
 				+ " VALUES ( ?, ?, ?, ? ) ",
 				new Object[]{ adjusting.getId(),
 						adjusting.getDescription(),
-						adjusting.getTimeInterval(),
+						durationToPG( adjusting.getTimeInterval() ),
 						adjusting.getProfile().getId() });
 	}
 

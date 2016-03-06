@@ -1,18 +1,20 @@
 package org.com.clockinclockout.domain;
 
+import java.time.Duration;
+
 import org.springframework.util.Assert;
 
 public class Adjusting extends CommonDomain {
 
 	private String description;
-	private Integer timeInterval;
+	private Duration timeInterval;
 	private Profile profile;
 	
-	public Adjusting(String description, Integer timeInterval, Profile profile) {
+	public Adjusting(String description, Duration timeInterval, Profile profile) {
 		this(null, description, timeInterval, profile);
 	}
 	
-	public Adjusting(Integer id, String description, Integer timeInterval, Profile profile) {
+	public Adjusting(Integer id, String description, Duration timeInterval, Profile profile) {
 		super( id );
 		
 		this.setDescription(description);
@@ -28,8 +30,8 @@ public class Adjusting extends CommonDomain {
 		Assert.notNull( profile, "Argument profile cannot be null." );
 		this.profile = profile;
 	}
-	public void setTimeInterval(Integer timeInterval) {
-		Assert.state( timeInterval != null && timeInterval > 0, "Argument timeInterval has to be not null and greater than 0." );
+	public void setTimeInterval( Duration timeInterval ) {
+		Assert.state( timeInterval != null, "Argument timeInterval has to be not null." );
 		this.timeInterval = timeInterval;
 	}
 	public String getDescription() {
@@ -39,7 +41,7 @@ public class Adjusting extends CommonDomain {
 		return profile;
 	}
 
-	public Integer getTimeInterval() {
+	public Duration getTimeInterval() {
 		return timeInterval;
 	}
 }
