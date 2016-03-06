@@ -33,7 +33,7 @@ abstract class CommonRepository implements InitializingBean {
 		return this.jdbcTemplate.queryForObject( " select nextval( ? ) ", new Object[]{ sequence }, Integer.class);
 	}
 	
-	PGInterval durationToPG( Duration duration ) {
+	static PGInterval durationToPG( Duration duration ) {
 		try {
 			return duration == null ? null : new PGInterval( duration.toString().replace( "PT", "" ).replace( "H", " hour " ).replace( "M", " min " ).replace( "S", " sec " ).trim() );
 		} catch ( SQLException e ) {
