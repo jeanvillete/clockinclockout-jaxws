@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 public class User extends CommonDomain {
 
@@ -37,7 +38,7 @@ public class User extends CommonDomain {
 	}
 	
 	public void setPassword( String password, boolean toBeEncoded ) {
-		Assert.hasLength( password, "Argument password cannot be null nor empty." );
+		Assert.state( StringUtils.hasText( password ) && password.length() > 6, "Argument password cannot be null nor empty, and must be greater than 6 characters." );
 		this.password = toBeEncoded ? new BCryptPasswordEncoder().encode( password ) : password;
 	}
 	
@@ -54,6 +55,7 @@ public class User extends CommonDomain {
 	}
 	
 	public String getPassword() {
+		Assert.state( StringUtils.hasText( password ), "The field 'password' has not been initialized yet." );
 		return password;
 	}
 	public Email getEmail() {
