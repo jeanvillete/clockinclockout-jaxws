@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class RequestResetPasswordRepository extends CommonRepository {
 
-	public void insert( RequestResetPassword requestResetPassword ) {
+	public void insert( final RequestResetPassword requestResetPassword ) {
 		requestResetPassword.setId( this.nextVal( "REQUEST_RESET_PASSWORD_SEQ" ) );
 		this.jdbcTemplate.update( " INSERT INTO REQUEST_RESET_PASSWORD "
 				+ " ( ID, ID_CLK_USER, REQUEST_CODE_VALUE, REQUEST_DATE, CONFIRMATION_CODE_VALUE, CONFIRMATION_DATE, CHANGE_DATE ) "
@@ -25,14 +25,14 @@ public class RequestResetPasswordRepository extends CommonRepository {
 				});
 	}
 
-	public void deleteNotConfirmed( User user ) {
+	public void deleteNotConfirmed( final User user ) {
 		this.jdbcTemplate.update( " DELETE FROM REQUEST_RESET_PASSWORD "
 				+ " WHERE ID_CLK_USER = ? AND "
 				+ " ( CONFIRMATION_CODE_VALUE IS NULL OR CONFIRMATION_DATE IS NULL OR CHANGE_DATE IS NULL ) ",
 				new Object[]{ user.getId() });
 	}
 
-	public boolean confirm( RequestResetPassword requestResetPassword, Date validRange ) {
+	public boolean confirm( final RequestResetPassword requestResetPassword, final Date validRange ) {
 		return this.jdbcTemplate.update( " UPDATE REQUEST_RESET_PASSWORD SET CONFIRMATION_CODE_VALUE = ?, CONFIRMATION_DATE = ? "
 				+ " WHERE CONFIRMATION_CODE_VALUE IS NULL AND CONFIRMATION_DATE IS NULL AND CHANGE_DATE IS NULL "
 				+ " AND REQUEST_DATE > ? "
@@ -45,14 +45,14 @@ public class RequestResetPasswordRepository extends CommonRepository {
 						requestResetPassword.getUser().getId() }) == 1;
 	}
 
-	public void cleanNotConfirmed( Date date ) {
+	public void cleanNotConfirmed( final Date date ) {
 		this.jdbcTemplate.update( " DELETE FROM REQUEST_RESET_PASSWORD "
 				+ " WHERE REQUEST_DATE < ? "
 				+ " AND ( CONFIRMATION_CODE_VALUE IS NULL OR CONFIRMATION_DATE IS NULL OR CHANGE_DATE IS NULL ) ",
 				new Object[]{ date });
 	}
 
-	public boolean changePassword( RequestResetPassword requestResetPassword, Date validRange ) {
+	public boolean changePassword( final RequestResetPassword requestResetPassword, final Date validRange ) {
 		return this.jdbcTemplate.update( " UPDATE REQUEST_RESET_PASSWORD SET CHANGE_DATE = ? "
 				+ " WHERE CONFIRMATION_CODE_VALUE = ?"
 				+ " AND CONFIRMATION_DATE > ? "

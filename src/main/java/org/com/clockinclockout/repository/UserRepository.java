@@ -16,7 +16,7 @@ public class UserRepository extends CommonRepository {
 						user.getPassword() });
 	}
 
-	public User getBy( Email email ) {
+	public User getBy( final Email email ) {
 		return this.jdbcTemplate.queryForObject( " SELECT USR.ID, USR.LOCALE, USR.PASSWORD FROM CLK_USER USR "
 				+ " LEFT JOIN EMAIL EML ON USR.ID = EML.ID_CLK_USER "
 				+ " WHERE EML.ID = ? ",
@@ -24,11 +24,11 @@ public class UserRepository extends CommonRepository {
 				new UserRowMapper() );
 	}
 
-	public void delete( User user ) {
+	public void delete( final User user ) {
 		this.jdbcTemplate.update( " DELETE FROM CLK_USER WHERE ID = ? ", new Object[]{ user.getId() } );
 	}
 
-	public boolean changePassword( User user ) {
+	public boolean changePassword( final User user ) {
 		return this.jdbcTemplate.update( " UPDATE CLK_USER SET PASSWORD = ? WHERE ID = ? ",
 				new Object[]{ user.getPassword(), user.getId() }) == 1;
 	}

@@ -23,7 +23,7 @@ public class ManualEnteringReasonRepository extends CommonRepository {
 		this.jdbcTemplate.update( " DELETE FROM MANUAL_ENTERING_REASON WHERE ID = ? ", new Object[]{ manualEnteringReason.getId() } );
 	}
 
-	public List< ManualEnteringReason > listBy( Profile profile ) {
+	public List< ManualEnteringReason > listBy( final Profile profile ) {
 		return this.jdbcTemplate.query( " SELECT ID, REASON, ID_PROFILE "
 				+ " FROM MANUAL_ENTERING_REASON WHERE ID_PROFILE = ? ",
 				new Object[]{ profile.getId() }, new ManualEnteringReasonRowMapper() );

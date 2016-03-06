@@ -22,11 +22,11 @@ public class EmailRepository extends CommonRepository {
 						email.isPrimary(), });
 	}
 
-	public boolean exists( Email email ) {
+	public boolean exists( final Email email ) {
 		return this.jdbcTemplate.queryForObject( " SELECT COUNT( ID ) FROM EMAIL WHERE ADDRESS = ? ", new Object[]{ email.getAddress() }, Integer.class ) > 0;
 	}
 	
-	public boolean confirm( Email email, Date validRange ) {
+	public boolean confirm( final Email email, final Date validRange ) {
 		return this.jdbcTemplate.update( " UPDATE EMAIL SET CONFIRMATION_DATE = ? "
 				+ " WHERE RECORDED_TIME > ? AND ADDRESS = ? AND CONFIRMATION_CODE = ? AND CONFIRMATION_DATE IS NULL ",
 				new Object[]{
@@ -42,23 +42,23 @@ public class EmailRepository extends CommonRepository {
 	 * @param date 
 	 * @return
 	 */
-	public List< Email > listPrimaryNotConfirmed( Date date ) {
+	public List< Email > listPrimaryNotConfirmed( final Date date ) {
 		return this.jdbcTemplate.query(  " SELECT ID, ADDRESS, RECORDED_TIME, CONFIRMATION_CODE, CONFIRMATION_DATE, IS_PRIMARY, ID_CLK_USER FROM EMAIL "
 				+ " WHERE CONFIRMATION_DATE IS NULL AND RECORDED_TIME < ? AND IS_PRIMARY = ? ",
 				new Object[]{ date, true },
 				new EmailRowMapper() );
 	}
 
-	public void delete( Email email ) {
+	public void delete( final Email email ) {
 		this.jdbcTemplate.update( " DELETE FROM EMAIL WHERE ID = ? ", new Object[]{ email.getId() } );
 	}
 
-	public void deleteNotPrimaryNotConfirmed( Date date ) {
+	public void deleteNotPrimaryNotConfirmed( final Date date ) {
 		this.jdbcTemplate.update( " DELETE FROM EMAIL WHERE CONFIRMATION_DATE IS NULL AND RECORDED_TIME < ? AND IS_PRIMARY = ? ",
 				new Object[]{ date, false } );
 	}
 
-	public Email getBy( String emailAddress, boolean isPrimary ) {
+	public Email getBy( final String emailAddress, final boolean isPrimary ) {
 		return this.jdbcTemplate.queryForObject( " SELECT ID, ADDRESS, RECORDED_TIME, CONFIRMATION_CODE, CONFIRMATION_DATE, IS_PRIMARY, ID_CLK_USER FROM EMAIL "
 				+ " WHERE CONFIRMATION_DATE IS NOT NULL AND ADDRESS = ? AND IS_PRIMARY = ? ",
 				new Object[]{ emailAddress, isPrimary },

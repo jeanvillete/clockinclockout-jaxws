@@ -24,7 +24,7 @@ public class AdjustingRepository extends CommonRepository {
 		this.jdbcTemplate.update( " DELETE FROM ADJUSTING WHERE ID = ? ", new Object[]{ adjusting.getId() } );
 	}
 
-	public List< Adjusting > listBy( Profile profile ) {
+	public List< Adjusting > listBy( final Profile profile ) {
 		return this.jdbcTemplate.query( " SELECT ID, DESCRIPTION, TIME_INTERVAL, ID_PROFILE "
 				+ " FROM ADJUSTING WHERE ID_PROFILE = ? ",
 				new Object[]{ profile.getId() }, new AdjustingRowMapper() );

@@ -39,7 +39,7 @@ public class ProfileRepository extends CommonRepository {
 						durationToPG( profile.getDefaultExpectedSaturday() ) });
 	}
 
-	public List< Profile > listBy( User user ) {
+	public List< Profile > listBy( final User user ) {
 		return this.jdbcTemplate.query( 
 				" SELECT ID, "
 				+ " ID_CLK_USER, "
@@ -59,7 +59,7 @@ public class ProfileRepository extends CommonRepository {
 				new ProfileRowMapper() );
 	}
 
-	public void delete( Profile profile ) {
+	public void delete( final Profile profile ) {
 		this.jdbcTemplate.update( " DELETE FROM PROFILE WHERE ID = ? ", new Object[]{ profile.getId() } );
 	}
 
