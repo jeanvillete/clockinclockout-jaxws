@@ -12,6 +12,8 @@ public interface ManualEnteringService {
 
 	List< ManualEntering > listBy( Day day );
 	
+	void insert( ManualEntering manualEntering );
+
 	void delete( ManualEntering manualEntering );
 	
 }
