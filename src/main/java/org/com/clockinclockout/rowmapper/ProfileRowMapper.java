@@ -16,13 +16,13 @@ public class ProfileRowMapper implements RowMapper< Profile > {
 				rs.getString( "DESCRIPTION" ),
 				rs.getString( "HOURS_FORMAT" ),
 				rs.getString( "DATE_FORMAT" ) );
-		profile.setDefaultExpectedSunday( RowMapperUtil.getInteger( rs, "DEFAULT_EXPECTED_SUNDAY" ) );
-		profile.setDefaultExpectedMonday( RowMapperUtil.getInteger( rs, "DEFAULT_EXPECTED_MONDAY" ) );
-		profile.setDefaultExpectedTuesday( RowMapperUtil.getInteger( rs, "DEFAULT_EXPECTED_TUESDAY" ) );
-		profile.setDefaultExpectedWednesday( RowMapperUtil.getInteger( rs, "DEFAULT_EXPECTED_WEDNESDAY" ) );
-		profile.setDefaultExpectedThursday( RowMapperUtil.getInteger( rs, "DEFAULT_EXPECTED_THURSDAY" ) );
-		profile.setDefaultExpectedFriday( RowMapperUtil.getInteger( rs, "DEFAULT_EXPECTED_FRIDAY" ) );
-		profile.setDefaultExpectedSaturday( RowMapperUtil.getInteger( rs, "DEFAULT_EXPECTED_SATURDAY" ) );
+		profile.setDefaultExpectedSunday( RowMapperUtil.getDuration( rs, "DEFAULT_EXPECTED_SUNDAY" ) );
+		profile.setDefaultExpectedMonday( RowMapperUtil.getDuration( rs, "DEFAULT_EXPECTED_MONDAY" ) );
+		profile.setDefaultExpectedTuesday( RowMapperUtil.getDuration( rs, "DEFAULT_EXPECTED_TUESDAY" ) );
+		profile.setDefaultExpectedWednesday( RowMapperUtil.getDuration( rs, "DEFAULT_EXPECTED_WEDNESDAY" ) );
+		profile.setDefaultExpectedThursday( RowMapperUtil.getDuration( rs, "DEFAULT_EXPECTED_THURSDAY" ) );
+		profile.setDefaultExpectedFriday( RowMapperUtil.getDuration( rs, "DEFAULT_EXPECTED_FRIDAY" ) );
+		profile.setDefaultExpectedSaturday( RowMapperUtil.getDuration( rs, "DEFAULT_EXPECTED_SATURDAY" ) );
 		
 		return profile;
 	}
