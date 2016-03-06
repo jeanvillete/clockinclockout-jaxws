@@ -9,13 +9,12 @@ De primeira instância, as colunas a serem apresentadas são;
 case:1-Initial Loading
 #Carregamento das informações a serem apresentadas após o usuário efetuar login.
 #O banco de horas é totalmente dependente da existência de um 'PROFILE' correspondente, então na hora que se estiver fazendo a carga inicial (HOME) o primeiro registro de 'PROFILE' deverá ser carregado também e apresentado para o usuário a qual 'PROFILE' o banco de horas está sendo apresentado.
-[ public:getProfiles() ] No loading inicial, deverá ser trazido todos os profiles existentes associados ao usuário em questão, e também o profile sendo utilizado no momento para a apresentação do banco de horas em questão (atualmente carregado).
-[ public:getAvailableMonths(Profile) ] Deverá haver a possibilidade do usuário navegar entre os meses, a aplicação deve fornecer um componente datepicker para selecionar ANO e MÊS. Seria interessante no datepicker, poder enfatizar MESES onde existem registros (e.g; colocar em negrito, ou com background diferente), para tal, a aplicação deverá disponibilizar algum serviço que traga os meses em que existem registros. Uma query deverá ser executada na tabela "DAY", onde existem relacionado ou um registro "CLOCKINCLOCKOUT" ou "MANUAL_ENTERING" NOT NULL.
-[ internal:getMostRecentMonth(Profile) ] Por padrão, o mês a ser apresentado é o mês mais recente onde existe no mínimo um registro de batida de ponto. Para isto deve ser feito uma query na tabela de "DAY" buscando pela maior data onde existe para esta data pelo ao menos um registro de "CLOCKINCLOCKOUT" ou "MANUAL_ENTERING" NOT NULL.
-[ public:getBalance(Month) ] O serviço base de carregamento do banco de horas deve ser fornecido trazendo;
+[ public:getProfiles(User) ] No loading inicial, deverá ser trazido todos os profiles existentes associados ao usuário em questão, e também o profile sendo utilizado no momento para a apresentação do banco de horas em questão (atualmente carregado).
+[ public:getTimeCard(BaseCalendar) ] O serviço base de carregamento do banco de horas deve ser fornecido trazendo;
   1-Todos os dias para o mês em questão, com suas datas, os lançamentos de batidas de ponto, as horas esperadas, o saldo do dia e as notas.
   2-O saldo do banco até o fim do mês em questão.
   3-O saldo total do banco.
+[ public:getTotalTime(User) ] Serviço responsável por buscar o valor total do banco de horas do usuário passado como parâmetro.
 
 case:2-Efetuar Lançamento de Horas (batida de ponto, 'CLOCKINCLOCKOUT')
 [ punchClock(TIMESTAMP) ] bater ponto; A funcionalidade base e mais curta no ponto de vista do usuário. Simplesmente invoca a funcionalidade e o serviço é responsável por capiturar a hora que houve a batida de ponto, então o serviço calcula como armazena o TIMESTAMP fornecido;
