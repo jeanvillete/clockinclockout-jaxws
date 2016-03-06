@@ -30,13 +30,13 @@ public class ProfileRepository extends CommonRepository {
 						profile.getDescription(),
 						profile.getHoursFormat(),
 						profile.getDateFormat(),
-						profile.getDefaultExpectedSunday(), 
-						profile.getDefaultExpectedMonday(),
-						profile.getDefaultExpectedTuesday(),
-						profile.getDefaultExpectedWednesday(),
-						profile.getDefaultExpectedThursday(),
-						profile.getDefaultExpectedFriday(),
-						profile.getDefaultExpectedSaturday() });
+						durationToPG( profile.getDefaultExpectedSunday() ), 
+						durationToPG( profile.getDefaultExpectedMonday() ),
+						durationToPG( profile.getDefaultExpectedTuesday() ),
+						durationToPG( profile.getDefaultExpectedWednesday() ),
+						durationToPG( profile.getDefaultExpectedThursday() ),
+						durationToPG( profile.getDefaultExpectedFriday() ),
+						durationToPG( profile.getDefaultExpectedSaturday() ) });
 	}
 
 	public List< Profile > listBy( User user ) {
