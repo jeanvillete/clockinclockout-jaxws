@@ -34,6 +34,16 @@ public class ManualEnteringServiceImpl implements ManualEnteringService, Initial
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
+	public void insert( ManualEntering manualEntering ) {
+		Assert.notNull( manualEntering );
+		
+		//TODO apply/implement proper validations
+		
+		this.repository.insert( manualEntering );
+	}
+	
+	@Override
+	@Transactional( propagation = Propagation.REQUIRED )
 	public void delete( ManualEntering manualEntering ) {
 		Assert.notNull( manualEntering );
 		this.repository.delete( manualEntering );
