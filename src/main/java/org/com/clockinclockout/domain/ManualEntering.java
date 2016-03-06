@@ -1,22 +1,24 @@
 package org.com.clockinclockout.domain;
 
+import java.time.Duration;
+
 import org.springframework.util.Assert;
 
 public class ManualEntering extends CommonDomain {
 
 	private Day day;
 	private ManualEnteringReason reason;
-	private Integer timeInterval;
+	private Duration timeInterval;
 	
 	public ManualEntering( Integer id ) {
 		super( id );
 	}
 	
-	public ManualEntering( Day day, ManualEnteringReason reason, Integer timeInterval ) {
+	public ManualEntering( Day day, ManualEnteringReason reason, Duration timeInterval ) {
 		this( null, day, reason, timeInterval );
 	}
 	
-	public ManualEntering( Integer id, Day day, ManualEnteringReason reason, Integer timeInterval ) {
+	public ManualEntering( Integer id, Day day, ManualEnteringReason reason, Duration timeInterval ) {
 		super( id );
 		
 		this.setDay(day);
@@ -32,8 +34,8 @@ public class ManualEntering extends CommonDomain {
 		Assert.notNull( reason, "Argument reason cannot be null." );
 		this.reason = reason;
 	}
-	public void setTimeInterval(Integer timeInterval) {
-		Assert.state( timeInterval != null && timeInterval > 0, "Argument timeInterval has to be not null and greater than 0." );
+	public void setTimeInterval( Duration timeInterval ) {
+		Assert.state( timeInterval != null, "Argument timeInterval has to be not null and greater than 0." );
 		this.timeInterval = timeInterval;
 	}
 	public Day getDay() {
@@ -42,7 +44,7 @@ public class ManualEntering extends CommonDomain {
 	public ManualEnteringReason getReason() {
 		return reason;
 	}
-	public Integer getTimeInterval() {
+	public Duration getTimeInterval() {
 		return timeInterval;
 	}
 	

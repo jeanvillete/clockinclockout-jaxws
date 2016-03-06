@@ -12,8 +12,12 @@ import org.springframework.stereotype.Repository;
 public class ManualEnteringRepository extends CommonRepository {
 
 	public void insert( final ManualEntering manualEntering ) {
-		// TODO implement
-		throw new IllegalStateException( "method not implemented yet" );
+		this.jdbcTemplate.update( " INSERT INTO MANUAL_ENTERING ( ID, ID_DAY, ID_MANUAL_ENTERING_REASON, TIME_INTERVAL )"
+				+ " VALUES ( ?, ?, ?, ? ) ",
+				new Object[]{ manualEntering.getId(),
+						manualEntering.getDay().getId(),
+						manualEntering.getReason().getId(),
+						durationToPG( manualEntering.getTimeInterval() )});
 	}
 	
 	public void delete( final ManualEntering manualEntering ) {

@@ -15,7 +15,7 @@ public class ManualEnteringRowMapper implements RowMapper< ManualEntering > {
 		return new ManualEntering( RowMapperUtil.getInteger( rs, "ID" ),
 				new Day( RowMapperUtil.getInteger( rs, "ID_DAY" ) ),
 				new ManualEnteringReason( RowMapperUtil.getInteger( rs, "ID_MANUAL_ENTERING_REASON" ) ),
-				RowMapperUtil.getInteger( rs, "TIME_INTERVAL" ) );
+				RowMapperUtil.getDuration( rs, "TIME_INTERVAL" ) );
 	}
 
 }
