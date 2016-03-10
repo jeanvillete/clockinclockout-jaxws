@@ -1,4 +1,4 @@
-package org.com.clockinclockout.test;
+package com.clkio.test;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,8 +9,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 
 import com.clkio.domain.Email;
-import com.clkio.domain.User;
-import com.clkio.service.LoginService;
+import com.clkio.service.EmailService;
 
 @RunWith( SpringJUnit4ClassRunner.class )
 @ActiveProfiles( "devtest" )
@@ -20,21 +19,17 @@ import com.clkio.service.LoginService;
 	"classpath:springframework/spring-java-mail.xml",
 	"classpath:springframework/spring-velocity.xml"
 })
-public class TestDoLogin {
+public class TestConfirmEmail {
 
 	@Autowired
-	LoginService loginService;
+	private EmailService emailService;
 	
 	@Test
 	public void test() {
-		Assert.notNull( loginService, "No instance was assigned to loginService." );
+		Assert.notNull( emailService, "No instance was assigned to emailService." );
 		
-		User jean = new User( new Email( "jean.villete@gmail.com" ) );
-		jean.setPassword( "mynewpassword", false );
-		User syncUser = this.loginService.login( jean );
-		
-		Assert.notNull( syncUser );
-		
-		System.out.println( "[User logged successfully] id:" + syncUser.getId() );
+		Email email = new Email( "jean.villete@gmail.com" );
+		email.setConfirmationCode( "%242a%2410%24tAuuQRy4kKLQwDTsFA%2FvR.trvC9c7UijU2h8jMOs2KeYyou0pSoOS" );
+		this.emailService.confirm( email );
 	}
 }

@@ -1,4 +1,4 @@
-package org.com.clockinclockout.test;
+package com.clkio.test;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,11 +9,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 
 import com.clkio.domain.Email;
-import com.clkio.domain.Profile;
 import com.clkio.domain.User;
-import com.clkio.service.EmailService;
-import com.clkio.service.ProfileService;
-import com.clkio.service.UserService;
+import com.clkio.service.LoginService;
 
 @RunWith( SpringJUnit4ClassRunner.class )
 @ActiveProfiles( "devtest" )
@@ -23,24 +20,21 @@ import com.clkio.service.UserService;
 	"classpath:springframework/spring-java-mail.xml",
 	"classpath:springframework/spring-velocity.xml"
 })
-public class TestProfileService {
+public class TestDoLogin {
 
 	@Autowired
-	EmailService emailService;
-	
-	@Autowired
-	UserService userService;
-	
-	@Autowired
-	ProfileService profileService;
+	LoginService loginService;
 	
 	@Test
 	public void test() {
-		Assert.notNull( profileService, "No instance was assigned to profileService." );
-
-		Email email = this.emailService.getBy( "jean.villete@gmail.com", true );
-		User user = this.userService.getBy( email );
-		for ( Profile profile : profileService.listBy( user ) )
-			System.out.println( profile.toString() );
+		Assert.notNull( loginService, "No instance was assigned to loginService." );
+		
+		User jean = new User( new Email( "jean.villete@gmail.com" ) );
+		jean.setPassword( "mynewpassword", false );
+		User syncUser = this.loginService.login( jean );
+		
+		Assert.notNull( syncUser );
+		
+		System.out.println( "[User logged successfully] id:" + syncUser.getId() );
 	}
 }

@@ -1,4 +1,4 @@
-package org.com.clockinclockout.test;
+package com.clkio.test;
 
 import java.util.Locale;
 
@@ -23,7 +23,7 @@ import com.clkio.service.RequestResetPasswordService;
 	"classpath:springframework/spring-java-mail.xml",
 	"classpath:springframework/spring-velocity.xml"
 })
-public class TestCofirmRequestResetPassword {
+public class TestRequestResetPassword {
 
 	@Autowired
 	RequestResetPasswordService resetPasswordService;
@@ -34,8 +34,6 @@ public class TestCofirmRequestResetPassword {
 		
 		User jean = new User( new Email( "jean.villete@gmail.com" ), new Locale( "en" ) );
 		RequestResetPassword requestResetPassword = new RequestResetPassword( jean );
-		requestResetPassword.setRequestCodeValue( "%242a%2410%24lf78i1Et8nVUvfsjiAqVS.GR35VNh0yCjFLBUjSSS8SJSi7nfaNlm" );
-		String confirmationCodeValue = this.resetPasswordService.confirm( requestResetPassword );
-		System.out.println( "Confirmation code value received from the confirmation invoking: " + confirmationCodeValue );
+		this.resetPasswordService.processRequest( requestResetPassword );
 	}
 }

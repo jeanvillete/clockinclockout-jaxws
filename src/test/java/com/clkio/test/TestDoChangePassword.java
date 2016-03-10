@@ -1,4 +1,4 @@
-package org.com.clockinclockout.test;
+package com.clkio.test;
 
 import java.util.Locale;
 

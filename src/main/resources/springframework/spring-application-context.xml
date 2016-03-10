@@ -27,7 +27,7 @@
 	    <tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager" />
 		
 		<context:annotation-config />
-		<context:component-scan base-package="org.com.clockinclockout.service,org.com.clockinclockout.repository" />
+		<context:component-scan base-package="com.clkio.service,com.clkio.repository" />
 	</beans>
 	
 	<beans profile="devtest">

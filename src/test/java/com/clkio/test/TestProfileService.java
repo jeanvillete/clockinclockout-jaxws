@@ -1,6 +1,4 @@
-package org.com.clockinclockout.test;
-
-import java.util.Locale;
+package com.clkio.test;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,9 +9,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 
 import com.clkio.domain.Email;
-import com.clkio.domain.RequestResetPassword;
+import com.clkio.domain.Profile;
 import com.clkio.domain.User;
-import com.clkio.service.RequestResetPasswordService;
+import com.clkio.service.EmailService;
+import com.clkio.service.ProfileService;
+import com.clkio.service.UserService;
 
 @RunWith( SpringJUnit4ClassRunner.class )
 @ActiveProfiles( "devtest" )
@@ -23,17 +23,24 @@ import com.clkio.service.RequestResetPasswordService;
 	"classpath:springframework/spring-java-mail.xml",
 	"classpath:springframework/spring-velocity.xml"
 })
-public class TestRequestResetPassword {
+public class TestProfileService {
 
 	@Autowired
-	RequestResetPasswordService resetPasswordService;
+	EmailService emailService;
+	
+	@Autowired
+	UserService userService;
+	
+	@Autowired
+	ProfileService profileService;
 	
 	@Test
 	public void test() {
-		Assert.notNull( resetPasswordService, "No instance was assigned to resetPasswordService." );
-		
-		User jean = new User( new Email( "jean.villete@gmail.com" ), new Locale( "en" ) );
-		RequestResetPassword requestResetPassword = new RequestResetPassword( jean );
-		this.resetPasswordService.processRequest( requestResetPassword );
+		Assert.notNull( profileService, "No instance was assigned to profileService." );
+
+		Email email = this.emailService.getBy( "jean.villete@gmail.com", true );
+		User user = this.userService.getBy( email );
+		for ( Profile profile : profileService.listBy( user ) )
+			System.out.println( profile.toString() );
 	}
 }
