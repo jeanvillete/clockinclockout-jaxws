@@ -1,41 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions name="clkio" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-	targetNamespace="http://ws.clkio.com"
+<wsdl:definitions name="clkio"  targetNamespace="http://ws.clkio.com"
 	xmlns:clkws="http://ws.clkio.com"
 	xmlns:clkio="http://schemas.clkio.com"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
 	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
-	
 	<wsdl:types>
 		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-			<xs:import namespace="http://schemas.clkio.com" schemaLocation="common.xsd"/>
-			<xs:import namespace="http://schemas.clkio.com" schemaLocation="user.xsd"/>
+			<xs:import namespace="http://schemas.clkio.com" schemaLocation="common.xsd" />
+			<xs:import namespace="http://schemas.clkio.com" schemaLocation="user.xsd" />
 		</xs:schema>
 	</wsdl:types>
 	<wsdl:message name="User">
 		<wsdl:part name="user" element="clkio:User" />
 	</wsdl:message>
+	<wsdl:message name="Response">
+		<wsdl:part name="response" element="clkio:Response" />
+	</wsdl:message>
 	<wsdl:message name="ResponseException">
 		<wsdl:part name="exception" element="clkio:ResponseException" />
 	</wsdl:message>
 	<wsdl:portType name="UserPort">
-        <wsdl:operation name="insert">
-            <wsdl:input message="clkws:User"/>
-            <fault name="insertUserException" message="clkws:ResponseException"/>
-        </wsdl:operation>
-    </wsdl:portType>
-    <wsdl:binding name="UserBinding" type="clkws:UserPort">
+		<wsdl:operation name="insert">
+			<wsdl:input message="clkws:User" />
+			<wsdl:output message="clkws:Response" />
+			<wsdl:fault message="clkws:ResponseException" name="inserException" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="UserBinding" type="clkws:UserPort">
 		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
-		<operation name="insert">
-			<input>
+		<wsdl:operation name="insert">
+			<soap:operation soapAction="" />
+			<wsdl:input>
 				<soap:body use="literal" />
-			</input>
-			<fault name="insertUserException">
-				<soap:fault name="insertUserException" use="literal" />
-			</fault>
-		</operation>
-    </wsdl:binding>
-	<wsdl:service name="ClkIOService">
-		<wsdl:port name="UserServicePort" binding="UserBinding">
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="inserException">
+				<soap:fault use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="ClkIOWS">
+		<wsdl:port name="UserService" binding="clkws:UserBinding">
 			<soap:address location="REPLACE_WITH_ACTUAL_URL" />
 		</wsdl:port>
 	</wsdl:service>
