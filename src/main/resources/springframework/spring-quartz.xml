@@ -10,24 +10,24 @@
 						http://www.springframework.org/schema/tx
 						http://www.springframework.org/schema/tx/spring-tx-4.2.xsd" >
 	
-	<bean id="emailCleanNotConfirmedJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject" ref="emailServiceImpl"/>
-		<property name="targetMethod" value="cleanNotConfirmed"/>
+	<bean name="emailCleanNotConfirmedJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.clkio.quartz.CleanEmailNotConfirmed" />
+		<property name="durability" value="true" />
 	</bean>
 
-	<bean id="requestResetPasswordCleanNotConfirmedJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject" ref="requestResetPasswordServiceImpl"/>
-		<property name="targetMethod" value="cleanNotConfirmed"/>
+	<bean name="requestResetPasswordCleanNotConfirmedJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.clkio.quartz.CleanRequestResetPasswordNotConfirmed" />
+		<property name="durability" value="true" />
 	</bean>
 	
 	<bean id="emailCleanNotConfirmedCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="emailCleanNotConfirmedJobDetail" />
-		<property name="cronExpression" value="${clockinclockout.quartz.emailNotConfirmedJob.cronExepression}" />
+		<property name="cronExpression" value="${clkio.quartz.emailNotConfirmedJob.cronExepression}" />
 	</bean>
 	
 	<bean id="requestResetPasswordCleanNotConfirmedCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="requestResetPasswordCleanNotConfirmedJobDetail" />
-		<property name="cronExpression" value="${clockinclockout.quartz.resetPasswordNotConfirmedJob.cronExepression}" />
+		<property name="cronExpression" value="${clkio.quartz.resetPasswordNotConfirmedJob.cronExepression}" />
 	</bean>
 	
 	<bean id="clkioScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -42,6 +42,12 @@
 				<ref bean="requestResetPasswordCleanNotConfirmedCronTrigger" />
 			</list>
 		</property>
+		<property name="schedulerContextAsMap">
+			<map>
+				<entry key="emailService" value-ref="emailServiceImpl" />
+				<entry key="requestResetPasswordService" value-ref="requestResetPasswordServiceImpl" />
+			</map>
+		</property>
 		<property name="quartzProperties">
 			<props>
 				<prop key="org.quartz.scheduler.instanceName">CLKIO_QUARTZ</prop>
@@ -50,10 +56,10 @@
 				<prop key="org.quartz.jobStore.isClustered">true</prop>
 				<prop key="org.quartz.threadPool.class">org.quartz.simpl.SimpleThreadPool</prop>
 				<prop key="org.quartz.scheduler.skipUpdateCheck">true</prop>
-				<prop key="org.quartz.jobStore.misfireThreshold">${org.quartz.jobStore.misfireThreshold}</prop>
+				<prop key="org.quartz.jobStore.misfireThreshold">${clkio.quartz.jobStore.misfireThreshold}</prop>
 				<prop key="org.quartz.jobStore.driverDelegateClass">org.quartz.impl.jdbcjobstore.PostgreSQLDelegate</prop>
-				<prop key="org.quartz.threadPool.threadCount">${org.quartz.threadPool.threadCount}</prop>
-				<prop key="org.quartz.threadPool.threadPriority">${org.quartz.threadPool.threadPriority}</prop>
+				<prop key="org.quartz.threadPool.threadCount">${clkio.quartz.threadPool.threadCount}</prop>
+				<prop key="org.quartz.threadPool.threadPriority">${clkio.quartz.threadPool.threadPriority}</prop>
 			</props>
 		</property>
 	</bean>

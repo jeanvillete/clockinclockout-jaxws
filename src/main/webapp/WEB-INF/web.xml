@@ -10,11 +10,11 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			/WEB-INF/springframework/spring-application-context.xml
-			/WEB-INF/springframework/spring-datasource.xml
-			/WEB-INF/springframework/spring-java-mail.xml
-			/WEB-INF/springframework/spring-velocity.xml
-			/WEB-INF/springframework/spring-quartz.xml
+			classpath:springframework/spring-application-context.xml
+			classpath:springframework/spring-datasource.xml
+			classpath:springframework/spring-java-mail.xml
+			classpath:springframework/spring-velocity.xml
+			classpath:springframework/spring-quartz.xml
 		</param-value>
 	</context-param>
 	<listener>
@@ -32,6 +32,15 @@
 	<listener>
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>
+   
+	<servlet>
+		<servlet-name>sampleservlet</servlet-name>
+		<servlet-class>com.clkio.web.SampleServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>sampleservlet</servlet-name>
+		<url-pattern>/sampleservlet</url-pattern>
+	</servlet-mapping>
    
 	<session-config>
 		<session-timeout>1</session-timeout>
