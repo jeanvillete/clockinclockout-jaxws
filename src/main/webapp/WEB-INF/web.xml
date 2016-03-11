@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app id="clockinclockout-jaxws" version="3.1"
+<web-app id="clkio-jaxws" version="3.1"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
 						http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
 
-	<display-name>clockinclockout-jaxws</display-name>
+	<display-name>clkio-jaxws</display-name>
     
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
@@ -23,7 +23,7 @@
 	
 	<context-param>
 		<param-name>log4jConfigLocation</param-name>
-		<param-value>file:/opt/etc/clockinclockout-jaxws/log4j.xml</param-value>
+		<param-value>file:/opt/etc/clkio-jaxws/log4j.xml</param-value>
 	</context-param>
 	<context-param>
 		<param-name>log4jExposeWebAppRoot</param-name>
@@ -32,15 +32,6 @@
 	<listener>
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>
-   
-	<servlet>
-		<servlet-name>sampleservlet</servlet-name>
-		<servlet-class>com.clkio.web.SampleServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>sampleservlet</servlet-name>
-		<url-pattern>/sampleservlet</url-pattern>
-	</servlet-mapping>
    
 	<session-config>
 		<session-timeout>1</session-timeout>

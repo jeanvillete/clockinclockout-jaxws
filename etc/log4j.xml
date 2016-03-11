@@ -3,8 +3,8 @@
 <log4j:configuration>
 	<appender name="appAppender" class="org.apache.log4j.rolling.RollingFileAppender">
 		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
-			<param name="FileNamePattern" value="/logs/clockinclockout-jaxws/archive/clockinclockout_%d{yyyy-MM-dd}.log.zip"/>
-			<param name="ActiveFileName" value="/logs/clockinclockout-jaxws/clockinclockout.log"/>
+			<param name="FileNamePattern" value="/logs/clkio-jaxws/archive/clockinclockout_%d{yyyy-MM-dd}.log.zip"/>
+			<param name="ActiveFileName" value="/logs/clkio-jaxws/clockinclockout.log"/>
 		</rollingPolicy>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="[%d{yyyy-MM-dd'T'HH:mm:ss}] [%t] [%p] %m %n"/>
@@ -12,8 +12,8 @@
 	</appender>
 	<appender name="sendingEmailAppender" class="org.apache.log4j.rolling.RollingFileAppender">
 		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
-			<param name="FileNamePattern" value="/logs/clockinclockout-jaxws/archive/sendingemail_%d{yyyy-MM-dd}.log.zip"/>
-			<param name="ActiveFileName" value="/logs/clockinclockout-jaxws/sendingemail.log"/>
+			<param name="FileNamePattern" value="/logs/clkio-jaxws/archive/sendingemail_%d{yyyy-MM-dd}.log.zip"/>
+			<param name="ActiveFileName" value="/logs/clkio-jaxws/sendingemail.log"/>
 		</rollingPolicy>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="[%d{yyyy-MM-dd'T'HH:mm:ss}] [%t] [%p] %m %n"/>
@@ -21,8 +21,8 @@
 	</appender>
 	<appender name="springAppender" class="org.apache.log4j.rolling.RollingFileAppender">
 		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
-			<param name="FileNamePattern" value="/logs/clockinclockout-jaxws/archive/springframework_%d{yyyy-MM-dd}.log.zip"/>
-			<param name="ActiveFileName" value="/logs/clockinclockout-jaxws/springframework.log"/>
+			<param name="FileNamePattern" value="/logs/clkio-jaxws/archive/springframework_%d{yyyy-MM-dd}.log.zip"/>
+			<param name="ActiveFileName" value="/logs/clkio-jaxws/springframework.log"/>
 		</rollingPolicy>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="[%d{yyyy-MM-dd'T'HH:mm:ss}] [%t] [%p] %m %n"/>
