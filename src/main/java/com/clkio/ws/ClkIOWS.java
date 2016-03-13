@@ -106,6 +106,28 @@ public class ClkIOWS
         return super.getPort(new QName("http://ws.clkio.com", "LoginService"), LoginPort.class, features);
     }
 
+    /**
+     * 
+     * @return
+     *     returns EmailPort
+     */
+    @WebEndpoint(name = "EmailService")
+    public EmailPort getEmailService() {
+        return super.getPort(new QName("http://ws.clkio.com", "EmailService"), EmailPort.class);
+    }
+
+    /**
+     * 
+     * @param features
+     *     A list of {@link javax.xml.ws.WebServiceFeature} to configure on the proxy.  Supported features not in the <code>features</code> parameter will have their default values.
+     * @return
+     *     returns EmailPort
+     */
+    @WebEndpoint(name = "EmailService")
+    public EmailPort getEmailService(WebServiceFeature... features) {
+        return super.getPort(new QName("http://ws.clkio.com", "EmailService"), EmailPort.class, features);
+    }
+
     private static URL __getWsdlLocation() {
         if (CLKIOWS_EXCEPTION!= null) {
             throw CLKIOWS_EXCEPTION;

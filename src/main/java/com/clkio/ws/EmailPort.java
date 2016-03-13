@@ -7,8 +7,8 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
-import com.clkio.ws.domain.login.LoginResponse;
-import com.clkio.ws.domain.user.User;
+import com.clkio.ws.domain.common.Response;
+import com.clkio.ws.domain.email.Email;
 
 
 /**
@@ -17,7 +17,7 @@ import com.clkio.ws.domain.user.User;
  * Generated source version: 2.2
  * 
  */
-@WebService(name = "LoginPort", targetNamespace = "http://ws.clkio.com")
+@WebService(name = "EmailPort", targetNamespace = "http://ws.clkio.com")
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 @XmlSeeAlso({
     com.clkio.ws.ObjectFactory.class,
@@ -26,21 +26,22 @@ import com.clkio.ws.domain.user.User;
     com.clkio.ws.domain.login.ObjectFactory.class,
     com.clkio.ws.domain.user.ObjectFactory.class
 })
-public interface LoginPort {
+public interface EmailPort {
 
 
     /**
      * 
-     * @param user
+     * @param email
      * @return
-     *     returns com.clkio.ws.domain.login.LoginResponse
+     *     returns com.clkio.ws.domain.common.Response
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "loginResponse", targetNamespace = "http://ws.clkio.com", partName = "response")
-    public LoginResponse doLogin(
-        @WebParam(name = "user", targetNamespace = "http://ws.clkio.com", partName = "user")
-        User user)
-        throws ResponseException;
+    @WebResult(name = "response", targetNamespace = "http://ws.clkio.com", partName = "response")
+    public Response confirm(
+        @WebParam(name = "email", targetNamespace = "http://ws.clkio.com", partName = "email")
+        Email email)
+        throws ResponseException
+    ;
 
 }

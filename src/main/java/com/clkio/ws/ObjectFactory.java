@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlRegistry;
 import javax.xml.namespace.QName;
 import com.clkio.ws.domain.common.Response;
 import com.clkio.ws.domain.common.ResponseException;
+import com.clkio.ws.domain.email.Email;
 import com.clkio.ws.domain.login.LoginResponse;
 import com.clkio.ws.domain.user.User;
 
@@ -32,6 +33,7 @@ public class ObjectFactory {
     private final static QName _Response_QNAME = new QName("http://ws.clkio.com", "response");
     private final static QName _ResponseException_QNAME = new QName("http://ws.clkio.com", "responseException");
     private final static QName _User_QNAME = new QName("http://ws.clkio.com", "user");
+    private final static QName _Email_QNAME = new QName("http://ws.clkio.com", "email");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.clkio.ws
@@ -74,6 +76,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://ws.clkio.com", name = "user")
     public JAXBElement<User> createUser(User value) {
         return new JAXBElement<User>(_User_QNAME, User.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Email }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://ws.clkio.com", name = "email")
+    public JAXBElement<Email> createEmail(Email value) {
+        return new JAXBElement<Email>(_Email_QNAME, Email.class, null, value);
     }
 
 }

@@ -4,21 +4,26 @@
 	xmlns:common="http://schemas.clkio.com/common"
 	xmlns:user="http://schemas.clkio.com/user"
 	xmlns:login="http://schemas.clkio.com/login"
+	xmlns:email="http://schemas.clkio.com/email"
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
 	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	
 	<wsdl:types>
 		<xs:schema targetNamespace="http://ws.clkio.com">
-			<xs:import namespace="http://schemas.clkio.com/user" schemaLocation="user.xsd" />
 			<xs:import namespace="http://schemas.clkio.com/common" schemaLocation="common.xsd" />
+			<xs:import namespace="http://schemas.clkio.com/user" schemaLocation="user.xsd" />
 			<xs:import namespace="http://schemas.clkio.com/login" schemaLocation="login.xsd" />
+			<xs:import namespace="http://schemas.clkio.com/email" schemaLocation="email.xsd" />
 
 			<xs:element name="user" type="user:user" nillable="false"/>
 			<xs:element name="response" type="common:response" nillable="false"/>
 			<xs:element name="responseException" type="common:responseException" nillable="false"/>
 			<xs:element name="loginResponse" type="login:loginResponse" nillable="false"/>
+			<xs:element name="email" type="email:email" nillable="false"/>
 		</xs:schema>
 	</wsdl:types>
+	
 	<wsdl:message name="User">
 		<wsdl:part name="user" element="clkws:user" />
 	</wsdl:message>
@@ -30,6 +35,9 @@
 	</wsdl:message>
 	<wsdl:message name="LoginResponse">
 		<wsdl:part name="response" element="clkws:loginResponse" />
+	</wsdl:message>
+	<wsdl:message name="Email">
+		<wsdl:part name="email" element="clkws:email" />
 	</wsdl:message>
 	
 	<wsdl:portType name="UserPort">
@@ -44,6 +52,13 @@
 			<wsdl:input message="clkws:User" />
 			<wsdl:output message="clkws:LoginResponse" />
 			<wsdl:fault message="clkws:ResponseException" name="doLoginException" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:portType name="EmailPort">
+		<wsdl:operation name="confirm">
+			<wsdl:input message="clkws:Email" />
+			<wsdl:output message="clkws:Response" />
+			<wsdl:fault message="clkws:ResponseException" name="confirmEmailException" />
 		</wsdl:operation>
 	</wsdl:portType>
 	
@@ -77,12 +92,30 @@
 			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>
+	<wsdl:binding name="EmailBinding" type="clkws:EmailPort">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+		<wsdl:operation name="confirm">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="confirmEmailException">
+				<soap:fault name="confirmEmailException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
 	
 	<wsdl:service name="ClkIOWS">
 		<wsdl:port name="UserService" binding="clkws:UserBinding">
 			<soap:address location="REPLACE_WITH_ACTUAL_URL" />
 		</wsdl:port>
 		<wsdl:port name="LoginService" binding="clkws:LoginBinding">
+			<soap:address location="REPLACE_WITH_ACTUAL_URL" />
+		</wsdl:port>
+		<wsdl:port name="EmailService" binding="clkws:EmailBinding">
 			<soap:address location="REPLACE_WITH_ACTUAL_URL" />
 		</wsdl:port>
 	</wsdl:service>
