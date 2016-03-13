@@ -14,10 +14,17 @@ DROP TABLE clkio_schm.adjusting;
 DROP TABLE clkio_schm.profile;
 DROP TABLE clkio_schm.email;
 DROP TABLE clkio_schm.request_reset_password;
+DROP TABLE clkio_schm.login;
 DROP TABLE clkio_schm.clk_user;
 
 -- sequence clk_user_seq
 CREATE SEQUENCE clkio_schm.clk_user_seq
+INCREMENT BY 1
+MINVALUE 1
+START WITH 1;
+
+-- sequence login_seq
+CREATE SEQUENCE clkio_schm.login_seq
 INCREMENT BY 1
 MINVALUE 1
 START WITH 1;
@@ -77,6 +84,17 @@ CREATE TABLE clkio_schm.clk_user (
   password VARCHAR( 100 ) NOT NULL CHECK( password <> '' )
 );
 ALTER SEQUENCE clkio_schm.clk_user_seq OWNED BY clkio_schm.clk_user.id;
+
+-- table login
+CREATE TABLE clkio_schm.login (
+  id INT NOT NULL PRIMARY KEY,
+  id_clk_user INT NOT NULL REFERENCES clkio_schm.clk_user( id ) ON UPDATE RESTRICT ON DELETE RESTRICT,
+  code VARCHAR( 100 ) NOT NULL CHECK( code <> '' ),
+  since TIMESTAMP NOT NULL,
+  ip VARCHAR( 100 ) NOT NULL CHECK( ip <> '' ),
+  valid BOOLEAN NOT NULL
+);
+ALTER SEQUENCE clkio_schm.login_seq OWNED BY clkio_schm.login.id;
 
 -- table request_reset_password
 CREATE TABLE clkio_schm.request_reset_password (
