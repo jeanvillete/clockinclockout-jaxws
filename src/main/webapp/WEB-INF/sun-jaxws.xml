@@ -22,4 +22,13 @@
         port="{http://ws.clkio.com}LoginService"
         url-pattern="/login" />
 
+    <endpoint
+        name="emailService"
+        interface="com.clkio.ws.EmailPort"
+        implementation="com.clkio.ws.impl.EmailWSImpl"
+        wsdl="WEB-INF/wsdl/clkio.wsdl"
+        service="{http://ws.clkio.com}ClkIOWS"
+        port="{http://ws.clkio.com}EmailService"
+        url-pattern="/email" />
+
 </endpoints>

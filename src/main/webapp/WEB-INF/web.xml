@@ -58,6 +58,16 @@
         <servlet-name>loginws</servlet-name>
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <description>Email WS</description>
+        <servlet-name>emailws</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>emailws</servlet-name>
+        <url-pattern>/email</url-pattern>
+    </servlet-mapping>
    
 	<session-config>
 		<session-timeout>1</session-timeout>
