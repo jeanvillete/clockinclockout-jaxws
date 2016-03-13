@@ -30,7 +30,15 @@
 		</div>
 		
 		<div class="clockInClockOutDIV">
-			<a href="${linkSite}/checkemail/${emailContent.encodedEmailAddress}?q=${emailContent.hash}" target="_blank">Confirm email.</a>
+			<a href="${linkSite}/checkemail/${emailContent.encodedEmailAddress}?q=${emailContent.encodedHash}" target="_blank">Confirm email.</a>
+		</div>
+		
+		<div class="clockInClockOutDIV">
+			If you want to turn your account active through other way, as through mobile app, the code to be provided is the following;
+		</div>
+		
+		<div class="clockInClockOutDIV">
+			${emailContent.hash}
 		</div>
 		
 		<div class="clockInClockOutDIV">

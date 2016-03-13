@@ -30,7 +30,15 @@
 		</div>
 		
 		<div class="clockInClockOutDIV">
-			<a href="${linkSite}/checkemail/${emailContent.encodedEmailAddress}?q=${emailContent.hash}" target="_blank">Confirmar email.</a>
+			<a href="${linkSite}/checkemail/${emailContent.encodedEmailAddress}?q=${emailContent.encodedHash}" target="_blank">Confirmar email.</a>
+		</div>
+		
+		<div class="clockInClockOutDIV">
+			Caso queira ativar a conta através de outro meio, como pelo aplicativo mobile por exemplo, o código é o seguinte;
+		</div>
+		
+		<div class="clockInClockOutDIV">
+			${emailContent.hash}
 		</div>
 		
 		<div class="clockInClockOutDIV">

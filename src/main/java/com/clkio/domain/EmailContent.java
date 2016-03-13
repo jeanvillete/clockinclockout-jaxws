@@ -15,6 +15,7 @@ public abstract class EmailContent {
 	private String encodedEmailAddress;
 	private String subject;
 	private String hash;
+	private String encodedHash;
 	
 	public EmailContent( Email email ) {
 		super();
@@ -27,7 +28,7 @@ public abstract class EmailContent {
 		this.hash = new BCryptPasswordEncoder().encode( this.hash );
 		try {
 			this.encodedEmailAddress = URLEncoder.encode(email.getAddress(), "UTF-8");
-			this.hash = URLEncoder.encode( this.hash, "UTF-8");
+			this.encodedHash = URLEncoder.encode( this.hash, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			throw new IllegalStateException( e );
 		}
@@ -52,5 +53,10 @@ public abstract class EmailContent {
 	public String getHash() {
 		Assert.hasText( hash, "The property 'hash' has not been initialized yet." );
 		return hash;
+	}
+
+	public String getEncodedHash() {
+		Assert.hasText( encodedHash, "The property 'encodedHash' has not been initialized yet." );
+		return encodedHash;
 	}
 }
