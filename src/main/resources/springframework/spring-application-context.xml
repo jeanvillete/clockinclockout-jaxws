@@ -3,12 +3,15 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 						http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
 						http://www.springframework.org/schema/context
 						http://www.springframework.org/schema/context/spring-context-4.2.xsd
 						http://www.springframework.org/schema/tx
-						http://www.springframework.org/schema/tx/spring-tx-4.2.xsd" >
+						http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+						http://www.springframework.org/schema/task
+						http://www.springframework.org/schema/task/spring-task-4.2.xsd" >
 	
 	<beans>
 		<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -26,6 +29,9 @@
 		</bean>
 	    <tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager" />
 		
+		<task:annotation-driven executor="asyncExecutor"/>
+		<task:executor id="asyncExecutor" pool-size="5"/>
+		
 		<context:annotation-config />
 		<context:component-scan base-package="com.clkio.service,com.clkio.repository" />
 	</beans>
@@ -38,7 +44,7 @@
 	
 	<beans profile="default">
 		<bean id="propertyFactory" class="org.springframework.beans.factory.config.PropertiesFactoryBean" >
-			<property name="locations" value="file:/opt/etc/clockinclockout-jaxws/application.properties" />
+			<property name="locations" value="file:/opt/etc/clkio-jaxws/application.properties" />
 		</bean>
 	</beans>
 	

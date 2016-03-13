@@ -44,7 +44,7 @@
 		</property>
 		<property name="schedulerContextAsMap">
 			<map>
-				<entry key="emailService" value-ref="emailServiceImpl" />
+				<entry key="userService" value-ref="userServiceImpl" />
 				<entry key="requestResetPasswordService" value-ref="requestResetPasswordServiceImpl" />
 			</map>
 		</property>

@@ -12,4 +12,10 @@ public interface UserService {
 	void delete( User user );
 
 	boolean changePassword( User syncUser );
+	
+	/**
+	 * Service invoked by a job that runs once a day looking for
+	 * confirm email requests which were not met by the user.
+	 */
+	void cleanNotConfirmed();
 }

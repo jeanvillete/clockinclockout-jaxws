@@ -1,6 +1,7 @@
 package com.clkio.service.impl;
 
 import java.time.Duration;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -28,10 +29,10 @@ public class UserServiceImpl implements UserService, InitializingBean {
 	private UserRepository repository;
 	
 	@Autowired
-	private EmailService emailService;
-	
-	@Autowired
 	private ProfileService profileService;
+
+	@Autowired
+	private EmailService emailService;
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -96,4 +97,20 @@ public class UserServiceImpl implements UserService, InitializingBean {
 		return this.repository.changePassword( syncUser );
 	}
 	
+	@Override
+	@Transactional( propagation = Propagation.REQUIRED )
+	public void cleanNotConfirmed() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.add( Calendar.DATE, -1 );
+		
+		List< Email > emails = this.emailService.listPrimaryNotConfirmed( calendar.getTime() );
+		if ( !CollectionUtils.isEmpty( emails ) ) {
+			for ( Email email : emails ) {
+				this.emailService.delete( email );
+				this.delete( email.getUser() );
+			}
+		}
+		
+		this.emailService.deleteNotPrimaryNotConfirmed( calendar.getTime() );
+	}
 }

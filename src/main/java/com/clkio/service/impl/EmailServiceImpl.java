@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.clkio.domain.Email;
@@ -33,7 +32,6 @@ import com.clkio.domain.EmailContent;
 import com.clkio.domain.EmailResetPassword;
 import com.clkio.repository.EmailRepository;
 import com.clkio.service.EmailService;
-import com.clkio.service.UserService;
 
 @Service
 public class EmailServiceImpl implements EmailService, InitializingBean {
@@ -59,17 +57,9 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	@Qualifier( "messageSource" )
 	private MessageSource messageSource;
 	
-	private UserService userService;
-
-	@Autowired
-	void setUserService( UserService userService ) {
-		this.userService = userService;
-	}
-	
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		Assert.notNull( this.repository, "The field repository shouldn't be null." );
-		Assert.notNull( this.userService, "The field userService shouldn't be null." );
 	}
 	
 	@Override
@@ -85,7 +75,7 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	}
 
 	@Override
-	@Async
+	@Async( "asyncExecutor" )
 	@Transactional( propagation = Propagation.NOT_SUPPORTED )
 	public void send( EmailConfirmation emailConfirmation ) {
 		Assert.notNull( emailConfirmation );
@@ -95,7 +85,7 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	}
 
 	@Override
-	@Async
+	@Async( "asyncExecutor" )
 	@Transactional( propagation = Propagation.NOT_SUPPORTED )
 	public void send( EmailResetPassword emailResetPassword ) {
 		Assert.notNull( emailResetPassword );
@@ -155,23 +145,6 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void cleanNotConfirmed() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.add( Calendar.DATE, -1 );
-		
-		List< Email > emails = this.repository.listPrimaryNotConfirmed( calendar.getTime() );
-		if ( !CollectionUtils.isEmpty( emails ) ) {
-			for ( Email email : emails ) {
-				this.delete( email );
-				this.userService.delete( email.getUser() );
-			}
-		}
-		
-		this.repository.deleteNotPrimaryNotConfirmed( calendar.getTime() );
-	}
-
-	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
 	public void delete( Email email ) {
 		Assert.notNull( email );
 		this.repository.delete( email );
@@ -182,6 +155,20 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	public Email getBy( String emailAddress, boolean isPrimary ) {
 		Assert.hasText( emailAddress );
 		return this.repository.getBy( emailAddress, isPrimary );
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
+	public List< Email > listPrimaryNotConfirmed( Date date ) {
+		Assert.notNull( date, "Parameter 'date' cannot be null." );
+		return this.repository.listPrimaryNotConfirmed( date );
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.REQUIRED )
+	public void deleteNotPrimaryNotConfirmed( Date date ) {
+		Assert.notNull( date, "Parameter 'date' cannot be null." );
+		this.repository.deleteNotPrimaryNotConfirmed( date );
 	}
 
 }

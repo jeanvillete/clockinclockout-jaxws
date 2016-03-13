@@ -1,5 +1,8 @@
 package com.clkio.service;
 
+import java.util.Date;
+import java.util.List;
+
 import com.clkio.domain.Email;
 import com.clkio.domain.EmailConfirmation;
 import com.clkio.domain.EmailResetPassword;
@@ -21,12 +24,6 @@ public interface EmailService {
 	
 	void confirm( Email email );
 
-	/**
-	 * Service invoked by a job that runs once a day looking for
-	 * confirm email requests which were not met by the user.
-	 */
-	void cleanNotConfirmed();
-	
 	void delete( Email email );
 	
 	/**
@@ -37,4 +34,8 @@ public interface EmailService {
 	 * @return
 	 */
 	Email getBy( String emailAddress, boolean isPrimary );
+	
+	List< Email > listPrimaryNotConfirmed( Date date );
+	
+	void deleteNotPrimaryNotConfirmed( Date date );
 }
