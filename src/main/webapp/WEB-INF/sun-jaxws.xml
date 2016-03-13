@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<endpoints
+    xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime"
+    version="2.0">
+
+    <endpoint
+        name="userService"
+        interface="com.clkio.ws.UserPort"
+        implementation="com.clkio.ws.impl.UserWSImpl"
+        wsdl="WEB-INF/wsdl/clkio.wsdl"
+        service="{http://ws.clkio.com}ClkIOWS"
+        port="{http://ws.clkio.com}UserService"
+        url-pattern="/user" />
+
+</endpoints>

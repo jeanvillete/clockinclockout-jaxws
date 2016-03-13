@@ -1,3 +1,0 @@
-wsimport clkio.wsdl -verbose -keep -s src -Xnocompile -b custom-binding.xml
-
-wsimport MaintainAddress.wsdl -verbose -wsdllocation MaintainAddress.wsdl -keep -s src/main/java -Xnocompile -b jaxb/xsdbindings.xml -b jaxb/wsdlbindings.xml
