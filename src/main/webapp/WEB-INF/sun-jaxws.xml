@@ -13,4 +13,13 @@
         port="{http://ws.clkio.com}UserService"
         url-pattern="/user" />
 
+    <endpoint
+        name="userService"
+        interface="com.clkio.ws.LoginPort"
+        implementation="com.clkio.ws.impl.LoginWSImpl"
+        wsdl="WEB-INF/wsdl/clkio.wsdl"
+        service="{http://ws.clkio.com}ClkIOWS"
+        port="{http://ws.clkio.com}LoginService"
+        url-pattern="/login" />
+
 </endpoints>

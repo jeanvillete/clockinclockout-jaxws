@@ -31,10 +31,10 @@ public class TestDoLogin {
 		
 		User jean = new User( new Email( "jean.villete@gmail.com" ) );
 		jean.setPassword( "mynewpassword", false );
-		User syncUser = this.loginService.login( jean );
+		String code = this.loginService.login( jean, "127.0.0.1" );
 		
-		Assert.notNull( syncUser );
+		Assert.hasText( code );
 		
-		System.out.println( "[User logged successfully] id:" + syncUser.getId() );
+		System.out.println( "[User logged successfully] code:" + code );
 	}
 }

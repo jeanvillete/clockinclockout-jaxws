@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlRegistry;
 import javax.xml.namespace.QName;
 import com.clkio.ws.domain.common.Response;
 import com.clkio.ws.domain.common.ResponseException;
+import com.clkio.ws.domain.login.LoginResponse;
 import com.clkio.ws.domain.user.User;
 
 
@@ -27,6 +28,7 @@ import com.clkio.ws.domain.user.User;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _LoginResponse_QNAME = new QName("http://ws.clkio.com", "loginResponse");
     private final static QName _Response_QNAME = new QName("http://ws.clkio.com", "response");
     private final static QName _ResponseException_QNAME = new QName("http://ws.clkio.com", "responseException");
     private final static QName _User_QNAME = new QName("http://ws.clkio.com", "user");
@@ -36,6 +38,15 @@ public class ObjectFactory {
      * 
      */
     public ObjectFactory() {
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link LoginResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://ws.clkio.com", name = "loginResponse")
+    public JAXBElement<LoginResponse> createLoginResponse(LoginResponse value) {
+        return new JAXBElement<LoginResponse>(_LoginResponse_QNAME, LoginResponse.class, null, value);
     }
 
     /**

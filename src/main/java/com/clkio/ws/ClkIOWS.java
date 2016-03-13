@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
-@WebServiceClient(name = "ClkIOWS", targetNamespace = "http://ws.clkio.com", wsdlLocation = "file:/home/jean/Documents/git/clockinclockout-jaxws/wsdl/clkio.wsdl")
+@WebServiceClient(name = "ClkIOWS", targetNamespace = "http://ws.clkio.com", wsdlLocation = "http://ws.clkio.com/clkio.wsdl")
 public class ClkIOWS
     extends Service
 {
@@ -30,7 +30,7 @@ public class ClkIOWS
         URL url = null;
         WebServiceException e = null;
         try {
-            url = new URL("file:/home/jean/Documents/git/clockinclockout-jaxws/wsdl/clkio.wsdl");
+            url = new URL("http://ws.clkio.com/clkio.wsdl");
         } catch (MalformedURLException ex) {
             e = new WebServiceException(ex);
         }
@@ -82,6 +82,28 @@ public class ClkIOWS
     @WebEndpoint(name = "UserService")
     public UserPort getUserService(WebServiceFeature... features) {
         return super.getPort(new QName("http://ws.clkio.com", "UserService"), UserPort.class, features);
+    }
+
+    /**
+     * 
+     * @return
+     *     returns LoginPort
+     */
+    @WebEndpoint(name = "LoginService")
+    public LoginPort getLoginService() {
+        return super.getPort(new QName("http://ws.clkio.com", "LoginService"), LoginPort.class);
+    }
+
+    /**
+     * 
+     * @param features
+     *     A list of {@link javax.xml.ws.WebServiceFeature} to configure on the proxy.  Supported features not in the <code>features</code> parameter will have their default values.
+     * @return
+     *     returns LoginPort
+     */
+    @WebEndpoint(name = "LoginService")
+    public LoginPort getLoginService(WebServiceFeature... features) {
+        return super.getPort(new QName("http://ws.clkio.com", "LoginService"), LoginPort.class, features);
     }
 
     private static URL __getWsdlLocation() {

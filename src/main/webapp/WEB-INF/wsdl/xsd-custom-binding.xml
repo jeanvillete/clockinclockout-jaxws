@@ -15,4 +15,10 @@
 		</jaxb:schemaBindings>
 	</jaxb:bindings>
 
+	<jaxb:bindings schemaLocation="login.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/login']">
+		<jaxb:schemaBindings>
+			<jaxb:package name="com.clkio.ws.domain.login" />
+		</jaxb:schemaBindings>
+	</jaxb:bindings>
+
 </jaxb:bindings>

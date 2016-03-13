@@ -3,6 +3,7 @@
 	xmlns:clkws="http://ws.clkio.com"
 	xmlns:common="http://schemas.clkio.com/common"
 	xmlns:user="http://schemas.clkio.com/user"
+	xmlns:login="http://schemas.clkio.com/login"
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
 	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
@@ -10,10 +11,12 @@
 		<xs:schema targetNamespace="http://ws.clkio.com">
 			<xs:import namespace="http://schemas.clkio.com/user" schemaLocation="user.xsd" />
 			<xs:import namespace="http://schemas.clkio.com/common" schemaLocation="common.xsd" />
+			<xs:import namespace="http://schemas.clkio.com/login" schemaLocation="login.xsd" />
 
 			<xs:element name="user" type="user:user" nillable="false"/>
 			<xs:element name="response" type="common:response" nillable="false"/>
 			<xs:element name="responseException" type="common:responseException" nillable="false"/>
+			<xs:element name="loginResponse" type="login:loginResponse" nillable="false"/>
 		</xs:schema>
 	</wsdl:types>
 	<wsdl:message name="User">
@@ -25,6 +28,10 @@
 	<wsdl:message name="ResponseException">
 		<wsdl:part name="exception" element="clkws:responseException" />
 	</wsdl:message>
+	<wsdl:message name="LoginResponse">
+		<wsdl:part name="response" element="clkws:loginResponse" />
+	</wsdl:message>
+	
 	<wsdl:portType name="UserPort">
 		<wsdl:operation name="insert">
 			<wsdl:input message="clkws:User" />
@@ -32,6 +39,14 @@
 			<wsdl:fault message="clkws:ResponseException" name="insertException" />
 		</wsdl:operation>
 	</wsdl:portType>
+	<wsdl:portType name="LoginPort">
+		<wsdl:operation name="doLogin">
+			<wsdl:input message="clkws:User" />
+			<wsdl:output message="clkws:LoginResponse" />
+			<wsdl:fault message="clkws:ResponseException" name="doLoginException" />
+		</wsdl:operation>
+	</wsdl:portType>
+	
 	<wsdl:binding name="UserBinding" type="clkws:UserPort">
 		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
 		<wsdl:operation name="insert">
@@ -47,8 +62,27 @@
 			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>
+	<wsdl:binding name="LoginBinding" type="clkws:LoginPort">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+		<wsdl:operation name="doLogin">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="doLoginException">
+				<soap:fault name="doLoginException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	
 	<wsdl:service name="ClkIOWS">
 		<wsdl:port name="UserService" binding="clkws:UserBinding">
+			<soap:address location="REPLACE_WITH_ACTUAL_URL" />
+		</wsdl:port>
+		<wsdl:port name="LoginService" binding="clkws:LoginBinding">
 			<soap:address location="REPLACE_WITH_ACTUAL_URL" />
 		</wsdl:port>
 	</wsdl:service>
