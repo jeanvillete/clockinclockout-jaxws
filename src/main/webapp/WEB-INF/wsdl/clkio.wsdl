@@ -16,49 +16,64 @@
 			<xs:import namespace="http://schemas.clkio.com/login" schemaLocation="login.xsd" />
 			<xs:import namespace="http://schemas.clkio.com/email" schemaLocation="email.xsd" />
 
-			<xs:element name="user" type="user:user" nillable="false"/>
 			<xs:element name="response" type="common:response" nillable="false"/>
 			<xs:element name="responseException" type="common:responseException" nillable="false"/>
+			<xs:element name="insertUser" type="user:insertUser" nillable="false"/>
+			<xs:element name="doLogin" type="login:doLogin" nillable="false"/>
 			<xs:element name="loginResponse" type="login:loginResponse" nillable="false"/>
-			<xs:element name="email" type="email:email" nillable="false"/>
+			<xs:element name="confirmEmail" type="email:confirmEmail" nillable="false"/>
+			<xs:element name="insertEmail" type="email:insertEmail" nillable="false"/>
 		</xs:schema>
 	</wsdl:types>
 	
-	<wsdl:message name="User">
-		<wsdl:part name="user" element="clkws:user" />
+	<!-- messages -->
+	<wsdl:message name="response">
+		<wsdl:part name="result" element="clkws:response" />
 	</wsdl:message>
-	<wsdl:message name="Response">
-		<wsdl:part name="response" element="clkws:response" />
-	</wsdl:message>
-	<wsdl:message name="ResponseException">
+	<wsdl:message name="responseException">
 		<wsdl:part name="exception" element="clkws:responseException" />
 	</wsdl:message>
-	<wsdl:message name="LoginResponse">
-		<wsdl:part name="response" element="clkws:loginResponse" />
+	<wsdl:message name="insertUserRequest">
+		<wsdl:part name="parameters" element="clkws:insertUser" />
 	</wsdl:message>
-	<wsdl:message name="Email">
-		<wsdl:part name="email" element="clkws:email" />
+	<wsdl:message name="doLoginRequest">
+		<wsdl:part name="parameters" element="clkws:doLogin" />
+	</wsdl:message>
+	<wsdl:message name="loginResponse">
+		<wsdl:part name="result" element="clkws:loginResponse" />
+	</wsdl:message>
+	<wsdl:message name="confirmEmailRequest">
+		<wsdl:part name="parameters" element="clkws:confirmEmail" />
+	</wsdl:message>
+	<wsdl:message name="insertEmailRequest">
+		<wsdl:part name="parameters" element="clkws:insertEmail" />
 	</wsdl:message>
 	
+	<!-- port types -->
 	<wsdl:portType name="UserPort">
 		<wsdl:operation name="insert">
-			<wsdl:input message="clkws:User" />
-			<wsdl:output message="clkws:Response" />
-			<wsdl:fault message="clkws:ResponseException" name="insertException" />
+			<wsdl:input message="clkws:insertUserRequest" />
+			<wsdl:output message="clkws:response" />
+			<wsdl:fault message="clkws:responseException" name="insertUserException" />
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:portType name="LoginPort">
 		<wsdl:operation name="doLogin">
-			<wsdl:input message="clkws:User" />
-			<wsdl:output message="clkws:LoginResponse" />
-			<wsdl:fault message="clkws:ResponseException" name="doLoginException" />
+			<wsdl:input message="clkws:doLoginRequest" />
+			<wsdl:output message="clkws:loginResponse" />
+			<wsdl:fault message="clkws:responseException" name="doLoginException" />
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:portType name="EmailPort">
 		<wsdl:operation name="confirm">
-			<wsdl:input message="clkws:Email" />
-			<wsdl:output message="clkws:Response" />
-			<wsdl:fault message="clkws:ResponseException" name="confirmEmailException" />
+			<wsdl:input message="clkws:confirmEmailRequest" />
+			<wsdl:output message="clkws:response" />
+			<wsdl:fault message="clkws:responseException" name="confirmEmailException" />
+		</wsdl:operation>
+		<wsdl:operation name="insert">
+			<wsdl:input message="clkws:insertEmailRequest" />
+			<wsdl:output message="clkws:response" />
+			<wsdl:fault message="clkws:responseException" name="insertEmailException" />
 		</wsdl:operation>
 	</wsdl:portType>
 	
@@ -72,8 +87,8 @@
 			<wsdl:output>
 				<soap:body use="literal" />
 			</wsdl:output>
-			<wsdl:fault name="insertException">
-				<soap:fault name="insertException" use="literal" />
+			<wsdl:fault name="insertUserException">
+				<soap:fault name="insertUserException" use="literal" />
 			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>
@@ -104,6 +119,18 @@
 			</wsdl:output>
 			<wsdl:fault name="confirmEmailException">
 				<soap:fault name="confirmEmailException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="insert">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="insertEmailException">
+				<soap:fault name="insertEmailException" use="literal" />
 			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>

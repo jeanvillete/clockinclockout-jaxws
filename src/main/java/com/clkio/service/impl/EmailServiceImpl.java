@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -27,9 +28,10 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import com.clkio.domain.Email;
-import com.clkio.domain.EmailConfirmation;
+import com.clkio.domain.NewUserEmailConfirmation;
 import com.clkio.domain.EmailContent;
 import com.clkio.domain.EmailResetPassword;
+import com.clkio.domain.NewEmailConfirmation;
 import com.clkio.repository.EmailRepository;
 import com.clkio.service.EmailService;
 
@@ -77,21 +79,28 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	@Override
 	@Async( "asyncExecutor" )
 	@Transactional( propagation = Propagation.NOT_SUPPORTED )
-	public void send( EmailConfirmation emailConfirmation ) {
+	public void send( NewUserEmailConfirmation emailConfirmation ) {
 		Assert.notNull( emailConfirmation );
-		String velocityResource = "velocity-email-confirmation_" + emailConfirmation.getEmail().getUser().getLocale().getLanguage().toLowerCase() + ".vm";
 		emailConfirmation.setSubject( this.messageSource.getMessage( "email.confirmation.title", null, emailConfirmation.getEmail().getUser().getLocale() ) );
-		this.send( emailConfirmation, velocityResource );
+		this.send( emailConfirmation, emailConfirmation.getVelocityResource() );
 	}
 
 	@Override
 	@Async( "asyncExecutor" )
 	@Transactional( propagation = Propagation.NOT_SUPPORTED )
+	public void send( NewEmailConfirmation newEmailConfirmation ) {
+		Assert.notNull( newEmailConfirmation );
+		newEmailConfirmation.setSubject( this.messageSource.getMessage( "email.confirmation.title", null, newEmailConfirmation.getEmail().getUser().getLocale() ) );
+		this.send( newEmailConfirmation, newEmailConfirmation.getVelocityResource() );
+	}
+	
+	@Override
+	@Async( "asyncExecutor" )
+	@Transactional( propagation = Propagation.NOT_SUPPORTED )
 	public void send( EmailResetPassword emailResetPassword ) {
 		Assert.notNull( emailResetPassword );
-		String velocityResource = "velocity-reset-password_" + emailResetPassword.getEmail().getUser().getLocale().getLanguage().toLowerCase() + ".vm";
 		emailResetPassword.setSubject( this.messageSource.getMessage( "email.resetpassword.title", null, emailResetPassword.getEmail().getUser().getLocale() ) );
-		this.send( emailResetPassword, velocityResource );
+		this.send( emailResetPassword, emailResetPassword.getVelocityResource() );
 	}
 	
 	private void send( final EmailContent emailContent, final String velocityResource ) {
@@ -154,7 +163,12 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
 	public Email getBy( String emailAddress, boolean isPrimary ) {
 		Assert.hasText( emailAddress );
-		return this.repository.getBy( emailAddress, isPrimary );
+		Assert.state( emailAddress.matches( "^([a-zA-Z0-9_.+-])+\\@(([a-zA-Z0-9-])+\\.)+([a-zA-Z0-9]{2,4})+$" ), "The provided email address is not valid." );
+		Email email = null;
+		try {
+			email = this.repository.getBy( emailAddress, isPrimary );
+		} catch ( EmptyResultDataAccessException e ) { }
+		return email;
 	}
 
 	@Override

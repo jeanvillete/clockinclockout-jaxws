@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema targetNamespace="http://schemas.clkio.com/user"
+	xmlns:user="http://schemas.clkio.com/user"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	attributeFormDefault="qualified"
 	elementFormDefault="qualified">
@@ -9,6 +10,12 @@
 			<xs:element name="email" type="xs:string" maxOccurs="1" minOccurs="1" />
 			<xs:element name="password" type="xs:string" maxOccurs="1" minOccurs="1" />
 			<xs:element name="locale" type="xs:string" maxOccurs="1" minOccurs="1" default="pt_br"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="insertUser">
+		<xs:sequence>
+			<xs:element name="user" type="user:user" maxOccurs="1" minOccurs="1" nillable="false"/>
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>

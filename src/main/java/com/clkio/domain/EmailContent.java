@@ -16,13 +16,16 @@ public abstract class EmailContent {
 	private String subject;
 	private String hash;
 	private String encodedHash;
+	private String velocityResource;
 	
-	public EmailContent( Email email ) {
+	public EmailContent( String velocityResource, Email email ) {
 		super();
 		
+		Assert.hasText( velocityResource );
 		Assert.notNull( email, "Argument email cannot be null.");
 		
 		this.email = email;
+		this.velocityResource = velocityResource + email.getUser().getLocale().getLanguage().toLowerCase() + ".vm";
 		
 		this.hash = this.email.getAddress() + SDF.format( this.email.getRecordedTime() );
 		this.hash = new BCryptPasswordEncoder().encode( this.hash );
@@ -58,5 +61,9 @@ public abstract class EmailContent {
 	public String getEncodedHash() {
 		Assert.hasText( encodedHash, "The property 'encodedHash' has not been initialized yet." );
 		return encodedHash;
+	}
+
+	public String getVelocityResource() {
+		return velocityResource;
 	}
 }

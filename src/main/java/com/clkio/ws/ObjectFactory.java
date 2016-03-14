@@ -7,9 +7,11 @@ import javax.xml.bind.annotation.XmlRegistry;
 import javax.xml.namespace.QName;
 import com.clkio.ws.domain.common.Response;
 import com.clkio.ws.domain.common.ResponseException;
-import com.clkio.ws.domain.email.Email;
+import com.clkio.ws.domain.email.ConfirmEmail;
+import com.clkio.ws.domain.email.InsertEmail;
+import com.clkio.ws.domain.login.DoLogin;
 import com.clkio.ws.domain.login.LoginResponse;
-import com.clkio.ws.domain.user.User;
+import com.clkio.ws.domain.user.InsertUser;
 
 
 /**
@@ -29,11 +31,13 @@ import com.clkio.ws.domain.user.User;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _InsertUser_QNAME = new QName("http://ws.clkio.com", "insertUser");
     private final static QName _LoginResponse_QNAME = new QName("http://ws.clkio.com", "loginResponse");
+    private final static QName _DoLogin_QNAME = new QName("http://ws.clkio.com", "doLogin");
     private final static QName _Response_QNAME = new QName("http://ws.clkio.com", "response");
     private final static QName _ResponseException_QNAME = new QName("http://ws.clkio.com", "responseException");
-    private final static QName _User_QNAME = new QName("http://ws.clkio.com", "user");
-    private final static QName _Email_QNAME = new QName("http://ws.clkio.com", "email");
+    private final static QName _InsertEmail_QNAME = new QName("http://ws.clkio.com", "insertEmail");
+    private final static QName _ConfirmEmail_QNAME = new QName("http://ws.clkio.com", "confirmEmail");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.clkio.ws
@@ -43,12 +47,30 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link InsertUser }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://ws.clkio.com", name = "insertUser")
+    public JAXBElement<InsertUser> createInsertUser(InsertUser value) {
+        return new JAXBElement<InsertUser>(_InsertUser_QNAME, InsertUser.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link LoginResponse }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://ws.clkio.com", name = "loginResponse")
     public JAXBElement<LoginResponse> createLoginResponse(LoginResponse value) {
         return new JAXBElement<LoginResponse>(_LoginResponse_QNAME, LoginResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DoLogin }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://ws.clkio.com", name = "doLogin")
+    public JAXBElement<DoLogin> createDoLogin(DoLogin value) {
+        return new JAXBElement<DoLogin>(_DoLogin_QNAME, DoLogin.class, null, value);
     }
 
     /**
@@ -70,21 +92,21 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link User }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link InsertEmail }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://ws.clkio.com", name = "user")
-    public JAXBElement<User> createUser(User value) {
-        return new JAXBElement<User>(_User_QNAME, User.class, null, value);
+    @XmlElementDecl(namespace = "http://ws.clkio.com", name = "insertEmail")
+    public JAXBElement<InsertEmail> createInsertEmail(InsertEmail value) {
+        return new JAXBElement<InsertEmail>(_InsertEmail_QNAME, InsertEmail.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Email }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ConfirmEmail }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://ws.clkio.com", name = "email")
-    public JAXBElement<Email> createEmail(Email value) {
-        return new JAXBElement<Email>(_Email_QNAME, Email.class, null, value);
+    @XmlElementDecl(namespace = "http://ws.clkio.com", name = "confirmEmail")
+    public JAXBElement<ConfirmEmail> createConfirmEmail(ConfirmEmail value) {
+        return new JAXBElement<ConfirmEmail>(_ConfirmEmail_QNAME, ConfirmEmail.class, null, value);
     }
 
 }

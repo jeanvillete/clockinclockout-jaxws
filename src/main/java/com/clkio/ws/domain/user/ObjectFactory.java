@@ -30,6 +30,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link InsertUser }
+     * 
+     */
+    public InsertUser createInsertUser() {
+        return new InsertUser();
+    }
+
+    /**
      * Create an instance of {@link User }
      * 
      */

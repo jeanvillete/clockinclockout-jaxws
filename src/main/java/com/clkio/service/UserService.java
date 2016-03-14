@@ -9,6 +9,14 @@ public interface UserService {
 	
 	User getBy( Email email );
 	
+	/**
+	 * The goal of this service is retrieve a proper User instance syncronyzed with database.
+	 * 
+	 * @param loginCode
+	 * @return
+	 */
+	User getBy( String loginCode );
+	
 	void delete( User user );
 
 	boolean changePassword( User syncUser );

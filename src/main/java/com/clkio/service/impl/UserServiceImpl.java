@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +15,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import com.clkio.domain.Email;
-import com.clkio.domain.EmailConfirmation;
+import com.clkio.domain.NewUserEmailConfirmation;
 import com.clkio.domain.Profile;
 import com.clkio.domain.User;
 import com.clkio.repository.UserRepository;
@@ -59,10 +60,9 @@ public class UserServiceImpl implements UserService, InitializingBean {
 		
 		user.getEmail().setPrimary( true );
 		user.getEmail().setRecordedTime( new Date() );
-		EmailConfirmation emailConfirmation = new EmailConfirmation( user.getEmail() );
+		NewUserEmailConfirmation emailConfirmation = new NewUserEmailConfirmation( user.getEmail() );
 		user.getEmail().setConfirmationCode( emailConfirmation.getHash() );
 		this.emailService.insert( user.getEmail() );
-		
 		this.emailService.send( emailConfirmation );
 	}
 
@@ -112,5 +112,16 @@ public class UserServiceImpl implements UserService, InitializingBean {
 		}
 		
 		this.emailService.deleteNotPrimaryNotConfirmed( calendar.getTime() );
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
+	public User getBy( String loginCode ) {
+		Assert.hasText( loginCode, "No value was provide for 'loginCode' argument." );
+		User user = null;
+		try {
+			user = this.repository.getBy( loginCode );
+		} catch ( EmptyResultDataAccessException e ) { }
+		return user;
 	}
 }

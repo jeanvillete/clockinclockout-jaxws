@@ -33,5 +33,13 @@ public class UserRepository extends CommonRepository {
 		return this.jdbcTemplate.update( " UPDATE CLK_USER SET PASSWORD = ? WHERE ID = ? ",
 				new Object[]{ user.getPassword(), user.getId() }) == 1;
 	}
+
+	public User getBy( String loginCode ) {
+		return this.jdbcTemplate.queryForObject( " SELECT USR.ID, USR.LOCALE, USR.PASSWORD FROM CLK_USER USR "+
+					" LEFT JOIN LOGIN LGN ON USR.ID = LGN.ID_CLK_USER " +
+					" WHERE LGN.CODE = ? ",
+				new Object[]{ loginCode },
+				new UserRowMapper() );
+	}
 	
 }

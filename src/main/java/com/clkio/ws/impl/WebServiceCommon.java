@@ -7,7 +7,11 @@ import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.handler.MessageContext;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.util.Assert;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import com.clkio.domain.User;
+import com.clkio.service.UserService;
 
 abstract class WebServiceCommon {
 
@@ -46,6 +50,18 @@ abstract class WebServiceCommon {
 		}
 		
 		return ip;
+	}
+	
+	protected User getCurrentUser() {
+		HttpServletRequest request = ( HttpServletRequest ) this.wsContext.getMessageContext().get( MessageContext.SERVLET_REQUEST );
+		String loginCode = request.getHeader( "CLKIO-LOGIN-CODE" );
+		
+		Assert.hasText( loginCode, "No 'CLKIO-LOGIN-CODE' header was provided." );
+		
+		User user = this.getService( UserService.class ).getBy( loginCode );
+		Assert.notNull( user, "The provided value for 'CLKIO-LOGIN-CODE' header is not valid." );
+		
+		return user;
 	}
 	
 }

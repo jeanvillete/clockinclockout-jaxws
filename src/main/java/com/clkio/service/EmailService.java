@@ -4,16 +4,19 @@ import java.util.Date;
 import java.util.List;
 
 import com.clkio.domain.Email;
-import com.clkio.domain.EmailConfirmation;
 import com.clkio.domain.EmailResetPassword;
+import com.clkio.domain.NewEmailConfirmation;
+import com.clkio.domain.NewUserEmailConfirmation;
 
 public interface EmailService {
 
 	void insert( Email email );
 	
-	void send( EmailConfirmation email );
-
-	void send( EmailResetPassword email );
+	void send( NewUserEmailConfirmation emailConfirmation );
+	
+	void send( NewEmailConfirmation newEmailConfirmation );
+	
+	void send( EmailResetPassword emailResetPassword );
 	
 	/**
 	 * Checks if the emailAddress exists on the database.

@@ -30,6 +30,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link DoLogin }
+     * 
+     */
+    public DoLogin createDoLogin() {
+        return new DoLogin();
+    }
+
+    /**
      * Create an instance of {@link LoginResponse }
      * 
      */

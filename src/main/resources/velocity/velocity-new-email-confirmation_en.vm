@@ -1,0 +1,47 @@
+<html>
+	<head>
+		<title>${emailContent.subject}</title>
+		<style type="text/css">
+			.clockInClockOutTitleDIV {
+				padding: 10px;
+				font-family: 'HelveticaNeue',Arial,Helvetica,sans-serif;
+				font-size: 16px;
+				line-height: 18px;
+				color: #000000;
+				font-weight: bold;
+			}
+			.clockInClockOutDIV {
+				padding: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="clockInClockOutDIV">
+			We received a request to include the email address <b>${emailContent.email.address}</b> on the app ${linkSite}.
+		</div>
+		
+		<div class="clockInClockOutDIV">
+			Please, click the link below to confirm and activate it. 
+		</div>
+		
+		<div class="clockInClockOutDIV">
+			<a href="${linkSite}/checkemail/${emailContent.encodedEmailAddress}?q=${emailContent.encodedHash}" target="_blank">Confirm email.</a>
+		</div>
+		
+		<div class="clockInClockOutDIV">
+			In case you want to turn it activate through another way, as from a mobile app, provide the following code;
+		</div>
+		
+		<div class="clockInClockOutDIV">
+			${emailContent.hash}
+		</div>
+		
+		<div class="clockInClockOutDIV">
+			If you did not request it, we are sorry for the inconvenient and you can ignore this.
+		</div>
+		
+		<div class="clockInClockOutDIV">
+			We from ${linkSite} thank you for the interest in our community.
+		</div>
+	</body>
+</html>

@@ -16,25 +16,20 @@
 		</style>
 	</head>
 	<body>
-		<div class="clockInClockOutTitleDIV">
-			Você esqueceu sua senha?
+		<div class="clockInClockOutDIV">
+			Recebemos a solicitação de inclusão do endereço de email <b>${emailContent.email.address}</b> no aplicativo ${linkSite}.
 		</div>
 		
 		<div class="clockInClockOutDIV">
-			Recebemos a solicitação para redefinição de senha da conta <b>${emailContent.email.address}</b> .
+			Por favor, clique no link abaixo para confirmar o endereço de email e ativá-lo.
 		</div>
 		
 		<div class="clockInClockOutDIV">
-			Se você ainda deseja redefinir sua senha, por favor, clique no link abaixo ou copie o endereço
-			e cole no seu navegador favorito.
+			<a href="${linkSite}/checkemail/${emailContent.encodedEmailAddress}?q=${emailContent.encodedHash}" target="_blank">Confirmar email.</a>
 		</div>
 		
 		<div class="clockInClockOutDIV">
-			<a href="${linkSite}/reset/${emailContent.encodedEmailAddress}?q=${emailContent.encodedHash}" target="_blank">Confirmar redefinição de senha.</a>
-		</div>
-		
-		<div class="clockInClockOutDIV">
-			Caso queira prosseguir com a redefinição da senha através de outro meio, como pelo aplicativo mobile por exemplo, o código é o seguinte;
+			Caso queira efetivar ativação através de outro meio, como pelo aplicativo mobile por exemplo, o código é o seguinte;
 		</div>
 		
 		<div class="clockInClockOutDIV">
@@ -42,7 +37,7 @@
 		</div>
 		
 		<div class="clockInClockOutDIV">
-			Se você não deseja redefinir sua senha, apenas desconsidere esta mensagem e sua senha não terá nenhuma modificação.
+			Se você não fez esta solicitação, por favor, nos desculpe e desconsidere esta mensagem.
 		</div>
 		
 		<div class="clockInClockOutDIV">

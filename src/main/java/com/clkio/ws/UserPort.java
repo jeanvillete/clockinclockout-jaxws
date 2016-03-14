@@ -8,7 +8,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import com.clkio.ws.domain.common.Response;
-import com.clkio.ws.domain.user.User;
+import com.clkio.ws.domain.user.InsertUser;
 
 
 /**
@@ -31,16 +31,16 @@ public interface UserPort {
 
     /**
      * 
-     * @param user
+     * @param parameters
      * @return
      *     returns com.clkio.ws.domain.common.Response
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "response", targetNamespace = "http://ws.clkio.com", partName = "response")
+    @WebResult(name = "response", targetNamespace = "http://ws.clkio.com", partName = "result")
     public Response insert(
-        @WebParam(name = "user", targetNamespace = "http://ws.clkio.com", partName = "user")
-        User user)
+        @WebParam(name = "insertUser", targetNamespace = "http://ws.clkio.com", partName = "parameters")
+        InsertUser parameters)
         throws ResponseException
     ;
 

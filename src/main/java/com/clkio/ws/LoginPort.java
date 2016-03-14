@@ -5,9 +5,9 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
-import com.clkio.ws.domain.login.LoginResponse;
+import javax.xml.ws.RequestWrapper;
+import javax.xml.ws.ResponseWrapper;
 import com.clkio.ws.domain.user.User;
 
 
@@ -18,7 +18,6 @@ import com.clkio.ws.domain.user.User;
  * 
  */
 @WebService(name = "LoginPort", targetNamespace = "http://ws.clkio.com")
-@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 @XmlSeeAlso({
     com.clkio.ws.ObjectFactory.class,
     com.clkio.ws.domain.common.ObjectFactory.class,
@@ -33,14 +32,17 @@ public interface LoginPort {
      * 
      * @param user
      * @return
-     *     returns com.clkio.ws.domain.login.LoginResponse
+     *     returns java.lang.String
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "loginResponse", targetNamespace = "http://ws.clkio.com", partName = "response")
-    public LoginResponse doLogin(
-        @WebParam(name = "user", targetNamespace = "http://ws.clkio.com", partName = "user")
+    @WebResult(name = "code", targetNamespace = "http://schemas.clkio.com/login")
+    @RequestWrapper(localName = "doLogin", targetNamespace = "http://ws.clkio.com", className = "com.clkio.ws.domain.login.DoLogin")
+    @ResponseWrapper(localName = "loginResponse", targetNamespace = "http://ws.clkio.com", className = "com.clkio.ws.domain.login.LoginResponse")
+    public String doLogin(
+        @WebParam(name = "user", targetNamespace = "http://schemas.clkio.com/login")
         User user)
-        throws ResponseException;
+        throws ResponseException
+    ;
 
 }
