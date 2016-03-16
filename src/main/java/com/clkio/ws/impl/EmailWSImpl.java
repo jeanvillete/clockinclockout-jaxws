@@ -13,8 +13,8 @@ import com.clkio.service.EmailService;
 import com.clkio.ws.EmailPort;
 import com.clkio.ws.ResponseException;
 import com.clkio.ws.domain.common.Response;
-import com.clkio.ws.domain.email.ConfirmEmail;
-import com.clkio.ws.domain.email.InsertEmail;
+import com.clkio.ws.domain.email.ConfirmEmailRequest;
+import com.clkio.ws.domain.email.InsertEmailRequest;
 
 @WebService( endpointInterface = "com.clkio.ws.EmailPort" )
 public class EmailWSImpl extends WebServiceCommon implements EmailPort {
@@ -22,13 +22,13 @@ public class EmailWSImpl extends WebServiceCommon implements EmailPort {
 	private static final Logger LOG = Logger.getLogger( EmailWSImpl.class );
 
 	@Override
-	public Response confirm( ConfirmEmail param ) throws ResponseException {
+	public Response confirm( ConfirmEmailRequest request ) throws ResponseException {
 		try {
-			Assert.notNull( param );
-			Assert.notNull( param.getEmail() );
+			Assert.notNull( request );
+			Assert.notNull( request.getEmail() );
 			
-			Email email = new Email( param.getEmail().getEmailAddress() );
-			email.setConfirmationCode( param.getEmail().getConfirmationCode() );
+			Email email = new Email( request.getEmail().getEmailAddress() );
+			email.setConfirmationCode( request.getEmail().getConfirmationCode() );
 			
 			this.getService( EmailService.class ).confirm( email );
 			
@@ -40,12 +40,12 @@ public class EmailWSImpl extends WebServiceCommon implements EmailPort {
 	}
 
 	@Override
-	public Response insert( InsertEmail param ) throws ResponseException {
+	public Response insert( InsertEmailRequest request ) throws ResponseException {
 		try {
-			Assert.notNull( param );
-			Assert.notNull( param.getEmail() );
+			Assert.notNull( request );
+			Assert.notNull( request.getEmail() );
 			
-			Email email = new Email( param.getEmail().getEmailAddress() );
+			Email email = new Email( request.getEmail().getEmailAddress() );
 			email.setUser( this.getCurrentUser() );
 			email.setRecordedTime( new Date() );
 			email.setPrimary( false );

@@ -13,7 +13,7 @@ import com.clkio.service.UserService;
 import com.clkio.ws.ResponseException;
 import com.clkio.ws.UserPort;
 import com.clkio.ws.domain.common.Response;
-import com.clkio.ws.domain.user.InsertUser;
+import com.clkio.ws.domain.user.InsertUserRequest;
 
 @WebService( endpointInterface = "com.clkio.ws.UserPort" )
 public class UserWSImpl extends WebServiceCommon implements UserPort {
@@ -21,13 +21,13 @@ public class UserWSImpl extends WebServiceCommon implements UserPort {
 	private static final Logger LOG = Logger.getLogger( UserWSImpl.class );
 
 	@Override
-	public Response insert( InsertUser param ) throws ResponseException {
+	public Response insert( InsertUserRequest request ) throws ResponseException {
 		try {
-			Assert.notNull( param );
-			Assert.notNull( param.getUser() );
+			Assert.notNull( request );
+			Assert.notNull( request.getUser() );
 			
-			User newUser = new User( new Email( param.getUser().getEmail() ), new Locale( param.getUser().getLocale() ) );
-			newUser.setPassword( param.getUser().getPassword() );
+			User newUser = new User( new Email( request.getUser().getEmail() ), new Locale( request.getUser().getLocale() ) );
+			newUser.setPassword( request.getUser().getPassword() );
 			this.getService( UserService.class ).insert( newUser );
 			
 			return new Response( "User persisted successfully. An email is going to be sent to you in order to confirm it, please, check your inbox." );

@@ -4,7 +4,9 @@ package com.clkio.ws.domain.common;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
+import com.clkio.ws.domain.login.LoginResponse;
 
 
 /**
@@ -30,9 +32,12 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "response", propOrder = {
     "message"
 })
+@XmlSeeAlso({
+    LoginResponse.class
+})
 public class Response {
 
-	@XmlElement(required = true)
+    @XmlElement(required = true)
     protected String message;
 	
 	public Response() {

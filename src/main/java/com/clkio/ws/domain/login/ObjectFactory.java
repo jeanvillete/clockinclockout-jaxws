@@ -30,11 +30,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link DoLogin }
+     * Create an instance of {@link DoLoginRequest }
      * 
      */
-    public DoLogin createDoLogin() {
-        return new DoLogin();
+    public DoLoginRequest createDoLoginRequest() {
+        return new DoLoginRequest();
     }
 
     /**

@@ -1,24 +1,23 @@
 
-package com.clkio.ws.domain.login;
+package com.clkio.ws.domain.email;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import com.clkio.ws.domain.user.User;
 
 
 /**
- * <p>Java class for doLogin complex type.
+ * <p>Java class for insertEmailRequest complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="doLogin">
+ * &lt;complexType name="insertEmailRequest">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="user" type="{http://schemas.clkio.com/user}user"/>
+ *         &lt;element name="email" type="{http://schemas.clkio.com/email}email"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -28,36 +27,36 @@ import com.clkio.ws.domain.user.User;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "doLogin", propOrder = {
-    "user"
+@XmlType(name = "insertEmailRequest", propOrder = {
+    "email"
 })
-public class DoLogin {
+public class InsertEmailRequest {
 
     @XmlElement(required = true)
-    protected User user;
+    protected Email email;
 
     /**
-     * Gets the value of the user property.
+     * Gets the value of the email property.
      * 
      * @return
      *     possible object is
-     *     {@link User }
+     *     {@link Email }
      *     
      */
-    public User getUser() {
-        return user;
+    public Email getEmail() {
+        return email;
     }
 
     /**
-     * Sets the value of the user property.
+     * Sets the value of the email property.
      * 
      * @param value
      *     allowed object is
-     *     {@link User }
+     *     {@link Email }
      *     
      */
-    public void setUser(User value) {
-        this.user = value;
+    public void setEmail(Email value) {
+        this.email = value;
     }
 
 }

@@ -13,7 +13,7 @@
 		</xs:sequence>
 	</xs:complexType>
 
-	<xs:complexType name="insertUser">
+	<xs:complexType name="insertUserRequest">
 		<xs:sequence>
 			<xs:element name="user" type="user:user" maxOccurs="1" minOccurs="1" nillable="false"/>
 		</xs:sequence>

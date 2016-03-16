@@ -1,5 +1,5 @@
 
-package com.clkio.ws.domain.email;
+package com.clkio.ws.domain.user;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -8,16 +8,16 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for insertEmail complex type.
+ * <p>Java class for insertUserRequest complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="insertEmail">
+ * &lt;complexType name="insertUserRequest">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="email" type="{http://schemas.clkio.com/email}email"/>
+ *         &lt;element name="user" type="{http://schemas.clkio.com/user}user"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -27,36 +27,36 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "insertEmail", propOrder = {
-    "email"
+@XmlType(name = "insertUserRequest", propOrder = {
+    "user"
 })
-public class InsertEmail {
+public class InsertUserRequest {
 
     @XmlElement(required = true)
-    protected Email email;
+    protected User user;
 
     /**
-     * Gets the value of the email property.
+     * Gets the value of the user property.
      * 
      * @return
      *     possible object is
-     *     {@link Email }
+     *     {@link User }
      *     
      */
-    public Email getEmail() {
-        return email;
+    public User getUser() {
+        return user;
     }
 
     /**
-     * Sets the value of the email property.
+     * Sets the value of the user property.
      * 
      * @param value
      *     allowed object is
-     *     {@link Email }
+     *     {@link User }
      *     
      */
-    public void setEmail(Email value) {
-        this.email = value;
+    public void setUser(User value) {
+        this.user = value;
     }
 
 }

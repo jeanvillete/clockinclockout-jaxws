@@ -8,8 +8,8 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import com.clkio.ws.domain.common.Response;
-import com.clkio.ws.domain.email.ConfirmEmail;
-import com.clkio.ws.domain.email.InsertEmail;
+import com.clkio.ws.domain.email.ConfirmEmailRequest;
+import com.clkio.ws.domain.email.InsertEmailRequest;
 
 
 /**
@@ -32,7 +32,7 @@ public interface EmailPort {
 
     /**
      * 
-     * @param parameters
+     * @param request
      * @return
      *     returns com.clkio.ws.domain.common.Response
      * @throws ResponseException
@@ -40,14 +40,14 @@ public interface EmailPort {
     @WebMethod
     @WebResult(name = "response", targetNamespace = "http://ws.clkio.com", partName = "result")
     public Response confirm(
-        @WebParam(name = "confirmEmail", targetNamespace = "http://ws.clkio.com", partName = "parameters")
-        ConfirmEmail parameters)
+        @WebParam(name = "confirmEmailRequest", targetNamespace = "http://ws.clkio.com", partName = "request")
+        ConfirmEmailRequest request)
         throws ResponseException
     ;
 
     /**
      * 
-     * @param parameters
+     * @param request
      * @return
      *     returns com.clkio.ws.domain.common.Response
      * @throws ResponseException
@@ -55,8 +55,8 @@ public interface EmailPort {
     @WebMethod
     @WebResult(name = "response", targetNamespace = "http://ws.clkio.com", partName = "result")
     public Response insert(
-        @WebParam(name = "insertEmail", targetNamespace = "http://ws.clkio.com", partName = "parameters")
-        InsertEmail parameters)
+        @WebParam(name = "insertEmailRequest", targetNamespace = "http://ws.clkio.com", partName = "request")
+        InsertEmailRequest request)
         throws ResponseException
     ;
 

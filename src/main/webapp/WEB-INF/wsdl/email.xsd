@@ -13,13 +13,13 @@
 		</xs:sequence>
 	</xs:complexType>
 
-	<xs:complexType name="confirmEmail">
+	<xs:complexType name="confirmEmailRequest">
 		<xs:sequence>
 			<xs:element name="email" type="email:email" maxOccurs="1" minOccurs="1" nillable="false"/>
 		</xs:sequence>
 	</xs:complexType>
 
-	<xs:complexType name="insertEmail">
+	<xs:complexType name="insertEmailRequest">
 		<xs:sequence>
 			<xs:element name="email" type="email:email" maxOccurs="1" minOccurs="1" nillable="false"/>
 		</xs:sequence>

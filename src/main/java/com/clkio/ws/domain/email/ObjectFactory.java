@@ -30,19 +30,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link InsertEmail }
+     * Create an instance of {@link InsertEmailRequest }
      * 
      */
-    public InsertEmail createInsertEmail() {
-        return new InsertEmail();
+    public InsertEmailRequest createInsertEmailRequest() {
+        return new InsertEmailRequest();
     }
 
     /**
-     * Create an instance of {@link ConfirmEmail }
+     * Create an instance of {@link ConfirmEmailRequest }
      * 
      */
-    public ConfirmEmail createConfirmEmail() {
-        return new ConfirmEmail();
+    public ConfirmEmailRequest createConfirmEmailRequest() {
+        return new ConfirmEmailRequest();
     }
 
     /**

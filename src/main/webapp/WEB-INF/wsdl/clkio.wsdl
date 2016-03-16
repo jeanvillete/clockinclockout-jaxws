@@ -18,11 +18,11 @@
 
 			<xs:element name="response" type="common:response" nillable="false"/>
 			<xs:element name="responseException" type="common:responseException" nillable="false"/>
-			<xs:element name="insertUser" type="user:insertUser" nillable="false"/>
-			<xs:element name="doLogin" type="login:doLogin" nillable="false"/>
+			<xs:element name="insertUserRequest" type="user:insertUserRequest" nillable="false"/>
+			<xs:element name="doLoginRequest" type="login:doLoginRequest" nillable="false"/>
 			<xs:element name="loginResponse" type="login:loginResponse" nillable="false"/>
-			<xs:element name="confirmEmail" type="email:confirmEmail" nillable="false"/>
-			<xs:element name="insertEmail" type="email:insertEmail" nillable="false"/>
+			<xs:element name="confirmEmailRequest" type="email:confirmEmailRequest" nillable="false"/>
+			<xs:element name="insertEmailRequest" type="email:insertEmailRequest" nillable="false"/>
 		</xs:schema>
 	</wsdl:types>
 	
@@ -34,19 +34,19 @@
 		<wsdl:part name="exception" element="clkws:responseException" />
 	</wsdl:message>
 	<wsdl:message name="insertUserRequest">
-		<wsdl:part name="parameters" element="clkws:insertUser" />
+		<wsdl:part name="request" element="clkws:insertUserRequest" />
 	</wsdl:message>
 	<wsdl:message name="doLoginRequest">
-		<wsdl:part name="parameters" element="clkws:doLogin" />
+		<wsdl:part name="request" element="clkws:doLoginRequest" />
 	</wsdl:message>
 	<wsdl:message name="loginResponse">
 		<wsdl:part name="result" element="clkws:loginResponse" />
 	</wsdl:message>
 	<wsdl:message name="confirmEmailRequest">
-		<wsdl:part name="parameters" element="clkws:confirmEmail" />
+		<wsdl:part name="request" element="clkws:confirmEmailRequest" />
 	</wsdl:message>
 	<wsdl:message name="insertEmailRequest">
-		<wsdl:part name="parameters" element="clkws:insertEmail" />
+		<wsdl:part name="request" element="clkws:insertEmailRequest" />
 	</wsdl:message>
 	
 	<!-- port types -->

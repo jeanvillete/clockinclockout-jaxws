@@ -1,19 +1,20 @@
 
-package com.clkio.ws.domain.user;
+package com.clkio.ws.domain.login;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import com.clkio.ws.domain.user.User;
 
 
 /**
- * <p>Java class for insertUser complex type.
+ * <p>Java class for doLoginRequest complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="insertUser">
+ * &lt;complexType name="doLoginRequest">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -27,10 +28,10 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "insertUser", propOrder = {
+@XmlType(name = "doLoginRequest", propOrder = {
     "user"
 })
-public class InsertUser {
+public class DoLoginRequest {
 
     @XmlElement(required = true)
     protected User user;

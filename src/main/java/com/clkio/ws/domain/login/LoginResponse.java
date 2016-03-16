@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import com.clkio.ws.domain.common.Response;
 
 
 /**
@@ -15,11 +16,11 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="loginResponse">
  *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *     &lt;extension base="{http://schemas.clkio.com/common}response">
  *       &lt;sequence>
  *         &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
- *     &lt;/restriction>
+ *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
@@ -30,7 +31,9 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "loginResponse", propOrder = {
     "code"
 })
-public class LoginResponse {
+public class LoginResponse
+    extends Response
+{
 
     @XmlElement(required = true)
     protected String code;

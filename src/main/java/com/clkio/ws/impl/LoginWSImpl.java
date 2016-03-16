@@ -10,7 +10,8 @@ import com.clkio.domain.Email;
 import com.clkio.service.LoginService;
 import com.clkio.ws.LoginPort;
 import com.clkio.ws.ResponseException;
-import com.clkio.ws.domain.user.User;
+import com.clkio.ws.domain.login.DoLoginRequest;
+import com.clkio.ws.domain.login.LoginResponse;
 
 @WebService( endpointInterface = "com.clkio.ws.LoginPort" )
 public class LoginWSImpl extends WebServiceCommon implements LoginPort {
@@ -18,16 +19,17 @@ public class LoginWSImpl extends WebServiceCommon implements LoginPort {
 	private static final Logger LOG = Logger.getLogger( LoginWSImpl.class );
 
 	@Override
-	public String doLogin( User userParam ) throws ResponseException {
+	public LoginResponse doLogin( DoLoginRequest request ) throws ResponseException {
 		try {
-			com.clkio.domain.User user = new com.clkio.domain.User( new Email( userParam.getEmail() ), new Locale( userParam.getLocale() ) );
-			user.setPassword( userParam.getPassword(), false );
+			com.clkio.domain.User user = new com.clkio.domain.User( new Email( request.getUser().getEmail() ), new Locale( request.getUser().getLocale() ) );
+			user.setPassword( request.getUser().getPassword(), false );
 			
-			return this.getService( LoginService.class ).login( user, this.getRequesterIP() );
+			return new LoginResponse( this.getService( LoginService.class ).login( user, this.getRequesterIP() ) );
 		} catch ( Exception e ) {
 			LOG.error( e );
 			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
 		}
 	}
+
 	
 }
