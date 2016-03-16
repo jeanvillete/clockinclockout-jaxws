@@ -29,6 +29,7 @@
 			<xs:element name="listEmailRequest" type="email:listEmailRequest" nillable="false"/>
 			<xs:element name="listEmailResponse" type="email:listEmailResponse" nillable="false"/>
 			<xs:element name="deleteEmailRequest" type="email:deleteEmailRequest" nillable="false"/>
+			<xs:element name="setEmailAsPrimaryRequest" type="email:setEmailAsPrimaryRequest" nillable="false"/>
 		</xs:schema>
 	</wsdl:types>
 	
@@ -62,6 +63,9 @@
 	</wsdl:message>
 	<wsdl:message name="deleteEmailRequest">
 		<wsdl:part name="request" element="clkio:deleteEmailRequest" />
+	</wsdl:message>
+	<wsdl:message name="setEmailAsPrimaryRequest">
+		<wsdl:part name="request" element="clkio:setEmailAsPrimaryRequest" />
 	</wsdl:message>
 	
 	<!-- port types -->
@@ -99,6 +103,11 @@
 			<wsdl:input message="clkws:deleteEmailRequest" />
 			<wsdl:output message="clkws:response" />
 			<wsdl:fault message="clkws:responseException" name="deleteEmailException" />
+		</wsdl:operation>
+		<wsdl:operation name="setEmailAsPrimary">
+			<wsdl:input message="clkws:setEmailAsPrimaryRequest" />
+			<wsdl:output message="clkws:response" />
+			<wsdl:fault message="clkws:responseException" name="setEmailAsPrimaryException" />
 		</wsdl:operation>
 	</wsdl:portType>
 	
@@ -181,6 +190,18 @@
 			</wsdl:output>
 			<wsdl:fault name="deleteEmailException">
 				<soap:fault name="deleteEmailException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="setEmailAsPrimary">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="setEmailAsPrimaryException">
+				<soap:fault name="setEmailAsPrimaryException" use="literal" />
 			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>

@@ -5,6 +5,7 @@ import java.util.Locale;
 import javax.jws.WebService;
 
 import org.apache.log4j.Logger;
+import org.springframework.util.Assert;
 
 import com.clkio.domain.Email;
 import com.clkio.service.LoginService;
@@ -21,6 +22,10 @@ public class LoginWSImpl extends WebServiceCommon implements LoginPort {
 	@Override
 	public LoginResponse doLogin( DoLoginRequest request ) throws ResponseException {
 		try {
+			Assert.notNull( request );
+			Assert.state( request.getUser() != null && request.getUser().getEmail() != null && request.getUser().getPassword() != null,
+					"[clkiows] Instance 'user' alongside its 'email' and 'password' properties are mandatory." );
+			
 			com.clkio.domain.User user = new com.clkio.domain.User( new Email( request.getUser().getEmail() ), new Locale( request.getUser().getLocale() ) );
 			user.setPassword( request.getUser().getPassword(), false );
 			

@@ -46,4 +46,6 @@ public interface EmailService {
 	List< Email > listPrimaryNotConfirmed( Date date );
 	
 	void deleteNotPrimaryNotConfirmed( Date date );
+	
+	void setAsPrimary( Email email );
 }

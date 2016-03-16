@@ -56,10 +56,10 @@ abstract class WebServiceCommon {
 		HttpServletRequest request = ( HttpServletRequest ) this.wsContext.getMessageContext().get( MessageContext.SERVLET_REQUEST );
 		String loginCode = request.getHeader( "CLKIO-LOGIN-CODE" );
 		
-		Assert.hasText( loginCode, "No 'CLKIO-LOGIN-CODE' header was provided." );
+		Assert.hasText( loginCode, "[clkiows] No 'CLKIO-LOGIN-CODE' header was provided." );
 		
 		User user = this.getService( UserService.class ).getBy( loginCode );
-		Assert.notNull( user, "The provided value for 'CLKIO-LOGIN-CODE' header is not valid." );
+		Assert.notNull( user, "[clkiows] The provided value for 'CLKIO-LOGIN-CODE' header is not valid." );
 		
 		return user;
 	}

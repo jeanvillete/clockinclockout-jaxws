@@ -21,6 +21,7 @@ import com.clkio.ws.domain.email.DeleteEmailRequest;
 import com.clkio.ws.domain.email.InsertEmailRequest;
 import com.clkio.ws.domain.email.ListEmailRequest;
 import com.clkio.ws.domain.email.ListEmailResponse;
+import com.clkio.ws.domain.email.SetEmailAsPrimaryRequest;
 
 @WebService( endpointInterface = "com.clkio.ws.EmailPort" )
 public class EmailWSImpl extends WebServiceCommon implements EmailPort {
@@ -31,7 +32,7 @@ public class EmailWSImpl extends WebServiceCommon implements EmailPort {
 	public Response confirm( ConfirmEmailRequest request ) throws ResponseException {
 		try {
 			Assert.notNull( request );
-			Assert.notNull( request.getEmail(), "Argument 'email' is mandatory for WS request." );
+			Assert.notNull( request.getEmail(), "[clkiows] No 'email' instance was found on the request." );
 			
 			Email email = new Email( request.getEmail().getEmailAddress() );
 			email.setConfirmationCode( request.getEmail().getConfirmationCode() );
@@ -49,7 +50,7 @@ public class EmailWSImpl extends WebServiceCommon implements EmailPort {
 	public Response insert( InsertEmailRequest request ) throws ResponseException {
 		try {
 			Assert.notNull( request );
-			Assert.notNull( request.getEmail(), "Argument 'email' is mandatory for WS request." );
+			Assert.notNull( request.getEmail(), "[clkiows] No 'email' instance was found on the request." );
 			
 			Email email = new Email( request.getEmail().getEmailAddress() );
 			email.setUser( this.getCurrentUser() );
@@ -90,8 +91,8 @@ public class EmailWSImpl extends WebServiceCommon implements EmailPort {
 	public Response delete( DeleteEmailRequest request ) throws ResponseException {
 		try {
 			Assert.notNull( request );
-			Assert.notNull( request.getEmail(), "Argument 'email' is mandatory for WS request." );
-			Assert.notNull( request.getEmail().getId(), "The 'id' field is a mandatory value for 'email' argument, for this WS request." );
+			Assert.notNull( request.getEmail(), "[clkiows] No 'email' instance was found on the request." );
+			Assert.notNull( request.getEmail().getId(), "[clkiows] No value found for 'email's 'id' property found on the request." );
 			
 			Email email = new Email( request.getEmail().getId().intValue() );
 			email.setUser( getCurrentUser() );
@@ -99,6 +100,25 @@ public class EmailWSImpl extends WebServiceCommon implements EmailPort {
 			this.getService( EmailService.class ).delete( email );
 			
 			return new Response( "Email address deleted successfully as requested." );
+		} catch ( Exception e ) {
+			LOG.error( e );
+			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+		}
+	}
+
+	@Override
+	public Response setEmailAsPrimary( SetEmailAsPrimaryRequest request ) throws ResponseException {
+		try {
+			Assert.notNull( request );
+			Assert.notNull( request.getEmail(), "[clkiows] No 'email' instance was found on the request." );
+			Assert.notNull( request.getEmail().getId(), "[clkiows] No value for 'email's 'id' property was found on the request." );
+			
+			Email email = new Email( request.getEmail().getId().intValue() );
+			email.setUser( getCurrentUser() );
+			
+			this.getService( EmailService.class ).setAsPrimary( email );
+			
+			return new Response( "Operation set as primary processed successfully." );
 		} catch ( Exception e ) {
 			LOG.error( e );
 			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );

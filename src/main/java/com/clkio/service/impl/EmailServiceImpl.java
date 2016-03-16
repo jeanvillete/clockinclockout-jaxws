@@ -173,11 +173,11 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	public Email getBy( String emailAddress, boolean isPrimary ) {
 		Assert.hasText( emailAddress );
 		Assert.state( emailAddress.matches( "^([a-zA-Z0-9_.+-])+\\@(([a-zA-Z0-9-])+\\.)+([a-zA-Z0-9]{2,4})+$" ), "The provided email address is not valid." );
-		Email email = null;
 		try {
-			email = this.repository.getBy( emailAddress, isPrimary );
-		} catch ( EmptyResultDataAccessException e ) { }
-		return email;
+			return this.repository.getBy( emailAddress, isPrimary );
+		} catch ( EmptyResultDataAccessException e ) {
+			return null;
+		}
 	}
 
 	@Override
@@ -205,7 +205,26 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
 	public Email get( Email email ) {
 		Assert.notNull( email );
-		return this.repository.get( email );
+		Assert.state( email.getUser() != null && email.getUser().getId() != null );
+		try {
+			return this.repository.get( email );
+		} catch ( EmptyResultDataAccessException e ) {
+			return null;
+		}
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.REQUIRED )
+	public void setAsPrimary( Email email ) {
+		Assert.notNull( email );
+		
+		Email syncEmail = this.get( email );
+		Assert.state( syncEmail != null, "No result found." );
+		Assert.state( syncEmail.getConfirmationDate() != null, "The provided 'email' has not been confirmed yet!." );
+		Assert.state( !syncEmail.isPrimary(), "The provided email is already the 'PRIMARY' one." );
+		
+		Assert.state( this.repository.unsetPrimary( email.getUser() ), "Some problem happed while setting email as primary." );
+		Assert.state( this.repository.setAsPrimary( email ), "Some problem happed while setting email as primary." );
 	}
 
 }

@@ -76,9 +76,17 @@ public class EmailRepository extends CommonRepository {
 
 	public Email get( Email email ) {
 		return this.jdbcTemplate.queryForObject( " SELECT ID, ADDRESS, RECORDED_TIME, CONFIRMATION_CODE, CONFIRMATION_DATE, IS_PRIMARY, ID_CLK_USER FROM EMAIL "
-				+ " WHERE ID = ? ",
-				new Object[]{ email.getId() },
+				+ " WHERE ID = ? AND ID_CLK_USER = ? ",
+				new Object[]{ email.getId(), email.getUser().getId() },
 				new EmailRowMapper() );
+	}
+	
+	public boolean unsetPrimary( User user ) {
+		return this.jdbcTemplate.update( " UPDATE EMAIL SET IS_PRIMARY = ? WHERE ID_CLK_USER = ? ", new Object[]{ false, user.getId() } ) > 0;
+	}
+
+	public boolean setAsPrimary( Email email ) {
+		return this.jdbcTemplate.update( " UPDATE EMAIL SET IS_PRIMARY = ? WHERE ID = ? AND ID_CLK_USER = ? ", new Object[]{ true, email.getId(), email.getUser().getId() } ) == 1;
 	}
 
 }

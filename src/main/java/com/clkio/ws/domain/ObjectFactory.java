@@ -12,6 +12,7 @@ import com.clkio.ws.domain.email.DeleteEmailRequest;
 import com.clkio.ws.domain.email.InsertEmailRequest;
 import com.clkio.ws.domain.email.ListEmailRequest;
 import com.clkio.ws.domain.email.ListEmailResponse;
+import com.clkio.ws.domain.email.SetEmailAsPrimaryRequest;
 import com.clkio.ws.domain.login.DoLoginRequest;
 import com.clkio.ws.domain.login.LoginResponse;
 import com.clkio.ws.domain.user.InsertUserRequest;
@@ -44,6 +45,7 @@ public class ObjectFactory {
     private final static QName _DeleteEmailRequest_QNAME = new QName("http://schemas.clkio.com", "deleteEmailRequest");
     private final static QName _ResponseException_QNAME = new QName("http://schemas.clkio.com", "responseException");
     private final static QName _ConfirmEmailRequest_QNAME = new QName("http://schemas.clkio.com", "confirmEmailRequest");
+    private final static QName _SetEmailAsPrimaryRequest_QNAME = new QName("http://schemas.clkio.com", "setEmailAsPrimaryRequest");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.clkio.ws.domain
@@ -140,6 +142,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "confirmEmailRequest")
     public JAXBElement<ConfirmEmailRequest> createConfirmEmailRequest(ConfirmEmailRequest value) {
         return new JAXBElement<ConfirmEmailRequest>(_ConfirmEmailRequest_QNAME, ConfirmEmailRequest.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link SetEmailAsPrimaryRequest }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "setEmailAsPrimaryRequest")
+    public JAXBElement<SetEmailAsPrimaryRequest> createSetEmailAsPrimaryRequest(SetEmailAsPrimaryRequest value) {
+        return new JAXBElement<SetEmailAsPrimaryRequest>(_SetEmailAsPrimaryRequest_QNAME, SetEmailAsPrimaryRequest.class, null, value);
     }
 
 }

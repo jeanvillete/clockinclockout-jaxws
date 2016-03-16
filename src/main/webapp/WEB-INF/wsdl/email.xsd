@@ -47,4 +47,10 @@
 			<xs:element name="email" type="email:email" maxOccurs="1" minOccurs="1" nillable="false"/>
 		</xs:sequence>
 	</xs:complexType>
+	
+	<xs:complexType name="setEmailAsPrimaryRequest">
+		<xs:sequence>
+			<xs:element name="email" type="email:email" maxOccurs="1" minOccurs="1" nillable="false"/>
+		</xs:sequence>
+	</xs:complexType>
 </xs:schema>

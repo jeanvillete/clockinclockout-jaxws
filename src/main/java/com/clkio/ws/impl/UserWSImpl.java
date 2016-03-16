@@ -24,7 +24,8 @@ public class UserWSImpl extends WebServiceCommon implements UserPort {
 	public Response insert( InsertUserRequest request ) throws ResponseException {
 		try {
 			Assert.notNull( request );
-			Assert.notNull( request.getUser() );
+			Assert.state( request.getUser() != null && request.getUser().getEmail() != null && request.getUser().getPassword() != null,
+					"[clkiows] Instance 'user' alongside its 'email' and 'password' properties are mandatory." );
 			
 			User newUser = new User( new Email( request.getUser().getEmail() ), new Locale( request.getUser().getLocale() ) );
 			newUser.setPassword( request.getUser().getPassword() );

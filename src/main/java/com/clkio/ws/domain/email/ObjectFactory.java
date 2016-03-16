@@ -70,6 +70,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link SetEmailAsPrimaryRequest }
+     * 
+     */
+    public SetEmailAsPrimaryRequest createSetEmailAsPrimaryRequest() {
+        return new SetEmailAsPrimaryRequest();
+    }
+
+    /**
      * Create an instance of {@link Email }
      * 
      */

@@ -13,6 +13,7 @@ import com.clkio.ws.domain.email.DeleteEmailRequest;
 import com.clkio.ws.domain.email.InsertEmailRequest;
 import com.clkio.ws.domain.email.ListEmailRequest;
 import com.clkio.ws.domain.email.ListEmailResponse;
+import com.clkio.ws.domain.email.SetEmailAsPrimaryRequest;
 
 
 /**
@@ -90,6 +91,21 @@ public interface EmailPort {
     public Response delete(
         @WebParam(name = "deleteEmailRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         DeleteEmailRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.common.Response
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public Response setEmailAsPrimary(
+        @WebParam(name = "setEmailAsPrimaryRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        SetEmailAsPrimaryRequest request)
         throws ResponseException
     ;
 
