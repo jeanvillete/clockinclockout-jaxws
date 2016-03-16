@@ -41,4 +41,10 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	
+	<xs:complexType name="deleteEmailRequest">
+		<xs:sequence>
+			<xs:element name="email" type="email:email" maxOccurs="1" minOccurs="1" nillable="false"/>
+		</xs:sequence>
+	</xs:complexType>
 </xs:schema>

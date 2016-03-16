@@ -30,6 +30,8 @@ public interface EmailService {
 
 	void delete( Email email );
 	
+	Email get( Email email );
+	
 	List< Email > list( User user );
 	
 	/**

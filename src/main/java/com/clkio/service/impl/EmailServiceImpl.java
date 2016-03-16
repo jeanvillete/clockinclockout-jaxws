@@ -157,7 +157,15 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	@Transactional( propagation = Propagation.REQUIRED )
 	public void delete( Email email ) {
 		Assert.notNull( email );
-		this.repository.delete( email );
+		Assert.state( email.getUser() != null && email.getUser().getId() != null );
+		
+		Email syncEmail = this.get( email );
+		Assert.notNull( syncEmail, "Email record not found for deletion." );
+		
+		if ( syncEmail.isPrimary() )
+			Assert.state( syncEmail.getConfirmationDate() == null , "A 'primary email' record cannot be deleted." );
+		
+		Assert.state( this.repository.delete( email ), "Something wrong happend while deleting 'email' record." );
 	}
 
 	@Override
@@ -191,6 +199,13 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	public List< Email > list( final User user ) {
 		Assert.notNull( user );
 		return this.repository.list( user );
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
+	public Email get( Email email ) {
+		Assert.notNull( email );
+		return this.repository.get( email );
 	}
 
 }

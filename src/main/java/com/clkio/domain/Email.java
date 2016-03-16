@@ -17,6 +17,10 @@ public class Email extends CommonDomain {
 		this(null, address);
 	}
 	
+	public Email(Integer id) {
+		super(id);
+	}
+	
 	public Email(Integer id, String address) {
 		super(id);
 		

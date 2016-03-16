@@ -51,8 +51,8 @@ public class EmailRepository extends CommonRepository {
 				new EmailRowMapper() );
 	}
 
-	public void delete( final Email email ) {
-		this.jdbcTemplate.update( " DELETE FROM EMAIL WHERE ID = ? ", new Object[]{ email.getId() } );
+	public boolean delete( final Email email ) {
+		return this.jdbcTemplate.update( " DELETE FROM EMAIL WHERE ID = ? AND ID_CLK_USER = ? ", new Object[]{ email.getId(), email.getUser().getId() } ) == 1;
 	}
 
 	public void deleteNotPrimaryNotConfirmed( final Date date ) {
@@ -71,6 +71,13 @@ public class EmailRepository extends CommonRepository {
 		return this.jdbcTemplate.query(  " SELECT ID, ADDRESS, RECORDED_TIME, CONFIRMATION_CODE, CONFIRMATION_DATE, IS_PRIMARY, ID_CLK_USER FROM EMAIL "
 				+ " WHERE ID_CLK_USER = ? ",
 				new Object[]{ user.getId() },
+				new EmailRowMapper() );
+	}
+
+	public Email get( Email email ) {
+		return this.jdbcTemplate.queryForObject( " SELECT ID, ADDRESS, RECORDED_TIME, CONFIRMATION_CODE, CONFIRMATION_DATE, IS_PRIMARY, ID_CLK_USER FROM EMAIL "
+				+ " WHERE ID = ? ",
+				new Object[]{ email.getId() },
 				new EmailRowMapper() );
 	}
 

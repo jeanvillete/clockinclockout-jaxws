@@ -25,6 +25,7 @@
 			<xs:element name="insertEmailRequest" type="email:insertEmailRequest" nillable="false"/>
 			<xs:element name="listEmailRequest" type="email:listEmailRequest" nillable="false"/>
 			<xs:element name="listEmailResponse" type="email:listEmailResponse" nillable="false"/>
+			<xs:element name="deleteEmailRequest" type="email:deleteEmailRequest" nillable="false"/>
 		</xs:schema>
 	</wsdl:types>
 	
@@ -55,6 +56,9 @@
 	</wsdl:message>
 	<wsdl:message name="listEmailResponse">
 		<wsdl:part name="result" element="clkws:listEmailResponse" />
+	</wsdl:message>
+	<wsdl:message name="deleteEmailRequest">
+		<wsdl:part name="request" element="clkws:deleteEmailRequest" />
 	</wsdl:message>
 	
 	<!-- port types -->
@@ -87,6 +91,11 @@
 			<wsdl:input message="clkws:listEmailRequest" />
 			<wsdl:output message="clkws:listEmailResponse" />
 			<wsdl:fault message="clkws:responseException" name="listEmailException" />
+		</wsdl:operation>
+		<wsdl:operation name="delete">
+			<wsdl:input message="clkws:deleteEmailRequest" />
+			<wsdl:output message="clkws:response" />
+			<wsdl:fault message="clkws:responseException" name="deleteEmailException" />
 		</wsdl:operation>
 	</wsdl:portType>
 	
@@ -157,6 +166,18 @@
 			</wsdl:output>
 			<wsdl:fault name="listEmailException">
 				<soap:fault name="listEmailException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="delete">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="deleteEmailException">
+				<soap:fault name="deleteEmailException" use="literal" />
 			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>

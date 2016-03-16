@@ -8,6 +8,7 @@ import javax.xml.namespace.QName;
 import com.clkio.ws.domain.common.Response;
 import com.clkio.ws.domain.common.ResponseException;
 import com.clkio.ws.domain.email.ConfirmEmailRequest;
+import com.clkio.ws.domain.email.DeleteEmailRequest;
 import com.clkio.ws.domain.email.InsertEmailRequest;
 import com.clkio.ws.domain.email.ListEmailRequest;
 import com.clkio.ws.domain.email.ListEmailResponse;
@@ -38,6 +39,7 @@ public class ObjectFactory {
     private final static QName _InsertUserRequest_QNAME = new QName("http://ws.clkio.com", "insertUserRequest");
     private final static QName _InsertEmailRequest_QNAME = new QName("http://ws.clkio.com", "insertEmailRequest");
     private final static QName _ListEmailRequest_QNAME = new QName("http://ws.clkio.com", "listEmailRequest");
+    private final static QName _DeleteEmailRequest_QNAME = new QName("http://ws.clkio.com", "deleteEmailRequest");
     private final static QName _Response_QNAME = new QName("http://ws.clkio.com", "response");
     private final static QName _ListEmailResponse_QNAME = new QName("http://ws.clkio.com", "listEmailResponse");
     private final static QName _ResponseException_QNAME = new QName("http://ws.clkio.com", "responseException");
@@ -93,6 +95,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://ws.clkio.com", name = "listEmailRequest")
     public JAXBElement<ListEmailRequest> createListEmailRequest(ListEmailRequest value) {
         return new JAXBElement<ListEmailRequest>(_ListEmailRequest_QNAME, ListEmailRequest.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DeleteEmailRequest }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://ws.clkio.com", name = "deleteEmailRequest")
+    public JAXBElement<DeleteEmailRequest> createDeleteEmailRequest(DeleteEmailRequest value) {
+        return new JAXBElement<DeleteEmailRequest>(_DeleteEmailRequest_QNAME, DeleteEmailRequest.class, null, value);
     }
 
     /**

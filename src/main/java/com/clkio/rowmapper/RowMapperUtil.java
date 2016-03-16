@@ -22,7 +22,7 @@ abstract class RowMapperUtil {
 		String strValue = rs.getString( column );
 		if ( rs.wasNull() ) return null;
 		strValue = strValue.trim().toLowerCase();
-		return strValue.equals( "true" ) || strValue.equals( "y" ) || strValue.equals( "1" );
+		return strValue.equals( "t" ) || strValue.equals( "true" ) || strValue.equals( "y" ) || strValue.equals( "1" );
 	}
 	
 	public static Duration getDuration( ResultSet rs, String column ) throws SQLException {

@@ -54,6 +54,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link DeleteEmailRequest }
+     * 
+     */
+    public DeleteEmailRequest createDeleteEmailRequest() {
+        return new DeleteEmailRequest();
+    }
+
+    /**
      * Create an instance of {@link ConfirmEmailRequest }
      * 
      */

@@ -17,6 +17,7 @@ import com.clkio.ws.EmailPort;
 import com.clkio.ws.ResponseException;
 import com.clkio.ws.domain.common.Response;
 import com.clkio.ws.domain.email.ConfirmEmailRequest;
+import com.clkio.ws.domain.email.DeleteEmailRequest;
 import com.clkio.ws.domain.email.InsertEmailRequest;
 import com.clkio.ws.domain.email.ListEmailRequest;
 import com.clkio.ws.domain.email.ListEmailResponse;
@@ -30,7 +31,7 @@ public class EmailWSImpl extends WebServiceCommon implements EmailPort {
 	public Response confirm( ConfirmEmailRequest request ) throws ResponseException {
 		try {
 			Assert.notNull( request );
-			Assert.notNull( request.getEmail() );
+			Assert.notNull( request.getEmail(), "Argument 'email' is mandatory for WS request." );
 			
 			Email email = new Email( request.getEmail().getEmailAddress() );
 			email.setConfirmationCode( request.getEmail().getConfirmationCode() );
@@ -48,7 +49,7 @@ public class EmailWSImpl extends WebServiceCommon implements EmailPort {
 	public Response insert( InsertEmailRequest request ) throws ResponseException {
 		try {
 			Assert.notNull( request );
-			Assert.notNull( request.getEmail() );
+			Assert.notNull( request.getEmail(), "Argument 'email' is mandatory for WS request." );
 			
 			Email email = new Email( request.getEmail().getEmailAddress() );
 			email.setUser( this.getCurrentUser() );
@@ -79,6 +80,25 @@ public class EmailWSImpl extends WebServiceCommon implements EmailPort {
 					response.getEmails().add( new com.clkio.ws.domain.email.Email( new BigInteger( email.getId().toString() ), email.getAddress(), ( email.getConfirmationDate() != null ), email.isPrimary() ) );
 			
 			return response;
+		} catch ( Exception e ) {
+			LOG.error( e );
+			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+		}
+	}
+
+	@Override
+	public Response delete( DeleteEmailRequest request ) throws ResponseException {
+		try {
+			Assert.notNull( request );
+			Assert.notNull( request.getEmail(), "Argument 'email' is mandatory for WS request." );
+			Assert.notNull( request.getEmail().getId(), "The 'id' field is a mandatory value for 'email' argument, for this WS request." );
+			
+			Email email = new Email( request.getEmail().getId().intValue() );
+			email.setUser( getCurrentUser() );
+			
+			this.getService( EmailService.class ).delete( email );
+			
+			return new Response( "Email address deleted successfully as requested." );
 		} catch ( Exception e ) {
 			LOG.error( e );
 			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
