@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}integer"/>
  *         &lt;element name="emailAddress" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="confirmationCode" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="confirmed" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -33,7 +34,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "email", propOrder = {
     "id",
     "emailAddress",
-    "confirmationCode"
+    "confirmationCode",
+    "confirmed"
 })
 public class Email {
 
@@ -43,8 +45,19 @@ public class Email {
     protected String emailAddress;
     @XmlElement(required = true)
     protected String confirmationCode;
+    protected boolean confirmed;
 
-    /**
+    public Email() {
+    }
+    
+    public Email( BigInteger id, String emailAddress, boolean confirmed ) {
+		super();
+		this.id = id;
+		this.emailAddress = emailAddress;
+		this.confirmed = confirmed;
+	}
+
+	/**
      * Gets the value of the id property.
      * 
      * @return
@@ -114,6 +127,22 @@ public class Email {
      */
     public void setConfirmationCode(String value) {
         this.confirmationCode = value;
+    }
+
+    /**
+     * Gets the value of the confirmed property.
+     * 
+     */
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    /**
+     * Sets the value of the confirmed property.
+     * 
+     */
+    public void setConfirmed(boolean value) {
+        this.confirmed = value;
     }
 
 }

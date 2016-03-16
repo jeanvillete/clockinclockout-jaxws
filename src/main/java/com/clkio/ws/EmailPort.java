@@ -10,6 +10,8 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import com.clkio.ws.domain.common.Response;
 import com.clkio.ws.domain.email.ConfirmEmailRequest;
 import com.clkio.ws.domain.email.InsertEmailRequest;
+import com.clkio.ws.domain.email.ListEmailRequest;
+import com.clkio.ws.domain.email.ListEmailResponse;
 
 
 /**
@@ -57,6 +59,21 @@ public interface EmailPort {
     public Response insert(
         @WebParam(name = "insertEmailRequest", targetNamespace = "http://ws.clkio.com", partName = "request")
         InsertEmailRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.email.ListEmailResponse
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "listEmailResponse", targetNamespace = "http://ws.clkio.com", partName = "result")
+    public ListEmailResponse list(
+        @WebParam(name = "listEmailRequest", targetNamespace = "http://ws.clkio.com", partName = "request")
+        ListEmailRequest request)
         throws ResponseException
     ;
 

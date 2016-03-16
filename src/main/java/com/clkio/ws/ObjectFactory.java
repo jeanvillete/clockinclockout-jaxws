@@ -9,6 +9,8 @@ import com.clkio.ws.domain.common.Response;
 import com.clkio.ws.domain.common.ResponseException;
 import com.clkio.ws.domain.email.ConfirmEmailRequest;
 import com.clkio.ws.domain.email.InsertEmailRequest;
+import com.clkio.ws.domain.email.ListEmailRequest;
+import com.clkio.ws.domain.email.ListEmailResponse;
 import com.clkio.ws.domain.login.DoLoginRequest;
 import com.clkio.ws.domain.login.LoginResponse;
 import com.clkio.ws.domain.user.InsertUserRequest;
@@ -35,7 +37,9 @@ public class ObjectFactory {
     private final static QName _LoginResponse_QNAME = new QName("http://ws.clkio.com", "loginResponse");
     private final static QName _InsertUserRequest_QNAME = new QName("http://ws.clkio.com", "insertUserRequest");
     private final static QName _InsertEmailRequest_QNAME = new QName("http://ws.clkio.com", "insertEmailRequest");
+    private final static QName _ListEmailRequest_QNAME = new QName("http://ws.clkio.com", "listEmailRequest");
     private final static QName _Response_QNAME = new QName("http://ws.clkio.com", "response");
+    private final static QName _ListEmailResponse_QNAME = new QName("http://ws.clkio.com", "listEmailResponse");
     private final static QName _ResponseException_QNAME = new QName("http://ws.clkio.com", "responseException");
     private final static QName _ConfirmEmailRequest_QNAME = new QName("http://ws.clkio.com", "confirmEmailRequest");
 
@@ -83,12 +87,30 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ListEmailRequest }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://ws.clkio.com", name = "listEmailRequest")
+    public JAXBElement<ListEmailRequest> createListEmailRequest(ListEmailRequest value) {
+        return new JAXBElement<ListEmailRequest>(_ListEmailRequest_QNAME, ListEmailRequest.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link Response }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://ws.clkio.com", name = "response")
     public JAXBElement<Response> createResponse(Response value) {
         return new JAXBElement<Response>(_Response_QNAME, Response.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ListEmailResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://ws.clkio.com", name = "listEmailResponse")
+    public JAXBElement<ListEmailResponse> createListEmailResponse(ListEmailResponse value) {
+        return new JAXBElement<ListEmailResponse>(_ListEmailResponse_QNAME, ListEmailResponse.class, null, value);
     }
 
     /**

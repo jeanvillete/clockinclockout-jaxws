@@ -30,11 +30,27 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ListEmailResponse }
+     * 
+     */
+    public ListEmailResponse createListEmailResponse() {
+        return new ListEmailResponse();
+    }
+
+    /**
      * Create an instance of {@link InsertEmailRequest }
      * 
      */
     public InsertEmailRequest createInsertEmailRequest() {
         return new InsertEmailRequest();
+    }
+
+    /**
+     * Create an instance of {@link ListEmailRequest }
+     * 
+     */
+    public ListEmailRequest createListEmailRequest() {
+        return new ListEmailRequest();
     }
 
     /**

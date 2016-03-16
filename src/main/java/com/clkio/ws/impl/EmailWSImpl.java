@@ -1,9 +1,12 @@
 package com.clkio.ws.impl;
 
+import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 
 import javax.jws.WebService;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.util.Assert;
 
@@ -15,6 +18,8 @@ import com.clkio.ws.ResponseException;
 import com.clkio.ws.domain.common.Response;
 import com.clkio.ws.domain.email.ConfirmEmailRequest;
 import com.clkio.ws.domain.email.InsertEmailRequest;
+import com.clkio.ws.domain.email.ListEmailRequest;
+import com.clkio.ws.domain.email.ListEmailResponse;
 
 @WebService( endpointInterface = "com.clkio.ws.EmailPort" )
 public class EmailWSImpl extends WebServiceCommon implements EmailPort {
@@ -62,6 +67,22 @@ public class EmailWSImpl extends WebServiceCommon implements EmailPort {
 			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
 		}
 	}
-	
+
+	@Override
+	public ListEmailResponse list( ListEmailRequest request ) throws ResponseException {
+		try {
+			List< Email > emails = this.getService( EmailService.class ).list( this.getCurrentUser() );
+			ListEmailResponse response = new ListEmailResponse();
+			
+			if ( !CollectionUtils.isEmpty( emails ) )
+				for ( Email email : emails )
+					response.getEmails().add( new com.clkio.ws.domain.email.Email( new BigInteger( email.getId().toString() ), email.getAddress(), ( email.getConfirmationDate() != null ) ) );
+			
+			return response;
+		} catch ( Exception e ) {
+			LOG.error( e );
+			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+		}
+	}
 	
 }

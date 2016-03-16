@@ -41,7 +41,6 @@ public class Email extends CommonDomain {
 		this.recordedTime = recordedTime;
 	}
 	public void setConfirmationDate(Date confirmationDate) {
-		Assert.notNull( confirmationDate, "Argument confirmationDate cannot be null." );
 		this.confirmationDate = confirmationDate;
 	}
 	public void setConfirmationCode(String confirmationCode) {

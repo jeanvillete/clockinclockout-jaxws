@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.clkio.domain.Email;
+import com.clkio.domain.User;
 import com.clkio.rowmapper.EmailRowMapper;
 
 @Repository
@@ -63,6 +64,13 @@ public class EmailRepository extends CommonRepository {
 		return this.jdbcTemplate.queryForObject( " SELECT ID, ADDRESS, RECORDED_TIME, CONFIRMATION_CODE, CONFIRMATION_DATE, IS_PRIMARY, ID_CLK_USER FROM EMAIL "
 				+ " WHERE CONFIRMATION_DATE IS NOT NULL AND ADDRESS = ? AND IS_PRIMARY = ? ",
 				new Object[]{ emailAddress, isPrimary },
+				new EmailRowMapper() );
+	}
+
+	public List< Email > list( User user ) {
+		return this.jdbcTemplate.query(  " SELECT ID, ADDRESS, RECORDED_TIME, CONFIRMATION_CODE, CONFIRMATION_DATE, IS_PRIMARY, ID_CLK_USER FROM EMAIL "
+				+ " WHERE ID_CLK_USER = ? ",
+				new Object[]{ user.getId() },
 				new EmailRowMapper() );
 	}
 

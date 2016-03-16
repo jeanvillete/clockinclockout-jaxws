@@ -29,6 +29,7 @@ import org.springframework.util.StringUtils;
 
 import com.clkio.domain.Email;
 import com.clkio.domain.NewUserEmailConfirmation;
+import com.clkio.domain.User;
 import com.clkio.domain.EmailContent;
 import com.clkio.domain.EmailResetPassword;
 import com.clkio.domain.NewEmailConfirmation;
@@ -183,6 +184,13 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	public void deleteNotPrimaryNotConfirmed( Date date ) {
 		Assert.notNull( date, "Parameter 'date' cannot be null." );
 		this.repository.deleteNotPrimaryNotConfirmed( date );
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
+	public List< Email > list( final User user ) {
+		Assert.notNull( user );
+		return this.repository.list( user );
 	}
 
 }

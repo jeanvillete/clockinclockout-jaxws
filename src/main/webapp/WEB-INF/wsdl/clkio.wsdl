@@ -23,6 +23,8 @@
 			<xs:element name="loginResponse" type="login:loginResponse" nillable="false"/>
 			<xs:element name="confirmEmailRequest" type="email:confirmEmailRequest" nillable="false"/>
 			<xs:element name="insertEmailRequest" type="email:insertEmailRequest" nillable="false"/>
+			<xs:element name="listEmailRequest" type="email:listEmailRequest" nillable="false"/>
+			<xs:element name="listEmailResponse" type="email:listEmailResponse" nillable="false"/>
 		</xs:schema>
 	</wsdl:types>
 	
@@ -47,6 +49,12 @@
 	</wsdl:message>
 	<wsdl:message name="insertEmailRequest">
 		<wsdl:part name="request" element="clkws:insertEmailRequest" />
+	</wsdl:message>
+	<wsdl:message name="listEmailRequest">
+		<wsdl:part name="request" element="clkws:listEmailRequest" />
+	</wsdl:message>
+	<wsdl:message name="listEmailResponse">
+		<wsdl:part name="result" element="clkws:listEmailResponse" />
 	</wsdl:message>
 	
 	<!-- port types -->
@@ -74,6 +82,11 @@
 			<wsdl:input message="clkws:insertEmailRequest" />
 			<wsdl:output message="clkws:response" />
 			<wsdl:fault message="clkws:responseException" name="insertEmailException" />
+		</wsdl:operation>
+		<wsdl:operation name="list">
+			<wsdl:input message="clkws:listEmailRequest" />
+			<wsdl:output message="clkws:listEmailResponse" />
+			<wsdl:fault message="clkws:responseException" name="listEmailException" />
 		</wsdl:operation>
 	</wsdl:portType>
 	
@@ -132,6 +145,18 @@
 			</wsdl:output>
 			<wsdl:fault name="insertEmailException">
 				<soap:fault name="insertEmailException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="list">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="listEmailException">
+				<soap:fault name="listEmailException" use="literal" />
 			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>

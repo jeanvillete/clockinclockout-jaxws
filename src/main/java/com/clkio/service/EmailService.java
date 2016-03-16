@@ -7,6 +7,7 @@ import com.clkio.domain.Email;
 import com.clkio.domain.EmailResetPassword;
 import com.clkio.domain.NewEmailConfirmation;
 import com.clkio.domain.NewUserEmailConfirmation;
+import com.clkio.domain.User;
 
 public interface EmailService {
 
@@ -28,6 +29,8 @@ public interface EmailService {
 	void confirm( Email email );
 
 	void delete( Email email );
+	
+	List< Email > list( User user );
 	
 	/**
 	 * This is meant for bring a synchronized instance from database based and the parameters 'emailAddress' and 'isPrimary',
