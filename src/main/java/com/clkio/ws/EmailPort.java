@@ -24,7 +24,7 @@ import com.clkio.ws.domain.email.ListEmailResponse;
 @WebService(name = "EmailPort", targetNamespace = "http://ws.clkio.com")
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 @XmlSeeAlso({
-    com.clkio.ws.ObjectFactory.class,
+    com.clkio.ws.domain.ObjectFactory.class,
     com.clkio.ws.domain.common.ObjectFactory.class,
     com.clkio.ws.domain.email.ObjectFactory.class,
     com.clkio.ws.domain.login.ObjectFactory.class,
@@ -41,9 +41,9 @@ public interface EmailPort {
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "response", targetNamespace = "http://ws.clkio.com", partName = "result")
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public Response confirm(
-        @WebParam(name = "confirmEmailRequest", targetNamespace = "http://ws.clkio.com", partName = "request")
+        @WebParam(name = "confirmEmailRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         ConfirmEmailRequest request)
         throws ResponseException
     ;
@@ -56,9 +56,9 @@ public interface EmailPort {
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "response", targetNamespace = "http://ws.clkio.com", partName = "result")
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public Response insert(
-        @WebParam(name = "insertEmailRequest", targetNamespace = "http://ws.clkio.com", partName = "request")
+        @WebParam(name = "insertEmailRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         InsertEmailRequest request)
         throws ResponseException
     ;
@@ -71,9 +71,9 @@ public interface EmailPort {
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "listEmailResponse", targetNamespace = "http://ws.clkio.com", partName = "result")
+    @WebResult(name = "listEmailResponse", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public ListEmailResponse list(
-        @WebParam(name = "listEmailRequest", targetNamespace = "http://ws.clkio.com", partName = "request")
+        @WebParam(name = "listEmailRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         ListEmailRequest request)
         throws ResponseException
     ;
@@ -86,9 +86,9 @@ public interface EmailPort {
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "response", targetNamespace = "http://ws.clkio.com", partName = "result")
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public Response delete(
-        @WebParam(name = "deleteEmailRequest", targetNamespace = "http://ws.clkio.com", partName = "request")
+        @WebParam(name = "deleteEmailRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         DeleteEmailRequest request)
         throws ResponseException
     ;

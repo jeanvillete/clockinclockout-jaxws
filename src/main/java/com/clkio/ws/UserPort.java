@@ -20,7 +20,7 @@ import com.clkio.ws.domain.user.InsertUserRequest;
 @WebService(name = "UserPort", targetNamespace = "http://ws.clkio.com")
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 @XmlSeeAlso({
-    com.clkio.ws.ObjectFactory.class,
+    com.clkio.ws.domain.ObjectFactory.class,
     com.clkio.ws.domain.common.ObjectFactory.class,
     com.clkio.ws.domain.email.ObjectFactory.class,
     com.clkio.ws.domain.login.ObjectFactory.class,
@@ -37,9 +37,9 @@ public interface UserPort {
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "response", targetNamespace = "http://ws.clkio.com", partName = "result")
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public Response insert(
-        @WebParam(name = "insertUserRequest", targetNamespace = "http://ws.clkio.com", partName = "request")
+        @WebParam(name = "insertUserRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         InsertUserRequest request)
         throws ResponseException
     ;

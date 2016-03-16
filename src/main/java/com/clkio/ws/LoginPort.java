@@ -20,7 +20,7 @@ import com.clkio.ws.domain.login.LoginResponse;
 @WebService(name = "LoginPort", targetNamespace = "http://ws.clkio.com")
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 @XmlSeeAlso({
-    com.clkio.ws.ObjectFactory.class,
+    com.clkio.ws.domain.ObjectFactory.class,
     com.clkio.ws.domain.common.ObjectFactory.class,
     com.clkio.ws.domain.email.ObjectFactory.class,
     com.clkio.ws.domain.login.ObjectFactory.class,
@@ -37,9 +37,9 @@ public interface LoginPort {
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "loginResponse", targetNamespace = "http://ws.clkio.com", partName = "result")
+    @WebResult(name = "loginResponse", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public LoginResponse doLogin(
-        @WebParam(name = "doLoginRequest", targetNamespace = "http://ws.clkio.com", partName = "request")
+        @WebParam(name = "doLoginRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         DoLoginRequest request)
         throws ResponseException
     ;

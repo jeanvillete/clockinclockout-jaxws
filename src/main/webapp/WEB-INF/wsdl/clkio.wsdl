@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <wsdl:definitions name="clkio" targetNamespace="http://ws.clkio.com"
 	xmlns:clkws="http://ws.clkio.com"
-	xmlns:common="http://schemas.clkio.com/common"
-	xmlns:user="http://schemas.clkio.com/user"
-	xmlns:login="http://schemas.clkio.com/login"
-	xmlns:email="http://schemas.clkio.com/email"
+	xmlns:clkio="http://schemas.clkio.com"
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
 	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	
 	<wsdl:types>
-		<xs:schema targetNamespace="http://ws.clkio.com">
+		<xs:schema targetNamespace="http://schemas.clkio.com"
+			xmlns:common="http://schemas.clkio.com/common"
+			xmlns:user="http://schemas.clkio.com/user"
+			xmlns:login="http://schemas.clkio.com/login"
+			xmlns:email="http://schemas.clkio.com/email"
+			xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			
 			<xs:import namespace="http://schemas.clkio.com/common" schemaLocation="common.xsd" />
 			<xs:import namespace="http://schemas.clkio.com/user" schemaLocation="user.xsd" />
 			<xs:import namespace="http://schemas.clkio.com/login" schemaLocation="login.xsd" />
@@ -31,34 +34,34 @@
 	
 	<!-- messages -->
 	<wsdl:message name="response">
-		<wsdl:part name="result" element="clkws:response" />
+		<wsdl:part name="result" element="clkio:response" />
 	</wsdl:message>
 	<wsdl:message name="responseException">
-		<wsdl:part name="exception" element="clkws:responseException" />
+		<wsdl:part name="exception" element="clkio:responseException" />
 	</wsdl:message>
 	<wsdl:message name="insertUserRequest">
-		<wsdl:part name="request" element="clkws:insertUserRequest" />
+		<wsdl:part name="request" element="clkio:insertUserRequest" />
 	</wsdl:message>
 	<wsdl:message name="doLoginRequest">
-		<wsdl:part name="request" element="clkws:doLoginRequest" />
+		<wsdl:part name="request" element="clkio:doLoginRequest" />
 	</wsdl:message>
 	<wsdl:message name="loginResponse">
-		<wsdl:part name="result" element="clkws:loginResponse" />
+		<wsdl:part name="result" element="clkio:loginResponse" />
 	</wsdl:message>
 	<wsdl:message name="confirmEmailRequest">
-		<wsdl:part name="request" element="clkws:confirmEmailRequest" />
+		<wsdl:part name="request" element="clkio:confirmEmailRequest" />
 	</wsdl:message>
 	<wsdl:message name="insertEmailRequest">
-		<wsdl:part name="request" element="clkws:insertEmailRequest" />
+		<wsdl:part name="request" element="clkio:insertEmailRequest" />
 	</wsdl:message>
 	<wsdl:message name="listEmailRequest">
-		<wsdl:part name="request" element="clkws:listEmailRequest" />
+		<wsdl:part name="request" element="clkio:listEmailRequest" />
 	</wsdl:message>
 	<wsdl:message name="listEmailResponse">
-		<wsdl:part name="result" element="clkws:listEmailResponse" />
+		<wsdl:part name="result" element="clkio:listEmailResponse" />
 	</wsdl:message>
 	<wsdl:message name="deleteEmailRequest">
-		<wsdl:part name="request" element="clkws:deleteEmailRequest" />
+		<wsdl:part name="request" element="clkio:deleteEmailRequest" />
 	</wsdl:message>
 	
 	<!-- port types -->

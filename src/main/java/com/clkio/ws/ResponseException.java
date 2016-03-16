@@ -10,7 +10,7 @@ import javax.xml.ws.WebFault;
  * Generated source version: 2.2
  * 
  */
-@WebFault(name = "responseException", targetNamespace = "http://ws.clkio.com")
+@WebFault(name = "responseException", targetNamespace = "http://schemas.clkio.com")
 public class ResponseException
     extends Exception
 {
