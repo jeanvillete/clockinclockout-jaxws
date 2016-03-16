@@ -14,6 +14,7 @@
 			<xs:element name="emailAddress" type="xs:string" maxOccurs="1" minOccurs="1" />
 			<xs:element name="confirmationCode" type="xs:string" maxOccurs="1" minOccurs="1" />
 			<xs:element name="confirmed" type="xs:boolean" maxOccurs="1" minOccurs="1" />
+			<xs:element name="primary" type="xs:boolean" maxOccurs="1" minOccurs="1" />
 		</xs:sequence>
 	</xs:complexType>
 

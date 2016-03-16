@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="emailAddress" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="confirmationCode" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="confirmed" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+ *         &lt;element name="primary" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -35,7 +36,8 @@ import javax.xml.bind.annotation.XmlType;
     "id",
     "emailAddress",
     "confirmationCode",
-    "confirmed"
+    "confirmed",
+    "primary"
 })
 public class Email {
 
@@ -46,15 +48,17 @@ public class Email {
     @XmlElement(required = true)
     protected String confirmationCode;
     protected boolean confirmed;
+    protected boolean primary;
 
     public Email() {
     }
     
-    public Email( BigInteger id, String emailAddress, boolean confirmed ) {
+    public Email( BigInteger id, String emailAddress, boolean confirmed, boolean primary ) {
 		super();
 		this.id = id;
 		this.emailAddress = emailAddress;
 		this.confirmed = confirmed;
+		this.primary = primary;
 	}
 
 	/**
@@ -143,6 +147,22 @@ public class Email {
      */
     public void setConfirmed(boolean value) {
         this.confirmed = value;
+    }
+
+    /**
+     * Gets the value of the primary property.
+     * 
+     */
+    public boolean isPrimary() {
+        return primary;
+    }
+
+    /**
+     * Sets the value of the primary property.
+     * 
+     */
+    public void setPrimary(boolean value) {
+        this.primary = value;
     }
 
 }

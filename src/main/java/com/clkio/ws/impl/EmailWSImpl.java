@@ -76,7 +76,7 @@ public class EmailWSImpl extends WebServiceCommon implements EmailPort {
 			
 			if ( !CollectionUtils.isEmpty( emails ) )
 				for ( Email email : emails )
-					response.getEmails().add( new com.clkio.ws.domain.email.Email( new BigInteger( email.getId().toString() ), email.getAddress(), ( email.getConfirmationDate() != null ) ) );
+					response.getEmails().add( new com.clkio.ws.domain.email.Email( new BigInteger( email.getId().toString() ), email.getAddress(), ( email.getConfirmationDate() != null ), email.isPrimary() ) );
 			
 			return response;
 		} catch ( Exception e ) {
