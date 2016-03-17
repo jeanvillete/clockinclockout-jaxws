@@ -21,10 +21,14 @@ import com.clkio.ws.domain.login.LoginResponse;
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 @XmlSeeAlso({
     com.clkio.ws.domain.ObjectFactory.class,
+    com.clkio.ws.domain.adjusting.ObjectFactory.class,
     com.clkio.ws.domain.common.ObjectFactory.class,
     com.clkio.ws.domain.email.ObjectFactory.class,
     com.clkio.ws.domain.login.ObjectFactory.class,
     com.clkio.ws.domain.profile.ObjectFactory.class,
+    com.clkio.ws.domain.reason.ObjectFactory.class,
+    com.clkio.ws.domain.resetpassword.ObjectFactory.class,
+    com.clkio.ws.domain.timecard.ObjectFactory.class,
     com.clkio.ws.domain.user.ObjectFactory.class
 })
 public interface LoginPort {

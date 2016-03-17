@@ -30,19 +30,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Response }
-     * 
-     */
-    public Response createResponse() {
-        return new Response();
-    }
-
-    /**
      * Create an instance of {@link ResponseException }
      * 
      */
     public ResponseException createResponseException() {
         return new ResponseException();
+    }
+
+    /**
+     * Create an instance of {@link Response }
+     * 
+     */
+    public Response createResponse() {
+        return new Response();
     }
 
 }

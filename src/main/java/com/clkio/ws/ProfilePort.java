@@ -21,10 +21,14 @@ import com.clkio.ws.domain.profile.ListProfileResponse;
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 @XmlSeeAlso({
     com.clkio.ws.domain.ObjectFactory.class,
+    com.clkio.ws.domain.adjusting.ObjectFactory.class,
     com.clkio.ws.domain.common.ObjectFactory.class,
     com.clkio.ws.domain.email.ObjectFactory.class,
     com.clkio.ws.domain.login.ObjectFactory.class,
     com.clkio.ws.domain.profile.ObjectFactory.class,
+    com.clkio.ws.domain.reason.ObjectFactory.class,
+    com.clkio.ws.domain.resetpassword.ObjectFactory.class,
+    com.clkio.ws.domain.timecard.ObjectFactory.class,
     com.clkio.ws.domain.user.ObjectFactory.class
 })
 public interface ProfilePort {
@@ -38,7 +42,7 @@ public interface ProfilePort {
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "listProfileResponse", targetNamespace = "http://schemas.clkio.com", partName = "request")
+    @WebResult(name = "listProfileResponse", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public ListProfileResponse list(
         @WebParam(name = "listProfileRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         ListProfileRequest request)
