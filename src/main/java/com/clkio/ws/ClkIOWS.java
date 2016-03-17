@@ -150,6 +150,94 @@ public class ClkIOWS
         return super.getPort(new QName("http://ws.clkio.com", "ProfileService"), ProfilePort.class, features);
     }
 
+    /**
+     * 
+     * @return
+     *     returns AdjustingPort
+     */
+    @WebEndpoint(name = "AdjustingService")
+    public AdjustingPort getAdjustingService() {
+        return super.getPort(new QName("http://ws.clkio.com", "AdjustingService"), AdjustingPort.class);
+    }
+
+    /**
+     * 
+     * @param features
+     *     A list of {@link javax.xml.ws.WebServiceFeature} to configure on the proxy.  Supported features not in the <code>features</code> parameter will have their default values.
+     * @return
+     *     returns AdjustingPort
+     */
+    @WebEndpoint(name = "AdjustingService")
+    public AdjustingPort getAdjustingService(WebServiceFeature... features) {
+        return super.getPort(new QName("http://ws.clkio.com", "AdjustingService"), AdjustingPort.class, features);
+    }
+
+    /**
+     * 
+     * @return
+     *     returns ManualEnteringReasonPort
+     */
+    @WebEndpoint(name = "ManualEnteringReasonService")
+    public ManualEnteringReasonPort getManualEnteringReasonService() {
+        return super.getPort(new QName("http://ws.clkio.com", "ManualEnteringReasonService"), ManualEnteringReasonPort.class);
+    }
+
+    /**
+     * 
+     * @param features
+     *     A list of {@link javax.xml.ws.WebServiceFeature} to configure on the proxy.  Supported features not in the <code>features</code> parameter will have their default values.
+     * @return
+     *     returns ManualEnteringReasonPort
+     */
+    @WebEndpoint(name = "ManualEnteringReasonService")
+    public ManualEnteringReasonPort getManualEnteringReasonService(WebServiceFeature... features) {
+        return super.getPort(new QName("http://ws.clkio.com", "ManualEnteringReasonService"), ManualEnteringReasonPort.class, features);
+    }
+
+    /**
+     * 
+     * @return
+     *     returns TimeCardPort
+     */
+    @WebEndpoint(name = "TimeCardService")
+    public TimeCardPort getTimeCardService() {
+        return super.getPort(new QName("http://ws.clkio.com", "TimeCardService"), TimeCardPort.class);
+    }
+
+    /**
+     * 
+     * @param features
+     *     A list of {@link javax.xml.ws.WebServiceFeature} to configure on the proxy.  Supported features not in the <code>features</code> parameter will have their default values.
+     * @return
+     *     returns TimeCardPort
+     */
+    @WebEndpoint(name = "TimeCardService")
+    public TimeCardPort getTimeCardService(WebServiceFeature... features) {
+        return super.getPort(new QName("http://ws.clkio.com", "TimeCardService"), TimeCardPort.class, features);
+    }
+
+    /**
+     * 
+     * @return
+     *     returns ResetPasswordPort
+     */
+    @WebEndpoint(name = "ResetPasswordService")
+    public ResetPasswordPort getResetPasswordService() {
+        return super.getPort(new QName("http://ws.clkio.com", "ResetPasswordService"), ResetPasswordPort.class);
+    }
+
+    /**
+     * 
+     * @param features
+     *     A list of {@link javax.xml.ws.WebServiceFeature} to configure on the proxy.  Supported features not in the <code>features</code> parameter will have their default values.
+     * @return
+     *     returns ResetPasswordPort
+     */
+    @WebEndpoint(name = "ResetPasswordService")
+    public ResetPasswordPort getResetPasswordService(WebServiceFeature... features) {
+        return super.getPort(new QName("http://ws.clkio.com", "ResetPasswordService"), ResetPasswordPort.class, features);
+    }
+
     private static URL __getWsdlLocation() {
         if (CLKIOWS_EXCEPTION!= null) {
             throw CLKIOWS_EXCEPTION;
