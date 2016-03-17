@@ -77,16 +77,16 @@ case:Exclusão de um registro 'ADJUSTING' (NECESSÁRIO_USUÁRIO_ESTAR_LOGADO)
 
 case:Listagem de registros 'MANUAL_ENTERING_REASON' (Cadastro de 'razões' para 'entradas ou justificativas manuais') (NECESSÁRIO_USUÁRIO_ESTAR_LOGADO)
 #A idéia é fornecer ao usuário operações de CRUD que permita definir razões para lançamentos manuais, como FÉRIAS, SERVIÇO EXTERNO, FALTA, ATESTADO MÉDICO, etc. A única informação a ser fornecida é um campo chamado de razão (REASON), o que com certeza o coloca como mandatório. A informação deste cadastro servirá para no futuro, efetivar lançamentos de horas com razões pré cadastradas.
-[ ManualEnteringReason.list(ManualEnteringReason) ]
+[ ManualEnteringReasonService.list(ManualEnteringReason) ]
 
 case:Adição de novo registro 'MANUAL_ENTERING_REASON' (NECESSÁRIO_USUÁRIO_ESTAR_LOGADO)
-[ ManualEnteringReason.insert(ManualEnteringReason) ]
+[ ManualEnteringReasonService.insert(ManualEnteringReason) ]
 
 case:Atualização de registro 'MANUAL_ENTERING_REASON' (NECESSÁRIO_USUÁRIO_ESTAR_LOGADO)
-[ ManualEnteringReason.update(ManualEnteringReason) ]
+[ ManualEnteringReasonService.update(ManualEnteringReason) ]
 
 case:Exclusão de registro 'MANUAL_ENTERING_REASON' (NECESSÁRIO_USUÁRIO_ESTAR_LOGADO)
-[ ManualEnteringReason.delete(ManualEnteringReason) ]
+[ ManualEnteringReasonService.delete(ManualEnteringReason) ]
 
 case:Carregamento inicial, busca do TimeCard (NECESSÁRIO_USUÁRIO_ESTAR_LOGADO)
 Nota 1: As informações do banco de horas são apresentadas sempre mensalmente, onde o mês em questão é sempre apresentado em uma tabela, e esta a tabela contêm TODOS os dias do mês em questão, cada dia com seus lançamentos específicos e seus correspondentes saldos.
@@ -97,15 +97,15 @@ De primeira instância, as colunas a serem apresentadas são;
   SALDO - basicamente é a subtração das horas trabalhadas menos as horas esperadas para o dia em questão.
   NOTAS - um texto de no máximo 150 caracteres que represente uma observação relevante para o dia em questão.
 Nota 2: Utilizar o serviço supracitado ProfileService.list(User) no loading inicial, este deverá trazer todos os profiles existentes associados ao usuário em questão, a aplicação cliente deve pegar o primeiro registro de profile para invocar o serviço TimeCardService.getTimeCard(BaseCalendar, Profile) mencionado a seguir.
-[ TimeCard.getTimeCard(BaseCalendar, Profile) ] O serviço base de carregamento do banco de horas deve ser fornecido trazendo;
+[ TimeCardService.getTimeCard(BaseCalendar, Profile) ] O serviço base de carregamento do banco de horas deve ser fornecido trazendo;
   1-Todos os dias para o mês em questão, com suas datas, os lançamentos de batidas de ponto, as horas esperadas, o saldo do dia e as notas.
   2-O saldo do banco até o fim do mês em questão.
 
 case:Obter total do banco de horas (NECESSÁRIO_USUÁRIO_ESTAR_LOGADO)
-[ TimeCard.getTotalTime(User) ] Serviço responsável por buscar o saldo/valor total do banco de horas do usuário passado como parâmetro. O valor retornado é uma string pura que contém o valor já formatado para apresentação.
+[ TimeCardService.getTotalTime(User) ] Serviço responsável por buscar o saldo/valor total do banco de horas do usuário passado como parâmetro. O valor retornado é uma string pura que contém o valor já formatado para apresentação.
 
 case:Bater ponto; Lançamento rápido de horas (CLOCKINCLOCKOUT) (NECESSÁRIO_USUÁRIO_ESTAR_LOGADO)
-[ TimeCard.punchClock(TIMESTAMP) ] bater ponto; A funcionalidade base e mais curta no ponto de vista do usuário. Simplesmente invoca a funcionalidade e o serviço é responsável por capiturar a hora que houve a batida de ponto, então o serviço calcula como armazena o TIMESTAMP fornecido;
+[ TimeCardService.punchClock(TIMESTAMP) ] bater ponto; A funcionalidade base e mais curta no ponto de vista do usuário. Simplesmente invoca a funcionalidade e o serviço é responsável por capiturar a hora que houve a batida de ponto, então o serviço calcula como armazena o TIMESTAMP fornecido;
 ---> se não houver um registro "DAY", insere um na base e insere também um registro na tabela "CLOCKINCLOCKOUT" com o valor para "clockin" preenchido.
 ---> se houver um registro "DAY", então busca pelo registro mais velho de "CLOCKINCLOCKOUT";
 ------> senão houver nenhum registro para "CLOCKINCLOCKOUT", insere um novo com o valor para "clockin" preenchido.
@@ -113,7 +113,7 @@ case:Bater ponto; Lançamento rápido de horas (CLOCKINCLOCKOUT) (NECESSÁRIO_US
 ------> se houver um registro para "CLOCKINCLOCKOUT" e o campo "clockout" já estiver preenchido, então inserir um outro registro para "CLOCKINCLOCKOUT" com o TIMESTAMP fornecido para o valor "clockin".
 
 case:Efetuar Lançamento de Horas (CLOCKINCLOCKOUT) (NECESSÁRIO_USUÁRIO_ESTAR_LOGADO)
-[ TimeCard.insert(ClockinClockout) ] clockin clockout; Esta funcionalidade trabalha em cima da idéia simples de um CRUD para registros de "CLOCKINCLOCKOUT". O usuário irá preencher um formulário com as informações para registro do "CLOCKINCLOCKOUT" (importante frisar que para novo registro, nenhuma informação do tipo "id/identifier" será fornecido, indicando assim um novo registro);
+[ TimeCardService.insert(ClockinClockout) ] clockin clockout; Esta funcionalidade trabalha em cima da idéia simples de um CRUD para registros de "CLOCKINCLOCKOUT". O usuário irá preencher um formulário com as informações para registro do "CLOCKINCLOCKOUT" (importante frisar que para novo registro, nenhuma informação do tipo "id/identifier" será fornecido, indicando assim um novo registro);
 ---> se não for fornecido nem "clockin" e nem "clockout", então o serviço através da validação correspondente retornará uma mensagem de erro, informando que ao menos um dos dois campos é mandatório para prosseguir com a operação.
 ---> se tiver tanto entrada (clockin) quanto saída (clockout) preenchidos; o serviço deverá procurar um registro "DAY" que corresponda a data de entrada, caso o registro "DAY" não exista, um novo deve ser criado, e então registrar também as informações do "CLOCKINCLOCKOUT".
 ---> se apenas entrada (clockin) for fornecida; o serviço deverá procurar um registro "DAY" que corresponda a data de entrada, caso o registro "DAY" não exista, um novo deve ser criado, e a informação de "clockin" armazenda em um novo registro de "CLOCKINCLOCKOUT".
@@ -122,18 +122,18 @@ case:Efetuar Lançamento de Horas (CLOCKINCLOCKOUT) (NECESSÁRIO_USUÁRIO_ESTAR_
 case:Efetuar Lançamento de Horas (justificativa, lançamento manual para o dia, 'MANUAL_ENTERING' e.g; SERVIÇO EXTERNO, FÉRIAS, FALTA, ATESTADO MÉDICO) (NECESSÁRIO_USUÁRIO_ESTAR_LOGADO)
 #A funcionalidade basica de registros de ajustes ou justificativa, onde não houve batida de ponto como procedimento rotineiro, mas exceções como SERVIÇO EXTERNO, FÉRIAS, FALTA, ATESTADO MÉDICO entre outros motivos (importante notar que para novo registro, nenhuma informação do tipo "id/identifier" será fornecida, indicando assim um novo registro).
 #Todas as informações (date, reason, time_interval) são mandatórias, então o serviço deve validar a mesma.
-[ TimeCard.insert(ManualEntering) ] A funcionalidade trabalha em cima da idéia basica de CRUD para tabela 'MANUAL_ENTERING', onde o usuário irá preencher o formulário fornecendo a data do ocorrido, uma razão/motivo e o tempo/intervalo do ocorrido. O serviço deverá buscar por um registro de "DAY" referente a data fornecida pelo usuário, caso não exista, então deve-se inserir um, e inserir também as informações do 'MANUAL_ENTERING' em questão.
+[ TimeCardService.insert(ManualEntering) ] A funcionalidade trabalha em cima da idéia basica de CRUD para tabela 'MANUAL_ENTERING', onde o usuário irá preencher o formulário fornecendo a data do ocorrido, uma razão/motivo e o tempo/intervalo do ocorrido. O serviço deverá buscar por um registro de "DAY" referente a data fornecida pelo usuário, caso não exista, então deve-se inserir um, e inserir também as informações do 'MANUAL_ENTERING' em questão.
 
 case:Adição/alteração de notas para determinado dia. (NECESSÁRIO_USUÁRIO_ESTAR_LOGADO)
 #A idéia básica para esta funcionalidade é permitir que o usuário forneça um texto de no máximo 150 caracteres de alguma informação relavante ou de destaque para determinado dia.
-[ TimeCard.setNotes(DATE, TEXT) ]: O usuário deve fornecer apenas o texto desejado, visto que encapsulado e fora da visão do usuário também é fornecido a data do dia em questão; O serviço tem a responsabilidade de procurar por um registro "DAY" para a data fornecida;
+[ TimeCardService.setNotes(DATE, TEXT) ]: O usuário deve fornecer apenas o texto desejado, visto que encapsulado e fora da visão do usuário também é fornecido a data do dia em questão; O serviço tem a responsabilidade de procurar por um registro "DAY" para a data fornecida;
 ---> senão houver um registro DAY; inserir um novo na tabela "DAY" já com a coluna "notes" preenchida.
 ---> se houver um registro DAY; atualizar este registro "DAY" encontrado com a coluna "notes" preenchida.
 
 case:Alteração de 'Horas Esperadas' em determinado dia. (NECESSÁRIO_USUÁRIO_ESTAR_LOGADO)
 #O usuário tem a possibilidade de alterar o intervalo de horas esperadas para determinado dia, uma vez que o padrão para esta informação estará cadastrado no perfil do usuário para o dia da semana em questão.
 #A aplicação não gerencia as férias, feriado ou algo do gênero, portanto o input e gerência deste tipo de informação está totalmente a cargo do usuário.
-[ TimeCard.setExpectedHours(DATE, INTERVAL) ]; Funcionalidade na qual o usuário escolhe uma data e fornece para esta um novo intervalo das horas esperadas, que servirá de base para o calculo de quantas horas foram trabalhadas no dia inferindo informação de quanto tempo passou ou faltou para as tais horas esperadas. O serviço tem a responsabilidade de buscar pelo registro "DAY" para a data fornecida;
+[ TimeCardService.setExpectedHours(DATE, INTERVAL) ]; Funcionalidade na qual o usuário escolhe uma data e fornece para esta um novo intervalo das horas esperadas, que servirá de base para o calculo de quantas horas foram trabalhadas no dia inferindo informação de quanto tempo passou ou faltou para as tais horas esperadas. O serviço tem a responsabilidade de buscar pelo registro "DAY" para a data fornecida;
 ---> senão houver um registro DAY; inserir um novo na tabela "DAY" já com a coluna "expected_hours" preenchida com o intervalo fornecido.
 ---> se houver um registro DAY; atualizar este registro "DAY" encontrado com a coluna "expected_hours" preenchida com o intervalo fornecido.
 
@@ -141,21 +141,21 @@ case:Alteração de Lançamentos de Horas do tipo 'CLOCKINCLOCKOUT', modificaç�
 #Seguindo a idéia de operações CRUD para "CLOCKINCLOCKOUT", o usuário deve ter a possibilidade de selecionar um registro "CLOCKINCLOCKOUT", fazer alterações desejadas e persistir estas alterações (é necessário fornecer o "id/identifier" do registro "CLOCKINCLOCKOUT" a ser modificado, indicando que para este uma operação de atualização/update está a ser executada).
 #Vale frisar que não há nenhuma operação disponível para exclusão/remoção apenas do clockin ou do clockout, mas sim apenas para remoção de todo o registro (dos dois de uma única vez), que excluí assim tanto a informação de entrada/clockin quanto saída/clockout.
 #O usuário não pode alterar a data (dia, mês e ano) de entrada, pois esta deve bater sempre com o registro "DAY" correspondente; O serviço deve então fazer a validação de que a data de entrada continua respeitando o registro "DAY" correspondente.
-[ TimeCard.update(ClockinClockout) ] O usuário "PODE" (não é obrigado) fornecer valores diferentes para "clockin", "clockout" e/ou "data saída". O serviço deve então encontrar o registro "CLOCKINCLOCKOUT" referente ao "id/identifier" fornecido e armazenar os novos valores solicitados.
+[ TimeCardService.update(ClockinClockout) ] O usuário "PODE" (não é obrigado) fornecer valores diferentes para "clockin", "clockout" e/ou "data saída". O serviço deve então encontrar o registro "CLOCKINCLOCKOUT" referente ao "id/identifier" fornecido e armazenar os novos valores solicitados.
 
 case:Exclusão de Lançamento de Horas do tipo 'CLOCKINCLOCKOUT' de valor antes inputado. (NECESSÁRIO_USUÁRIO_ESTAR_LOGADO)
 #Vale frisar que não há nenhuma operação disponível para exclusão/remoção apenas do clockin ou do clockout, mas sim apenas para remoção de todo o registro (dos dois de uma única vez), que excluí assim tanto a informação de entrada/clockin quanto saída/clockout.
 #Seguindo a idéia de operações CRUD para "CLOCKINCLOCKOUT", o usuário deve ter a possibilidade de selecionar um registro "CLOCKINCLOCKOUT", e solicitar a exclusão do mesmo (é necessário fornecer o "id/identifier" do registro "CLOCKINCLOCKOUT" a ser excluído).
-[ TimeCard.delete(ClockinClockout) ] O serviço deve encontrar o registro "CLOCKINCLOCKOUT" referente ao "id/identifier" fornecido e efetuar a exclusão do mesmo.
+[ TimeCardService.delete(ClockinClockout) ] O serviço deve encontrar o registro "CLOCKINCLOCKOUT" referente ao "id/identifier" fornecido e efetuar a exclusão do mesmo.
 
 case:Alteração de Lançamento de Horas do tipo 'MANUAL_ENTERING', modificação do 'MANUAL_ENTERING_REASON'. (NECESSÁRIO_USUÁRIO_ESTAR_LOGADO)
 #Seguindo a idéia de operações CRUD para "MANUAL_ENTERING", o usuário deve ter a possibilidade de selecionar um registro "MANUAL_ENTERING", fazer alterações desejadas e persistir estas alterações (é necessário fornecer o "id/identifier" do registro "MANUAL_ENTERING" a ser modificado, indicando que para este uma operação de atualização/update está a ser executada).
 #Todas as informações (date, reason, time_interval) são mandatórias, então o serviço deve validar a mesma.
-[ TimeCard.update(ManualEntering) ] O usuário poderá selecionar uma razão/reason diferente e/ou alterar o valor para o tempo do ocorrido (time_interval); O serviço deve encontrar o registro referente ao "MANUAL_ENTERING" e armazenar as informações alteradas conforme fornecido.
+[ TimeCardService.update(ManualEntering) ] O usuário poderá selecionar uma razão/reason diferente e/ou alterar o valor para o tempo do ocorrido (time_interval); O serviço deve encontrar o registro referente ao "MANUAL_ENTERING" e armazenar as informações alteradas conforme fornecido.
 
 case:Exclusão do Lançamento de Horas do tipo 'MANUAL_ENTERING'. (NECESSÁRIO_USUÁRIO_ESTAR_LOGADO)
 #Seguindo a idéia da possibilidade de operações CRUD para "MANUAL_ENTERING", o usuário deve ter a possibilidade de selecionar um registro "MANUAL_ENTERING", e solicitar a exclusão do mesmo (é necessário fornecer o "id/identifier" do registro "MANUAL_ENTERING" a ser excluído).
-[ TimeCard.delete(ManualEntering) ] O serviço deve encontrar o registro "MANUAL_ENTERING" referente ao "id/identifier" fornecido e efetuar a exclusão do mesmo.
+[ TimeCardService.delete(ManualEntering) ] O serviço deve encontrar o registro "MANUAL_ENTERING" referente ao "id/identifier" fornecido e efetuar a exclusão do mesmo.
 
 case:Solicitação redefinição de senha 'REQUEST_RESET_PASSWORD' (NÃO_NECESSÁRIO_ESTAR_LOGADO)
 #Solicitação do envio de email para caixa de entrada do usuário, solicitando o cadastro de nova senha. É enviado para caixa de entrada do usuário a informação conhecida pela aplicação como "REQUEST_CODE_VALUE", no qual é uma coluna da tabela 'REQUEST_RESET_PASSWORD'.
