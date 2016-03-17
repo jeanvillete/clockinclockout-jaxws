@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://schemas.clkio.com/adjusting"
+	xmlns:adjusting="http://schemas.clkio.com/adjusting"
+	xmlns:common="http://schemas.clkio.com/common"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	attributeFormDefault="qualified"
+	elementFormDefault="qualified">
+	
+	<xs:import namespace="http://schemas.clkio.com/common" schemaLocation="common.xsd" />
+
+	<xs:complexType name="adjusting">
+		<xs:sequence>
+			<xs:element name="id" type="xs:integer" maxOccurs="1" minOccurs="1" />
+			<xs:element name="description" type="xs:string" maxOccurs="1" minOccurs="1" />
+			<xs:element name="timeInterval" type="xs:string" maxOccurs="1" minOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="listAdjustingRequest"/>
+	
+	<xs:complexType name="listAdjustingResponse">
+		<xs:complexContent>
+			<xs:extension base="common:response">
+				<xs:sequence>
+					<xs:element name="adjustings" type="adjusting:adjusting" maxOccurs="unbounded" nillable="true" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+</xs:schema>
