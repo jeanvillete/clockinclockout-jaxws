@@ -12,12 +12,14 @@
 			xmlns:user="http://schemas.clkio.com/user"
 			xmlns:login="http://schemas.clkio.com/login"
 			xmlns:email="http://schemas.clkio.com/email"
+			xmlns:profile="http://schemas.clkio.com/profile"
 			xmlns:xs="http://www.w3.org/2001/XMLSchema">
 			
 			<xs:import namespace="http://schemas.clkio.com/common" schemaLocation="common.xsd" />
 			<xs:import namespace="http://schemas.clkio.com/user" schemaLocation="user.xsd" />
 			<xs:import namespace="http://schemas.clkio.com/login" schemaLocation="login.xsd" />
 			<xs:import namespace="http://schemas.clkio.com/email" schemaLocation="email.xsd" />
+			<xs:import namespace="http://schemas.clkio.com/profile" schemaLocation="profile.xsd" />
 
 			<xs:element name="response" type="common:response" nillable="false"/>
 			<xs:element name="responseException" type="common:responseException" nillable="false"/>
@@ -30,6 +32,8 @@
 			<xs:element name="listEmailResponse" type="email:listEmailResponse" nillable="false"/>
 			<xs:element name="deleteEmailRequest" type="email:deleteEmailRequest" nillable="false"/>
 			<xs:element name="setEmailAsPrimaryRequest" type="email:setEmailAsPrimaryRequest" nillable="false"/>
+			<xs:element name="listProfileRequest" type="profile:listProfileRequest" nillable="false"/>
+			<xs:element name="listProfileResponse" type="profile:listProfileResponse" nillable="false"/>
 		</xs:schema>
 	</wsdl:types>
 	
@@ -66,6 +70,12 @@
 	</wsdl:message>
 	<wsdl:message name="setEmailAsPrimaryRequest">
 		<wsdl:part name="request" element="clkio:setEmailAsPrimaryRequest" />
+	</wsdl:message>
+	<wsdl:message name="listProfileRequest">
+		<wsdl:part name="request" element="clkio:listProfileRequest" />
+	</wsdl:message>
+	<wsdl:message name="listProfileResponse">
+		<wsdl:part name="request" element="clkio:listProfileResponse" />
 	</wsdl:message>
 	
 	<!-- port types -->
@@ -108,6 +118,13 @@
 			<wsdl:input message="clkws:setEmailAsPrimaryRequest" />
 			<wsdl:output message="clkws:response" />
 			<wsdl:fault message="clkws:responseException" name="setEmailAsPrimaryException" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:portType name="ProfilePort">
+		<wsdl:operation name="list">
+			<wsdl:input message="clkws:listProfileRequest" />
+			<wsdl:output message="clkws:listProfileResponse" />
+			<wsdl:fault message="clkws:responseException" name="listProfileException" />
 		</wsdl:operation>
 	</wsdl:portType>
 	
@@ -205,6 +222,21 @@
 			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>
+	<wsdl:binding name="ProfileBinding" type="clkws:ProfilePort">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+		<wsdl:operation name="list">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="listProfileException">
+				<soap:fault name="listProfileException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
 	
 	<!-- port services -->
 	<wsdl:service name="ClkIOWS">
@@ -215,6 +247,9 @@
 			<soap:address location="REPLACE_WITH_ACTUAL_URL" />
 		</wsdl:port>
 		<wsdl:port name="EmailService" binding="clkws:EmailBinding">
+			<soap:address location="REPLACE_WITH_ACTUAL_URL" />
+		</wsdl:port>
+		<wsdl:port name="ProfileService" binding="clkws:ProfileBinding">
 			<soap:address location="REPLACE_WITH_ACTUAL_URL" />
 		</wsdl:port>
 	</wsdl:service>

@@ -7,8 +7,8 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
-import com.clkio.ws.domain.login.DoLoginRequest;
-import com.clkio.ws.domain.login.LoginResponse;
+import com.clkio.ws.domain.profile.ListProfileRequest;
+import com.clkio.ws.domain.profile.ListProfileResponse;
 
 
 /**
@@ -17,7 +17,7 @@ import com.clkio.ws.domain.login.LoginResponse;
  * Generated source version: 2.2
  * 
  */
-@WebService(name = "LoginPort", targetNamespace = "http://ws.clkio.com")
+@WebService(name = "ProfilePort", targetNamespace = "http://ws.clkio.com")
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 @XmlSeeAlso({
     com.clkio.ws.domain.ObjectFactory.class,
@@ -27,21 +27,21 @@ import com.clkio.ws.domain.login.LoginResponse;
     com.clkio.ws.domain.profile.ObjectFactory.class,
     com.clkio.ws.domain.user.ObjectFactory.class
 })
-public interface LoginPort {
+public interface ProfilePort {
 
 
     /**
      * 
      * @param request
      * @return
-     *     returns com.clkio.ws.domain.login.LoginResponse
+     *     returns com.clkio.ws.domain.profile.ListProfileResponse
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "loginResponse", targetNamespace = "http://schemas.clkio.com", partName = "result")
-    public LoginResponse doLogin(
-        @WebParam(name = "doLoginRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
-        DoLoginRequest request)
+    @WebResult(name = "listProfileResponse", targetNamespace = "http://schemas.clkio.com", partName = "request")
+    public ListProfileResponse list(
+        @WebParam(name = "listProfileRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        ListProfileRequest request)
         throws ResponseException
     ;
 

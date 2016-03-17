@@ -27,4 +27,10 @@
 		</jaxb:schemaBindings>
 	</jaxb:bindings>
 
+	<jaxb:bindings schemaLocation="profile.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/profile']">
+		<jaxb:schemaBindings>
+			<jaxb:package name="com.clkio.ws.domain.profile" />
+		</jaxb:schemaBindings>
+	</jaxb:bindings>
+
 </jaxb:bindings>

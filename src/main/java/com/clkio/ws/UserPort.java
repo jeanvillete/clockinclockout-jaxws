@@ -24,6 +24,7 @@ import com.clkio.ws.domain.user.InsertUserRequest;
     com.clkio.ws.domain.common.ObjectFactory.class,
     com.clkio.ws.domain.email.ObjectFactory.class,
     com.clkio.ws.domain.login.ObjectFactory.class,
+    com.clkio.ws.domain.profile.ObjectFactory.class,
     com.clkio.ws.domain.user.ObjectFactory.class
 })
 public interface UserPort {

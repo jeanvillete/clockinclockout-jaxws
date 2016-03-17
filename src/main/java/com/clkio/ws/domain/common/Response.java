@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import com.clkio.ws.domain.email.ListEmailResponse;
 import com.clkio.ws.domain.login.LoginResponse;
+import com.clkio.ws.domain.profile.ListProfileResponse;
 
 
 /**
@@ -35,7 +36,8 @@ import com.clkio.ws.domain.login.LoginResponse;
 })
 @XmlSeeAlso({
     LoginResponse.class,
-    ListEmailResponse.class
+    ListEmailResponse.class,
+    ListProfileResponse.class
 })
 public class Response {
 

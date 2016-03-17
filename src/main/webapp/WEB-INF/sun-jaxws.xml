@@ -31,4 +31,13 @@
         port="{http://ws.clkio.com}EmailService"
         url-pattern="/email" />
 
+    <endpoint
+        name="profileService"
+        interface="com.clkio.ws.ProfilePort"
+        implementation="com.clkio.ws.impl.ProfileWSImpl"
+        wsdl="WEB-INF/wsdl/clkio.wsdl"
+        service="{http://ws.clkio.com}ClkIOWS"
+        port="{http://ws.clkio.com}ProfileService"
+        url-pattern="/profile" />
+
 </endpoints>

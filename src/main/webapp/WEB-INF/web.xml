@@ -68,6 +68,16 @@
         <servlet-name>emailws</servlet-name>
         <url-pattern>/email</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <description>Profile WS</description>
+        <servlet-name>profilews</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>profilews</servlet-name>
+        <url-pattern>/profile</url-pattern>
+    </servlet-mapping>
    
 	<session-config>
 		<session-timeout>1</session-timeout>

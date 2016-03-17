@@ -15,6 +15,8 @@ import com.clkio.ws.domain.email.ListEmailResponse;
 import com.clkio.ws.domain.email.SetEmailAsPrimaryRequest;
 import com.clkio.ws.domain.login.DoLoginRequest;
 import com.clkio.ws.domain.login.LoginResponse;
+import com.clkio.ws.domain.profile.ListProfileRequest;
+import com.clkio.ws.domain.profile.ListProfileResponse;
 import com.clkio.ws.domain.user.InsertUserRequest;
 
 
@@ -35,32 +37,25 @@ import com.clkio.ws.domain.user.InsertUserRequest;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _DoLoginRequest_QNAME = new QName("http://schemas.clkio.com", "doLoginRequest");
     private final static QName _LoginResponse_QNAME = new QName("http://schemas.clkio.com", "loginResponse");
-    private final static QName _Response_QNAME = new QName("http://schemas.clkio.com", "response");
     private final static QName _ListEmailResponse_QNAME = new QName("http://schemas.clkio.com", "listEmailResponse");
-    private final static QName _InsertUserRequest_QNAME = new QName("http://schemas.clkio.com", "insertUserRequest");
-    private final static QName _InsertEmailRequest_QNAME = new QName("http://schemas.clkio.com", "insertEmailRequest");
     private final static QName _ListEmailRequest_QNAME = new QName("http://schemas.clkio.com", "listEmailRequest");
     private final static QName _DeleteEmailRequest_QNAME = new QName("http://schemas.clkio.com", "deleteEmailRequest");
     private final static QName _ResponseException_QNAME = new QName("http://schemas.clkio.com", "responseException");
     private final static QName _ConfirmEmailRequest_QNAME = new QName("http://schemas.clkio.com", "confirmEmailRequest");
     private final static QName _SetEmailAsPrimaryRequest_QNAME = new QName("http://schemas.clkio.com", "setEmailAsPrimaryRequest");
+    private final static QName _ListProfileResponse_QNAME = new QName("http://schemas.clkio.com", "listProfileResponse");
+    private final static QName _ListProfileRequest_QNAME = new QName("http://schemas.clkio.com", "listProfileRequest");
+    private final static QName _DoLoginRequest_QNAME = new QName("http://schemas.clkio.com", "doLoginRequest");
+    private final static QName _Response_QNAME = new QName("http://schemas.clkio.com", "response");
+    private final static QName _InsertUserRequest_QNAME = new QName("http://schemas.clkio.com", "insertUserRequest");
+    private final static QName _InsertEmailRequest_QNAME = new QName("http://schemas.clkio.com", "insertEmailRequest");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.clkio.ws.domain
      * 
      */
     public ObjectFactory() {
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link DoLoginRequest }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "doLoginRequest")
-    public JAXBElement<DoLoginRequest> createDoLoginRequest(DoLoginRequest value) {
-        return new JAXBElement<DoLoginRequest>(_DoLoginRequest_QNAME, DoLoginRequest.class, null, value);
     }
 
     /**
@@ -73,39 +68,12 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Response }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "response")
-    public JAXBElement<Response> createResponse(Response value) {
-        return new JAXBElement<Response>(_Response_QNAME, Response.class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link ListEmailResponse }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "listEmailResponse")
     public JAXBElement<ListEmailResponse> createListEmailResponse(ListEmailResponse value) {
         return new JAXBElement<ListEmailResponse>(_ListEmailResponse_QNAME, ListEmailResponse.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link InsertUserRequest }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "insertUserRequest")
-    public JAXBElement<InsertUserRequest> createInsertUserRequest(InsertUserRequest value) {
-        return new JAXBElement<InsertUserRequest>(_InsertUserRequest_QNAME, InsertUserRequest.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link InsertEmailRequest }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "insertEmailRequest")
-    public JAXBElement<InsertEmailRequest> createInsertEmailRequest(InsertEmailRequest value) {
-        return new JAXBElement<InsertEmailRequest>(_InsertEmailRequest_QNAME, InsertEmailRequest.class, null, value);
     }
 
     /**
@@ -151,6 +119,60 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "setEmailAsPrimaryRequest")
     public JAXBElement<SetEmailAsPrimaryRequest> createSetEmailAsPrimaryRequest(SetEmailAsPrimaryRequest value) {
         return new JAXBElement<SetEmailAsPrimaryRequest>(_SetEmailAsPrimaryRequest_QNAME, SetEmailAsPrimaryRequest.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ListProfileResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "listProfileResponse")
+    public JAXBElement<ListProfileResponse> createListProfileResponse(ListProfileResponse value) {
+        return new JAXBElement<ListProfileResponse>(_ListProfileResponse_QNAME, ListProfileResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ListProfileRequest }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "listProfileRequest")
+    public JAXBElement<ListProfileRequest> createListProfileRequest(ListProfileRequest value) {
+        return new JAXBElement<ListProfileRequest>(_ListProfileRequest_QNAME, ListProfileRequest.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DoLoginRequest }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "doLoginRequest")
+    public JAXBElement<DoLoginRequest> createDoLoginRequest(DoLoginRequest value) {
+        return new JAXBElement<DoLoginRequest>(_DoLoginRequest_QNAME, DoLoginRequest.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Response }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "response")
+    public JAXBElement<Response> createResponse(Response value) {
+        return new JAXBElement<Response>(_Response_QNAME, Response.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link InsertUserRequest }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "insertUserRequest")
+    public JAXBElement<InsertUserRequest> createInsertUserRequest(InsertUserRequest value) {
+        return new JAXBElement<InsertUserRequest>(_InsertUserRequest_QNAME, InsertUserRequest.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link InsertEmailRequest }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "insertEmailRequest")
+    public JAXBElement<InsertEmailRequest> createInsertEmailRequest(InsertEmailRequest value) {
+        return new JAXBElement<InsertEmailRequest>(_InsertEmailRequest_QNAME, InsertEmailRequest.class, null, value);
     }
 
 }
