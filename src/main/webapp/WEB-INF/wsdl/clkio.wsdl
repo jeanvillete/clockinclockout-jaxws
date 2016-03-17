@@ -13,6 +13,10 @@
 			xmlns:login="http://schemas.clkio.com/login"
 			xmlns:email="http://schemas.clkio.com/email"
 			xmlns:profile="http://schemas.clkio.com/profile"
+			xmlns:adjusting="http://schemas.clkio.com/adjusting"
+			xmlns:reason="http://schemas.clkio.com/reason"
+			xmlns:timecard="http://schemas.clkio.com/timecard"
+			xmlns:resetpassword="http://schemas.clkio.com/resetpassword"
 			xmlns:xs="http://www.w3.org/2001/XMLSchema">
 			
 			<xs:import namespace="http://schemas.clkio.com/common" schemaLocation="common.xsd" />
@@ -20,6 +24,10 @@
 			<xs:import namespace="http://schemas.clkio.com/login" schemaLocation="login.xsd" />
 			<xs:import namespace="http://schemas.clkio.com/email" schemaLocation="email.xsd" />
 			<xs:import namespace="http://schemas.clkio.com/profile" schemaLocation="profile.xsd" />
+			<xs:import namespace="http://schemas.clkio.com/adjusting" schemaLocation="adjusting.xsd" />
+			<xs:import namespace="http://schemas.clkio.com/reason" schemaLocation="reason.xsd" />
+			<xs:import namespace="http://schemas.clkio.com/timecard" schemaLocation="timecard.xsd" />
+			<xs:import namespace="http://schemas.clkio.com/resetpassword" schemaLocation="resetpassword.xsd" />
 
 			<xs:element name="response" type="common:response" nillable="false"/>
 			<xs:element name="responseException" type="common:responseException" nillable="false"/>
@@ -34,6 +42,13 @@
 			<xs:element name="setEmailAsPrimaryRequest" type="email:setEmailAsPrimaryRequest" nillable="false"/>
 			<xs:element name="listProfileRequest" type="profile:listProfileRequest" nillable="false"/>
 			<xs:element name="listProfileResponse" type="profile:listProfileResponse" nillable="false"/>
+			<xs:element name="listAdjustingRequest" type="adjusting:listAdjustingRequest" nillable="false"/>
+			<xs:element name="listAdjustingResponse" type="adjusting:listAdjustingResponse" nillable="false"/>
+			<xs:element name="listManualEnteringReasonRequest" type="reason:listManualEnteringReasonRequest" nillable="false"/>
+			<xs:element name="listManualEnteringReasonResponse" type="reason:listManualEnteringReasonResponse" nillable="false"/>
+			<xs:element name="getTotalTimeRequest" type="timecard:getTotalTimeRequest" nillable="false"/>
+			<xs:element name="getTotalTimeResponse" type="timecard:getTotalTimeResponse" nillable="false"/>
+			<xs:element name="requestResetRequest" type="resetpassword:requestResetRequest" nillable="false"/>
 		</xs:schema>
 	</wsdl:types>
 	
@@ -75,7 +90,28 @@
 		<wsdl:part name="request" element="clkio:listProfileRequest" />
 	</wsdl:message>
 	<wsdl:message name="listProfileResponse">
-		<wsdl:part name="request" element="clkio:listProfileResponse" />
+		<wsdl:part name="result" element="clkio:listProfileResponse" />
+	</wsdl:message>
+	<wsdl:message name="listAdjustingRequest">
+		<wsdl:part name="request" element="clkio:listAdjustingRequest" />
+	</wsdl:message>
+	<wsdl:message name="listAdjustingResponse">
+		<wsdl:part name="result" element="clkio:listAdjustingResponse" />
+	</wsdl:message>
+	<wsdl:message name="listManualEnteringReasonRequest">
+		<wsdl:part name="request" element="clkio:listManualEnteringReasonRequest" />
+	</wsdl:message>
+	<wsdl:message name="listManualEnteringReasonResponse">
+		<wsdl:part name="result" element="clkio:listManualEnteringReasonResponse" />
+	</wsdl:message>
+	<wsdl:message name="getTotalTimeRequest">
+		<wsdl:part name="request" element="clkio:getTotalTimeRequest" />
+	</wsdl:message>
+	<wsdl:message name="getTotalTimeResponse">
+		<wsdl:part name="result" element="clkio:getTotalTimeResponse" />
+	</wsdl:message>
+	<wsdl:message name="requestResetRequest">
+		<wsdl:part name="request" element="clkio:requestResetRequest" />
 	</wsdl:message>
 	
 	<!-- port types -->
@@ -125,6 +161,34 @@
 			<wsdl:input message="clkws:listProfileRequest" />
 			<wsdl:output message="clkws:listProfileResponse" />
 			<wsdl:fault message="clkws:responseException" name="listProfileException" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:portType name="AdjustingPort">
+		<wsdl:operation name="list">
+			<wsdl:input message="clkws:listAdjustingRequest"/>
+			<wsdl:output message="clkws:listAdjustingResponse"/>
+			<wsdl:fault message="clkws:responseException" name="listAdjustingException" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:portType name="ManualEnteringReasonPort">
+		<wsdl:operation name="list">
+			<wsdl:input message="clkws:listManualEnteringReasonRequest"/>
+			<wsdl:output message="clkws:listManualEnteringReasonResponse"/>
+			<wsdl:fault message="clkws:responseException" name="listManualEnteringReasonException" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:portType name="TimeCardPort">
+		<wsdl:operation name="getTotalTime">
+			<wsdl:input message="clkws:getTotalTimeRequest"/>
+			<wsdl:output message="clkws:getTotalTimeResponse"/>
+			<wsdl:fault message="clkws:responseException" name="getTotalTimeException" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:portType name="ResetPasswordPort">
+		<wsdl:operation name="requestReset">
+			<wsdl:input message="clkws:requestResetRequest"/>
+			<wsdl:output message="clkws:response"/>
+			<wsdl:fault message="clkws:responseException" name="requestResetException" />
 		</wsdl:operation>
 	</wsdl:portType>
 	
@@ -237,6 +301,66 @@
 			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>
+	<wsdl:binding name="AdjustingBinding" type="clkws:AdjustingPort">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+		<wsdl:operation name="list">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="listAdjustingException">
+				<soap:fault name="listAdjustingException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:binding name="ManualEnteringReasonBinding" type="clkws:ManualEnteringReasonPort">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+		<wsdl:operation name="list">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="listManualEnteringReasonException">
+				<soap:fault name="listManualEnteringReasonException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:binding name="TimeCardBinding" type="clkws:TimeCardPort">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+		<wsdl:operation name="getTotalTime">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="getTotalTimeException">
+				<soap:fault name="getTotalTimeException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:binding name="ResetPasswordBinding" type="clkws:ResetPasswordPort">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+		<wsdl:operation name="requestReset">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="requestResetException">
+				<soap:fault name="requestResetException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
 	
 	<!-- port services -->
 	<wsdl:service name="ClkIOWS">
@@ -250,6 +374,18 @@
 			<soap:address location="REPLACE_WITH_ACTUAL_URL" />
 		</wsdl:port>
 		<wsdl:port name="ProfileService" binding="clkws:ProfileBinding">
+			<soap:address location="REPLACE_WITH_ACTUAL_URL" />
+		</wsdl:port>
+		<wsdl:port name="AdjustingService" binding="clkws:AdjustingBinding">
+			<soap:address location="REPLACE_WITH_ACTUAL_URL" />
+		</wsdl:port>
+		<wsdl:port name="ManualEnteringReasonService" binding="clkws:ManualEnteringReasonBinding">
+			<soap:address location="REPLACE_WITH_ACTUAL_URL" />
+		</wsdl:port>
+		<wsdl:port name="TimeCardService" binding="clkws:TimeCardBinding">
+			<soap:address location="REPLACE_WITH_ACTUAL_URL" />
+		</wsdl:port>
+		<wsdl:port name="ResetPasswordService" binding="clkws:ResetPasswordBinding">
 			<soap:address location="REPLACE_WITH_ACTUAL_URL" />
 		</wsdl:port>
 	</wsdl:service>

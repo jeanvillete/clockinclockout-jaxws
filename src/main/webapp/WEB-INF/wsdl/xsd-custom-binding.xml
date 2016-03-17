@@ -33,4 +33,28 @@
 		</jaxb:schemaBindings>
 	</jaxb:bindings>
 
+	<jaxb:bindings schemaLocation="adjusting.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/adjusting']">
+		<jaxb:schemaBindings>
+			<jaxb:package name="com.clkio.ws.domain.adjusting" />
+		</jaxb:schemaBindings>
+	</jaxb:bindings>
+
+	<jaxb:bindings schemaLocation="reason.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/reason']">
+		<jaxb:schemaBindings>
+			<jaxb:package name="com.clkio.ws.domain.reason" />
+		</jaxb:schemaBindings>
+	</jaxb:bindings>
+
+	<jaxb:bindings schemaLocation="timecard.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/timecard']">
+		<jaxb:schemaBindings>
+			<jaxb:package name="com.clkio.ws.domain.timecard" />
+		</jaxb:schemaBindings>
+	</jaxb:bindings>
+
+	<jaxb:bindings schemaLocation="resetpassword.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/resetpassword']">
+		<jaxb:schemaBindings>
+			<jaxb:package name="com.clkio.ws.domain.resetpassword" />
+		</jaxb:schemaBindings>
+	</jaxb:bindings>
+
 </jaxb:bindings>
