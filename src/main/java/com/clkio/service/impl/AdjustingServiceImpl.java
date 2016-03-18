@@ -42,8 +42,9 @@ public class AdjustingServiceImpl implements AdjustingService, InitializingBean 
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public List< Adjusting > listBy( Profile profile ) {
-		Assert.notNull( profile );
+	public List< Adjusting > list( Profile profile ) {
+		Assert.state( profile != null && profile.getUser() != null,
+				"Argument 'profile' and its property 'user' are must have instance." );
 		return this.repository.listBy( profile );
 	}
 

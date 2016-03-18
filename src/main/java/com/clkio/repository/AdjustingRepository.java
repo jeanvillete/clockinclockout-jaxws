@@ -26,9 +26,11 @@ public class AdjustingRepository extends CommonRepository {
 	}
 
 	public List< Adjusting > listBy( final Profile profile ) {
-		return this.jdbcTemplate.query( " SELECT ID, DESCRIPTION, TIME_INTERVAL, ID_PROFILE "
-				+ " FROM ADJUSTING WHERE ID_PROFILE = ? ",
-				new Object[]{ profile.getId() }, new AdjustingRowMapper() );
+		return this.jdbcTemplate.query( " SELECT ADJ.ID, ADJ.DESCRIPTION, ADJ.TIME_INTERVAL, ADJ.ID_PROFILE "
+				+ " FROM ADJUSTING ADJ "
+				+ " JOIN PROFILE PROF ON ADJ.ID_PROFILE = PROF.ID "
+				+ " WHERE PROF.ID_CLK_USER = ? AND ADJ.ID_PROFILE = ? ",
+				new Object[]{ profile.getUser().getId(), profile.getId() }, new AdjustingRowMapper() );
 	}
 
 }

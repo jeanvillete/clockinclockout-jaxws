@@ -63,7 +63,7 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 	public void delete( final Profile profile ) {
 		Assert.notNull( profile );
 		
-		List< Adjusting > listAdjusting = this.adjustingService.listBy( profile );
+		List< Adjusting > listAdjusting = this.adjustingService.list( profile );
 		if ( !CollectionUtils.isEmpty( listAdjusting ) )
 			for ( Adjusting adjusting : listAdjusting )
 				this.adjustingService.delete( adjusting );

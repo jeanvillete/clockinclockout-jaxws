@@ -78,6 +78,16 @@
         <servlet-name>profilews</servlet-name>
         <url-pattern>/profile</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <description>Adjusting WS</description>
+        <servlet-name>adjustingws</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>adjustingws</servlet-name>
+        <url-pattern>/adjusting</url-pattern>
+    </servlet-mapping>
    
 	<session-config>
 		<session-timeout>1</session-timeout>

@@ -8,17 +8,17 @@ delete from day;
 
 -- insert adjusting ( initial balance )
 insert into adjusting( id, description, time_interval, id_profile ) values ( nextval('adjusting_seq'), 'saldo inicial', '-16:00:00',
-  ( select id from profile where description = 'profile default' )
+  ( select id from profile where description = 'default profile' )
 );
 insert into adjusting( id, description, time_interval, id_profile ) values ( nextval('adjusting_seq'), 'viagem itália; tempo gasto no avião', '24:00:00',
-  ( select id from profile where description = 'profile default' )
+  ( select id from profile where description = 'default profile' )
 );
 
 -- insert manual entering reasons
-insert into manual_entering_reason ( id, reason, id_profile ) values ( nextval('manual_entering_reason_seq'), 'SERVIÇO EXTERNO', ( select id from profile where description = 'profile default' ) );
-insert into manual_entering_reason ( id, reason, id_profile ) values ( nextval('manual_entering_reason_seq'), 'FALTA', ( select id from profile where description = 'profile default' ) );
-insert into manual_entering_reason ( id, reason, id_profile ) values ( nextval('manual_entering_reason_seq'), 'ATESTADO MÉDICO', ( select id from profile where description = 'profile default' ) );
-insert into manual_entering_reason ( id, reason, id_profile ) values ( nextval('manual_entering_reason_seq'), 'FÉRIAS', ( select id from profile where description = 'profile default' ) );
+insert into manual_entering_reason ( id, reason, id_profile ) values ( nextval('manual_entering_reason_seq'), 'SERVIÇO EXTERNO', ( select id from profile where description = 'default profile' ) );
+insert into manual_entering_reason ( id, reason, id_profile ) values ( nextval('manual_entering_reason_seq'), 'FALTA', ( select id from profile where description = 'default profile' ) );
+insert into manual_entering_reason ( id, reason, id_profile ) values ( nextval('manual_entering_reason_seq'), 'ATESTADO MÉDICO', ( select id from profile where description = 'default profile' ) );
+insert into manual_entering_reason ( id, reason, id_profile ) values ( nextval('manual_entering_reason_seq'), 'FÉRIAS', ( select id from profile where description = 'default profile' ) );
 
 -- insert day/clockinclockout
 insert into day(id, date, expected_hours, id_profile) values (nextval('day_seq'),'2015-07-02', '8 hours', ( select id from profile where description = 'profile default' ) );

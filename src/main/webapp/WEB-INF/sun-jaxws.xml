@@ -40,4 +40,13 @@
         port="{http://ws.clkio.com}ProfileService"
         url-pattern="/profile" />
 
+    <endpoint
+        name="adjustingService"
+        interface="com.clkio.ws.AdjustingPort"
+        implementation="com.clkio.ws.impl.AdjustingWSImpl"
+        wsdl="WEB-INF/wsdl/clkio.wsdl"
+        service="{http://ws.clkio.com}ClkIOWS"
+        port="{http://ws.clkio.com}AdjustingService"
+        url-pattern="/adjusting" />
+
 </endpoints>

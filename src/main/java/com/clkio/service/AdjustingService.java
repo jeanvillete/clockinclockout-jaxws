@@ -11,6 +11,6 @@ public interface AdjustingService {
 	
 	void delete( Adjusting adjusting );
 	
-	List< Adjusting > listBy( Profile profile );
-	
+	List< Adjusting > list( Profile profile );
+
 }
