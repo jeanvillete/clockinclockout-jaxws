@@ -73,7 +73,7 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 			for ( Day day : listDay )
 				this.dayService.delete( day );
 		
-		List< ManualEnteringReason > listManualEnteringReason = this.manualEnteringReasonService.listBy( profile );
+		List< ManualEnteringReason > listManualEnteringReason = this.manualEnteringReasonService.list( profile );
 		if ( !CollectionUtils.isEmpty( listManualEnteringReason ) )
 			for ( ManualEnteringReason manualEnteringReason : listManualEnteringReason )
 				this.manualEnteringReasonService.delete( manualEnteringReason );

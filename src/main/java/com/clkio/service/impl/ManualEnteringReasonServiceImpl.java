@@ -57,9 +57,10 @@ public class ManualEnteringReasonServiceImpl implements ManualEnteringReasonServ
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public List< ManualEnteringReason > listBy( final Profile profile ) {
-		Assert.notNull( profile );
-		return this.repository.listBy( profile );
+	public List< ManualEnteringReason > list( final Profile profile ) {
+		Assert.state( profile != null && profile.getUser() != null,
+				"The argument 'profile' and its nested 'user' property are mandatory." );
+		return this.repository.list( profile );
 	}
 
 }

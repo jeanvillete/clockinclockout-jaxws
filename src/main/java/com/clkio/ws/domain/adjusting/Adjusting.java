@@ -40,13 +40,13 @@ import com.clkio.ws.domain.profile.Profile;
 })
 public class Adjusting {
 
-	@XmlElement(required = true)
+    @XmlElement(required = true)
     protected BigInteger id;
     @XmlElement(required = true)
     protected String description;
     @XmlElement(required = true)
     protected String timeInterval;
-    @XmlElement(required = true)
+    @XmlElement(required = true, nillable = true)
     protected Profile profile;
 
     public Adjusting() {

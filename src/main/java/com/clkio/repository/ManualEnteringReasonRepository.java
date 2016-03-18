@@ -24,10 +24,12 @@ public class ManualEnteringReasonRepository extends CommonRepository {
 		this.jdbcTemplate.update( " DELETE FROM MANUAL_ENTERING_REASON WHERE ID = ? ", new Object[]{ manualEnteringReason.getId() } );
 	}
 
-	public List< ManualEnteringReason > listBy( final Profile profile ) {
-		return this.jdbcTemplate.query( " SELECT ID, REASON, ID_PROFILE "
-				+ " FROM MANUAL_ENTERING_REASON WHERE ID_PROFILE = ? ",
-				new Object[]{ profile.getId() }, new ManualEnteringReasonRowMapper() );
+	public List< ManualEnteringReason > list( final Profile profile ) {
+		return this.jdbcTemplate.query( " SELECT REASON.ID, REASON.REASON, REASON.ID_PROFILE "
+				+ " FROM MANUAL_ENTERING_REASON REASON "
+				+ " JOIN PROFILE PROF ON REASON.ID_PROFILE = PROF.ID "
+				+ " WHERE PROF.ID_CLK_USER = ? AND REASON.ID_PROFILE = ? ",
+				new Object[]{ profile.getUser().getId(), profile.getId() }, new ManualEnteringReasonRowMapper() );
 	}
 
 }

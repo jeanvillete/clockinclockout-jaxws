@@ -11,5 +11,5 @@ public interface ManualEnteringReasonService {
 	
 	void delete( ManualEnteringReason manualEnteringReason );
 	
-	List< ManualEnteringReason > listBy( Profile profile );
+	List< ManualEnteringReason > list( Profile profile );
 }

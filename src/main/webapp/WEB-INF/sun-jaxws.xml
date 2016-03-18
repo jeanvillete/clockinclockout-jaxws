@@ -49,4 +49,13 @@
         port="{http://ws.clkio.com}AdjustingService"
         url-pattern="/adjusting" />
 
+    <endpoint
+        name="manualEnteringReasonService"
+        interface="com.clkio.ws.ManualEnteringReasonPort"
+        implementation="com.clkio.ws.impl.ManualEnteringReasonWSImpl"
+        wsdl="WEB-INF/wsdl/clkio.wsdl"
+        service="{http://ws.clkio.com}ClkIOWS"
+        port="{http://ws.clkio.com}ManualEnteringReasonService"
+        url-pattern="/manualenteringreason" />
+
 </endpoints>

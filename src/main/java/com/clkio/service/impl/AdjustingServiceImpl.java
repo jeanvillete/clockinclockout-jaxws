@@ -45,7 +45,7 @@ public class AdjustingServiceImpl implements AdjustingService, InitializingBean 
 	public List< Adjusting > list( Profile profile ) {
 		Assert.state( profile != null && profile.getUser() != null,
 				"Argument 'profile' and its property 'user' are must have instance." );
-		return this.repository.listBy( profile );
+		return this.repository.list( profile );
 	}
 
 }
