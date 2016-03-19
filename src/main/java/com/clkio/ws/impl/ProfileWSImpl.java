@@ -8,6 +8,7 @@ import javax.jws.WebService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 
+import com.clkio.common.DurationUtil;
 import com.clkio.domain.Profile;
 import com.clkio.service.ProfileService;
 import com.clkio.ws.ProfilePort;
@@ -31,13 +32,13 @@ public class ProfileWSImpl extends WebServiceCommon implements ProfilePort {
 							new com.clkio.ws.domain.profile.Profile( new BigInteger( profile.getId().toString() ), profile.getDescription() );
 					profileWs.setHoursFormat( profile.getHoursFormat() );
 					profileWs.setDateFormat( profile.getDateFormat() );
-					profileWs.setExpectedSunday( profile.getDefaultExpectedSunday().toString() );
-					profileWs.setExpectedMonday( profile.getDefaultExpectedMonday().toString() );
-					profileWs.setExpectedTuesday( profile.getDefaultExpectedTuesday().toString() );
-					profileWs.setExpectedWednesday( profile.getDefaultExpectedWednesday().toString() );
-					profileWs.setExpectedThursday( profile.getDefaultExpectedThursday().toString() );
-					profileWs.setExpectedFriday( profile.getDefaultExpectedFriday().toString() );
-					profileWs.setExpectedSaturday( profile.getDefaultExpectedSaturday().toString() );
+					profileWs.setExpectedSunday( DurationUtil.fromDuration( profile.getDefaultExpectedSunday() ) );
+					profileWs.setExpectedMonday( DurationUtil.fromDuration( profile.getDefaultExpectedMonday() ) );
+					profileWs.setExpectedTuesday( DurationUtil.fromDuration( profile.getDefaultExpectedTuesday() ) );
+					profileWs.setExpectedWednesday( DurationUtil.fromDuration( profile.getDefaultExpectedWednesday() ) );
+					profileWs.setExpectedThursday( DurationUtil.fromDuration( profile.getDefaultExpectedThursday() ) );
+					profileWs.setExpectedFriday( DurationUtil.fromDuration( profile.getDefaultExpectedFriday() ) );
+					profileWs.setExpectedSaturday( DurationUtil.fromDuration( profile.getDefaultExpectedSaturday() ) );
 					
 					response.getProfiles().add( profileWs );
 				}

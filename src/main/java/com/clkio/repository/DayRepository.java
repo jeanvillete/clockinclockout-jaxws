@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.clkio.common.DurationUtil;
 import com.clkio.domain.Day;
 import com.clkio.domain.Profile;
 import com.clkio.rowmapper.DayRowMaper;
@@ -17,7 +18,7 @@ public class DayRepository extends CommonRepository {
 				+ " VALUES ( ?, ?, ?, ?, ? ) ",
 				new Object[]{ day.getId(),
 						day.getDate(),
-						durationToPG( day.getExpectedHours() ),
+						DurationUtil.durationToPG( day.getExpectedHours() ),
 						day.getNotes(),
 						day.getProfile().getId() });
 	}

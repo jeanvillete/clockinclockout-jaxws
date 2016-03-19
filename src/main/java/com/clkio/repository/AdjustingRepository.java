@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.clkio.common.DurationUtil;
 import com.clkio.domain.Adjusting;
 import com.clkio.domain.Profile;
 import com.clkio.rowmapper.AdjustingRowMapper;
@@ -17,7 +18,7 @@ public class AdjustingRepository extends CommonRepository {
 				+ " VALUES ( ?, ?, ?, ? ) ",
 				new Object[]{ adjusting.getId(),
 						adjusting.getDescription(),
-						durationToPG( adjusting.getTimeInterval() ),
+						DurationUtil.durationToPG( adjusting.getTimeInterval() ),
 						adjusting.getProfile().getId() });
 	}
 

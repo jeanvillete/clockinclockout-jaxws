@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
+import com.clkio.common.DurationUtil;
 import com.clkio.domain.Adjusting;
 import com.clkio.domain.Profile;
 import com.clkio.service.AdjustingService;
@@ -39,7 +40,7 @@ public class AdjustingWSImpl extends WebServiceCommon implements AdjustingPort {
 					response.getAdjustings().add( new com.clkio.ws.domain.adjusting.Adjusting(
 							new BigInteger( adjusting.getId().toString() ),
 							adjusting.getDescription(),
-							adjusting.getTimeInterval().toString() ) );
+							DurationUtil.fromDuration( adjusting.getTimeInterval() ) ) );
 			
 			return response;
 		} catch ( Exception e ) {

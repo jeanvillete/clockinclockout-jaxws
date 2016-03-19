@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.clkio.common.DurationUtil;
 import com.clkio.domain.Profile;
 import com.clkio.domain.User;
 import com.clkio.rowmapper.ProfileRowMapper;
@@ -31,13 +32,13 @@ public class ProfileRepository extends CommonRepository {
 						profile.getDescription(),
 						profile.getHoursFormat(),
 						profile.getDateFormat(),
-						durationToPG( profile.getDefaultExpectedSunday() ), 
-						durationToPG( profile.getDefaultExpectedMonday() ),
-						durationToPG( profile.getDefaultExpectedTuesday() ),
-						durationToPG( profile.getDefaultExpectedWednesday() ),
-						durationToPG( profile.getDefaultExpectedThursday() ),
-						durationToPG( profile.getDefaultExpectedFriday() ),
-						durationToPG( profile.getDefaultExpectedSaturday() ) });
+						DurationUtil.durationToPG( profile.getDefaultExpectedSunday() ), 
+						DurationUtil.durationToPG( profile.getDefaultExpectedMonday() ),
+						DurationUtil.durationToPG( profile.getDefaultExpectedTuesday() ),
+						DurationUtil.durationToPG( profile.getDefaultExpectedWednesday() ),
+						DurationUtil.durationToPG( profile.getDefaultExpectedThursday() ),
+						DurationUtil.durationToPG( profile.getDefaultExpectedFriday() ),
+						DurationUtil.durationToPG( profile.getDefaultExpectedSaturday() ) });
 	}
 
 	public List< Profile > listBy( final User user ) {

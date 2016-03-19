@@ -5,6 +5,8 @@ import java.time.Duration;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import com.clkio.common.IntervalUtil;
+
 public class Profile extends CommonDomain {
 	
 	private User user;
@@ -45,11 +47,11 @@ public class Profile extends CommonDomain {
 		this.description = description;
 	}
 	public void setHoursFormat(String hoursFormat) {
-		Assert.hasLength( hoursFormat, "Argument hoursFormat cannot be null nor empty." );
+		Assert.state( IntervalUtil.isHoursFormatValid( hoursFormat ), "The provided value for 'hoursFormat' is not valid." );
 		this.hoursFormat = hoursFormat;
 	}
 	public void setDateFormat(String dateFormat) {
-		Assert.hasLength( dateFormat, "Argument dateFormat cannot be null nor empty." );
+		Assert.state( IntervalUtil.isDateFormatValid( dateFormat ), "The provided value for 'dateFormat' is not valid." );
 		this.dateFormat = dateFormat;
 	}
 	public void setDefaultExpectedSunday(Duration defaultExpectedSunday) {

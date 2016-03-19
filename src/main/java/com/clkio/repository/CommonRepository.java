@@ -1,11 +1,7 @@
 package com.clkio.repository;
 
-import java.sql.SQLException;
-import java.time.Duration;
-
 import javax.sql.DataSource;
 
-import org.postgresql.util.PGInterval;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,11 +29,4 @@ abstract class CommonRepository implements InitializingBean {
 		return this.jdbcTemplate.queryForObject( " select nextval( ? ) ", new Object[]{ sequence }, Integer.class);
 	}
 	
-	static PGInterval durationToPG( Duration duration ) {
-		try {
-			return duration == null ? null : new PGInterval( duration.toString().replace( "PT", "" ).replace( "H", " hour " ).replace( "M", " min " ).replace( "S", " sec " ).trim() );
-		} catch ( SQLException e ) {
-			throw new RuntimeException( e );
-		}
-	}
 }

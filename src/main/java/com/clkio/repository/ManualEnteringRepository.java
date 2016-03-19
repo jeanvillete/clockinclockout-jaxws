@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.clkio.common.DurationUtil;
 import com.clkio.domain.Day;
 import com.clkio.domain.ManualEntering;
 import com.clkio.domain.ManualEnteringReason;
@@ -19,7 +20,7 @@ public class ManualEnteringRepository extends CommonRepository {
 				new Object[]{ manualEntering.getId(),
 						manualEntering.getDay().getId(),
 						manualEntering.getReason().getId(),
-						durationToPG( manualEntering.getTimeInterval() )});
+						DurationUtil.durationToPG( manualEntering.getTimeInterval() )});
 	}
 	
 	public void delete( final ManualEntering manualEntering ) {
