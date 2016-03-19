@@ -12,8 +12,6 @@ abstract public class IntervalUtil {
 											+ "^([d]{1,2}[y]{0,4}[M]{0,2})$|"
 											+ "^([M]{0,2}[y]{0,4}[d]{1,2})$|"
 											+ "^([M]{0,2}[d]{1,2}[y]{0,4})$";
-	private static final String HOURS_REGEX = "^\\-?\\d{1,2}(\\:[0-5]\\d)?(\\:[0-5]\\d)?$";
-	
 	
 	/**
 	 * Method responsable to check whether the 'hoursFormat' provided by the user is valid to the application. 
@@ -30,9 +28,16 @@ abstract public class IntervalUtil {
 	 * @param hour
 	 * @return
 	 */
-	public static boolean isHoursValid( String hour ) {
+	public static boolean isHoursValid( String hour, String pattern ) {
 		Assert.hasText( hour, "Argument 'hour' is mandatory." );
-		return hour.matches( HOURS_REGEX );
+		Assert.hasText( pattern, "Argument 'pattern' is mandatory." );
+		
+		pattern = "\\-?" + pattern;
+		pattern = pattern.replaceAll( "H", "\\\\d" + ( !pattern.contains( "HH" ) ? "{1,2}" : "" ) );
+		if ( pattern.contains( "m" ) ) pattern = pattern.replaceAll( "m", "\\\\d" + ( !pattern.contains( "mm" ) ? "{1,2}" : "" ) );
+		if ( pattern.contains( "s" ) ) pattern = pattern.replaceAll( "s", "\\\\d" + ( !pattern.contains( "ss" ) ? "{1,2}" : "" ) );
+		
+		return hour.matches( pattern );
 	}
 	
 	/**

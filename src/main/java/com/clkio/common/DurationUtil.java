@@ -26,11 +26,14 @@ abstract public class DurationUtil {
 	
 	/**
 	 * Method responsable to get a Duration instance based on a String representating hours.
+	 * 
+	 * @param hours
+	 * @param pattern
 	 * @return
 	 */
-	public static Duration fromString( String hours ) {
+	public static Duration fromString( String hours, String pattern ) {
 		Assert.hasText( hours, "The argument 'hours' is mandatory." );
-		Assert.state( IntervalUtil.isHoursValid( hours ), "The provided value for 'hours' is not a valid format." );
+		Assert.state( IntervalUtil.isHoursValid( hours, pattern ), "The provided value for 'hours' is not in a valid format; 'pattern'=[" + pattern + "]" );
 		Matcher matcher = Pattern.compile( "^(\\-?)(\\d{1,2})(\\:\\d{1,2})?(\\:\\d{1,2})?$" ).matcher( hours );
 		if ( !matcher.find() ) throw new IllegalStateException( "The provided 'hours' doesn't match the minimum requirement to get a Durable instance." );
 		StringBuilder _return = new StringBuilder( "PT" );
@@ -44,17 +47,17 @@ abstract public class DurationUtil {
 	
 	/**
 	 * Method responsable to get a String 'hours' representation based on a Duration instance.
+	 * 
 	 * @param duration
+	 * @param pattern The pattern set by the user.
 	 * @return
 	 */
-	public static String fromDuration( Duration duration ) {
+	public static String fromDuration( Duration duration, String pattern ) {
 		if ( duration == null ) return null;
 		
 		String hours = duration.toString().substring( 2 );
 		StringBuilder _return = new StringBuilder( hours.charAt( 0 ) == '-' ? "-" : "" );
 		hours = hours.replaceAll( "\\-", "" );
-		
-		String sign = hours.charAt( 0 ) == '-' ? "-" : "";
 		
 		Matcher matcher = Pattern.compile( "^(\\-?\\d{1,2}[H])?(\\-?\\d{1,2}[M])?(\\-?\\d{1,2}[S])?$" ).matcher( hours );
 		Assert.state( matcher.find(), "The 'find' method did not succeed." );
@@ -62,7 +65,7 @@ abstract public class DurationUtil {
 		_return.append( ( ( hours = matcher.group( 2 ) ) != null ? ( hours = hours.replace( "M", "" ) ).length() == 1 ? "0" + hours : hours : "00" ) + ":" );
 		_return.append( ( hours = matcher.group( 3 ) ) != null ? ( hours = hours.replace( "S", "" ) ).length() == 1 ? "0" + hours : hours : "00" );
 		
-		return sign + _return.toString();
+		return _return.toString();
 	}
 
 }
