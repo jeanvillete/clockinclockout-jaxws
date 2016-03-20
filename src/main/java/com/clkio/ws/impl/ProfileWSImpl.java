@@ -18,6 +18,7 @@ import com.clkio.ws.domain.common.Response;
 import com.clkio.ws.domain.profile.InsertProfileRequest;
 import com.clkio.ws.domain.profile.ListProfileRequest;
 import com.clkio.ws.domain.profile.ListProfileResponse;
+import com.clkio.ws.domain.profile.UpdateProfileRequest;
 
 @WebService( endpointInterface = "com.clkio.ws.ProfilePort" )
 public class ProfileWSImpl extends WebServiceCommon implements ProfilePort {
@@ -74,6 +75,35 @@ public class ProfileWSImpl extends WebServiceCommon implements ProfilePort {
 			this.getService( ProfileService.class ).insert( profile );
 			
 			return new Response( "Profile record stored successfully." );
+		} catch ( Exception e ) {
+			LOG.error( e );
+			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+		}
+	}
+
+	@Override
+	public Response update( UpdateProfileRequest request ) throws ResponseException {
+		try {
+			Assert.notNull( request );
+			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
+					"[clkiows] No 'profile' instance was found on the request or its 'id' property is null." );
+			
+			Profile profile = new Profile( request.getProfile().getId().intValue(),
+					this.getCurrentUser(),
+					request.getProfile().getDescription(),
+					request.getProfile().getHoursFormat(),
+					request.getProfile().getDateFormat() );
+			profile.setDefaultExpectedSunday( DurationUtil.fromString( request.getProfile().getExpectedSunday(), request.getProfile().getHoursFormat() ) );
+			profile.setDefaultExpectedMonday( DurationUtil.fromString( request.getProfile().getExpectedMonday(), request.getProfile().getHoursFormat() ) );
+			profile.setDefaultExpectedTuesday( DurationUtil.fromString( request.getProfile().getExpectedTuesday(), request.getProfile().getHoursFormat() ) );
+			profile.setDefaultExpectedWednesday( DurationUtil.fromString( request.getProfile().getExpectedWednesday(), request.getProfile().getHoursFormat() ) );
+			profile.setDefaultExpectedThursday( DurationUtil.fromString( request.getProfile().getExpectedThursday(), request.getProfile().getHoursFormat() ) );
+			profile.setDefaultExpectedFriday( DurationUtil.fromString( request.getProfile().getExpectedFriday(), request.getProfile().getHoursFormat() ) );
+			profile.setDefaultExpectedSaturday( DurationUtil.fromString( request.getProfile().getExpectedSaturday(), request.getProfile().getHoursFormat() ) );
+			
+			this.getService( ProfileService.class ).update( profile );
+			
+			return new Response( "Profile record updated successfully." );
 		} catch ( Exception e ) {
 			LOG.error( e );
 			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );

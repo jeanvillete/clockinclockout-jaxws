@@ -49,7 +49,7 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 	public void insert( final Profile profile ) {
 		Assert.notNull( profile );
 		Assert.state( !this.exists( profile.getDescription(), profile.getUser() ), "It does already exist a record with the given description associated with the provided user." );
-		this.repository.insert( profile );
+		Assert.state( this.repository.insert( profile ), "Some problem happened while performing insert for 'profile' record." );;
 	}
 
 	@Override
@@ -95,6 +95,23 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 		Assert.hasText( description, "Argument 'description' is mandatory." );
 		Assert.notNull( user, "Argument 'user' is mandatory." );
 		return this.repository.exists( description, user );
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.REQUIRED )
+	public void update( Profile profile ) {
+		Assert.notNull( profile, "Argument 'profile' is mandatory." );
+		Assert.state( !this.exists( profile.getDescription(), profile.getUser(), profile.getId() ), "It does already exist a record with the given description associated with the provided user." );
+		Assert.state( this.repository.update( profile ), "Some problem happened while performing update on 'profile' record." );
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean exists( String description, User user, Integer id ) {
+		Assert.hasText( description, "Argument 'description' is mandatory." );
+		Assert.notNull( user, "Argument 'user' is mandatory." );
+		Assert.notNull( id, "Argument 'id' is mandatory." );
+		return this.repository.exists( description, user, id );
 	}
 
 }

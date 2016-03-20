@@ -41,5 +41,11 @@
 			<xs:element name="profile" type="profile:profile" minOccurs="1" maxOccurs="1" nillable="false"/>
 		</xs:sequence>
 	</xs:complexType>
+	
+	<xs:complexType name="updateProfileRequest">
+		<xs:sequence>
+			<xs:element name="profile" type="profile:profile" minOccurs="1" maxOccurs="1" nillable="false"/>
+		</xs:sequence>
+	</xs:complexType>
 
 </xs:schema>

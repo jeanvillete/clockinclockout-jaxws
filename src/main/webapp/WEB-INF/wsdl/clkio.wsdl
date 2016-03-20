@@ -50,6 +50,7 @@
 			<xs:element name="getTotalTimeResponse" type="timecard:getTotalTimeResponse" nillable="false"/>
 			<xs:element name="requestResetRequest" type="resetpassword:requestResetRequest" nillable="false"/>
 			<xs:element name="insertProfileRequest" type="profile:insertProfileRequest" nillable="false"/>
+			<xs:element name="updateProfileRequest" type="profile:updateProfileRequest" nillable="false"/>
 		</xs:schema>
 	</wsdl:types>
 	
@@ -117,6 +118,9 @@
 	<wsdl:message name="insertProfileRequest">
 		<wsdl:part name="request" element="clkio:insertProfileRequest" />
 	</wsdl:message>
+	<wsdl:message name="updateProfileRequest">
+		<wsdl:part name="request" element="clkio:updateProfileRequest" />
+	</wsdl:message>
 	
 	<!-- port types -->
 	<wsdl:portType name="UserPort">
@@ -170,6 +174,11 @@
 			<wsdl:input message="clkws:insertProfileRequest" />
 			<wsdl:output message="clkws:response" />
 			<wsdl:fault message="clkws:responseException" name="insertProfileException" />
+		</wsdl:operation>
+		<wsdl:operation name="update">
+			<wsdl:input message="clkws:updateProfileRequest" />
+			<wsdl:output message="clkws:response" />
+			<wsdl:fault message="clkws:responseException" name="updateProfileException" />
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:portType name="AdjustingPort">
@@ -319,6 +328,18 @@
 			</wsdl:output>
 			<wsdl:fault name="insertProfileException">
 				<soap:fault name="insertProfileException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="update">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="updateProfileException">
+				<soap:fault name="updateProfileException" use="literal" />
 			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>
