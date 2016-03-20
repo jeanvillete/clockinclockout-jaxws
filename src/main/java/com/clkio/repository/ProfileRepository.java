@@ -61,8 +61,8 @@ public class ProfileRepository extends CommonRepository {
 				new ProfileRowMapper() );
 	}
 
-	public void delete( final Profile profile ) {
-		this.jdbcTemplate.update( " DELETE FROM PROFILE WHERE ID = ? ", new Object[]{ profile.getId() } );
+	public boolean delete( final Profile profile ) {
+		return this.jdbcTemplate.update( " DELETE FROM PROFILE WHERE ID = ? AND ID_CLK_USER = ? ", new Object[]{ profile.getId(), profile.getUser().getId() } ) == 1;
 	}
 
 	public Profile get( Profile profile ) {

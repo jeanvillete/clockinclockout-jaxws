@@ -8,6 +8,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import com.clkio.ws.domain.common.Response;
+import com.clkio.ws.domain.profile.DeleteProfileRequest;
 import com.clkio.ws.domain.profile.InsertProfileRequest;
 import com.clkio.ws.domain.profile.ListProfileRequest;
 import com.clkio.ws.domain.profile.ListProfileResponse;
@@ -79,6 +80,21 @@ public interface ProfilePort {
     public Response update(
         @WebParam(name = "updateProfileRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         UpdateProfileRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.common.Response
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public Response delete(
+        @WebParam(name = "deleteProfileRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        DeleteProfileRequest request)
         throws ResponseException
     ;
 

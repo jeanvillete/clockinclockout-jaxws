@@ -38,6 +38,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link DeleteProfileRequest }
+     * 
+     */
+    public DeleteProfileRequest createDeleteProfileRequest() {
+        return new DeleteProfileRequest();
+    }
+
+    /**
      * Create an instance of {@link ListProfileResponse }
      * 
      */

@@ -15,6 +15,7 @@ import com.clkio.service.ProfileService;
 import com.clkio.ws.ProfilePort;
 import com.clkio.ws.ResponseException;
 import com.clkio.ws.domain.common.Response;
+import com.clkio.ws.domain.profile.DeleteProfileRequest;
 import com.clkio.ws.domain.profile.InsertProfileRequest;
 import com.clkio.ws.domain.profile.ListProfileRequest;
 import com.clkio.ws.domain.profile.ListProfileResponse;
@@ -104,6 +105,25 @@ public class ProfileWSImpl extends WebServiceCommon implements ProfilePort {
 			this.getService( ProfileService.class ).update( profile );
 			
 			return new Response( "Profile record updated successfully." );
+		} catch ( Exception e ) {
+			LOG.error( e );
+			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+		}
+	}
+
+	@Override
+	public Response delete( DeleteProfileRequest request ) throws ResponseException {
+		try {
+			Assert.notNull( request );
+			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
+					"[clkiows] No 'profile' instance was found on the request or its 'id' property is null." );
+			
+			Profile profile = new Profile( request.getProfile().getId().intValue() );
+			profile.setUser( getCurrentUser() );
+			
+			this.getService( ProfileService.class ).delete( profile );
+			
+			return new Response( "Profile record deleted successfully." );
 		} catch ( Exception e ) {
 			LOG.error( e );
 			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );

@@ -51,6 +51,7 @@
 			<xs:element name="requestResetRequest" type="resetpassword:requestResetRequest" nillable="false"/>
 			<xs:element name="insertProfileRequest" type="profile:insertProfileRequest" nillable="false"/>
 			<xs:element name="updateProfileRequest" type="profile:updateProfileRequest" nillable="false"/>
+			<xs:element name="deleteProfileRequest" type="profile:deleteProfileRequest" nillable="false"/>
 		</xs:schema>
 	</wsdl:types>
 	
@@ -121,6 +122,9 @@
 	<wsdl:message name="updateProfileRequest">
 		<wsdl:part name="request" element="clkio:updateProfileRequest" />
 	</wsdl:message>
+	<wsdl:message name="deleteProfileRequest">
+		<wsdl:part name="request" element="clkio:deleteProfileRequest" />
+	</wsdl:message>
 	
 	<!-- port types -->
 	<wsdl:portType name="UserPort">
@@ -179,6 +183,11 @@
 			<wsdl:input message="clkws:updateProfileRequest" />
 			<wsdl:output message="clkws:response" />
 			<wsdl:fault message="clkws:responseException" name="updateProfileException" />
+		</wsdl:operation>
+		<wsdl:operation name="delete">
+			<wsdl:input message="clkws:deleteProfileRequest" />
+			<wsdl:output message="clkws:response" />
+			<wsdl:fault message="clkws:responseException" name="deleteProfileException" />
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:portType name="AdjustingPort">
@@ -340,6 +349,18 @@
 			</wsdl:output>
 			<wsdl:fault name="updateProfileException">
 				<soap:fault name="updateProfileException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="delete">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="deleteProfileException">
+				<soap:fault name="deleteProfileException" use="literal" />
 			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>

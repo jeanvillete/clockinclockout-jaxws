@@ -49,7 +49,7 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 	public void insert( final Profile profile ) {
 		Assert.notNull( profile );
 		Assert.state( !this.exists( profile.getDescription(), profile.getUser() ), "It does already exist a record with the given description associated with the provided user." );
-		Assert.state( this.repository.insert( profile ), "Some problem happened while performing insert for 'profile' record." );;
+		Assert.state( this.repository.insert( profile ), "Some problem happened while performing insert for 'profile' record." );
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 			for ( ManualEnteringReason manualEnteringReason : listManualEnteringReason )
 				this.manualEnteringReasonService.delete( manualEnteringReason );
 		
-		this.repository.delete( profile );
+		Assert.state( this.repository.delete( profile ), "Some problem happened while performing a delete for 'profile' record." );
 	}
 
 	@Override
