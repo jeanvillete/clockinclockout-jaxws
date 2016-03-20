@@ -7,6 +7,8 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import com.clkio.ws.domain.common.Response;
+import com.clkio.ws.domain.profile.InsertProfileRequest;
 import com.clkio.ws.domain.profile.ListProfileRequest;
 import com.clkio.ws.domain.profile.ListProfileResponse;
 
@@ -46,6 +48,21 @@ public interface ProfilePort {
     public ListProfileResponse list(
         @WebParam(name = "listProfileRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         ListProfileRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.common.Response
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public Response insert(
+        @WebParam(name = "insertProfileRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        InsertProfileRequest request)
         throws ResponseException
     ;
 

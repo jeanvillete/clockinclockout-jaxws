@@ -57,9 +57,9 @@ public class Profile {
     protected BigInteger id;
     @XmlElement(required = true)
     protected String description;
-    @XmlElement(required = true)
+    @XmlElement(required = true, defaultValue = "H:mm")
     protected String hoursFormat;
-    @XmlElement(required = true)
+    @XmlElement(required = true, defaultValue = "yyyy-MM-dd")
     protected String dateFormat;
     @XmlElement(required = true)
     protected String expectedSunday;

@@ -85,4 +85,11 @@ public class ProfileRepository extends CommonRepository {
 				new ProfileRowMapper() );
 	}
 
+	public boolean exists( String description, User user ) {
+		return this.jdbcTemplate.queryForObject( " SELECT COUNT( ID ) FROM PROFILE "
+				+ " WHERE DESCRIPTION = ? AND ID_CLK_USER = ? ",
+				new Object[]{ description, user.getId() },
+				Integer.class ) > 0;
+	}
+
 }

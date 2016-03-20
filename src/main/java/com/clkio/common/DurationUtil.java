@@ -33,7 +33,7 @@ abstract public class DurationUtil {
 	 */
 	public static Duration fromString( String hours, String pattern ) {
 		Assert.hasText( hours, "The argument 'hours' is mandatory." );
-		Assert.state( IntervalUtil.isHoursValid( hours, pattern ), "The provided value for 'hours' is not in a valid format; 'pattern'=[" + pattern + "]" );
+		Assert.state( IntervalUtil.isHoursValid( hours, pattern ), "The provided value for 'hours' is not in a valid format; hours=[" + hours + "], pattern=[" + pattern + "]" );
 		Matcher matcher = Pattern.compile( "^(\\-?)(\\d{1,2})(\\:\\d{1,2})?(\\:\\d{1,2})?$" ).matcher( hours );
 		if ( !matcher.find() ) throw new IllegalStateException( "The provided 'hours' doesn't match the minimum requirement to get a Durable instance." );
 		StringBuilder _return = new StringBuilder( "PT" );

@@ -46,6 +46,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link InsertProfileRequest }
+     * 
+     */
+    public InsertProfileRequest createInsertProfileRequest() {
+        return new InsertProfileRequest();
+    }
+
+    /**
      * Create an instance of {@link Profile }
      * 
      */

@@ -48,6 +48,7 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 	@Transactional( propagation = Propagation.REQUIRED )
 	public void insert( final Profile profile ) {
 		Assert.notNull( profile );
+		Assert.state( !this.exists( profile.getDescription(), profile.getUser() ), "It does already exist a record with the given description associated with the provided user." );
 		this.repository.insert( profile );
 	}
 
@@ -86,6 +87,14 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 	public Profile get( Profile profile ) {
 		Assert.notNull( profile, "Argument 'profile' is mandatory." );
 		return this.repository.get( profile );
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean exists( String description, User user ) {
+		Assert.hasText( description, "Argument 'description' is mandatory." );
+		Assert.notNull( user, "Argument 'user' is mandatory." );
+		return this.repository.exists( description, user );
 	}
 
 }

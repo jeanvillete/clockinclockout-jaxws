@@ -55,24 +55,31 @@ public class Profile extends CommonDomain {
 		this.dateFormat = dateFormat;
 	}
 	public void setDefaultExpectedSunday(Duration defaultExpectedSunday) {
+		Assert.notNull( defaultExpectedSunday, "The argument 'defaultExpectedSunday' is mandatory." );
 		this.defaultExpectedSunday = defaultExpectedSunday;
 	}
 	public void setDefaultExpectedMonday(Duration defaultExpectedMonday) {
+		Assert.notNull( defaultExpectedMonday, "The argument 'defaultExpectedMonday' is mandatory." );
 		this.defaultExpectedMonday = defaultExpectedMonday;
 	}
 	public void setDefaultExpectedTuesday(Duration defaultExpectedTuesday) {
+		Assert.notNull( defaultExpectedTuesday, "The argument 'defaultExpectedTuesday' is mandatory." );
 		this.defaultExpectedTuesday = defaultExpectedTuesday;
 	}
 	public void setDefaultExpectedWednesday(Duration defaultExpectedWednesday) {
+		Assert.notNull( defaultExpectedWednesday, "The argument 'defaultExpectedWednesday' is mandatory." );
 		this.defaultExpectedWednesday = defaultExpectedWednesday;
 	}
 	public void setDefaultExpectedThursday(Duration defaultExpectedThursday) {
+		Assert.notNull( defaultExpectedThursday, "The argument 'defaultExpectedThursday' is mandatory." );
 		this.defaultExpectedThursday = defaultExpectedThursday;
 	}
 	public void setDefaultExpectedFriday(Duration defaultExpectedFriday) {
+		Assert.notNull( defaultExpectedFriday, "The argument 'defaultExpectedFriday' is mandatory." );
 		this.defaultExpectedFriday = defaultExpectedFriday;
 	}
 	public void setDefaultExpectedSaturday(Duration defaultExpectedSaturday) {
+		Assert.notNull( defaultExpectedSaturday, "The argument 'defaultExpectedSaturday' is mandatory." );
 		this.defaultExpectedSaturday = defaultExpectedSaturday;
 	}
 	public User getUser() {

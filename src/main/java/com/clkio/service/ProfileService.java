@@ -15,4 +15,12 @@ public interface ProfileService {
 	
 	Profile get( Profile profile );
 	
+	/**
+	 * Check if already exists some profile record with a given 'description' for the given 'user'.
+	 * @param description
+	 * @param user
+	 * @return
+	 */
+	boolean exists( String description, User user );
+	
 }

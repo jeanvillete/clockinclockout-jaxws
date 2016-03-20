@@ -17,6 +17,7 @@ import com.clkio.ws.domain.email.ListEmailResponse;
 import com.clkio.ws.domain.email.SetEmailAsPrimaryRequest;
 import com.clkio.ws.domain.login.DoLoginRequest;
 import com.clkio.ws.domain.login.LoginResponse;
+import com.clkio.ws.domain.profile.InsertProfileRequest;
 import com.clkio.ws.domain.profile.ListProfileRequest;
 import com.clkio.ws.domain.profile.ListProfileResponse;
 import com.clkio.ws.domain.reason.ListManualEnteringReasonRequest;
@@ -58,6 +59,7 @@ public class ObjectFactory {
     private final static QName _GetTotalTimeResponse_QNAME = new QName("http://schemas.clkio.com", "getTotalTimeResponse");
     private final static QName _ListAdjustingRequest_QNAME = new QName("http://schemas.clkio.com", "listAdjustingRequest");
     private final static QName _ListProfileRequest_QNAME = new QName("http://schemas.clkio.com", "listProfileRequest");
+    private final static QName _InsertProfileRequest_QNAME = new QName("http://schemas.clkio.com", "insertProfileRequest");
     private final static QName _DoLoginRequest_QNAME = new QName("http://schemas.clkio.com", "doLoginRequest");
     private final static QName _Response_QNAME = new QName("http://schemas.clkio.com", "response");
     private final static QName _InsertUserRequest_QNAME = new QName("http://schemas.clkio.com", "insertUserRequest");
@@ -196,6 +198,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "listProfileRequest")
     public JAXBElement<ListProfileRequest> createListProfileRequest(ListProfileRequest value) {
         return new JAXBElement<ListProfileRequest>(_ListProfileRequest_QNAME, ListProfileRequest.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link InsertProfileRequest }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "insertProfileRequest")
+    public JAXBElement<InsertProfileRequest> createInsertProfileRequest(InsertProfileRequest value) {
+        return new JAXBElement<InsertProfileRequest>(_InsertProfileRequest_QNAME, InsertProfileRequest.class, null, value);
     }
 
     /**
