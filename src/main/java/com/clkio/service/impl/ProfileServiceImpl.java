@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,7 +87,11 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true)
 	public Profile get( Profile profile ) {
 		Assert.notNull( profile, "Argument 'profile' is mandatory." );
-		return this.repository.get( profile );
+		try {
+			return this.repository.get( profile );
+		} catch ( EmptyResultDataAccessException e ) {
+			return null;
+		}
 	}
 
 	@Override

@@ -33,7 +33,8 @@ public class AdjustingWSImpl extends WebServiceCommon implements AdjustingPort {
 			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
-			profile = this.getService( ProfileService.class ).get( profile );
+			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
+					"No record found for the provided 'profile'." );
 
 			List< Adjusting > adjustings = this.getService( AdjustingService.class ).list( profile );
 			ListAdjustingResponse response = new ListAdjustingResponse();

@@ -70,9 +70,13 @@ public class UserServiceImpl implements UserService, InitializingBean {
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
 	public User getBy( final Email email ) {
 		Assert.notNull( email );
-		User syncUser = this.repository.getBy( email );
-		syncUser.setEmail( email );
-		return syncUser;
+		try {
+			User syncUser = this.repository.getBy( email );
+			syncUser.setEmail( email );
+			return syncUser;
+		} catch ( EmptyResultDataAccessException e ) {
+			return null;
+		}
 	}
 
 	@Override
@@ -118,10 +122,10 @@ public class UserServiceImpl implements UserService, InitializingBean {
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
 	public User getBy( String loginCode ) {
 		Assert.hasText( loginCode, "No value was provide for 'loginCode' argument." );
-		User user = null;
 		try {
-			user = this.repository.getBy( loginCode );
-		} catch ( EmptyResultDataAccessException e ) { }
-		return user;
+			return this.repository.getBy( loginCode );
+		} catch ( EmptyResultDataAccessException e ) {
+			return null;
+		}
 	}
 }
