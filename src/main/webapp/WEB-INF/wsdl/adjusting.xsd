@@ -34,5 +34,23 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	
+	<xs:complexType name="insertAdjustingRequest">
+		<xs:sequence>
+			<xs:element name="adjusting" type="adjusting:adjusting" maxOccurs="1" minOccurs="1" nillable="false" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="updateAdjustingRequest">
+		<xs:sequence>
+			<xs:element name="adjusting" type="adjusting:adjusting" maxOccurs="1" minOccurs="1" nillable="false" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="deleteAdjustingRequest">
+		<xs:sequence>
+			<xs:element name="adjusting" type="adjusting:adjusting" maxOccurs="1" minOccurs="1" nillable="false" />
+		</xs:sequence>
+	</xs:complexType>
 
 </xs:schema>

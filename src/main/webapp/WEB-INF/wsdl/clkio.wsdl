@@ -52,6 +52,9 @@
 			<xs:element name="insertProfileRequest" type="profile:insertProfileRequest" nillable="false"/>
 			<xs:element name="updateProfileRequest" type="profile:updateProfileRequest" nillable="false"/>
 			<xs:element name="deleteProfileRequest" type="profile:deleteProfileRequest" nillable="false"/>
+			<xs:element name="insertAdjustingRequest" type="adjusting:insertAdjustingRequest" nillable="false"/>
+			<xs:element name="updateAdjustingRequest" type="adjusting:updateAdjustingRequest" nillable="false"/>
+			<xs:element name="deleteAdjustingRequest" type="adjusting:deleteAdjustingRequest" nillable="false"/>
 		</xs:schema>
 	</wsdl:types>
 	
@@ -125,6 +128,15 @@
 	<wsdl:message name="deleteProfileRequest">
 		<wsdl:part name="request" element="clkio:deleteProfileRequest" />
 	</wsdl:message>
+	<wsdl:message name="insertAdjustingRequest">
+		<wsdl:part name="request" element="clkio:insertAdjustingRequest" />
+	</wsdl:message>
+	<wsdl:message name="updateAdjustingRequest">
+		<wsdl:part name="request" element="clkio:updateAdjustingRequest" />
+	</wsdl:message>
+	<wsdl:message name="deleteAdjustingRequest">
+		<wsdl:part name="request" element="clkio:deleteAdjustingRequest" />
+	</wsdl:message>
 	
 	<!-- port types -->
 	<wsdl:portType name="UserPort">
@@ -195,6 +207,21 @@
 			<wsdl:input message="clkws:listAdjustingRequest"/>
 			<wsdl:output message="clkws:listAdjustingResponse"/>
 			<wsdl:fault message="clkws:responseException" name="listAdjustingException" />
+		</wsdl:operation>
+		<wsdl:operation name="insert">
+			<wsdl:input message="clkws:insertAdjustingRequest"/>
+			<wsdl:output message="clkws:response"/>
+			<wsdl:fault message="clkws:responseException" name="insertAdjustingException" />
+		</wsdl:operation>
+		<wsdl:operation name="update">
+			<wsdl:input message="clkws:updateAdjustingRequest"/>
+			<wsdl:output message="clkws:response"/>
+			<wsdl:fault message="clkws:responseException" name="updateAdjustingException" />
+		</wsdl:operation>
+		<wsdl:operation name="delete">
+			<wsdl:input message="clkws:deleteAdjustingRequest"/>
+			<wsdl:output message="clkws:response"/>
+			<wsdl:fault message="clkws:responseException" name="deleteAdjustingException" />
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:portType name="ManualEnteringReasonPort">
@@ -376,6 +403,42 @@
 			</wsdl:output>
 			<wsdl:fault name="listAdjustingException">
 				<soap:fault name="listAdjustingException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="insert">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="insertAdjustingException">
+				<soap:fault name="insertAdjustingException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="update">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="updateAdjustingException">
+				<soap:fault name="updateAdjustingException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="delete">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="deleteAdjustingException">
+				<soap:fault name="deleteAdjustingException" use="literal" />
 			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>
