@@ -32,13 +32,13 @@ public class ProfileWSImpl extends WebServiceCommon implements ProfilePort {
 							new com.clkio.ws.domain.profile.Profile( new BigInteger( profile.getId().toString() ), profile.getDescription() );
 					profileWs.setHoursFormat( profile.getHoursFormat() );
 					profileWs.setDateFormat( profile.getDateFormat() );
-					profileWs.setExpectedSunday( DurationUtil.fromDuration( profile.getDefaultExpectedSunday() ) );
-					profileWs.setExpectedMonday( DurationUtil.fromDuration( profile.getDefaultExpectedMonday() ) );
-					profileWs.setExpectedTuesday( DurationUtil.fromDuration( profile.getDefaultExpectedTuesday() ) );
-					profileWs.setExpectedWednesday( DurationUtil.fromDuration( profile.getDefaultExpectedWednesday() ) );
-					profileWs.setExpectedThursday( DurationUtil.fromDuration( profile.getDefaultExpectedThursday() ) );
-					profileWs.setExpectedFriday( DurationUtil.fromDuration( profile.getDefaultExpectedFriday() ) );
-					profileWs.setExpectedSaturday( DurationUtil.fromDuration( profile.getDefaultExpectedSaturday() ) );
+					profileWs.setExpectedSunday( DurationUtil.fromDuration( profile.getDefaultExpectedSunday(), profile.getHoursFormat() ) );
+					profileWs.setExpectedMonday( DurationUtil.fromDuration( profile.getDefaultExpectedMonday(), profile.getHoursFormat() ) );
+					profileWs.setExpectedTuesday( DurationUtil.fromDuration( profile.getDefaultExpectedTuesday(), profile.getHoursFormat() ) );
+					profileWs.setExpectedWednesday( DurationUtil.fromDuration( profile.getDefaultExpectedWednesday(), profile.getHoursFormat() ) );
+					profileWs.setExpectedThursday( DurationUtil.fromDuration( profile.getDefaultExpectedThursday(), profile.getHoursFormat() ) );
+					profileWs.setExpectedFriday( DurationUtil.fromDuration( profile.getDefaultExpectedFriday(), profile.getHoursFormat() ) );
+					profileWs.setExpectedSaturday( DurationUtil.fromDuration( profile.getDefaultExpectedSaturday(), profile.getHoursFormat() ) );
 					
 					response.getProfiles().add( profileWs );
 				}

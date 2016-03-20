@@ -54,16 +54,31 @@ abstract public class DurationUtil {
 	 */
 	public static String fromDuration( Duration duration, String pattern ) {
 		if ( duration == null ) return null;
+		Assert.hasText( pattern, "The argument 'pattern' is mandatory." );
 		
 		String hours = duration.toString().substring( 2 );
 		StringBuilder _return = new StringBuilder( hours.charAt( 0 ) == '-' ? "-" : "" );
 		hours = hours.replaceAll( "\\-", "" );
 		
-		Matcher matcher = Pattern.compile( "^(\\-?\\d{1,2}[H])?(\\-?\\d{1,2}[M])?(\\-?\\d{1,2}[S])?$" ).matcher( hours );
+		Matcher matcher = Pattern.compile( "^(\\d{1,2}[H])?(\\d{1,2}[M])?(\\d{1,2}[S])?$" ).matcher( hours );
 		Assert.state( matcher.find(), "The 'find' method did not succeed." );
-		_return.append( ( ( hours = matcher.group( 1 ) ) != null ? hours.replace( "H", "" ) : "00" ) + ":" );
-		_return.append( ( ( hours = matcher.group( 2 ) ) != null ? ( hours = hours.replace( "M", "" ) ).length() == 1 ? "0" + hours : hours : "00" ) + ":" );
-		_return.append( ( hours = matcher.group( 3 ) ) != null ? ( hours = hours.replace( "S", "" ) ).length() == 1 ? "0" + hours : hours : "00" );
+		
+		Matcher hMatcher = Pattern.compile( "(^HH.?)|(^H.?)" ).matcher( pattern );
+		boolean hLong = hMatcher.find() && hMatcher.group( 1 ) != null;
+		_return.append( ( hours = matcher.group( 1 ) ) != null ? ( ( hours = hours.replace( "H", "" ) ).length() == 1 && hLong ? "0" + hours : hours ) : hLong ? "00" : "0" );
+		
+		Matcher mMatcher = Pattern.compile( "(^.+\\:mm.?)|(^.+\\:m.?)" ).matcher( pattern );
+		if ( mMatcher.find() ) {
+			boolean mLong = mMatcher.group( 1 ) != null;
+			_return.append( ":" + ( ( hours = matcher.group( 2 ) ) != null ? ( ( hours = hours.replace( "M", "" ) ).length() == 1 && mLong ? "0" + hours : hours )  : ( mLong ? "00" : "0" ) ) );
+		}
+		
+		Matcher sMatcher = Pattern.compile( "(^.+\\:ss$)|(^.+\\:s$)" ).matcher( pattern );
+		
+		if ( sMatcher.find() ) {
+			boolean sLong = sMatcher.group( 1 ) != null;
+			_return.append( ":" + ( ( hours = matcher.group( 3 ) ) != null ? ( ( hours = hours.replace( "S", "" ) ).length() == 1 && sLong ? "0" + hours : hours ) : ( sLong ? "00" : "0" ) ) );
+		}
 		
 		return _return.toString();
 	}

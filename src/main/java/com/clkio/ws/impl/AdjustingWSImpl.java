@@ -13,6 +13,7 @@ import com.clkio.common.DurationUtil;
 import com.clkio.domain.Adjusting;
 import com.clkio.domain.Profile;
 import com.clkio.service.AdjustingService;
+import com.clkio.service.ProfileService;
 import com.clkio.ws.AdjustingPort;
 import com.clkio.ws.ResponseException;
 import com.clkio.ws.domain.adjusting.ListAdjustingRequest;
@@ -32,6 +33,7 @@ public class AdjustingWSImpl extends WebServiceCommon implements AdjustingPort {
 			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
+			profile = this.getService( ProfileService.class ).get( profile );
 
 			List< Adjusting > adjustings = this.getService( AdjustingService.class ).list( profile );
 			ListAdjustingResponse response = new ListAdjustingResponse();
@@ -40,7 +42,7 @@ public class AdjustingWSImpl extends WebServiceCommon implements AdjustingPort {
 					response.getAdjustings().add( new com.clkio.ws.domain.adjusting.Adjusting(
 							new BigInteger( adjusting.getId().toString() ),
 							adjusting.getDescription(),
-							DurationUtil.fromDuration( adjusting.getTimeInterval() ) ) );
+							DurationUtil.fromDuration( adjusting.getTimeInterval(), profile.getHoursFormat() ) ) );
 			
 			return response;
 		} catch ( Exception e ) {

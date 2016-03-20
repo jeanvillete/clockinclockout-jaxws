@@ -46,18 +46,40 @@ public class TestDurationUtil {
 		
 	}
 	
+	private void testFromDuration( String duration, String pattern ) {
+		System.out.println( "Duration string=[" + duration + "], pattern=[" + pattern + "]; " + DurationUtil.fromDuration( Duration.parse( duration ), pattern ) );
+	}
+	
 	@Test
 	public void testFromDuration() {
-		System.out.println( DurationUtil.fromDuration( Duration.parse( "PT-99H-59M-59S" ), "" ) );
-		System.out.println( DurationUtil.fromDuration( Duration.parse( "PT-99H" ), "" ) );
-		System.out.println( DurationUtil.fromDuration( Duration.parse( "PT-8H" ), "" ) );
-		System.out.println( DurationUtil.fromDuration( Duration.parse( "PT8H" ), "" ) );
-		System.out.println( DurationUtil.fromDuration( Duration.parse( "PT8H" ), "" ) );
-		System.out.println( DurationUtil.fromDuration( Duration.parse( "PT8H" ), "" ) );
-		System.out.println( DurationUtil.fromDuration( Duration.parse( "PT21H21M" ), "" ) );
-		System.out.println( DurationUtil.fromDuration( Duration.parse( "PT-21H-21M" ), "" ) );
-		System.out.println( DurationUtil.fromDuration( Duration.parse( "PT21H21M59S" ), "" ) );
-		System.out.println( DurationUtil.fromDuration( Duration.parse( "PT-21H-21M-59S" ), "" ) );
+		for ( String pattern : new String[]{ "HH:mm:ss", "H:mm:ss", "H:m:ss", "H:m:s", "HH:mm", "H:mm", "H:m", "HH", "H" } ) {
+			
+			Assert.state( IntervalUtil.isHoursFormatValid( pattern ), "The 'pattern' is not a valid 'hours format'." );
+			
+			testFromDuration( "PT-99H-59M-59S" , pattern );
+			testFromDuration( "PT-99H" , pattern );
+			testFromDuration( "PT-8H" , pattern );
+			testFromDuration( "PT8H" , pattern );
+			testFromDuration( "PT8H" , pattern );
+			testFromDuration( "PT8H" , pattern );
+			testFromDuration( "PT21H21M" , pattern );
+			testFromDuration( "PT-21H-21M" , pattern );
+			testFromDuration( "PT21H21M59S" , pattern );
+			testFromDuration( "PT-21H-21M-59S" , pattern );
+			testFromDuration( "PT8H" , pattern );
+			testFromDuration( "PT21H21M59S" , pattern );
+			testFromDuration( "PT-21H-21M-59S" , pattern );
+			testFromDuration( "PT-99H-5M-59S" , pattern );
+			testFromDuration( "PT1H1M1S" , pattern );
+			testFromDuration( "PT-1H-1M-1S" , pattern );
+			testFromDuration( "PT21H21M" , pattern );
+			testFromDuration( "PT-21H-21M" , pattern );
+			testFromDuration( "PT8H8M" , pattern );
+			testFromDuration( "PT-8H" , pattern );
+			testFromDuration( "PT-99H" , pattern );
+			
+			System.out.println();
+		}
 	}
 	
 }

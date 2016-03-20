@@ -81,4 +81,11 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 		this.repository.delete( profile );
 	}
 
+	@Override
+	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true)
+	public Profile get( Profile profile ) {
+		Assert.notNull( profile, "Argument 'profile' is mandatory." );
+		return this.repository.get( profile );
+	}
+
 }

@@ -65,4 +65,24 @@ public class ProfileRepository extends CommonRepository {
 		this.jdbcTemplate.update( " DELETE FROM PROFILE WHERE ID = ? ", new Object[]{ profile.getId() } );
 	}
 
+	public Profile get( Profile profile ) {
+		return this.jdbcTemplate.queryForObject( 
+				" SELECT ID, "
+				+ " ID_CLK_USER, "
+				+ " DESCRIPTION, "
+				+ " HOURS_FORMAT, "
+				+ " DATE_FORMAT, "
+				+ " DEFAULT_EXPECTED_SUNDAY, "
+				+ " DEFAULT_EXPECTED_MONDAY, "
+				+ " DEFAULT_EXPECTED_TUESDAY, "
+				+ " DEFAULT_EXPECTED_WEDNESDAY, "
+				+ " DEFAULT_EXPECTED_THURSDAY, "
+				+ " DEFAULT_EXPECTED_FRIDAY, "
+				+ " DEFAULT_EXPECTED_SATURDAY "
+				+ " FROM PROFILE "
+				+ " WHERE ID = ? AND ID_CLK_USER = ? ",
+				new Object[]{ profile.getId(), profile.getUser().getId() },
+				new ProfileRowMapper() );
+	}
+
 }

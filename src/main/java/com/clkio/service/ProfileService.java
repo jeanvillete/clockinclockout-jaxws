@@ -13,4 +13,6 @@ public interface ProfileService {
 	
 	void delete( Profile profile );
 	
+	Profile get( Profile profile );
+	
 }
