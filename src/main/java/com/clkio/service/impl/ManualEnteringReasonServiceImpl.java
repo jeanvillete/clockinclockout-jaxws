@@ -35,24 +35,26 @@ public class ManualEnteringReasonServiceImpl implements ManualEnteringReasonServ
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
 	public void insert( final ManualEnteringReason manualEnteringReason ) {
-		Assert.notNull( manualEnteringReason );
-		
-		// TODO apply validations
-		
-		this.repository.insert( manualEnteringReason );
+		Assert.state( manualEnteringReason != null && manualEnteringReason.getProfile() != null, 
+				"Argument 'manualEnteringReason' and its nested 'id' property are mandatory." );
+		Assert.state( !this.exists( manualEnteringReason.getReason(), manualEnteringReason.getProfile() ),
+				"It already exists a record with the provided 'reason'." );
+		Assert.state( this.repository.insert( manualEnteringReason ),
+				"Some problem happened while performing insert for 'reason' record." );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
 	public void delete( final ManualEnteringReason manualEnteringReason ) {
-		Assert.notNull( manualEnteringReason );
+		Assert.notNull( manualEnteringReason, "Argument 'manualEnteringReason' is mandatory." );
 	
 		List< ManualEntering > listManualEntering = this.manualEnteringService.listBy( manualEnteringReason );
 		if ( !CollectionUtils.isEmpty( listManualEntering ) )
 			for ( ManualEntering manualEntering : listManualEntering )
 				this.manualEnteringService.delete( manualEntering );
 		
-		this.repository.delete( manualEnteringReason );
+		Assert.state( this.repository.delete( manualEnteringReason ),
+				"Some problem happened while performing delete operation for 'reason' record." );
 	}
 
 	@Override
@@ -61,6 +63,27 @@ public class ManualEnteringReasonServiceImpl implements ManualEnteringReasonServ
 		Assert.state( profile != null && profile.getUser() != null,
 				"The argument 'profile' and its nested 'user' property are mandatory." );
 		return this.repository.list( profile );
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
+	public boolean exists( String reason, Profile profile ) {
+		return this.repository.exists( reason, profile );
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
+	public boolean exists( String reason, Profile profile, Integer id ) {
+		return this.repository.exists( reason, profile, id );
+	}
+
+	@Override
+	public void update( ManualEnteringReason manualEnteringReason ) {
+		Assert.state( manualEnteringReason != null && manualEnteringReason.getId() != null,
+				"Argument 'manualEnteringReason' and its 'id' property are mandatory." );
+		Assert.state( !exists( manualEnteringReason.getReason(), manualEnteringReason.getProfile(), manualEnteringReason.getId() ) );
+		Assert.state( this.repository.update( manualEnteringReason ), 
+				"Some problem happened while performing update for 'reason' record." );
 	}
 
 }

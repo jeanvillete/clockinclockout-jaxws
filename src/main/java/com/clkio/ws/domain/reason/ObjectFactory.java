@@ -30,6 +30,22 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link DeleteManualEnteringReasonRequest }
+     * 
+     */
+    public DeleteManualEnteringReasonRequest createDeleteManualEnteringReasonRequest() {
+        return new DeleteManualEnteringReasonRequest();
+    }
+
+    /**
+     * Create an instance of {@link UpdateManualEnteringReasonRequest }
+     * 
+     */
+    public UpdateManualEnteringReasonRequest createUpdateManualEnteringReasonRequest() {
+        return new UpdateManualEnteringReasonRequest();
+    }
+
+    /**
      * Create an instance of {@link ListManualEnteringReasonResponse }
      * 
      */
@@ -43,6 +59,14 @@ public class ObjectFactory {
      */
     public ListManualEnteringReasonRequest createListManualEnteringReasonRequest() {
         return new ListManualEnteringReasonRequest();
+    }
+
+    /**
+     * Create an instance of {@link InsertManualEnteringReasonRequest }
+     * 
+     */
+    public InsertManualEnteringReasonRequest createInsertManualEnteringReasonRequest() {
+        return new InsertManualEnteringReasonRequest();
     }
 
     /**

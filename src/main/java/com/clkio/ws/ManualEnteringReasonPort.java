@@ -7,8 +7,12 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import com.clkio.ws.domain.common.Response;
+import com.clkio.ws.domain.reason.DeleteManualEnteringReasonRequest;
+import com.clkio.ws.domain.reason.InsertManualEnteringReasonRequest;
 import com.clkio.ws.domain.reason.ListManualEnteringReasonRequest;
 import com.clkio.ws.domain.reason.ListManualEnteringReasonResponse;
+import com.clkio.ws.domain.reason.UpdateManualEnteringReasonRequest;
 
 
 /**
@@ -46,6 +50,51 @@ public interface ManualEnteringReasonPort {
     public ListManualEnteringReasonResponse list(
         @WebParam(name = "listManualEnteringReasonRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         ListManualEnteringReasonRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.common.Response
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public Response insert(
+        @WebParam(name = "insertManualEnteringReasonRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        InsertManualEnteringReasonRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.common.Response
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public Response update(
+        @WebParam(name = "updateManualEnteringReasonRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        UpdateManualEnteringReasonRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.common.Response
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public Response delete(
+        @WebParam(name = "deleteManualEnteringReasonRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        DeleteManualEnteringReasonRequest request)
         throws ResponseException
     ;
 

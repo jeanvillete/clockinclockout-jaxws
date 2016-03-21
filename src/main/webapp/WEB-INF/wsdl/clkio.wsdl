@@ -55,6 +55,9 @@
 			<xs:element name="insertAdjustingRequest" type="adjusting:insertAdjustingRequest" nillable="false"/>
 			<xs:element name="updateAdjustingRequest" type="adjusting:updateAdjustingRequest" nillable="false"/>
 			<xs:element name="deleteAdjustingRequest" type="adjusting:deleteAdjustingRequest" nillable="false"/>
+			<xs:element name="insertManualEnteringReasonRequest" type="reason:insertManualEnteringReasonRequest" nillable="false"/>
+			<xs:element name="updateManualEnteringReasonRequest" type="reason:updateManualEnteringReasonRequest" nillable="false"/>
+			<xs:element name="deleteManualEnteringReasonRequest" type="reason:deleteManualEnteringReasonRequest" nillable="false"/>
 		</xs:schema>
 	</wsdl:types>
 	
@@ -136,6 +139,15 @@
 	</wsdl:message>
 	<wsdl:message name="deleteAdjustingRequest">
 		<wsdl:part name="request" element="clkio:deleteAdjustingRequest" />
+	</wsdl:message>
+	<wsdl:message name="insertManualEnteringReasonRequest">
+		<wsdl:part name="request" element="clkio:insertManualEnteringReasonRequest" />
+	</wsdl:message>
+	<wsdl:message name="updateManualEnteringReasonRequest">
+		<wsdl:part name="request" element="clkio:updateManualEnteringReasonRequest" />
+	</wsdl:message>
+	<wsdl:message name="deleteManualEnteringReasonRequest">
+		<wsdl:part name="request" element="clkio:deleteManualEnteringReasonRequest" />
 	</wsdl:message>
 	
 	<!-- port types -->
@@ -229,6 +241,21 @@
 			<wsdl:input message="clkws:listManualEnteringReasonRequest"/>
 			<wsdl:output message="clkws:listManualEnteringReasonResponse"/>
 			<wsdl:fault message="clkws:responseException" name="listManualEnteringReasonException" />
+		</wsdl:operation>
+		<wsdl:operation name="insert">
+			<wsdl:input message="clkws:insertManualEnteringReasonRequest"/>
+			<wsdl:output message="clkws:response"/>
+			<wsdl:fault message="clkws:responseException" name="insertManualEnteringReasonException" />
+		</wsdl:operation>
+		<wsdl:operation name="update">
+			<wsdl:input message="clkws:updateManualEnteringReasonRequest"/>
+			<wsdl:output message="clkws:response"/>
+			<wsdl:fault message="clkws:responseException" name="updateManualEnteringReasonException" />
+		</wsdl:operation>
+		<wsdl:operation name="delete">
+			<wsdl:input message="clkws:deleteManualEnteringReasonRequest"/>
+			<wsdl:output message="clkws:response"/>
+			<wsdl:fault message="clkws:responseException" name="deleteManualEnteringReasonException" />
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:portType name="TimeCardPort">
@@ -454,6 +481,42 @@
 			</wsdl:output>
 			<wsdl:fault name="listManualEnteringReasonException">
 				<soap:fault name="listManualEnteringReasonException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="insert">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="insertManualEnteringReasonException">
+				<soap:fault name="insertManualEnteringReasonException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="update">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="updateManualEnteringReasonException">
+				<soap:fault name="updateManualEnteringReasonException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="delete">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="deleteManualEnteringReasonException">
+				<soap:fault name="deleteManualEnteringReasonException" use="literal" />
 			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>

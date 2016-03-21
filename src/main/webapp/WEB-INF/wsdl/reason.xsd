@@ -34,4 +34,22 @@
 		</xs:complexContent>
 	</xs:complexType>
 
+	<xs:complexType name="insertManualEnteringReasonRequest">
+		<xs:sequence>
+			<xs:element name="reason" type="reason:reason" maxOccurs="1" minOccurs="1" nillable="false"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="updateManualEnteringReasonRequest">
+		<xs:sequence>
+			<xs:element name="reason" type="reason:reason" maxOccurs="1" minOccurs="1" nillable="false"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="deleteManualEnteringReasonRequest">
+		<xs:sequence>
+			<xs:element name="reason" type="reason:reason" maxOccurs="1" minOccurs="1" nillable="false"/>
+		</xs:sequence>
+	</xs:complexType>
+
 </xs:schema>

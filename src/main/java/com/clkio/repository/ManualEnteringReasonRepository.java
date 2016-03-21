@@ -11,17 +11,20 @@ import com.clkio.rowmapper.ManualEnteringReasonRowMapper;
 @Repository
 public class ManualEnteringReasonRepository extends CommonRepository {
 
-	public void insert( final ManualEnteringReason manualEnteringReason ) {
+	public boolean insert( final ManualEnteringReason manualEnteringReason ) {
 		manualEnteringReason.setId( this.nextVal( "MANUAL_ENTERING_REASON_SEQ" ) );
-		this.jdbcTemplate.update( " INSERT INTO MANUAL_ENTERING_REASON ( ID, REASON, ID_PROFILE )"
+		return this.jdbcTemplate.update( " INSERT INTO MANUAL_ENTERING_REASON ( ID, REASON, ID_PROFILE )"
 				+ " VALUES ( ?, ?, ? ) ",
 				new Object[]{ manualEnteringReason.getId(),
 						manualEnteringReason.getReason(),
-						manualEnteringReason.getProfile().getId() });
+						manualEnteringReason.getProfile().getId() }) == 1;
 	}
 
-	public void delete( final ManualEnteringReason manualEnteringReason ) {
-		this.jdbcTemplate.update( " DELETE FROM MANUAL_ENTERING_REASON WHERE ID = ? ", new Object[]{ manualEnteringReason.getId() } );
+	public boolean delete( final ManualEnteringReason manualEnteringReason ) {
+		return this.jdbcTemplate.update( " DELETE FROM MANUAL_ENTERING_REASON WHERE ID = ? AND ID_PROFILE = ? ",
+				new Object[]{ 
+						manualEnteringReason.getId(),
+						manualEnteringReason.getProfile().getId() } ) == 1;
 	}
 
 	public List< ManualEnteringReason > list( final Profile profile ) {
@@ -30,6 +33,34 @@ public class ManualEnteringReasonRepository extends CommonRepository {
 				+ " JOIN PROFILE PROF ON REASON.ID_PROFILE = PROF.ID "
 				+ " WHERE PROF.ID_CLK_USER = ? AND REASON.ID_PROFILE = ? ",
 				new Object[]{ profile.getUser().getId(), profile.getId() }, new ManualEnteringReasonRowMapper() );
+	}
+
+	public boolean exists( String reason, Profile profile ) {
+		return this.jdbcTemplate.queryForObject( " SELECT COUNT( ID ) FROM MANUAL_ENTERING_REASON "
+				+ " WHERE REASON = ? AND ID_PROFILE = ? ",
+				new Object[]{
+						reason,
+						profile.getId() },
+				Integer.class ) > 0;
+	}
+
+	public boolean exists( String reason, Profile profile, Integer id ) {
+		return this.jdbcTemplate.queryForObject( " SELECT COUNT( ID ) FROM MANUAL_ENTERING_REASON "
+				+ " WHERE REASON = ? AND ID_PROFILE = ? AND ID <> ? ",
+				new Object[]{
+						reason,
+						profile.getId(),
+						id},
+				Integer.class ) > 0;
+	}
+
+	public boolean update( ManualEnteringReason manualEnteringReason ) {
+		return this.jdbcTemplate.update( " UPDATE MANUAL_ENTERING_REASON SET REASON = ? "
+				+ " WHERE ID = ? AND ID_PROFILE = ? ",
+				new Object[]{ 
+						manualEnteringReason.getReason(),
+						manualEnteringReason.getId(),
+						manualEnteringReason.getProfile().getId() }) == 1;
 	}
 
 }
