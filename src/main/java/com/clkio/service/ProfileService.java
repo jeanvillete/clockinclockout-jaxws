@@ -26,7 +26,7 @@ public interface ProfileService {
 	boolean exists( String description, User user );
 	
 	/**
-	 * Check if already exists some profile record with a given 'description' for the given 'user' for the given 'id'.
+	 * Check if already exists some profile record with a given 'description' for the given 'user' for the 'id' different of the current one.
 	 * @param description
 	 * @param user
 	 * @param id

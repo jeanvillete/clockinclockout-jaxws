@@ -30,6 +30,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link InsertProfileRequest }
+     * 
+     */
+    public InsertProfileRequest createInsertProfileRequest() {
+        return new InsertProfileRequest();
+    }
+
+    /**
      * Create an instance of {@link UpdateProfileRequest }
      * 
      */
@@ -59,14 +67,6 @@ public class ObjectFactory {
      */
     public ListProfileRequest createListProfileRequest() {
         return new ListProfileRequest();
-    }
-
-    /**
-     * Create an instance of {@link InsertProfileRequest }
-     * 
-     */
-    public InsertProfileRequest createInsertProfileRequest() {
-        return new InsertProfileRequest();
     }
 
     /**

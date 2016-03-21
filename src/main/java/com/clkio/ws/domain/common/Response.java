@@ -38,12 +38,12 @@ import com.clkio.ws.domain.timecard.GetTotalTimeResponse;
     "message"
 })
 @XmlSeeAlso({
-    LoginResponse.class,
     ListEmailResponse.class,
-    ListAdjustingResponse.class,
-    ListProfileResponse.class,
     GetTotalTimeResponse.class,
-    ListManualEnteringReasonResponse.class
+    ListManualEnteringReasonResponse.class,
+    LoginResponse.class,
+    ListAdjustingResponse.class,
+    ListProfileResponse.class
 })
 public class Response {
 

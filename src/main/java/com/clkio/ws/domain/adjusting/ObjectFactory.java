@@ -30,6 +30,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link InsertAdjustingRequest }
+     * 
+     */
+    public InsertAdjustingRequest createInsertAdjustingRequest() {
+        return new InsertAdjustingRequest();
+    }
+
+    /**
      * Create an instance of {@link ListAdjustingResponse }
      * 
      */
@@ -38,11 +46,27 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link DeleteAdjustingRequest }
+     * 
+     */
+    public DeleteAdjustingRequest createDeleteAdjustingRequest() {
+        return new DeleteAdjustingRequest();
+    }
+
+    /**
      * Create an instance of {@link ListAdjustingRequest }
      * 
      */
     public ListAdjustingRequest createListAdjustingRequest() {
         return new ListAdjustingRequest();
+    }
+
+    /**
+     * Create an instance of {@link UpdateAdjustingRequest }
+     * 
+     */
+    public UpdateAdjustingRequest createUpdateAdjustingRequest() {
+        return new UpdateAdjustingRequest();
     }
 
     /**

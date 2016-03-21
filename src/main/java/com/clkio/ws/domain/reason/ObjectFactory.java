@@ -30,19 +30,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ListManualEnteringReasonRequest }
-     * 
-     */
-    public ListManualEnteringReasonRequest createListManualEnteringReasonRequest() {
-        return new ListManualEnteringReasonRequest();
-    }
-
-    /**
      * Create an instance of {@link ListManualEnteringReasonResponse }
      * 
      */
     public ListManualEnteringReasonResponse createListManualEnteringReasonResponse() {
         return new ListManualEnteringReasonResponse();
+    }
+
+    /**
+     * Create an instance of {@link ListManualEnteringReasonRequest }
+     * 
+     */
+    public ListManualEnteringReasonRequest createListManualEnteringReasonRequest() {
+        return new ListManualEnteringReasonRequest();
     }
 
     /**

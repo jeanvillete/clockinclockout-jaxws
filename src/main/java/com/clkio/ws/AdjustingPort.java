@@ -7,8 +7,12 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import com.clkio.ws.domain.adjusting.DeleteAdjustingRequest;
+import com.clkio.ws.domain.adjusting.InsertAdjustingRequest;
 import com.clkio.ws.domain.adjusting.ListAdjustingRequest;
 import com.clkio.ws.domain.adjusting.ListAdjustingResponse;
+import com.clkio.ws.domain.adjusting.UpdateAdjustingRequest;
+import com.clkio.ws.domain.common.Response;
 
 
 /**
@@ -46,6 +50,51 @@ public interface AdjustingPort {
     public ListAdjustingResponse list(
         @WebParam(name = "listAdjustingRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         ListAdjustingRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.common.Response
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public Response insert(
+        @WebParam(name = "insertAdjustingRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        InsertAdjustingRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.common.Response
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public Response update(
+        @WebParam(name = "updateAdjustingRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        UpdateAdjustingRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.common.Response
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public Response delete(
+        @WebParam(name = "deleteAdjustingRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        DeleteAdjustingRequest request)
         throws ResponseException
     ;
 

@@ -10,11 +10,15 @@ public class Adjusting extends CommonDomain {
 	private Duration timeInterval;
 	private Profile profile;
 	
-	public Adjusting(String description, Duration timeInterval, Profile profile) {
+	public Adjusting( Integer id ) {
+		super( id );
+	}
+	
+	public Adjusting( String description, Duration timeInterval, Profile profile ) {
 		this(null, description, timeInterval, profile);
 	}
 	
-	public Adjusting(Integer id, String description, Duration timeInterval, Profile profile) {
+	public Adjusting( Integer id, String description, Duration timeInterval, Profile profile ) {
 		super( id );
 		
 		this.setDescription(description);

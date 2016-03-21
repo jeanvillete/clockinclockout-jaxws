@@ -12,18 +12,22 @@ import com.clkio.rowmapper.AdjustingRowMapper;
 @Repository
 public class AdjustingRepository extends CommonRepository {
 
-	public void insert( final Adjusting adjusting ) {
+	public boolean insert( final Adjusting adjusting ) {
 		adjusting.setId( this.nextVal( "ADJUSTING_SEQ" ) );
-		this.jdbcTemplate.update( " INSERT INTO ADJUSTING ( ID, DESCRIPTION, TIME_INTERVAL, ID_PROFILE )"
+		return this.jdbcTemplate.update( " INSERT INTO ADJUSTING ( ID, DESCRIPTION, TIME_INTERVAL, ID_PROFILE )"
 				+ " VALUES ( ?, ?, ?, ? ) ",
-				new Object[]{ adjusting.getId(),
+				new Object[]{ 
+						adjusting.getId(),
 						adjusting.getDescription(),
 						DurationUtil.durationToPG( adjusting.getTimeInterval() ),
-						adjusting.getProfile().getId() });
+						adjusting.getProfile().getId() }) == 1;
 	}
 
-	public void delete( final Adjusting adjusting ) {
-		this.jdbcTemplate.update( " DELETE FROM ADJUSTING WHERE ID = ? ", new Object[]{ adjusting.getId() } );
+	public boolean delete( final Adjusting adjusting ) {
+		return this.jdbcTemplate.update( " DELETE FROM ADJUSTING WHERE ID = ? AND ID_PROFILE = ? ",
+				new Object[]{ 
+						adjusting.getId(), 
+						adjusting.getProfile().getId() } ) == 1;
 	}
 
 	public List< Adjusting > list( final Profile profile ) {
@@ -31,7 +35,39 @@ public class AdjustingRepository extends CommonRepository {
 				+ " FROM ADJUSTING ADJ "
 				+ " JOIN PROFILE PROF ON ADJ.ID_PROFILE = PROF.ID "
 				+ " WHERE PROF.ID_CLK_USER = ? AND ADJ.ID_PROFILE = ? ",
-				new Object[]{ profile.getUser().getId(), profile.getId() }, new AdjustingRowMapper() );
+				new Object[]{ 
+						profile.getUser().getId(), 
+						profile.getId() }, 
+				new AdjustingRowMapper() );
+	}
+
+	public boolean update( Adjusting adjusting ) {
+		return this.jdbcTemplate.update( " UPDATE ADJUSTING SET DESCRIPTION = ?, TIME_INTERVAL = ? "
+				+ " WHERE ID = ? AND ID_PROFILE = ? ",
+				new Object[]{ 
+						adjusting.getDescription(),
+						DurationUtil.durationToPG( adjusting.getTimeInterval() ),
+						adjusting.getId(),
+						adjusting.getProfile().getId() }) == 1;
+	}
+
+	public boolean exists( String description, Profile profile ) {
+		return this.jdbcTemplate.queryForObject( " SELECT COUNT( ID ) FROM ADJUSTING "
+				+ " WHERE DESCRIPTION = ? AND ID_PROFILE = ? ",
+				new Object[]{ 
+						description,
+						profile.getId()
+				}, Integer.class) > 0 ;
+	}
+
+	public boolean exists( String description, Profile profile, Integer id ) {
+		return this.jdbcTemplate.queryForObject( " SELECT COUNT( ID ) FROM ADJUSTING "
+				+ " WHERE DESCRIPTION = ? AND ID_PROFILE = ? AND ID <> ? ",
+				new Object[]{ 
+						description,
+						profile.getId(),
+						id
+				}, Integer.class) > 0 ;
 	}
 
 }

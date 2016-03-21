@@ -38,6 +38,22 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ConfirmEmailRequest }
+     * 
+     */
+    public ConfirmEmailRequest createConfirmEmailRequest() {
+        return new ConfirmEmailRequest();
+    }
+
+    /**
+     * Create an instance of {@link InsertEmailRequest }
+     * 
+     */
+    public InsertEmailRequest createInsertEmailRequest() {
+        return new InsertEmailRequest();
+    }
+
+    /**
      * Create an instance of {@link ListEmailRequest }
      * 
      */
@@ -54,27 +70,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ConfirmEmailRequest }
-     * 
-     */
-    public ConfirmEmailRequest createConfirmEmailRequest() {
-        return new ConfirmEmailRequest();
-    }
-
-    /**
      * Create an instance of {@link SetEmailAsPrimaryRequest }
      * 
      */
     public SetEmailAsPrimaryRequest createSetEmailAsPrimaryRequest() {
         return new SetEmailAsPrimaryRequest();
-    }
-
-    /**
-     * Create an instance of {@link InsertEmailRequest }
-     * 
-     */
-    public InsertEmailRequest createInsertEmailRequest() {
-        return new InsertEmailRequest();
     }
 
     /**

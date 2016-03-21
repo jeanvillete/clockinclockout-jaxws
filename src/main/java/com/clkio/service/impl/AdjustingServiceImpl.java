@@ -28,16 +28,20 @@ public class AdjustingServiceImpl implements AdjustingService, InitializingBean 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
 	public void insert(Adjusting adjusting) {
-		Assert.notNull( adjusting );
-		// TODO apply validations
-		this.repository.insert( adjusting );
+		Assert.notNull( adjusting, "Argument 'adjusting' is mandatory." );
+		Assert.hasText( adjusting.getDescription(), "The nested property 'description' is mandatory." );
+		Assert.state( !this.exists( adjusting.getDescription(), adjusting.getProfile() ),
+				"An 'adjusting' record already exists with the provided 'description'." );
+		Assert.state( this.repository.insert( adjusting ), "Some problem happened while performing insert for 'adjusting'." );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
 	public void delete(Adjusting adjusting) {
-		Assert.notNull( adjusting );
-		this.repository.delete( adjusting );
+		Assert.notNull( adjusting, "Argument 'adjusting' is mandatory." );
+		Assert.state( adjusting.getProfile() != null && adjusting.getProfile().getId() != null,
+				"The nested 'adjusting's property profile.id is mandatory." );
+		Assert.state( this.repository.delete( adjusting ), "Some problem happened while deleting 'adjusting' from database." );
 	}
 
 	@Override
@@ -46,6 +50,33 @@ public class AdjustingServiceImpl implements AdjustingService, InitializingBean 
 		Assert.state( profile != null && profile.getUser() != null,
 				"Argument 'profile' and its property 'user' are must have instance." );
 		return this.repository.list( profile );
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.REQUIRED )
+	public void update( Adjusting adjusting ) {
+		Assert.state( adjusting != null && adjusting.getId() != null, "Argument 'adjusting' and its 'id' property are mandatory." );
+		Assert.hasText( adjusting.getDescription(), "The nested property 'description' is mandatory." );
+		Assert.state( !this.exists( adjusting.getDescription(), adjusting.getProfile(), adjusting.getId() ),
+				"An 'adjusting' record already exists with the provided 'description'." );
+		Assert.state( this.repository.update( adjusting ),
+				"Some problem happened while performing update for the 'adjusting' record." );
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
+	public boolean exists( String description, Profile profile ) {
+		Assert.hasText( description, "The argument 'description' is mandatory." );
+		Assert.notNull( profile, "Argument 'profile' is mandatory." );
+		return this.repository.exists( description, profile );
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
+	public boolean exists( String description, Profile profile, Integer id ) {
+		Assert.hasText( description, "The argument 'description' is mandatory." );
+		Assert.notNull( profile, "Argument 'profile' is mandatory." );
+		return this.repository.exists( description, profile, id );
 	}
 
 }
