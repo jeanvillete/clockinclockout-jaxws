@@ -5,20 +5,20 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import com.clkio.ws.domain.email.Email;
+import com.clkio.ws.domain.user.User;
 
 
 /**
- * <p>Java class for requestResetRequest complex type.
+ * <p>Java class for requestResetPasswordRequest complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="requestResetRequest">
+ * &lt;complexType name="requestResetPasswordRequest">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="email" type="{http://schemas.clkio.com/email}email"/>
+ *         &lt;element name="user" type="{http://schemas.clkio.com/user}user"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -28,36 +28,36 @@ import com.clkio.ws.domain.email.Email;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "requestResetRequest", propOrder = {
-    "email"
+@XmlType(name = "requestResetPasswordRequest", propOrder = {
+    "user"
 })
-public class RequestResetRequest {
+public class RequestResetPasswordRequest {
 
     @XmlElement(required = true)
-    protected Email email;
+    protected User user;
 
     /**
-     * Gets the value of the email property.
+     * Gets the value of the user property.
      * 
      * @return
      *     possible object is
-     *     {@link Email }
+     *     {@link User }
      *     
      */
-    public Email getEmail() {
-        return email;
+    public User getUser() {
+        return user;
     }
 
     /**
-     * Sets the value of the email property.
+     * Sets the value of the user property.
      * 
      * @param value
      *     allowed object is
-     *     {@link Email }
+     *     {@link User }
      *     
      */
-    public void setEmail(Email value) {
-        this.email = value;
+    public void setUser(User value) {
+        this.user = value;
     }
 
 }

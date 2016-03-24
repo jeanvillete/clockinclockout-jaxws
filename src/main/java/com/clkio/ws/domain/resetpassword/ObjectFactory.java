@@ -30,11 +30,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link RequestResetRequest }
+     * Create an instance of {@link ConfirmResetPasswordRequest }
      * 
      */
-    public RequestResetRequest createRequestResetRequest() {
-        return new RequestResetRequest();
+    public ConfirmResetPasswordRequest createConfirmResetPasswordRequest() {
+        return new ConfirmResetPasswordRequest();
+    }
+
+    /**
+     * Create an instance of {@link ConfirmResetPasswordResponse }
+     * 
+     */
+    public ConfirmResetPasswordResponse createConfirmResetPasswordResponse() {
+        return new ConfirmResetPasswordResponse();
+    }
+
+    /**
+     * Create an instance of {@link ResetPasswordRequest }
+     * 
+     */
+    public ResetPasswordRequest createResetPasswordRequest() {
+        return new ResetPasswordRequest();
+    }
+
+    /**
+     * Create an instance of {@link RequestResetPasswordRequest }
+     * 
+     */
+    public RequestResetPasswordRequest createRequestResetPasswordRequest() {
+        return new RequestResetPasswordRequest();
     }
 
 }

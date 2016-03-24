@@ -8,7 +8,10 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import com.clkio.ws.domain.common.Response;
-import com.clkio.ws.domain.resetpassword.RequestResetRequest;
+import com.clkio.ws.domain.resetpassword.ConfirmResetPasswordRequest;
+import com.clkio.ws.domain.resetpassword.ConfirmResetPasswordResponse;
+import com.clkio.ws.domain.resetpassword.RequestResetPasswordRequest;
+import com.clkio.ws.domain.resetpassword.ResetPasswordRequest;
 
 
 /**
@@ -43,9 +46,39 @@ public interface ResetPasswordPort {
      */
     @WebMethod
     @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
-    public Response requestReset(
-        @WebParam(name = "requestResetRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
-        RequestResetRequest request)
+    public Response requestResetPassword(
+        @WebParam(name = "requestResetPasswordRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        RequestResetPasswordRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.resetpassword.ConfirmResetPasswordResponse
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "confirmResetPasswordResponse", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public ConfirmResetPasswordResponse confirmResetPassword(
+        @WebParam(name = "confirmResetPasswordRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        ConfirmResetPasswordRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.common.Response
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public Response resetPassword(
+        @WebParam(name = "resetPasswordRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        ResetPasswordRequest request)
         throws ResponseException
     ;
 

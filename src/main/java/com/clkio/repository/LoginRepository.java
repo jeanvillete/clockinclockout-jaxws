@@ -21,4 +21,12 @@ public class LoginRepository extends CommonRepository {
 				Integer.class ) == 1;
 	}
 
+	public void setAsInvalid( User user ) {
+		this.jdbcTemplate.update( " UPDATE LOGIN SET VALID = ? WHERE ID_CLK_USER = ? ",
+				new Object[]{
+					false,
+					user.getId()
+				});
+	}
+
 }

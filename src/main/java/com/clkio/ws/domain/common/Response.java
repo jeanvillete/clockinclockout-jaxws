@@ -11,6 +11,7 @@ import com.clkio.ws.domain.email.ListEmailResponse;
 import com.clkio.ws.domain.login.LoginResponse;
 import com.clkio.ws.domain.profile.ListProfileResponse;
 import com.clkio.ws.domain.reason.ListManualEnteringReasonResponse;
+import com.clkio.ws.domain.resetpassword.ConfirmResetPasswordResponse;
 import com.clkio.ws.domain.timecard.GetTotalTimeResponse;
 
 
@@ -43,7 +44,8 @@ import com.clkio.ws.domain.timecard.GetTotalTimeResponse;
     ListManualEnteringReasonResponse.class,
     LoginResponse.class,
     ListAdjustingResponse.class,
-    ListProfileResponse.class
+    ListProfileResponse.class,
+    ConfirmResetPasswordResponse.class
 })
 public class Response {
 

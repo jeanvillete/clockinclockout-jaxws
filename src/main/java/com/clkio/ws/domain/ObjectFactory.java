@@ -30,7 +30,10 @@ import com.clkio.ws.domain.reason.InsertManualEnteringReasonRequest;
 import com.clkio.ws.domain.reason.ListManualEnteringReasonRequest;
 import com.clkio.ws.domain.reason.ListManualEnteringReasonResponse;
 import com.clkio.ws.domain.reason.UpdateManualEnteringReasonRequest;
-import com.clkio.ws.domain.resetpassword.RequestResetRequest;
+import com.clkio.ws.domain.resetpassword.ConfirmResetPasswordRequest;
+import com.clkio.ws.domain.resetpassword.ConfirmResetPasswordResponse;
+import com.clkio.ws.domain.resetpassword.RequestResetPasswordRequest;
+import com.clkio.ws.domain.resetpassword.ResetPasswordRequest;
 import com.clkio.ws.domain.timecard.GetTotalTimeRequest;
 import com.clkio.ws.domain.timecard.GetTotalTimeResponse;
 import com.clkio.ws.domain.user.InsertUserRequest;
@@ -61,6 +64,7 @@ public class ObjectFactory {
     private final static QName _InsertProfileRequest_QNAME = new QName("http://schemas.clkio.com", "insertProfileRequest");
     private final static QName _DoLoginRequest_QNAME = new QName("http://schemas.clkio.com", "doLoginRequest");
     private final static QName _DeleteManualEnteringReasonRequest_QNAME = new QName("http://schemas.clkio.com", "deleteManualEnteringReasonRequest");
+    private final static QName _ConfirmResetPasswordRequest_QNAME = new QName("http://schemas.clkio.com", "confirmResetPasswordRequest");
     private final static QName _InsertEmailRequest_QNAME = new QName("http://schemas.clkio.com", "insertEmailRequest");
     private final static QName _UpdateManualEnteringReasonRequest_QNAME = new QName("http://schemas.clkio.com", "updateManualEnteringReasonRequest");
     private final static QName _ListManualEnteringReasonResponse_QNAME = new QName("http://schemas.clkio.com", "listManualEnteringReasonResponse");
@@ -77,10 +81,12 @@ public class ObjectFactory {
     private final static QName _ListProfileResponse_QNAME = new QName("http://schemas.clkio.com", "listProfileResponse");
     private final static QName _InsertManualEnteringReasonRequest_QNAME = new QName("http://schemas.clkio.com", "insertManualEnteringReasonRequest");
     private final static QName _ListAdjustingRequest_QNAME = new QName("http://schemas.clkio.com", "listAdjustingRequest");
+    private final static QName _ConfirmResetPasswordResponse_QNAME = new QName("http://schemas.clkio.com", "confirmResetPasswordResponse");
     private final static QName _ListProfileRequest_QNAME = new QName("http://schemas.clkio.com", "listProfileRequest");
+    private final static QName _ResetPasswordRequest_QNAME = new QName("http://schemas.clkio.com", "resetPasswordRequest");
     private final static QName _Response_QNAME = new QName("http://schemas.clkio.com", "response");
     private final static QName _InsertUserRequest_QNAME = new QName("http://schemas.clkio.com", "insertUserRequest");
-    private final static QName _RequestResetRequest_QNAME = new QName("http://schemas.clkio.com", "requestResetRequest");
+    private final static QName _RequestResetPasswordRequest_QNAME = new QName("http://schemas.clkio.com", "requestResetPasswordRequest");
     private final static QName _UpdateAdjustingRequest_QNAME = new QName("http://schemas.clkio.com", "updateAdjustingRequest");
 
     /**
@@ -160,6 +166,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "deleteManualEnteringReasonRequest")
     public JAXBElement<DeleteManualEnteringReasonRequest> createDeleteManualEnteringReasonRequest(DeleteManualEnteringReasonRequest value) {
         return new JAXBElement<DeleteManualEnteringReasonRequest>(_DeleteManualEnteringReasonRequest_QNAME, DeleteManualEnteringReasonRequest.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ConfirmResetPasswordRequest }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "confirmResetPasswordRequest")
+    public JAXBElement<ConfirmResetPasswordRequest> createConfirmResetPasswordRequest(ConfirmResetPasswordRequest value) {
+        return new JAXBElement<ConfirmResetPasswordRequest>(_ConfirmResetPasswordRequest_QNAME, ConfirmResetPasswordRequest.class, null, value);
     }
 
     /**
@@ -307,12 +322,30 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ConfirmResetPasswordResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "confirmResetPasswordResponse")
+    public JAXBElement<ConfirmResetPasswordResponse> createConfirmResetPasswordResponse(ConfirmResetPasswordResponse value) {
+        return new JAXBElement<ConfirmResetPasswordResponse>(_ConfirmResetPasswordResponse_QNAME, ConfirmResetPasswordResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link ListProfileRequest }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "listProfileRequest")
     public JAXBElement<ListProfileRequest> createListProfileRequest(ListProfileRequest value) {
         return new JAXBElement<ListProfileRequest>(_ListProfileRequest_QNAME, ListProfileRequest.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ResetPasswordRequest }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "resetPasswordRequest")
+    public JAXBElement<ResetPasswordRequest> createResetPasswordRequest(ResetPasswordRequest value) {
+        return new JAXBElement<ResetPasswordRequest>(_ResetPasswordRequest_QNAME, ResetPasswordRequest.class, null, value);
     }
 
     /**
@@ -334,12 +367,12 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link RequestResetRequest }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link RequestResetPasswordRequest }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "requestResetRequest")
-    public JAXBElement<RequestResetRequest> createRequestResetRequest(RequestResetRequest value) {
-        return new JAXBElement<RequestResetRequest>(_RequestResetRequest_QNAME, RequestResetRequest.class, null, value);
+    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "requestResetPasswordRequest")
+    public JAXBElement<RequestResetPasswordRequest> createRequestResetPasswordRequest(RequestResetPasswordRequest value) {
+        return new JAXBElement<RequestResetPasswordRequest>(_RequestResetPasswordRequest_QNAME, RequestResetPasswordRequest.class, null, value);
     }
 
     /**

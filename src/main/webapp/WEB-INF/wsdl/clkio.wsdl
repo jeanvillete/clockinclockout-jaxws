@@ -48,7 +48,10 @@
 			<xs:element name="listManualEnteringReasonResponse" type="reason:listManualEnteringReasonResponse" nillable="false"/>
 			<xs:element name="getTotalTimeRequest" type="timecard:getTotalTimeRequest" nillable="false"/>
 			<xs:element name="getTotalTimeResponse" type="timecard:getTotalTimeResponse" nillable="false"/>
-			<xs:element name="requestResetRequest" type="resetpassword:requestResetRequest" nillable="false"/>
+			<xs:element name="requestResetPasswordRequest" type="resetpassword:requestResetPasswordRequest" nillable="false"/>
+			<xs:element name="confirmResetPasswordRequest" type="resetpassword:confirmResetPasswordRequest" nillable="false"/>
+			<xs:element name="confirmResetPasswordResponse" type="resetpassword:confirmResetPasswordResponse" nillable="false"/>
+			<xs:element name="resetPasswordRequest" type="resetpassword:resetPasswordRequest" nillable="false"/>
 			<xs:element name="insertProfileRequest" type="profile:insertProfileRequest" nillable="false"/>
 			<xs:element name="updateProfileRequest" type="profile:updateProfileRequest" nillable="false"/>
 			<xs:element name="deleteProfileRequest" type="profile:deleteProfileRequest" nillable="false"/>
@@ -119,8 +122,17 @@
 	<wsdl:message name="getTotalTimeResponse">
 		<wsdl:part name="result" element="clkio:getTotalTimeResponse" />
 	</wsdl:message>
-	<wsdl:message name="requestResetRequest">
-		<wsdl:part name="request" element="clkio:requestResetRequest" />
+	<wsdl:message name="requestResetPasswordRequest">
+		<wsdl:part name="request" element="clkio:requestResetPasswordRequest" />
+	</wsdl:message>
+	<wsdl:message name="confirmResetPasswordRequest">
+		<wsdl:part name="request" element="clkio:confirmResetPasswordRequest" />
+	</wsdl:message>
+	<wsdl:message name="confirmResetPasswordResponse">
+		<wsdl:part name="result" element="clkio:confirmResetPasswordResponse" />
+	</wsdl:message>
+	<wsdl:message name="resetPasswordRequest">
+		<wsdl:part name="request" element="clkio:resetPasswordRequest" />
 	</wsdl:message>
 	<wsdl:message name="insertProfileRequest">
 		<wsdl:part name="request" element="clkio:insertProfileRequest" />
@@ -266,10 +278,20 @@
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:portType name="ResetPasswordPort">
-		<wsdl:operation name="requestReset">
-			<wsdl:input message="clkws:requestResetRequest"/>
+		<wsdl:operation name="requestResetPassword">
+			<wsdl:input message="clkws:requestResetPasswordRequest"/>
 			<wsdl:output message="clkws:response"/>
-			<wsdl:fault message="clkws:responseException" name="requestResetException" />
+			<wsdl:fault message="clkws:responseException" name="requestResetPasswordException" />
+		</wsdl:operation>
+		<wsdl:operation name="confirmResetPassword">
+			<wsdl:input message="clkws:confirmResetPasswordRequest"/>
+			<wsdl:output message="clkws:confirmResetPasswordResponse"/>
+			<wsdl:fault message="clkws:responseException" name="confirmResetPasswordException" />
+		</wsdl:operation>
+		<wsdl:operation name="resetPassword">
+			<wsdl:input message="clkws:resetPasswordRequest"/>
+			<wsdl:output message="clkws:response"/>
+			<wsdl:fault message="clkws:responseException" name="resetPasswordException" />
 		</wsdl:operation>
 	</wsdl:portType>
 	
@@ -537,7 +559,7 @@
 	</wsdl:binding>
 	<wsdl:binding name="ResetPasswordBinding" type="clkws:ResetPasswordPort">
 		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
-		<wsdl:operation name="requestReset">
+		<wsdl:operation name="requestResetPassword">
 			<soap:operation soapAction="" />
 			<wsdl:input>
 				<soap:body use="literal" />
@@ -545,8 +567,32 @@
 			<wsdl:output>
 				<soap:body use="literal" />
 			</wsdl:output>
-			<wsdl:fault name="requestResetException">
-				<soap:fault name="requestResetException" use="literal" />
+			<wsdl:fault name="requestResetPasswordException">
+				<soap:fault name="requestResetPasswordException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="confirmResetPassword">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="confirmResetPasswordException">
+				<soap:fault name="confirmResetPasswordException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="resetPassword">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="resetPasswordException">
+				<soap:fault name="resetPasswordException" use="literal" />
 			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>

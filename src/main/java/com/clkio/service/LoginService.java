@@ -21,4 +21,10 @@ public interface LoginService {
 	 * @return
 	 */
 	boolean check( String code );
+	
+	/**
+	 * Service responsible to turn invalid all login records related to the provided 'user' parameter.
+	 * @param user
+	 */
+	void setAsInvalid( User user );
 }

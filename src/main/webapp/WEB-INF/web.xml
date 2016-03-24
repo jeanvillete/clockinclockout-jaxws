@@ -98,6 +98,16 @@
         <servlet-name>manualenteringreasonws</servlet-name>
         <url-pattern>/manualenteringreason</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <description>Request Reset Password WS</description>
+        <servlet-name>requestresetpasswordws</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>requestresetpasswordws</servlet-name>
+        <url-pattern>/requestresetpassword</url-pattern>
+    </servlet-mapping>
    
 	<session-config>
 		<session-timeout>1</session-timeout>

@@ -77,4 +77,13 @@ public class LoginServiceImpl implements LoginService, InitializingBean {
 		Assert.hasText( code, "The argument 'code' is mandatory." );
 		return this.repository.check( code );
 	}
+
+	@Override
+	@Transactional( propagation = Propagation.REQUIRES_NEW )
+	public void setAsInvalid( User user ) {
+		Assert.state( user != null && user.getId() != null,
+				"The argument 'user' and its nested 'id' property are mandatory." );
+		this.repository.setAsInvalid( user );
+	}
+	
 }

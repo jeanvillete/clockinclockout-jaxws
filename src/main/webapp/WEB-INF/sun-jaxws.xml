@@ -58,4 +58,13 @@
         port="{http://ws.clkio.com}ManualEnteringReasonService"
         url-pattern="/manualenteringreason" />
 
+    <endpoint
+        name="resetPasswordService"
+        interface="com.clkio.ws.ResetPasswordPort"
+        implementation="com.clkio.ws.impl.ResetPasswordWSImpl"
+        wsdl="WEB-INF/wsdl/clkio.wsdl"
+        service="{http://ws.clkio.com}ClkIOWS"
+        port="{http://ws.clkio.com}ResetPasswordService"
+        url-pattern="/requestresetpassword" />
+
 </endpoints>

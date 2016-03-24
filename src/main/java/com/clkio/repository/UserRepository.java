@@ -37,8 +37,11 @@ public class UserRepository extends CommonRepository {
 	public User getBy( String loginCode ) {
 		return this.jdbcTemplate.queryForObject( " SELECT USR.ID, USR.LOCALE, USR.PASSWORD FROM CLK_USER USR "+
 					" LEFT JOIN LOGIN LGN ON USR.ID = LGN.ID_CLK_USER " +
-					" WHERE LGN.CODE = ? ",
-				new Object[]{ loginCode },
+					" WHERE VALID = ? AND LGN.CODE = ? ",
+				new Object[]{
+					true,
+					loginCode
+				},
 				new UserRowMapper() );
 	}
 	

@@ -19,6 +19,7 @@ import com.clkio.domain.RequestResetPassword;
 import com.clkio.domain.User;
 import com.clkio.repository.RequestResetPasswordRepository;
 import com.clkio.service.EmailService;
+import com.clkio.service.LoginService;
 import com.clkio.service.RequestResetPasswordService;
 import com.clkio.service.UserService;
 
@@ -35,6 +36,9 @@ public class RequestResetPasswordServiceImpl implements RequestResetPasswordServ
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private LoginService loginService;
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -120,6 +124,8 @@ public class RequestResetPasswordServiceImpl implements RequestResetPasswordServ
 		validRange.add( Calendar.MINUTE, -10 );
 		
 		Assert.state( this.repository.changePassword( requestResetPassword, validRange.getTime() ), "Invalid request. It was not possible to perform the request." );
+		
+		this.loginService.setAsInvalid( syncUser );
 		
 		syncUser.setPassword( requestResetPassword.getNewPassword() );
 		Assert.state( this.userService.changePassword( syncUser ), "Invalid request. It was not possible to perform the request." );
