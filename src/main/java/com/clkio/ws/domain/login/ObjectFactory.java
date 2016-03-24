@@ -45,4 +45,12 @@ public class ObjectFactory {
         return new LoginResponse();
     }
 
+    /**
+     * Create an instance of {@link DoLogoutRequest }
+     * 
+     */
+    public DoLogoutRequest createDoLogoutRequest() {
+        return new DoLogoutRequest();
+    }
+
 }

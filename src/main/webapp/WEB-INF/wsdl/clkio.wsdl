@@ -33,6 +33,7 @@
 			<xs:element name="responseException" type="common:responseException" nillable="false"/>
 			<xs:element name="insertUserRequest" type="user:insertUserRequest" nillable="false"/>
 			<xs:element name="doLoginRequest" type="login:doLoginRequest" nillable="false"/>
+			<xs:element name="doLogoutRequest" type="login:doLogoutRequest" nillable="false"/>
 			<xs:element name="loginResponse" type="login:loginResponse" nillable="false"/>
 			<xs:element name="confirmEmailRequest" type="email:confirmEmailRequest" nillable="false"/>
 			<xs:element name="insertEmailRequest" type="email:insertEmailRequest" nillable="false"/>
@@ -76,6 +77,9 @@
 	</wsdl:message>
 	<wsdl:message name="doLoginRequest">
 		<wsdl:part name="request" element="clkio:doLoginRequest" />
+	</wsdl:message>
+	<wsdl:message name="doLogoutRequest">
+		<wsdl:part name="request" element="clkio:doLogoutRequest" />
 	</wsdl:message>
 	<wsdl:message name="loginResponse">
 		<wsdl:part name="result" element="clkio:loginResponse" />
@@ -175,6 +179,11 @@
 			<wsdl:input message="clkws:doLoginRequest" />
 			<wsdl:output message="clkws:loginResponse" />
 			<wsdl:fault message="clkws:responseException" name="doLoginException" />
+		</wsdl:operation>
+		<wsdl:operation name="doLogout">
+			<wsdl:input message="clkws:doLogoutRequest" />
+			<wsdl:output message="clkws:response" />
+			<wsdl:fault message="clkws:responseException" name="doLogoutException" />
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:portType name="EmailPort">
@@ -323,6 +332,18 @@
 			</wsdl:output>
 			<wsdl:fault name="doLoginException">
 				<soap:fault name="doLoginException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="doLogout">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="doLogoutException">
+				<soap:fault name="doLogoutException" use="literal" />
 			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>

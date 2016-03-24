@@ -22,6 +22,8 @@ public interface LoginService {
 	 */
 	boolean check( String code );
 	
+	void logout( String code );
+	
 	/**
 	 * Service responsible to turn invalid all login records related to the provided 'user' parameter.
 	 * @param user

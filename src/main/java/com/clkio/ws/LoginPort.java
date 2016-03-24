@@ -7,7 +7,9 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import com.clkio.ws.domain.common.Response;
 import com.clkio.ws.domain.login.DoLoginRequest;
+import com.clkio.ws.domain.login.DoLogoutRequest;
 import com.clkio.ws.domain.login.LoginResponse;
 
 
@@ -46,6 +48,21 @@ public interface LoginPort {
     public LoginResponse doLogin(
         @WebParam(name = "doLoginRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         DoLoginRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.common.Response
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public Response doLogout(
+        @WebParam(name = "doLogoutRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        DoLogoutRequest request)
         throws ResponseException
     ;
 

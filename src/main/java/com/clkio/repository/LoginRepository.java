@@ -29,4 +29,12 @@ public class LoginRepository extends CommonRepository {
 				});
 	}
 
+	public boolean logout( String code ) {
+		return this.jdbcTemplate.update( " UPDATE LOGIN SET VALID = ? WHERE CODE = ? ",
+				new Object[]{
+					false,
+					code
+				}) == 1;
+	}
+
 }

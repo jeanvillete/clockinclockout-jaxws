@@ -52,13 +52,16 @@ abstract class WebServiceCommon {
 		return ip;
 	}
 	
-	protected User getCurrentUser() {
+	protected String getLoginCode() {
 		HttpServletRequest request = ( HttpServletRequest ) this.wsContext.getMessageContext().get( MessageContext.SERVLET_REQUEST );
 		String loginCode = request.getHeader( "CLKIO-LOGIN-CODE" );
-		
 		Assert.hasText( loginCode, "[clkiows] No 'CLKIO-LOGIN-CODE' header was provided." );
-		
-		User user = this.getService( UserService.class ).getBy( loginCode );
+
+		return loginCode;
+	}
+	
+	protected User getCurrentUser() {
+		User user = this.getService( UserService.class ).getBy( this.getLoginCode() );
 		Assert.notNull( user, "[clkiows] The provided value for 'CLKIO-LOGIN-CODE' header is not valid." );
 		
 		return user;

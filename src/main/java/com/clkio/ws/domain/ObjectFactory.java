@@ -19,6 +19,7 @@ import com.clkio.ws.domain.email.ListEmailRequest;
 import com.clkio.ws.domain.email.ListEmailResponse;
 import com.clkio.ws.domain.email.SetEmailAsPrimaryRequest;
 import com.clkio.ws.domain.login.DoLoginRequest;
+import com.clkio.ws.domain.login.DoLogoutRequest;
 import com.clkio.ws.domain.login.LoginResponse;
 import com.clkio.ws.domain.profile.DeleteProfileRequest;
 import com.clkio.ws.domain.profile.InsertProfileRequest;
@@ -70,6 +71,7 @@ public class ObjectFactory {
     private final static QName _ListManualEnteringReasonResponse_QNAME = new QName("http://schemas.clkio.com", "listManualEnteringReasonResponse");
     private final static QName _UpdateProfileRequest_QNAME = new QName("http://schemas.clkio.com", "updateProfileRequest");
     private final static QName _LoginResponse_QNAME = new QName("http://schemas.clkio.com", "loginResponse");
+    private final static QName _DoLogoutRequest_QNAME = new QName("http://schemas.clkio.com", "doLogoutRequest");
     private final static QName _DeleteProfileRequest_QNAME = new QName("http://schemas.clkio.com", "deleteProfileRequest");
     private final static QName _ListAdjustingResponse_QNAME = new QName("http://schemas.clkio.com", "listAdjustingResponse");
     private final static QName _ListEmailRequest_QNAME = new QName("http://schemas.clkio.com", "listEmailRequest");
@@ -220,6 +222,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "loginResponse")
     public JAXBElement<LoginResponse> createLoginResponse(LoginResponse value) {
         return new JAXBElement<LoginResponse>(_LoginResponse_QNAME, LoginResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DoLogoutRequest }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "doLogoutRequest")
+    public JAXBElement<DoLogoutRequest> createDoLogoutRequest(DoLogoutRequest value) {
+        return new JAXBElement<DoLogoutRequest>(_DoLogoutRequest_QNAME, DoLogoutRequest.class, null, value);
     }
 
     /**
