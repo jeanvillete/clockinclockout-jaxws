@@ -2,14 +2,14 @@ package com.clkio.domain;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.Assert;
 
 public abstract class EmailContent {
 
-	private static final SimpleDateFormat SDF = new SimpleDateFormat( "dd_MM_yyyy_HH:mm:ss_z" );
+	private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern( "dd_MM_yyyy_HH:mm:ss" );
 
 	private Email email;
 	private String encodedEmailAddress;
@@ -27,7 +27,7 @@ public abstract class EmailContent {
 		this.email = email;
 		this.velocityResource = velocityResource + email.getUser().getLocale().getLanguage().toLowerCase() + ".vm";
 		
-		this.hash = this.email.getAddress() + SDF.format( this.email.getRecordedTime() );
+		this.hash = this.email.getAddress() + DTF.format( this.email.getRecordedTime() );
 		this.hash = new BCryptPasswordEncoder().encode( this.hash );
 		try {
 			this.encodedEmailAddress = URLEncoder.encode(email.getAddress(), "UTF-8");

@@ -14,8 +14,8 @@ public class ClockinClockoutRowMapper implements RowMapper< ClockinClockout > {
 	public ClockinClockout mapRow( ResultSet rs, int rowNum ) throws SQLException {
 		return new ClockinClockout( RowMapperUtil.getInteger( rs, "ID" ), 
 				new Day( RowMapperUtil.getInteger( rs, "ID_DAY" ) ), 
-				rs.getTimestamp( "CLOCKIN" ), 
-				rs.getTimestamp( "CLOCKOUT" ) );
+				RowMapperUtil.getLocalDateTime( rs, "CLOCKIN" ), 
+				RowMapperUtil.getLocalDateTime( rs, "CLOCKOUT" ) );
 	}
 
 }

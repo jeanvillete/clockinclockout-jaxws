@@ -1,6 +1,6 @@
 package com.clkio.service.impl;
 
-import java.util.Calendar;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -28,11 +28,11 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import com.clkio.domain.Email;
-import com.clkio.domain.NewUserEmailConfirmation;
-import com.clkio.domain.User;
 import com.clkio.domain.EmailContent;
 import com.clkio.domain.EmailResetPassword;
 import com.clkio.domain.NewEmailConfirmation;
+import com.clkio.domain.NewUserEmailConfirmation;
+import com.clkio.domain.User;
 import com.clkio.repository.EmailRepository;
 import com.clkio.service.EmailService;
 
@@ -147,10 +147,7 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 		Assert.notNull( email );
 		Assert.hasText( email.getConfirmationCode() );
 		
-		Calendar validRange = Calendar.getInstance();
-		validRange.add( Calendar.DATE, -1 );
-		
-		Assert.state(  this.repository.confirm( email, validRange.getTime() ), "Problems while performing email confirmation." );
+		Assert.state(  this.repository.confirm( email, LocalDateTime.now().minusDays( 1 ) ), "Problems while performing email confirmation." );
 	}
 
 	@Override
@@ -182,14 +179,14 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public List< Email > listPrimaryNotConfirmed( Date date ) {
+	public List< Email > listPrimaryNotConfirmed( LocalDateTime date ) {
 		Assert.notNull( date, "Parameter 'date' cannot be null." );
 		return this.repository.listPrimaryNotConfirmed( date );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void deleteNotPrimaryNotConfirmed( Date date ) {
+	public void deleteNotPrimaryNotConfirmed( LocalDateTime date ) {
 		Assert.notNull( date, "Parameter 'date' cannot be null." );
 		this.repository.deleteNotPrimaryNotConfirmed( date );
 	}

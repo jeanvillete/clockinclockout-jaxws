@@ -1,8 +1,7 @@
 package com.clkio.service.impl;
 
 import java.time.Duration;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.InitializingBean;
@@ -59,7 +58,7 @@ public class UserServiceImpl implements UserService, InitializingBean {
 		this.profileService.insert( profile );
 		
 		user.getEmail().setPrimary( true );
-		user.getEmail().setRecordedTime( new Date() );
+		user.getEmail().setRecordedTime( LocalDateTime.now() );
 		NewUserEmailConfirmation emailConfirmation = new NewUserEmailConfirmation( user.getEmail() );
 		user.getEmail().setConfirmationCode( emailConfirmation.getHash() );
 		this.emailService.insert( user.getEmail() );
@@ -104,10 +103,9 @@ public class UserServiceImpl implements UserService, InitializingBean {
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
 	public void cleanNotConfirmed() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.add( Calendar.DATE, -1 );
+		LocalDateTime range = LocalDateTime.now().minusDays( 1 );
 		
-		List< Email > emails = this.emailService.listPrimaryNotConfirmed( calendar.getTime() );
+		List< Email > emails = this.emailService.listPrimaryNotConfirmed( range );
 		if ( !CollectionUtils.isEmpty( emails ) ) {
 			for ( Email email : emails ) {
 				this.emailService.delete( email );
@@ -115,7 +113,7 @@ public class UserServiceImpl implements UserService, InitializingBean {
 			}
 		}
 		
-		this.emailService.deleteNotPrimaryNotConfirmed( calendar.getTime() );
+		this.emailService.deleteNotPrimaryNotConfirmed( range );
 	}
 
 	@Override

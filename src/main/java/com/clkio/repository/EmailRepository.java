@@ -1,10 +1,11 @@
 package com.clkio.repository;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.clkio.common.LocalDateTimeUtil;
 import com.clkio.domain.Email;
 import com.clkio.domain.User;
 import com.clkio.rowmapper.EmailRowMapper;
@@ -18,22 +19,22 @@ public class EmailRepository extends CommonRepository {
 				new Object[]{ email.getId(),
 						email.getUser().getId(),
 						email.getAddress(),
-						email.getRecordedTime(),
+						LocalDateTimeUtil.getTimestamp( email.getRecordedTime() ),
 						email.getConfirmationCode(),
-						email.getConfirmationDate(),
-						email.isPrimary(), });
+						LocalDateTimeUtil.getTimestamp( email.getConfirmationDate() ),
+						email.isPrimary() });
 	}
 
 	public boolean exists( final Email email ) {
 		return this.jdbcTemplate.queryForObject( " SELECT COUNT( ID ) FROM EMAIL WHERE ADDRESS = ? ", new Object[]{ email.getAddress() }, Integer.class ) > 0;
 	}
 	
-	public boolean confirm( final Email email, final Date validRange ) {
+	public boolean confirm( final Email email, final LocalDateTime validRange ) {
 		return this.jdbcTemplate.update( " UPDATE EMAIL SET CONFIRMATION_DATE = ? "
 				+ " WHERE RECORDED_TIME > ? AND ADDRESS = ? AND CONFIRMATION_CODE = ? AND CONFIRMATION_DATE IS NULL ",
 				new Object[]{
-					new Date(),
-					validRange,
+					LocalDateTimeUtil.getTimestamp( LocalDateTime.now() ),
+					LocalDateTimeUtil.getTimestamp( validRange ),
 					email.getAddress(),
 					email.getConfirmationCode()
 				}) == 1;
@@ -44,10 +45,10 @@ public class EmailRepository extends CommonRepository {
 	 * @param date 
 	 * @return
 	 */
-	public List< Email > listPrimaryNotConfirmed( final Date date ) {
+	public List< Email > listPrimaryNotConfirmed( final LocalDateTime date ) {
 		return this.jdbcTemplate.query(  " SELECT ID, ADDRESS, RECORDED_TIME, CONFIRMATION_CODE, CONFIRMATION_DATE, IS_PRIMARY, ID_CLK_USER FROM EMAIL "
 				+ " WHERE CONFIRMATION_DATE IS NULL AND RECORDED_TIME < ? AND IS_PRIMARY = ? ",
-				new Object[]{ date, true },
+				new Object[]{ LocalDateTimeUtil.getTimestamp( date ), true },
 				new EmailRowMapper() );
 	}
 
@@ -55,9 +56,9 @@ public class EmailRepository extends CommonRepository {
 		return this.jdbcTemplate.update( " DELETE FROM EMAIL WHERE ID = ? AND ID_CLK_USER = ? ", new Object[]{ email.getId(), email.getUser().getId() } ) == 1;
 	}
 
-	public void deleteNotPrimaryNotConfirmed( final Date date ) {
+	public void deleteNotPrimaryNotConfirmed( final LocalDateTime date ) {
 		this.jdbcTemplate.update( " DELETE FROM EMAIL WHERE CONFIRMATION_DATE IS NULL AND RECORDED_TIME < ? AND IS_PRIMARY = ? ",
-				new Object[]{ date, false } );
+				new Object[]{ LocalDateTimeUtil.getTimestamp( date ), false } );
 	}
 
 	public Email getBy( final String emailAddress, final boolean isPrimary ) {

@@ -1,8 +1,7 @@
 package com.clkio.service.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ import com.clkio.service.UserService;
 @Service
 public class RequestResetPasswordServiceImpl implements RequestResetPasswordService, InitializingBean {
 
-	private static final SimpleDateFormat SDF = new SimpleDateFormat( "dd_MM_yyyy_HH:mm:ss_z" );
+	private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern( "dd_MM_yyyy_HH:mm:ss" );
 	
 	@Autowired
 	private RequestResetPasswordRepository repository;
@@ -44,6 +43,8 @@ public class RequestResetPasswordServiceImpl implements RequestResetPasswordServ
 	public void afterPropertiesSet() throws Exception {
 		Assert.notNull( this.repository, "The property 'repository' has not been properly initialized." );
 		Assert.notNull( this.emailService, "The property 'emailService' has not been properly initialized." );
+		Assert.notNull( this.userService, "The property 'userService' has not been properly initialized." );
+		Assert.notNull( this.loginService, "The property 'loginService' has not been properly initialized." );
 	}
 
 	@Override
@@ -56,7 +57,7 @@ public class RequestResetPasswordServiceImpl implements RequestResetPasswordServ
 		
 		User syncUser = this.userService.getBy( syncEmail ); // user's database synchronized reference
 		requestResetPassword.setUser( syncUser );
-		requestResetPassword.setRequestDate( new Date() );
+		requestResetPassword.setRequestDate( LocalDateTime.now() );
 		
 		this.deleteNotConfirmed( syncUser );
 		
@@ -77,10 +78,7 @@ public class RequestResetPasswordServiceImpl implements RequestResetPasswordServ
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
 	public void cleanNotConfirmed() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.add( Calendar.DATE, -1 );
-		
-		this.repository.cleanNotConfirmed( calendar.getTime() );
+		this.repository.cleanNotConfirmed( LocalDateTime.now().minusDays( 1 ) );
 	}
 	
 	@Override
@@ -95,13 +93,10 @@ public class RequestResetPasswordServiceImpl implements RequestResetPasswordServ
 		User syncUser = this.userService.getBy( syncEmail ); // user's database synchronized reference
 		requestResetPassword.setUser( syncUser );
 
-		requestResetPassword.setConfirmationDate( new Date() );
-		requestResetPassword.setConfirmationCodeValue( new BCryptPasswordEncoder().encode( syncEmail.getAddress() + SDF.format( requestResetPassword.getConfirmationDate() ) ) );
+		requestResetPassword.setConfirmationDate( LocalDateTime.now() );
+		requestResetPassword.setConfirmationCodeValue( new BCryptPasswordEncoder().encode( syncEmail.getAddress() + DTF.format( requestResetPassword.getConfirmationDate() ) ) );
 		
-		Calendar validRange = Calendar.getInstance();
-		validRange.add( Calendar.DATE, -1 );
-		
-		Assert.state( this.repository.confirm( requestResetPassword, validRange.getTime() ), "Invalid parameters. No 'requestResetPassword' record was found on database." );
+		Assert.state( this.repository.confirm( requestResetPassword, LocalDateTime.now().minusDays( 1 ) ), "Invalid parameters. No 'requestResetPassword' record was found on database." );
 		
 		return requestResetPassword.getConfirmationCodeValue();
 	}
@@ -118,12 +113,9 @@ public class RequestResetPasswordServiceImpl implements RequestResetPasswordServ
 		
 		User syncUser = this.userService.getBy( syncEmail ); // user's database synchronized reference
 		requestResetPassword.setUser( syncUser );
-		requestResetPassword.setChangeDate( new Date() );
-
-		Calendar validRange = Calendar.getInstance();
-		validRange.add( Calendar.MINUTE, -10 );
+		requestResetPassword.setChangeDate( LocalDateTime.now() );
 		
-		Assert.state( this.repository.changePassword( requestResetPassword, validRange.getTime() ), "Invalid request. It was not possible to perform the request." );
+		Assert.state( this.repository.changePassword( requestResetPassword, LocalDateTime.now().minusMinutes( 10 ) ), "Invalid request. It was not possible to perform the request." );
 		
 		this.loginService.setAsInvalid( syncUser );
 		

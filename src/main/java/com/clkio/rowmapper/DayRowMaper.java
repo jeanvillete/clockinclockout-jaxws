@@ -13,7 +13,7 @@ public class DayRowMaper implements RowMapper< Day > {
 	@Override
 	public Day mapRow( ResultSet rs, int rowNum ) throws SQLException {
 		return new Day( RowMapperUtil.getInteger( rs, "ID" ), 
-				rs.getTimestamp( "DATE" ), 
+				RowMapperUtil.getLocalDate( rs, "DATE" ), 
 				RowMapperUtil.getDuration( rs, "EXPECTED_HOURS" ), 
 				rs.getString( "NOTES" ),
 				new Profile( RowMapperUtil.getInteger( rs, "ID_PROFILE" ) ) );

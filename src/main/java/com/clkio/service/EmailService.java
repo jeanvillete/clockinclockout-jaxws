@@ -1,6 +1,6 @@
 package com.clkio.service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.clkio.domain.Email;
@@ -43,9 +43,9 @@ public interface EmailService {
 	 */
 	Email getBy( String emailAddress, boolean isPrimary );
 	
-	List< Email > listPrimaryNotConfirmed( Date date );
+	List< Email > listPrimaryNotConfirmed( LocalDateTime date );
 	
-	void deleteNotPrimaryNotConfirmed( Date date );
+	void deleteNotPrimaryNotConfirmed( LocalDateTime date );
 	
 	void setAsPrimary( Email email );
 }

@@ -1,18 +1,25 @@
 package com.clkio.repository;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Repository;
 
+import com.clkio.common.LocalDateTimeUtil;
 import com.clkio.domain.User;
 
 @Repository
 public class LoginRepository extends CommonRepository {
 
-	public void insert( final User user, String code, Date since, String ip ) {
+	public void insert( final User user, String code, LocalDateTime since, String ip ) {
 		this.jdbcTemplate.update( " INSERT INTO LOGIN ( ID, ID_CLK_USER, CODE, SINCE, IP, VALID ) "
 				+ " VALUES ( NEXTVAL( ? ), ?, ?, ?, ?, ? ) ",
-				new Object[]{ "LOGIN_SEQ", user.getId(), code, since, ip, true });
+				new Object[]{
+						"LOGIN_SEQ", 
+						user.getId(), 
+						code, 
+						LocalDateTimeUtil.getTimestamp( since ), 
+						ip, 
+						true });
 	}
 
 	public boolean check( String code ) {

@@ -1,9 +1,10 @@
 package com.clkio.repository;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Repository;
 
+import com.clkio.common.LocalDateTimeUtil;
 import com.clkio.domain.RequestResetPassword;
 import com.clkio.domain.User;
 
@@ -19,10 +20,10 @@ public class RequestResetPasswordRepository extends CommonRepository {
 					requestResetPassword.getId(),
 					requestResetPassword.getUser().getId(),
 					requestResetPassword.getRequestCodeValue(),
-					requestResetPassword.getRequestDate(),
+					LocalDateTimeUtil.getTimestamp( requestResetPassword.getRequestDate() ),
 					requestResetPassword.getConfirmationCodeValue(),
-					requestResetPassword.getConfirmationDate(),
-					requestResetPassword.getChangeDate()
+					LocalDateTimeUtil.getTimestamp( requestResetPassword.getConfirmationDate() ),
+					LocalDateTimeUtil.getTimestamp( requestResetPassword.getChangeDate() )
 				});
 	}
 
@@ -33,36 +34,36 @@ public class RequestResetPasswordRepository extends CommonRepository {
 				new Object[]{ user.getId() });
 	}
 
-	public boolean confirm( final RequestResetPassword requestResetPassword, final Date validRange ) {
+	public boolean confirm( final RequestResetPassword requestResetPassword, final LocalDateTime validRange ) {
 		return this.jdbcTemplate.update( " UPDATE REQUEST_RESET_PASSWORD SET CONFIRMATION_CODE_VALUE = ?, CONFIRMATION_DATE = ? "
 				+ " WHERE CONFIRMATION_CODE_VALUE IS NULL AND CONFIRMATION_DATE IS NULL AND CHANGE_DATE IS NULL "
 				+ " AND REQUEST_DATE > ? "
 				+ " AND REQUEST_CODE_VALUE = ? AND ID_CLK_USER = ? ",
 				new Object[]{
 						requestResetPassword.getConfirmationCodeValue(),
-						requestResetPassword.getConfirmationDate(),
-						validRange,
+						LocalDateTimeUtil.getTimestamp( requestResetPassword.getConfirmationDate() ),
+						LocalDateTimeUtil.getTimestamp( validRange ),
 						requestResetPassword.getRequestCodeValue(),
 						requestResetPassword.getUser().getId() }) == 1;
 	}
 
-	public void cleanNotConfirmed( final Date date ) {
+	public void cleanNotConfirmed( final LocalDateTime date ) {
 		this.jdbcTemplate.update( " DELETE FROM REQUEST_RESET_PASSWORD "
 				+ " WHERE REQUEST_DATE < ? "
 				+ " AND ( CONFIRMATION_CODE_VALUE IS NULL OR CONFIRMATION_DATE IS NULL OR CHANGE_DATE IS NULL ) ",
-				new Object[]{ date });
+				new Object[]{ LocalDateTimeUtil.getTimestamp( date ) });
 	}
 
-	public boolean changePassword( final RequestResetPassword requestResetPassword, final Date validRange ) {
+	public boolean changePassword( final RequestResetPassword requestResetPassword, final LocalDateTime validRange ) {
 		return this.jdbcTemplate.update( " UPDATE REQUEST_RESET_PASSWORD SET CHANGE_DATE = ? "
 				+ " WHERE CONFIRMATION_CODE_VALUE = ?"
 				+ " AND CONFIRMATION_DATE > ? "
 				+ " AND CHANGE_DATE IS NULL "
 				+ " AND ID_CLK_USER = ? ",
 				new Object[]{
-						requestResetPassword.getChangeDate(),
+						LocalDateTimeUtil.getTimestamp( requestResetPassword.getChangeDate() ),
 						requestResetPassword.getConfirmationCodeValue(),
-						validRange,
+						LocalDateTimeUtil.getTimestamp( validRange ),
 						requestResetPassword.getUser().getId() }) == 1;
 	}
 	

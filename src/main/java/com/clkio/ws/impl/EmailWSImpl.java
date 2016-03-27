@@ -1,7 +1,7 @@
 package com.clkio.ws.impl;
 
 import java.math.BigInteger;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.jws.WebService;
@@ -54,7 +54,7 @@ public class EmailWSImpl extends WebServiceCommon implements EmailPort {
 			
 			Email email = new Email( request.getEmail().getEmailAddress() );
 			email.setUser( this.getCurrentUser() );
-			email.setRecordedTime( new Date() );
+			email.setRecordedTime( LocalDateTime.now() );
 			email.setPrimary( false );
 			NewEmailConfirmation emailConfirmation = new NewEmailConfirmation( email );
 			email.setConfirmationCode( emailConfirmation.getHash() );

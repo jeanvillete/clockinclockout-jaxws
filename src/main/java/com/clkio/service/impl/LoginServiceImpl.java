@@ -1,7 +1,7 @@
 package com.clkio.service.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
@@ -24,7 +24,7 @@ import com.clkio.service.UserService;
 public class LoginServiceImpl implements LoginService, InitializingBean {
 
 	private static final Logger LOG = Logger.getLogger( LoginServiceImpl.class );
-	private static final SimpleDateFormat SDF = new SimpleDateFormat( "yyyyMMddHHmmss" );
+	private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern( "yyyyMMddHHmmss" );
 	
 	@Autowired
 	private LoginRepository repository;
@@ -59,10 +59,10 @@ public class LoginServiceImpl implements LoginService, InitializingBean {
 			
 			Assert.state( pwdCrypter.matches( user.getPassword(), syncUser.getPassword() ) );
 			
-			Date since = new Date();
-			String code = pwdCrypter.encode( SDF.format( since ) + user.getEmail().getAddress() );
+			LocalDateTime now = LocalDateTime.now();
+			String code = pwdCrypter.encode( DTF.format( now ) + user.getEmail().getAddress() );
 			
-			this.repository.insert( syncUser, code, since, ip );
+			this.repository.insert( syncUser, code, now, ip );
 			
 			return code;
 		} catch ( IllegalStateException e ) {
