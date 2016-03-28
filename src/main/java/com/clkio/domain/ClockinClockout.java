@@ -14,6 +14,10 @@ public class ClockinClockout extends CommonDomain {
 		super( id );
 	}
 
+	public ClockinClockout( LocalDateTime clockin, LocalDateTime clockout ) {
+		this( null, null, clockin, clockout );
+	}
+	
 	public ClockinClockout( Day day, LocalDateTime clockin, LocalDateTime clockout ) {
 		this( null, day, clockin, clockout );
 	}
@@ -26,17 +30,14 @@ public class ClockinClockout extends CommonDomain {
 	}
 
 	public void setDay( Day day ) {
-		Assert.notNull( day, "Argument day cannot be null." );
 		this.day = day;
 	}
 
 	public void setClockin( LocalDateTime clockin ) {
-		Assert.notNull( clockin, "Argument clockin cannot be null." );
 		this.clockin = clockin;
 	}
 
 	public void setClockout( LocalDateTime clockout ) {
-		Assert.notNull( clockout, "Argument clockout cannot be null." );
 		this.clockout = clockout;
 	}
 
@@ -46,12 +47,10 @@ public class ClockinClockout extends CommonDomain {
 	}
 
 	public LocalDateTime getClockin() {
-		Assert.state( clockin != null, "The property 'clockin' has not been initialized yet." );
 		return clockin;
 	}
 
 	public LocalDateTime getClockout() {
-		Assert.state( clockout != null, "The property 'clockout' has not been initialized yet." );
 		return clockout;
 	}
 

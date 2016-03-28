@@ -180,7 +180,7 @@ CREATE TABLE clkio_schm.clockinclockout (
   clockin TIMESTAMP NULL,
   clockout TIMESTAMP NULL,
   CONSTRAINT clockinclockout_at_least_one_not_null CHECK ( clockin IS NOT NULL OR clockout IS NOT NULL ),
-  CONSTRAINT clockinclockout_clockout_not_greater_than_clockin CHECK ( ( clockin IS NULL OR clockout IS NULL ) OR ( clockout > clockin ) )
+  CONSTRAINT clockinclockout_clockout_not_greater_than_clockin CHECK ( ( clockin IS NULL OR clockout IS NULL ) OR ( clockout >= clockin ) )
 );
 ALTER SEQUENCE clkio_schm.clockinclockout_seq OWNED BY clkio_schm.clockinclockout.id;
 

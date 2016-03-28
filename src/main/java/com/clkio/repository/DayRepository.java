@@ -1,10 +1,12 @@
 package com.clkio.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
 import com.clkio.common.DurationUtil;
+import com.clkio.common.LocalDateTimeUtil;
 import com.clkio.domain.Day;
 import com.clkio.domain.Profile;
 import com.clkio.rowmapper.DayRowMaper;
@@ -12,25 +14,52 @@ import com.clkio.rowmapper.DayRowMaper;
 @Repository
 public class DayRepository extends CommonRepository {
 
-	public void insert( final Day day ) {
+	public boolean insert( final Day day ) {
 		day.setId( this.nextVal( "DAY_SEQ" ) );
-		this.jdbcTemplate.update( " INSERT INTO DAY ( ID, DATE, EXPECTED_HOURS, NOTES, ID_PROFILE )"
+		return this.jdbcTemplate.update( " INSERT INTO DAY ( ID, DATE, EXPECTED_HOURS, NOTES, ID_PROFILE )"
 				+ " VALUES ( ?, ?, ?, ?, ? ) ",
 				new Object[]{ day.getId(),
-						day.getDate(),
+						LocalDateTimeUtil.getTimestamp( day.getDate() ),
 						DurationUtil.durationToPG( day.getExpectedHours() ),
 						day.getNotes(),
-						day.getProfile().getId() });
+						day.getProfile().getId() }) == 1;
 	}
 
-	public void delete( final Day day ) {
-		this.jdbcTemplate.update( " DELETE FROM DAY WHERE ID = ? ", new Object[]{ day.getId() } );
+	public boolean delete( final Day day ) {
+		return this.jdbcTemplate.update( " DELETE FROM DAY WHERE ID = ? ", new Object[]{ day.getId() } ) == 1;
 	}
 
 	public List< Day > listBy( final Profile profile ) {
 		return this.jdbcTemplate.query( " SELECT ID, DATE, EXPECTED_HOURS, NOTES, ID_PROFILE "
 				+ " FROM DAY WHERE ID_PROFILE = ? ",
 				new Object[]{ profile.getId() }, new DayRowMaper() );
+	}
+
+	public Day get( final Profile profile, final LocalDate localDateDay ) {
+		return this.jdbcTemplate.queryForObject( " SELECT ID, DATE, EXPECTED_HOURS, NOTES, ID_PROFILE "
+				+ " FROM DAY WHERE DATE = ? AND ID_PROFILE = ? ",
+				new Object[]{
+					LocalDateTimeUtil.getTimestamp( localDateDay ),
+					profile.getId()
+				},
+				new DayRowMaper() );
+	}
+
+	public Day get( Day day ) {
+		return this.jdbcTemplate.queryForObject( " SELECT ID, DATE, EXPECTED_HOURS, NOTES, ID_PROFILE "
+				+ " FROM DAY WHERE ID = ? ",
+				new Object[]{ day.getId() },
+				new DayRowMaper() );
+	}
+
+	public boolean update( Day day ) {
+		return this.jdbcTemplate.update( " UPDATE DAY SET EXPECTED_HOURS = ?, NOTES = ? "
+				+ " WHERE ID = ? AND ID_PROFILE = ? ",
+				new Object[]{
+						DurationUtil.durationToPG( day.getExpectedHours() ),
+						day.getNotes(),
+						day.getId(),
+						day.getProfile().getId() }) == 1;
 	}
 
 }

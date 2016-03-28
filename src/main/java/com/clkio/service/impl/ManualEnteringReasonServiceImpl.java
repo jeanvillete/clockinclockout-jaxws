@@ -51,7 +51,7 @@ public class ManualEnteringReasonServiceImpl implements ManualEnteringReasonServ
 		List< ManualEntering > listManualEntering = this.manualEnteringService.listBy( manualEnteringReason );
 		if ( !CollectionUtils.isEmpty( listManualEntering ) )
 			for ( ManualEntering manualEntering : listManualEntering )
-				this.manualEnteringService.delete( manualEntering );
+				this.manualEnteringService.delete( manualEnteringReason.getProfile(), manualEntering );
 		
 		Assert.state( this.repository.delete( manualEnteringReason ),
 				"Some problem happened while performing delete operation for 'reason' record." );

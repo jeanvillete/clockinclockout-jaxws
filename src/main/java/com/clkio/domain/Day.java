@@ -4,7 +4,6 @@ import java.time.Duration;
 import java.time.LocalDate;
 
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 public class Day extends CommonDomain {
 
@@ -12,11 +11,20 @@ public class Day extends CommonDomain {
 	private Duration expectedHours;
 	private String notes;
 	private Profile profile;
+	
+	public Day() {
+		super( null );
+	}
 
 	public Day( Integer id ) {
 		super( id );
 	}
 
+	public Day( LocalDate date ) {
+		super( null );
+		this.setDate( date );
+	}
+	
 	public Day( LocalDate date, Duration expectedHours, String notes, Profile profile ) {
 		this( null, date, expectedHours, notes, profile );
 	}
@@ -40,7 +48,6 @@ public class Day extends CommonDomain {
 	}
 
 	public void setNotes( String notes ) {
-		Assert.hasLength( notes, "Argument notes cannot be null nor empty." );
 		this.notes = notes;
 	}
 
@@ -60,7 +67,6 @@ public class Day extends CommonDomain {
 	}
 
 	public String getNotes() {
-		Assert.state( StringUtils.hasText( notes ), "The property 'notes' has not been properly initialized." );
 		return notes;
 	}
 
