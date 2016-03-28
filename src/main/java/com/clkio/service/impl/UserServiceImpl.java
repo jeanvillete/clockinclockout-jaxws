@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.MANDATORY )
-	public boolean changePassword( User syncUser ) {
+	public boolean changePassword( final User syncUser ) {
 		Assert.notNull( syncUser );
 		return this.repository.changePassword( syncUser );
 	}
@@ -118,7 +118,7 @@ public class UserServiceImpl implements UserService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public User getBy( String loginCode ) {
+	public User getBy( final String loginCode ) {
 		Assert.hasText( loginCode, "No value was provide for 'loginCode' argument." );
 		try {
 			return this.repository.getBy( loginCode );

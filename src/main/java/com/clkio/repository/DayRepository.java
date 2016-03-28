@@ -45,14 +45,14 @@ public class DayRepository extends CommonRepository {
 				new DayRowMaper() );
 	}
 
-	public Day get( Day day ) {
+	public Day get( final Day day ) {
 		return this.jdbcTemplate.queryForObject( " SELECT ID, DATE, EXPECTED_HOURS, NOTES, ID_PROFILE "
 				+ " FROM DAY WHERE ID = ? ",
 				new Object[]{ day.getId() },
 				new DayRowMaper() );
 	}
 
-	public boolean update( Day day ) {
+	public boolean update( final Day day ) {
 		return this.jdbcTemplate.update( " UPDATE DAY SET EXPECTED_HOURS = ?, NOTES = ? "
 				+ " WHERE ID = ? AND ID_PROFILE = ? ",
 				new Object[]{

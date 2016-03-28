@@ -10,7 +10,7 @@ import com.clkio.domain.User;
 @Repository
 public class LoginRepository extends CommonRepository {
 
-	public void insert( final User user, String code, LocalDateTime since, String ip ) {
+	public void insert( final User user, final String code, final LocalDateTime since, final String ip ) {
 		this.jdbcTemplate.update( " INSERT INTO LOGIN ( ID, ID_CLK_USER, CODE, SINCE, IP, VALID ) "
 				+ " VALUES ( NEXTVAL( ? ), ?, ?, ?, ?, ? ) ",
 				new Object[]{
@@ -22,13 +22,13 @@ public class LoginRepository extends CommonRepository {
 						true });
 	}
 
-	public boolean check( String code ) {
+	public boolean check( final String code ) {
 		return this.jdbcTemplate.queryForObject( " SELECT COUNT( ID ) FROM LOGIN WHERE CODE = ? AND VALID = ? ", 
 				new Object[]{ code, true },
 				Integer.class ) == 1;
 	}
 
-	public void setAsInvalid( User user ) {
+	public void setAsInvalid( final User user ) {
 		this.jdbcTemplate.update( " UPDATE LOGIN SET VALID = ? WHERE ID_CLK_USER = ? ",
 				new Object[]{
 					false,
@@ -36,7 +36,7 @@ public class LoginRepository extends CommonRepository {
 				});
 	}
 
-	public boolean logout( String code ) {
+	public boolean logout( final String code ) {
 		return this.jdbcTemplate.update( " UPDATE LOGIN SET VALID = ? WHERE CODE = ? ",
 				new Object[]{
 					false,

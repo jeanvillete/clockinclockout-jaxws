@@ -47,7 +47,7 @@ public class ManualEnteringRepository extends CommonRepository {
 				new Object[]{ day.getId() }, new ManualEnteringRowMapper() );
 	}
 
-	public ManualEntering get( Profile profile, ManualEntering manualEntering ) {
+	public ManualEntering get( final Profile profile, final ManualEntering manualEntering ) {
 		return this.jdbcTemplate.queryForObject( " SELECT ME.ID, ME.ID_DAY, ME.ID_MANUAL_ENTERING_REASON, ME.TIME_INTERVAL "
 				+ " FROM MANUAL_ENTERING ME "
 				+ " JOIN DAY D ON ME.ID_DAY = D.ID "
@@ -59,7 +59,7 @@ public class ManualEnteringRepository extends CommonRepository {
 				new ManualEnteringRowMapper() );
 	}
 
-	public boolean update( ManualEntering manualEntering ) {
+	public boolean update( final ManualEntering manualEntering ) {
 		return this.jdbcTemplate.update( " 	UPDATE MANUAL_ENTERING SET ID_MANUAL_ENTERING_REASON = ?, TIME_INTERVAL = ? "
 				+ " WHERE ID = ? AND ID_DAY = ? ",
 				new Object[]{ 

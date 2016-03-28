@@ -29,7 +29,7 @@ public class ClockinClockoutServiceImpl implements ClockinClockoutService, Initi
 	
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void insert( ClockinClockout clockinClockout ) {
+	public void insert( final ClockinClockout clockinClockout ) {
 		Assert.notNull( clockinClockout, "Argument 'clockinClockout' is mandatory." );
 		Assert.state( clockinClockout.getDay() != null && clockinClockout.getDay().getId() != null,
 				"Nested property 'day' and its deeper nested 'id' property are mandatory." );
@@ -39,7 +39,7 @@ public class ClockinClockoutServiceImpl implements ClockinClockoutService, Initi
 	
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void delete( Profile profile, ClockinClockout clockinClockout ) {
+	public void delete( final Profile profile, final ClockinClockout clockinClockout ) {
 		Assert.state( clockinClockout != null && clockinClockout.getId() != null,
 				"Argument 'clockinClockout' and its 'id' property are mandatory." );
 		Assert.state( this.repository.delete( profile, clockinClockout ), 
@@ -48,14 +48,14 @@ public class ClockinClockoutServiceImpl implements ClockinClockoutService, Initi
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public List< ClockinClockout > listBy( Day day ) {
+	public List< ClockinClockout > listBy( final Day day ) {
 		Assert.notNull( day );
 		return this.repository.listBy( day );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public ClockinClockout getNewest( Day day ) {
+	public ClockinClockout getNewest( final Day day ) {
 		Assert.state( day != null && day.getId() != null, 
 				"Argument 'day' and its nested 'id' property are mandatory." );
 		try {
@@ -67,7 +67,7 @@ public class ClockinClockoutServiceImpl implements ClockinClockoutService, Initi
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void update( ClockinClockout clockinClockout ) {
+	public void update( final ClockinClockout clockinClockout ) {
 		Assert.state( clockinClockout != null && clockinClockout.getId() != null,
 				"Argument 'clockinClockout' and its 'id' property are mandatory." );
 		Assert.state( this.repository.update( clockinClockout ),
@@ -75,7 +75,8 @@ public class ClockinClockoutServiceImpl implements ClockinClockoutService, Initi
 	}
 
 	@Override
-	public ClockinClockout get( Profile profile, ClockinClockout clockinClockout ) {
+	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
+	public ClockinClockout get( final Profile profile, final ClockinClockout clockinClockout ) {
 		Assert.state( clockinClockout != null && clockinClockout.getId() != null,
 				"Argument 'clockinClockout' and its property 'id' are mandatory." );
 		try {

@@ -49,7 +49,7 @@ public class RequestResetPasswordServiceImpl implements RequestResetPasswordServ
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void processRequest( RequestResetPassword requestResetPassword ) {
+	public void processRequest( final RequestResetPassword requestResetPassword ) {
 		Assert.notNull( requestResetPassword );
 		
 		Email syncEmail = this.emailService.getBy( requestResetPassword.getUser().getEmail().getAddress(), true ); // email's database synchronized reference
@@ -70,7 +70,7 @@ public class RequestResetPasswordServiceImpl implements RequestResetPasswordServ
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void deleteNotConfirmed( User user ) {
+	public void deleteNotConfirmed( final User user ) {
 		Assert.notNull( user );
 		this.repository.deleteNotConfirmed( user );
 	}
@@ -83,7 +83,7 @@ public class RequestResetPasswordServiceImpl implements RequestResetPasswordServ
 	
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public String confirm( RequestResetPassword requestResetPassword ) {
+	public String confirm( final RequestResetPassword requestResetPassword ) {
 		Assert.notNull( requestResetPassword );
 		Assert.state( StringUtils.hasText( requestResetPassword.getRequestCodeValue() ), "Invalid parameters. No 'requestCodeValue' was provided." );
 		
@@ -103,7 +103,7 @@ public class RequestResetPasswordServiceImpl implements RequestResetPasswordServ
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public boolean changePassword( RequestResetPassword requestResetPassword ) {
+	public boolean changePassword( final RequestResetPassword requestResetPassword ) {
 		Assert.notNull( requestResetPassword );
 		Assert.state( StringUtils.hasText( requestResetPassword.getConfirmationCodeValue() ) );
 		Assert.state( StringUtils.hasText( requestResetPassword.getNewPassword() ) );

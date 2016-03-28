@@ -33,20 +33,20 @@ public class ClockinClockoutRepository extends CommonRepository {
 						clockinClockout.getId() } ) == 1;
 	}
 
-	public List< ClockinClockout > listBy( Day day ) {
+	public List< ClockinClockout > listBy( final Day day ) {
 		return this.jdbcTemplate.query( " SELECT ID, ID_DAY, CLOCKIN, CLOCKOUT "
 				+ " FROM CLOCKINCLOCKOUT WHERE ID_DAY = ? ",
 				new Object[]{ day.getId() }, new ClockinClockoutRowMapper() );
 	}
 
-	public ClockinClockout getNewest( Day day ) {
+	public ClockinClockout getNewest( final Day day ) {
 		return this.jdbcTemplate.queryForObject( " SELECT CLKIO.ID, CLKIO.ID_DAY, CLKIO.CLOCKIN, CLKIO.CLOCKOUT "
 				+ " FROM CLOCKINCLOCKOUT CLKIO "
 				+ " JOIN ( SELECT MAX( ID ) ID FROM CLOCKINCLOCKOUT WHERE ID_DAY = ? ) CLKIOMAX ON CLKIO.ID = CLKIOMAX.ID ",
 				new Object[]{ day.getId() }, new ClockinClockoutRowMapper() );
 	}
 
-	public boolean update( ClockinClockout clockinClockout ) {
+	public boolean update( final ClockinClockout clockinClockout ) {
 		return this.jdbcTemplate.update( " UPDATE CLOCKINCLOCKOUT SET CLOCKIN = ?, CLOCKOUT = ?"
 				+ " WHERE ID = ? AND ID_DAY = ? ",
 				new Object[]{
@@ -56,7 +56,7 @@ public class ClockinClockoutRepository extends CommonRepository {
 						clockinClockout.getDay().getId() }) == 1;
 	}
 
-	public ClockinClockout get( Profile profile, ClockinClockout clockinClockout ) {
+	public ClockinClockout get( final Profile profile, final ClockinClockout clockinClockout ) {
 		return this.jdbcTemplate.queryForObject( " SELECT CLKIO.ID, CLKIO.ID_DAY, CLKIO.CLOCKIN, CLKIO.CLOCKOUT "
 				+ " FROM CLOCKINCLOCKOUT CLKIO "
 				+ " JOIN DAY D ON CLKIO.ID_DAY = D.ID "

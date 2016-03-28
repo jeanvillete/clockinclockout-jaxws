@@ -104,7 +104,7 @@ public class DayServiceImpl implements DayService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = false )
-	public Day get( Day day ) {
+	public Day get( final Day day ) {
 		Assert.state( day != null && day.getId() != null, 
 				"Argument 'day' and its 'id' property are mandatory." );
 		try {

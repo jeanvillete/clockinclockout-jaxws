@@ -68,25 +68,25 @@ public class EmailRepository extends CommonRepository {
 				new EmailRowMapper() );
 	}
 
-	public List< Email > list( User user ) {
+	public List< Email > list( final User user ) {
 		return this.jdbcTemplate.query(  " SELECT ID, ADDRESS, RECORDED_TIME, CONFIRMATION_CODE, CONFIRMATION_DATE, IS_PRIMARY, ID_CLK_USER FROM EMAIL "
 				+ " WHERE ID_CLK_USER = ? ",
 				new Object[]{ user.getId() },
 				new EmailRowMapper() );
 	}
 
-	public Email get( Email email ) {
+	public Email get( final Email email ) {
 		return this.jdbcTemplate.queryForObject( " SELECT ID, ADDRESS, RECORDED_TIME, CONFIRMATION_CODE, CONFIRMATION_DATE, IS_PRIMARY, ID_CLK_USER FROM EMAIL "
 				+ " WHERE ID = ? AND ID_CLK_USER = ? ",
 				new Object[]{ email.getId(), email.getUser().getId() },
 				new EmailRowMapper() );
 	}
 	
-	public boolean unsetPrimary( User user ) {
+	public boolean unsetPrimary( final User user ) {
 		return this.jdbcTemplate.update( " UPDATE EMAIL SET IS_PRIMARY = ? WHERE ID_CLK_USER = ? ", new Object[]{ false, user.getId() } ) > 0;
 	}
 
-	public boolean setAsPrimary( Email email ) {
+	public boolean setAsPrimary( final Email email ) {
 		return this.jdbcTemplate.update( " UPDATE EMAIL SET IS_PRIMARY = ? WHERE ID = ? AND ID_CLK_USER = ? ", new Object[]{ true, email.getId(), email.getUser().getId() } ) == 1;
 	}
 

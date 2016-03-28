@@ -43,7 +43,7 @@ public class LoginServiceImpl implements LoginService, InitializingBean {
 	
 	@Override
 	@Transactional( propagation = Propagation.REQUIRES_NEW )
-	public String login( User user, String ip ) {
+	public String login( final User user, final String ip ) {
 		Assert.notNull( user );
 		Assert.state( StringUtils.hasText( user.getPassword() ), "No proper password was provided." );
 		Assert.state( StringUtils.hasText( ip ), "Argument 'ip' is mandatory." );
@@ -73,14 +73,14 @@ public class LoginServiceImpl implements LoginService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public boolean check( String code ) {
+	public boolean check( final String code ) {
 		Assert.hasText( code, "The argument 'code' is mandatory." );
 		return this.repository.check( code );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void setAsInvalid( User user ) {
+	public void setAsInvalid( final User user ) {
 		Assert.state( user != null && user.getId() != null,
 				"The argument 'user' and its nested 'id' property are mandatory." );
 		this.repository.setAsInvalid( user );
@@ -88,7 +88,7 @@ public class LoginServiceImpl implements LoginService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void logout( String code ) {
+	public void logout( final String code ) {
 		Assert.hasText( code, "The argument 'code' is mandatory." );
 		Assert.state( this.repository.logout( code ), "Logout failed." );
 	}

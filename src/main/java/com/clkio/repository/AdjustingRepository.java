@@ -41,7 +41,7 @@ public class AdjustingRepository extends CommonRepository {
 				new AdjustingRowMapper() );
 	}
 
-	public boolean update( Adjusting adjusting ) {
+	public boolean update( final Adjusting adjusting ) {
 		return this.jdbcTemplate.update( " UPDATE ADJUSTING SET DESCRIPTION = ?, TIME_INTERVAL = ? "
 				+ " WHERE ID = ? AND ID_PROFILE = ? ",
 				new Object[]{ 
@@ -51,7 +51,7 @@ public class AdjustingRepository extends CommonRepository {
 						adjusting.getProfile().getId() }) == 1;
 	}
 
-	public boolean exists( String description, Profile profile ) {
+	public boolean exists( final String description, final Profile profile ) {
 		return this.jdbcTemplate.queryForObject( " SELECT COUNT( ID ) FROM ADJUSTING "
 				+ " WHERE DESCRIPTION = ? AND ID_PROFILE = ? ",
 				new Object[]{ 
@@ -60,7 +60,7 @@ public class AdjustingRepository extends CommonRepository {
 				}, Integer.class) > 0 ;
 	}
 
-	public boolean exists( String description, Profile profile, Integer id ) {
+	public boolean exists( final String description, final Profile profile, final Integer id ) {
 		return this.jdbcTemplate.queryForObject( " SELECT COUNT( ID ) FROM ADJUSTING "
 				+ " WHERE DESCRIPTION = ? AND ID_PROFILE = ? AND ID <> ? ",
 				new Object[]{ 

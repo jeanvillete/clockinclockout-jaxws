@@ -34,7 +34,7 @@ public class UserRepository extends CommonRepository {
 				new Object[]{ user.getPassword(), user.getId() }) == 1;
 	}
 
-	public User getBy( String loginCode ) {
+	public User getBy( final String loginCode ) {
 		return this.jdbcTemplate.queryForObject( " SELECT USR.ID, USR.LOCALE, USR.PASSWORD FROM CLK_USER USR "+
 					" LEFT JOIN LOGIN LGN ON USR.ID = LGN.ID_CLK_USER " +
 					" WHERE VALID = ? AND LGN.CODE = ? ",

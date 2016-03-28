@@ -35,7 +35,7 @@ public class ManualEnteringReasonRepository extends CommonRepository {
 				new Object[]{ profile.getUser().getId(), profile.getId() }, new ManualEnteringReasonRowMapper() );
 	}
 
-	public boolean exists( String reason, Profile profile ) {
+	public boolean exists( final String reason, final Profile profile ) {
 		return this.jdbcTemplate.queryForObject( " SELECT COUNT( ID ) FROM MANUAL_ENTERING_REASON "
 				+ " WHERE REASON = ? AND ID_PROFILE = ? ",
 				new Object[]{
@@ -44,7 +44,7 @@ public class ManualEnteringReasonRepository extends CommonRepository {
 				Integer.class ) > 0;
 	}
 
-	public boolean exists( String reason, Profile profile, Integer id ) {
+	public boolean exists( final String reason, final Profile profile, final Integer id ) {
 		return this.jdbcTemplate.queryForObject( " SELECT COUNT( ID ) FROM MANUAL_ENTERING_REASON "
 				+ " WHERE REASON = ? AND ID_PROFILE = ? AND ID <> ? ",
 				new Object[]{
@@ -54,7 +54,7 @@ public class ManualEnteringReasonRepository extends CommonRepository {
 				Integer.class ) > 0;
 	}
 
-	public boolean update( ManualEnteringReason manualEnteringReason ) {
+	public boolean update( final ManualEnteringReason manualEnteringReason ) {
 		return this.jdbcTemplate.update( " UPDATE MANUAL_ENTERING_REASON SET REASON = ? "
 				+ " WHERE ID = ? AND ID_PROFILE = ? ",
 				new Object[]{ 

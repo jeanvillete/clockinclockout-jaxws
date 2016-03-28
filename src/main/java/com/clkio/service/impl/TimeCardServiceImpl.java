@@ -42,7 +42,7 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 		Assert.notNull( manualEnteringService, "Property 'manualEnteringService' has not been properly initialized." );
 	}
 
-	private Day insert( Profile profile, LocalDate localDate ) {
+	private Day insert( final Profile profile, final LocalDate localDate ) {
 		Day day = new Day();
 		day.setDate( localDate );
 		day.setProfile( profile );
@@ -82,7 +82,7 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 	
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void insert( Profile profile, ClockinClockout clockinClockout ) {
+	public void insert( final Profile profile, final ClockinClockout clockinClockout ) {
 		Assert.state( profile != null && profile.getId() != null,
 				"Argument 'profile' and its 'id' property are mandatory." );
 		Assert.notNull( clockinClockout, "Argument 'clock' is mandatory." );
@@ -102,7 +102,7 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void punchClock( Profile profile, String clock ) {
+	public void punchClock( final Profile profile, final String clock ) {
 		Assert.state( profile != null && profile.getId() != null,
 				"Argument 'profile' and its 'id' property are mandatory." );
 		
@@ -134,7 +134,7 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void update( Profile profile, ClockinClockout clockinClockout ) {
+	public void update( final Profile profile, final ClockinClockout clockinClockout ) {
 		Assert.state( profile != null && profile.getId() != null,
 				"Argument 'profile' and its 'id' property are mandatory." );
 		Assert.state( clockinClockout != null && clockinClockout.getId() != null,
@@ -160,7 +160,7 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void delete( Profile profile, ClockinClockout clockinClockout ) {
+	public void delete( final Profile profile, final ClockinClockout clockinClockout ) {
 		Assert.state( profile != null && profile.getId() != null,
 				"Argument 'profile' and its 'id' property are mandatory." );
 		Assert.state( clockinClockout != null && clockinClockout.getId() != null,
@@ -170,7 +170,7 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void insert( Profile profile, ManualEntering manualEntering ) {
+	public void insert( final Profile profile, final ManualEntering manualEntering ) {
 		Assert.state( profile != null && profile.getId() != null,
 				"Argument 'profile' and its 'id' property are mandatory." );
 		Assert.notNull( manualEntering, "Argument 'manualEntering' is mandatory." );
@@ -190,7 +190,7 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void update( Profile profile, ManualEntering manualEntering ) {
+	public void update( final Profile profile, final ManualEntering manualEntering ) {
 		Assert.state( profile != null && profile.getId() != null,
 				"Argument 'profile' and its 'id' property are mandatory." );
 		Assert.notNull( manualEntering, "Argument 'manualEntering' is mandatory." );
@@ -217,7 +217,7 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void delete( Profile profile, ManualEntering manualEntering ) {
+	public void delete( final Profile profile, final ManualEntering manualEntering ) {
 		Assert.state( profile != null && profile.getId() != null,
 				"Argument 'profile' and its 'id' property are mandatory." );
 		Assert.state( manualEntering != null && manualEntering.getId() != null,
@@ -227,7 +227,7 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void setNotes( Profile profile, LocalDate date, String text ) {
+	public void setNotes( final Profile profile, final LocalDate date, final String text ) {
 		Assert.state( profile != null && profile.getId() != null,
 				"Argument 'profile' and its 'id' property are mandatory." );
 		Assert.notNull( date, "Argument 'date' is mandatory." );
@@ -243,7 +243,7 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void setExpectedHours( Profile profile, LocalDate date, Duration expectedHours ) {
+	public void setExpectedHours( final Profile profile, final LocalDate date, final Duration expectedHours ) {
 		Assert.state( profile != null && profile.getId() != null,
 				"Argument 'profile' and its 'id' property are mandatory." );
 		Assert.notNull( date, "Argument 'date' is mandatory." );

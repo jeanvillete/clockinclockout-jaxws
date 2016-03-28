@@ -65,7 +65,7 @@ public class ProfileRepository extends CommonRepository {
 		return this.jdbcTemplate.update( " DELETE FROM PROFILE WHERE ID = ? AND ID_CLK_USER = ? ", new Object[]{ profile.getId(), profile.getUser().getId() } ) == 1;
 	}
 
-	public Profile get( Profile profile ) {
+	public Profile get( final Profile profile ) {
 		return this.jdbcTemplate.queryForObject( 
 				" SELECT ID, "
 				+ " ID_CLK_USER, "
@@ -85,21 +85,21 @@ public class ProfileRepository extends CommonRepository {
 				new ProfileRowMapper() );
 	}
 
-	public boolean exists( String description, User user ) {
+	public boolean exists( final String description, final User user ) {
 		return this.jdbcTemplate.queryForObject( " SELECT COUNT( ID ) FROM PROFILE "
 				+ " WHERE DESCRIPTION = ? AND ID_CLK_USER = ? ",
 				new Object[]{ description, user.getId() },
 				Integer.class ) > 0;
 	}
 
-	public boolean exists( String description, User user, Integer id ) {
+	public boolean exists( final String description, final User user, final Integer id ) {
 		return this.jdbcTemplate.queryForObject( " SELECT COUNT( ID ) FROM PROFILE "
 				+ " WHERE ID <> ? AND DESCRIPTION = ? AND ID_CLK_USER = ? ",
 				new Object[]{ id, description, user.getId() },
 				Integer.class ) > 0;
 	}
 
-	public boolean update( Profile profile ) {
+	public boolean update( final Profile profile ) {
 		return this.jdbcTemplate.update( " UPDATE PROFILE SET "
 				+ " DESCRIPTION = ?, "
 				+ " HOURS_FORMAT = ?, "

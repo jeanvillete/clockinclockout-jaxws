@@ -85,7 +85,7 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true)
-	public Profile get( Profile profile ) {
+	public Profile get( final Profile profile ) {
 		Assert.notNull( profile, "Argument 'profile' is mandatory." );
 		try {
 			return this.repository.get( profile );
@@ -96,7 +96,7 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean exists( String description, User user ) {
+	public boolean exists( final String description, final User user ) {
 		Assert.hasText( description, "Argument 'description' is mandatory." );
 		Assert.notNull( user, "Argument 'user' is mandatory." );
 		return this.repository.exists( description, user );
@@ -104,7 +104,7 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void update( Profile profile ) {
+	public void update( final Profile profile ) {
 		Assert.notNull( profile, "Argument 'profile' is mandatory." );
 		Assert.state( !this.exists( profile.getDescription(), profile.getUser(), profile.getId() ), "It does already exist a record with the given description associated with the provided user." );
 		Assert.state( this.repository.update( profile ), "Some problem happened while performing update on 'profile' record." );
@@ -112,7 +112,7 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean exists( String description, User user, Integer id ) {
+	public boolean exists( final String description, final User user, final Integer id ) {
 		Assert.hasText( description, "Argument 'description' is mandatory." );
 		Assert.notNull( user, "Argument 'user' is mandatory." );
 		Assert.notNull( id, "Argument 'id' is mandatory." );

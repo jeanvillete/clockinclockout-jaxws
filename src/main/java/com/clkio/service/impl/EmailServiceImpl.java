@@ -136,14 +136,14 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public boolean exists( Email email ) {
+	public boolean exists( final Email email ) {
 		Assert.notNull( email );
 		return this.repository.exists( email );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void confirm( Email email ) {
+	public void confirm( final Email email ) {
 		Assert.notNull( email );
 		Assert.hasText( email.getConfirmationCode() );
 		
@@ -152,7 +152,7 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void delete( Email email ) {
+	public void delete( final Email email ) {
 		Assert.notNull( email );
 		Assert.state( email.getUser() != null && email.getUser().getId() != null );
 		
@@ -167,7 +167,7 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public Email getBy( String emailAddress, boolean isPrimary ) {
+	public Email getBy( final String emailAddress, final boolean isPrimary ) {
 		Assert.hasText( emailAddress );
 		Assert.state( emailAddress.matches( "^([a-zA-Z0-9_.+-])+\\@(([a-zA-Z0-9-])+\\.)+([a-zA-Z0-9]{2,4})+$" ), "The provided email address is not valid." );
 		try {
@@ -179,14 +179,14 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public List< Email > listPrimaryNotConfirmed( LocalDateTime date ) {
+	public List< Email > listPrimaryNotConfirmed( final LocalDateTime date ) {
 		Assert.notNull( date, "Parameter 'date' cannot be null." );
 		return this.repository.listPrimaryNotConfirmed( date );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void deleteNotPrimaryNotConfirmed( LocalDateTime date ) {
+	public void deleteNotPrimaryNotConfirmed( final LocalDateTime date ) {
 		Assert.notNull( date, "Parameter 'date' cannot be null." );
 		this.repository.deleteNotPrimaryNotConfirmed( date );
 	}
@@ -200,7 +200,7 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public Email get( Email email ) {
+	public Email get( final Email email ) {
 		Assert.notNull( email );
 		Assert.state( email.getUser() != null && email.getUser().getId() != null );
 		try {
@@ -212,7 +212,7 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void setAsPrimary( Email email ) {
+	public void setAsPrimary( final Email email ) {
 		Assert.notNull( email );
 		
 		Email syncEmail = this.get( email );

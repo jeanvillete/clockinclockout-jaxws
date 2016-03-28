@@ -37,7 +37,7 @@ public class ManualEnteringServiceImpl implements ManualEnteringService, Initial
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void insert( ManualEntering manualEntering ) {
+	public void insert( final ManualEntering manualEntering ) {
 		Assert.notNull( manualEntering, "Argument 'manualEntering' is mandatory." );
 		Assert.state( manualEntering.getDay() != null && manualEntering.getDay().getId() != null,
 				"Nested 'day' and its 'date' properties are mandatory." );
@@ -50,7 +50,7 @@ public class ManualEnteringServiceImpl implements ManualEnteringService, Initial
 	
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void delete( Profile profile, ManualEntering manualEntering ) {
+	public void delete( final Profile profile, final ManualEntering manualEntering ) {
 		Assert.state( profile != null && profile.getId() != null,
 				"Argument 'profile' and its 'id' property are mandatory." );
 		Assert.state( manualEntering != null && manualEntering.getId() != null,
@@ -61,14 +61,14 @@ public class ManualEnteringServiceImpl implements ManualEnteringService, Initial
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public List< ManualEntering > listBy( Day day ) {
+	public List< ManualEntering > listBy( final Day day ) {
 		Assert.notNull( day );
 		return this.repository.listBy( day );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public ManualEntering get( Profile profile, ManualEntering manualEntering ) {
+	public ManualEntering get( final Profile profile, final ManualEntering manualEntering ) {
 		Assert.state( profile != null && profile.getId() != null,
 				"Argument 'profile' and its 'id' property are mandatory." );
 		Assert.state( manualEntering != null && manualEntering.getId() != null,
@@ -82,7 +82,7 @@ public class ManualEnteringServiceImpl implements ManualEnteringService, Initial
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void update( ManualEntering manualEntering ) {
+	public void update( final ManualEntering manualEntering ) {
 		Assert.notNull( manualEntering, "Argument 'manualEntering' is mandatory." );
 		Assert.state( manualEntering.getDay() != null && manualEntering.getDay().getId() != null,
 				"Nested 'day' and its 'date' properties are mandatory." );

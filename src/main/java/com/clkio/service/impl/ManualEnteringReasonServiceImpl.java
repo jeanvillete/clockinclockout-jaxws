@@ -67,18 +67,19 @@ public class ManualEnteringReasonServiceImpl implements ManualEnteringReasonServ
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public boolean exists( String reason, Profile profile ) {
+	public boolean exists( final String reason, final Profile profile ) {
 		return this.repository.exists( reason, profile );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public boolean exists( String reason, Profile profile, Integer id ) {
+	public boolean exists( final String reason, final Profile profile, final Integer id ) {
 		return this.repository.exists( reason, profile, id );
 	}
 
 	@Override
-	public void update( ManualEnteringReason manualEnteringReason ) {
+	@Transactional( propagation = Propagation.REQUIRED )
+	public void update( final ManualEnteringReason manualEnteringReason ) {
 		Assert.state( manualEnteringReason != null && manualEnteringReason.getId() != null,
 				"Argument 'manualEnteringReason' and its 'id' property are mandatory." );
 		Assert.state( !exists( manualEnteringReason.getReason(), manualEnteringReason.getProfile(), manualEnteringReason.getId() ) );
