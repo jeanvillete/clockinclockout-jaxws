@@ -36,4 +36,9 @@ public interface TimeCardService {
 	void setNotes( Profile profile, LocalDate date, String text );
 
 	void setExpectedHours( Profile profile, LocalDate date, Duration expectedHours );
+	
+	Duration getTotalTime( Profile profile );
+	
+	Duration getTotalTime( Profile profile, LocalDate until );
+	
 }

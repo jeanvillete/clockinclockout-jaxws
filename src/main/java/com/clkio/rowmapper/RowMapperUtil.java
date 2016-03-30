@@ -11,7 +11,7 @@ import java.time.ZoneId;
 
 import org.postgresql.util.PGInterval;
 
-abstract class RowMapperUtil {
+public abstract class RowMapperUtil {
 
 	public static Integer getInteger( ResultSet rs, String column ) throws SQLException {
 		int intValue = rs.getInt( column );

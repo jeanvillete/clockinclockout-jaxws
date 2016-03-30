@@ -18,6 +18,7 @@ import com.clkio.domain.ClockinClockout;
 import com.clkio.domain.Day;
 import com.clkio.domain.ManualEntering;
 import com.clkio.domain.Profile;
+import com.clkio.repository.TimeCardRepository;
 import com.clkio.service.ClockinClockoutService;
 import com.clkio.service.DayService;
 import com.clkio.service.ManualEnteringService;
@@ -25,7 +26,10 @@ import com.clkio.service.TimeCardService;
 
 @Service
 public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
-
+	
+	@Autowired
+	private TimeCardRepository repository;
+	
 	@Autowired
 	private DayService dayService;
 	
@@ -255,6 +259,19 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 		
 		day.setExpectedHours( expectedHours );
 		this.dayService.update( day );
+	}
+
+	@Override
+	public Duration getTotalTime( Profile profile ) {
+		return this.getTotalTime( profile, null );
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.NOT_SUPPORTED, readOnly = true )
+	public Duration getTotalTime( Profile profile, LocalDate until ) {
+		Assert.state( profile != null && profile.getId() != null, 
+				"Argument profile and its 'id' property are mandatory." );
+		return this.repository.getTotalTime( profile, until );
 	}
 	
 }
