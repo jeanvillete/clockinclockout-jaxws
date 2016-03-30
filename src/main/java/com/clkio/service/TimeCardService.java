@@ -12,8 +12,8 @@ public interface TimeCardService {
 	/**
 	 * Service responsible to decide whether the 'clock' provided as argument refers to a 'clockin' or 'clockout'
 	 * 	record.
-	 * The provided 'clock' has to meet the pattern 'dateFormat' concatenated with the 'hoursFormat',
-	 * 	e.g; if for the supplied profile the dateFormat = 'yyyy-MM-dd' and hoursFormat = 'H:mm', so the resulting 
+	 * The provided 'clock' has to meet the pattern 'dateFormat' with the 'hoursFormat' appended,
+	 * 	e.g; if for the supplied profile has dateFormat = 'yyyy-MM-dd' and hoursFormat = 'H:mm', so the resulting 
 	 * 	pattern is 'yyyy-MM-ddH:mm'.
 	 * 
 	 * @param profile
