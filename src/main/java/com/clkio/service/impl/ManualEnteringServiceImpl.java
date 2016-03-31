@@ -1,5 +1,6 @@
 package com.clkio.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.InitializingBean;
@@ -91,6 +92,17 @@ public class ManualEnteringServiceImpl implements ManualEnteringService, Initial
 		Assert.notNull( manualEntering.getTimeInterval(), "Nested 'timeInterval' property is mandatoy." );
 		Assert.state( this.repository.update( manualEntering ),
 				"Some problem happened while performing update for 'manualEntering' record." );
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
+	public List< ManualEntering > list( Profile profile, LocalDate startDate, LocalDate endDate ) {
+		Assert.notNull( profile, "Argument 'profile' is mandatory." );
+		Assert.notNull( profile.getId(), "Argument 'profile's id property is mandatory." );
+		Assert.notNull( startDate, "Argument 'startDate' is mandatory." );
+		Assert.notNull( endDate, "Argument 'endDate' is mandatory." );
+		
+		return this.repository.list( profile, startDate, endDate );
 	}
 
 }

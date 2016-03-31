@@ -62,4 +62,15 @@ public class DayRepository extends CommonRepository {
 						day.getProfile().getId() }) == 1;
 	}
 
+	public List< Day > list( Profile profile, LocalDate startDate, LocalDate endDate ) {
+		return this.jdbcTemplate.query( " SELECT ID, DATE, EXPECTED_HOURS, NOTES, ID_PROFILE "
+				+ " FROM DAY WHERE ID_PROFILE = ? AND DATE >= ? AND DATE <= ? ",
+				new Object[]{ 
+					profile.getId(),
+					LocalDateTimeUtil.getTimestamp( startDate ),
+					LocalDateTimeUtil.getTimestamp( endDate )
+				},
+				new DayRowMaper() );
+	}
+
 }

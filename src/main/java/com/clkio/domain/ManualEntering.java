@@ -4,7 +4,7 @@ import java.time.Duration;
 
 import org.springframework.util.Assert;
 
-public class ManualEntering extends CommonDomain {
+public class ManualEntering extends DayEntering {
 
 	private Day day;
 	private ManualEnteringReason reason;

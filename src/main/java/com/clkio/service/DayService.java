@@ -19,5 +19,7 @@ public interface DayService {
 	Day get( Profile profile, LocalDate localDateDay );
 
 	Day get( Day day );
+
+	List< Day > list( Profile profile, LocalDate startDate, LocalDate endDate );
 	
 }

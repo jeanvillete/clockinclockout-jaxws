@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.util.Assert;
 
-public class ClockinClockout extends CommonDomain {
+public class ClockinClockout extends DayEntering {
 
 	private Day day;
 	private LocalDateTime clockin;

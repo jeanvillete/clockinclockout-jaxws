@@ -1,5 +1,6 @@
 package com.clkio.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.InitializingBean;
@@ -84,6 +85,17 @@ public class ClockinClockoutServiceImpl implements ClockinClockoutService, Initi
 		} catch ( EmptyResultDataAccessException e ) {
 			return null;
 		}
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
+	public List< ClockinClockout > list( Profile profile, LocalDate startDate, LocalDate endDate ) {
+		Assert.notNull( profile, "Argument 'profile' is mandatory." );
+		Assert.notNull( profile.getId(), "Argument 'profile's id property is mandatory." );
+		Assert.notNull( startDate, "Argument 'startDate' is mandatory." );
+		Assert.notNull( endDate, "Argument 'endDate' is mandatory." );
+		
+		return this.repository.list( profile, startDate, endDate );
 	}
 
 }

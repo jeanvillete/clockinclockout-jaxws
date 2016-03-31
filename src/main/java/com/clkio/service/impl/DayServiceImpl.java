@@ -114,4 +114,15 @@ public class DayServiceImpl implements DayService, InitializingBean {
 		}
 	}
 
+	@Override
+	@Transactional( propagation = Propagation.SUPPORTS, readOnly = false )
+	public List< Day > list( Profile profile, LocalDate startDate, LocalDate endDate ) {
+		Assert.notNull( profile, "Argument 'profile' is mandatory." );
+		Assert.notNull( profile.getId(), "Argument 'profile's id property is mandatory." );
+		Assert.notNull( startDate, "Argument 'startDate' is mandatory." );
+		Assert.notNull( endDate, "Argument 'endDate' is mandatory." );
+		
+		return this.repository.list( profile, startDate, endDate );
+	}
+
 }

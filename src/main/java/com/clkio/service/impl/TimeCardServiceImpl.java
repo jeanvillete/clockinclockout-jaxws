@@ -4,8 +4,10 @@ import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +15,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import com.clkio.domain.ClockinClockout;
 import com.clkio.domain.Day;
 import com.clkio.domain.ManualEntering;
 import com.clkio.domain.Profile;
+import com.clkio.domain.TimeCard;
 import com.clkio.repository.TimeCardRepository;
 import com.clkio.service.ClockinClockoutService;
 import com.clkio.service.DayService;
@@ -83,26 +87,6 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 		
 		return day;
 	}
-	
-	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
-	public void insert( final Profile profile, final ClockinClockout clockinClockout ) {
-		Assert.state( profile != null && profile.getId() != null,
-				"Argument 'profile' and its 'id' property are mandatory." );
-		Assert.notNull( clockinClockout, "Argument 'clock' is mandatory." );
-		Assert.state( clockinClockout.getClockin() != null || clockinClockout.getClockout() != null,
-				"At least 'clockin' or 'clockout' has to be provided." );
-		
-		LocalDate localDateDay = clockinClockout.getClockin() != null ?
-				clockinClockout.getClockin().toLocalDate() :
-					clockinClockout.getClockout().toLocalDate();
-		Day day = this.dayService.get( profile, localDateDay );
-		if ( day == null )
-			day = this.insert( profile, localDateDay );
-			
-		clockinClockout.setDay( day );
-		this.clockinClockoutService.insert( clockinClockout );
-	}
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
@@ -134,6 +118,26 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 				this.clockinClockoutService.update( clockinClockout );
 			}
 		}
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.REQUIRED )
+	public void insert( final Profile profile, final ClockinClockout clockinClockout ) {
+		Assert.state( profile != null && profile.getId() != null,
+				"Argument 'profile' and its 'id' property are mandatory." );
+		Assert.notNull( clockinClockout, "Argument 'clock' is mandatory." );
+		Assert.state( clockinClockout.getClockin() != null || clockinClockout.getClockout() != null,
+				"At least 'clockin' or 'clockout' has to be provided." );
+		
+		LocalDate localDateDay = clockinClockout.getClockin() != null ?
+				clockinClockout.getClockin().toLocalDate() :
+					clockinClockout.getClockout().toLocalDate();
+		Day day = this.dayService.get( profile, localDateDay );
+		if ( day == null )
+			day = this.insert( profile, localDateDay );
+			
+		clockinClockout.setDay( day );
+		this.clockinClockoutService.insert( clockinClockout );
 	}
 
 	@Override
@@ -272,6 +276,45 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 		Assert.state( profile != null && profile.getId() != null, 
 				"Argument profile and its 'id' property are mandatory." );
 		return this.repository.getTotalTime( profile, until );
+	}
+
+	@Override
+	@Transactional( propagation = Propagation.NOT_SUPPORTED, readOnly = true )
+	public TimeCard getTimeCard( Profile profile, YearMonth month ) {
+		Assert.state( profile != null && profile.getId() != null, 
+				"Argument profile and its 'id' property are mandatory." );
+		Assert.notNull( month, "Argument 'month' is mandatory." );
+		
+		TimeCard timeCard = new TimeCard( month );
+		
+		LocalDate startDate = month.atDay( 1 );
+		LocalDate endDate = month.atEndOfMonth();
+		
+		List< Day > listDay = this.dayService.list( profile, startDate, endDate );
+		if ( !CollectionUtils.isEmpty( listDay ) )
+			for ( Day day : listDay ) {
+				day.setBalance( day.getExpectedHours().negated() );
+				timeCard.getDays().put( day.getDate(), day );
+			}
+		
+		List< ClockinClockout > listClockinClockout = this.clockinClockoutService.list( profile, startDate, endDate );
+		if ( !CollectionUtils.isEmpty( listClockinClockout ) )
+			for ( ClockinClockout clkio : listClockinClockout ) {
+				Day day = timeCard.getDays().get( clkio.getDay().getDate() );
+				day.getTableEntering().add( clkio );
+				if ( clkio.getClockin() != null && clkio.getClockout() != null )
+					day.setBalance( Duration.between( clkio.getClockin(), clkio.getClockout() ).plus( day.getBalance() ) );
+			}
+		
+		List< ManualEntering > listManualEntering = this.manualEnteringService.list( profile, startDate, endDate );
+		if ( !CollectionUtils.isEmpty( listManualEntering ) )
+			for ( ManualEntering entering : listManualEntering ) {
+				Day day  = timeCard.getDays().get( entering.getDay().getDate() );
+				day.getTableEntering().add( entering );
+				day.setBalance( entering.getTimeInterval().plus( day.getBalance() ) );
+			}
+		
+		return timeCard;
 	}
 	
 }

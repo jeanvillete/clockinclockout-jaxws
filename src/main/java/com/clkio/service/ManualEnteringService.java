@@ -1,5 +1,6 @@
 package com.clkio.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.clkio.domain.Day;
@@ -20,5 +21,6 @@ public interface ManualEnteringService {
 	void update( ManualEntering manualEntering );
 	
 	void delete( Profile profile, ManualEntering manualEntering );
-	
+
+	List< ManualEntering > list( Profile profile, LocalDate startDate, LocalDate endDate );
 }

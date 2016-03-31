@@ -2,6 +2,8 @@ package com.clkio.domain;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.util.Assert;
 
@@ -11,6 +13,9 @@ public class Day extends CommonDomain {
 	private Duration expectedHours;
 	private String notes;
 	private Profile profile;
+	
+	private transient List< DayEntering > tableEntering;
+	private Duration balance;
 	
 	public Day() {
 		super( null );
@@ -37,6 +42,24 @@ public class Day extends CommonDomain {
 		this.setProfile( profile );
 	}
 
+	@Override
+	public boolean equals( Object obj ) {
+		if ( obj == null ) return false;
+		if ( obj == this ) return true;
+		try {
+			Day other = ( Day ) obj;
+			return other.getDate() != null && other.getDate().equals( this.date );
+		} catch ( ClassCastException e ) {
+			return false;
+		}
+	}
+	
+	@Override
+	public int hashCode() {
+		Assert.state( date != null, "Property 'date' has not been initialized." );
+		return this.date.hashCode();
+	}
+	
 	public void setDate( LocalDate date ) {
 		Assert.notNull( date, "Argument date cannot be null." );
 		this.date = date;
@@ -62,7 +85,6 @@ public class Day extends CommonDomain {
 	}
 
 	public Duration getExpectedHours() {
-		Assert.state( expectedHours != null, "The property 'expectedHours' has not been properly initialized." );
 		return expectedHours;
 	}
 
@@ -74,4 +96,20 @@ public class Day extends CommonDomain {
 		Assert.state( profile != null, "The property 'profile' has not been properly initialized." );
 		return profile;
 	}
+
+	public List< DayEntering > getTableEntering() {
+		if ( tableEntering == null )
+			tableEntering = new ArrayList<>();
+		
+		return tableEntering;
+	}
+
+	public Duration getBalance() {
+		return balance;
+	}
+
+	public void setBalance( Duration balance ) {
+		this.balance = balance;
+	}
+	
 }

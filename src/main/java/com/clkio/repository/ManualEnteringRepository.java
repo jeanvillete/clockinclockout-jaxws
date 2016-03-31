@@ -1,15 +1,20 @@
 package com.clkio.repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
 import com.clkio.common.DurationUtil;
+import com.clkio.common.LocalDateTimeUtil;
 import com.clkio.domain.Day;
 import com.clkio.domain.ManualEntering;
 import com.clkio.domain.ManualEnteringReason;
 import com.clkio.domain.Profile;
 import com.clkio.rowmapper.ManualEnteringRowMapper;
+import com.clkio.rowmapper.RowMapperUtil;
 
 @Repository
 public class ManualEnteringRepository extends CommonRepository {
@@ -69,4 +74,27 @@ public class ManualEnteringRepository extends CommonRepository {
 						manualEntering.getDay().getId() }) == 1;
 	}
 
+	public List< ManualEntering > list( Profile profile, LocalDate startDate, LocalDate endDate ) {
+		return this.jdbcTemplate.query( " SELECT ME.ID, ME.ID_DAY, ME.ID_MANUAL_ENTERING_REASON, ME.TIME_INTERVAL, D.DATE, MER.REASON "
+				+ " FROM MANUAL_ENTERING ME "
+				+ " JOIN MANUAL_ENTERING_REASON MER ON ME.ID_MANUAL_ENTERING_REASON = MER.ID "
+				+ " JOIN DAY D ON ME.ID_DAY = D.ID "
+				+ " WHERE D.ID_PROFILE = ? AND D.DATE >= ? AND D.DATE <= ? ",
+				new Object[]{
+					profile.getId(),
+					LocalDateTimeUtil.getTimestamp( startDate ),
+					LocalDateTimeUtil.getTimestamp( endDate )
+				}, 
+				new ManualEnteringRowMapper(){
+					@Override
+					public ManualEntering mapRow( ResultSet rs, int rowNum ) throws SQLException {
+						ManualEntering manualEntering = super.mapRow( rs, rowNum );
+						manualEntering.getDay().setDate( RowMapperUtil.getLocalDate( rs, "DATE" ) );
+						manualEntering.getReason().setReason( rs.getString( "REASON" ) );
+						
+						return manualEntering;
+					}
+				} );
+	}
+	
 }

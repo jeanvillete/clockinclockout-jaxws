@@ -1,5 +1,6 @@
 package com.clkio.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.clkio.domain.ClockinClockout;
@@ -27,4 +28,5 @@ public interface ClockinClockoutService {
 
 	ClockinClockout get( Profile profile, ClockinClockout clockinClockout );
 
+	List< ClockinClockout > list( Profile profile, LocalDate startDate, LocalDate endDate );
 }

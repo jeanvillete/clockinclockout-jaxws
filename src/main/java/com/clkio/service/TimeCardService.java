@@ -2,10 +2,12 @@ package com.clkio.service;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.YearMonth;
 
 import com.clkio.domain.ClockinClockout;
 import com.clkio.domain.ManualEntering;
 import com.clkio.domain.Profile;
+import com.clkio.domain.TimeCard;
 
 public interface TimeCardService {
 
@@ -40,5 +42,7 @@ public interface TimeCardService {
 	Duration getTotalTime( Profile profile );
 	
 	Duration getTotalTime( Profile profile, LocalDate until );
+	
+	TimeCard getTimeCard( Profile profile, YearMonth month );
 	
 }

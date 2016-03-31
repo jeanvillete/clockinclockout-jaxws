@@ -1,5 +1,8 @@
 package com.clkio.repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -9,6 +12,7 @@ import com.clkio.domain.ClockinClockout;
 import com.clkio.domain.Day;
 import com.clkio.domain.Profile;
 import com.clkio.rowmapper.ClockinClockoutRowMapper;
+import com.clkio.rowmapper.RowMapperUtil;
 
 @Repository
 public class ClockinClockoutRepository extends CommonRepository {
@@ -65,6 +69,27 @@ public class ClockinClockoutRepository extends CommonRepository {
 						profile.getId(),
 						clockinClockout.getId() }
 				, new ClockinClockoutRowMapper() );
+	}
+
+	public List< ClockinClockout > list( Profile profile, LocalDate startDate, LocalDate endDate ) {
+		return this.jdbcTemplate.query( " SELECT CLKIO.ID, CLKIO.ID_DAY, CLKIO.CLOCKIN, CLKIO.CLOCKOUT, D.DATE "
+				+ " FROM CLOCKINCLOCKOUT CLKIO "
+				+ " JOIN DAY D ON CLKIO.ID_DAY = D.ID "
+				+ " WHERE D.ID_PROFILE = ? AND D.DATE >= ? AND D.DATE <= ? ",
+				new Object[]{
+					profile.getId(),
+					LocalDateTimeUtil.getTimestamp( startDate ),
+					LocalDateTimeUtil.getTimestamp( endDate )
+				},
+				new ClockinClockoutRowMapper() {
+					@Override
+					public ClockinClockout mapRow( ResultSet rs, int rowNum ) throws SQLException {
+						ClockinClockout clockinClockout = super.mapRow( rs, rowNum );
+						clockinClockout.getDay().setDate( RowMapperUtil.getLocalDate( rs, "DATE" ) );
+						
+						return clockinClockout;
+					}
+				});
 	}
 
 }
