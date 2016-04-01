@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://schemas.clkio.com/clockinclockout"
+	xmlns:clockinclockout="http://schemas.clkio.com/clockinclockout"
+	xmlns:day="http://schemas.clkio.com/day"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	attributeFormDefault="qualified"
+	elementFormDefault="qualified">
+	
+	<xs:import namespace="http://schemas.clkio.com/day" schemaLocation="day.xsd" />
+	
+	<xs:complexType name="clockinclockout">
+		<xs:complexContent>
+			<xs:extension base="day:dayEntering">
+				<xs:sequence>
+					<xs:element name="id" type="xs:integer" maxOccurs="1" minOccurs="1" />
+					<xs:element name="clockin" type="xs:string" maxOccurs="1" minOccurs="1" />
+					<xs:element name="clockout" type="xs:string" maxOccurs="1" minOccurs="1" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+</xs:schema>

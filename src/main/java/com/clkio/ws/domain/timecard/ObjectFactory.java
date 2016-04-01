@@ -38,11 +38,123 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link UpdateClockinClockoutRequest }
+     * 
+     */
+    public UpdateClockinClockoutRequest createUpdateClockinClockoutRequest() {
+        return new UpdateClockinClockoutRequest();
+    }
+
+    /**
+     * Create an instance of {@link GetTotalTimeMonthlyRequest }
+     * 
+     */
+    public GetTotalTimeMonthlyRequest createGetTotalTimeMonthlyRequest() {
+        return new GetTotalTimeMonthlyRequest();
+    }
+
+    /**
      * Create an instance of {@link GetTotalTimeResponse }
      * 
      */
     public GetTotalTimeResponse createGetTotalTimeResponse() {
         return new GetTotalTimeResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetTotalTimeMonthlyResponse }
+     * 
+     */
+    public GetTotalTimeMonthlyResponse createGetTotalTimeMonthlyResponse() {
+        return new GetTotalTimeMonthlyResponse();
+    }
+
+    /**
+     * Create an instance of {@link InsertClockinClockoutRequest }
+     * 
+     */
+    public InsertClockinClockoutRequest createInsertClockinClockoutRequest() {
+        return new InsertClockinClockoutRequest();
+    }
+
+    /**
+     * Create an instance of {@link SetExpectedHoursRequest }
+     * 
+     */
+    public SetExpectedHoursRequest createSetExpectedHoursRequest() {
+        return new SetExpectedHoursRequest();
+    }
+
+    /**
+     * Create an instance of {@link DeleteClockinClockoutRequest }
+     * 
+     */
+    public DeleteClockinClockoutRequest createDeleteClockinClockoutRequest() {
+        return new DeleteClockinClockoutRequest();
+    }
+
+    /**
+     * Create an instance of {@link GetTimeCardRequest }
+     * 
+     */
+    public GetTimeCardRequest createGetTimeCardRequest() {
+        return new GetTimeCardRequest();
+    }
+
+    /**
+     * Create an instance of {@link PunchClockRequest }
+     * 
+     */
+    public PunchClockRequest createPunchClockRequest() {
+        return new PunchClockRequest();
+    }
+
+    /**
+     * Create an instance of {@link UpdateManualEnteringRequest }
+     * 
+     */
+    public UpdateManualEnteringRequest createUpdateManualEnteringRequest() {
+        return new UpdateManualEnteringRequest();
+    }
+
+    /**
+     * Create an instance of {@link GetTimeCardResponse }
+     * 
+     */
+    public GetTimeCardResponse createGetTimeCardResponse() {
+        return new GetTimeCardResponse();
+    }
+
+    /**
+     * Create an instance of {@link InsertManualEnteringRequest }
+     * 
+     */
+    public InsertManualEnteringRequest createInsertManualEnteringRequest() {
+        return new InsertManualEnteringRequest();
+    }
+
+    /**
+     * Create an instance of {@link DeleteManualEnteringRequest }
+     * 
+     */
+    public DeleteManualEnteringRequest createDeleteManualEnteringRequest() {
+        return new DeleteManualEnteringRequest();
+    }
+
+    /**
+     * Create an instance of {@link SetNotesRequest }
+     * 
+     */
+    public SetNotesRequest createSetNotesRequest() {
+        return new SetNotesRequest();
+    }
+
+    /**
+     * Create an instance of {@link TimeCard }
+     * 
+     */
+    public TimeCard createTimeCard() {
+        return new TimeCard();
     }
 
 }

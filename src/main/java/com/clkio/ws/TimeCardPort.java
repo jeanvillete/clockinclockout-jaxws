@@ -7,8 +7,22 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import com.clkio.ws.domain.common.Response;
+import com.clkio.ws.domain.timecard.DeleteClockinClockoutRequest;
+import com.clkio.ws.domain.timecard.DeleteManualEnteringRequest;
+import com.clkio.ws.domain.timecard.GetTimeCardRequest;
+import com.clkio.ws.domain.timecard.GetTimeCardResponse;
+import com.clkio.ws.domain.timecard.GetTotalTimeMonthlyRequest;
+import com.clkio.ws.domain.timecard.GetTotalTimeMonthlyResponse;
 import com.clkio.ws.domain.timecard.GetTotalTimeRequest;
 import com.clkio.ws.domain.timecard.GetTotalTimeResponse;
+import com.clkio.ws.domain.timecard.InsertClockinClockoutRequest;
+import com.clkio.ws.domain.timecard.InsertManualEnteringRequest;
+import com.clkio.ws.domain.timecard.PunchClockRequest;
+import com.clkio.ws.domain.timecard.SetExpectedHoursRequest;
+import com.clkio.ws.domain.timecard.SetNotesRequest;
+import com.clkio.ws.domain.timecard.UpdateClockinClockoutRequest;
+import com.clkio.ws.domain.timecard.UpdateManualEnteringRequest;
 
 
 /**
@@ -22,9 +36,12 @@ import com.clkio.ws.domain.timecard.GetTotalTimeResponse;
 @XmlSeeAlso({
     com.clkio.ws.domain.ObjectFactory.class,
     com.clkio.ws.domain.adjusting.ObjectFactory.class,
+    com.clkio.ws.domain.clockinclockout.ObjectFactory.class,
     com.clkio.ws.domain.common.ObjectFactory.class,
+    com.clkio.ws.domain.day.ObjectFactory.class,
     com.clkio.ws.domain.email.ObjectFactory.class,
     com.clkio.ws.domain.login.ObjectFactory.class,
+    com.clkio.ws.domain.manualentering.ObjectFactory.class,
     com.clkio.ws.domain.profile.ObjectFactory.class,
     com.clkio.ws.domain.reason.ObjectFactory.class,
     com.clkio.ws.domain.resetpassword.ObjectFactory.class,
@@ -46,6 +63,171 @@ public interface TimeCardPort {
     public GetTotalTimeResponse getTotalTime(
         @WebParam(name = "getTotalTimeRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         GetTotalTimeRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.timecard.GetTimeCardResponse
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "getTimeCardResponse", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public GetTimeCardResponse getTimeCard(
+        @WebParam(name = "getTimeCardRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        GetTimeCardRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.common.Response
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public Response punchClock(
+        @WebParam(name = "punchClockRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        PunchClockRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.common.Response
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public Response insertClockinClockout(
+        @WebParam(name = "insertClockinClockoutRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        InsertClockinClockoutRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.common.Response
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public Response updateClockinClockout(
+        @WebParam(name = "updateClockinClockoutRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        UpdateClockinClockoutRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.common.Response
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public Response deleteClockinClockout(
+        @WebParam(name = "deleteClockinClockoutRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        DeleteClockinClockoutRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.common.Response
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public Response insertManualEntering(
+        @WebParam(name = "insertManualEnteringRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        InsertManualEnteringRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.common.Response
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public Response updateManualEntering(
+        @WebParam(name = "updateManualEnteringRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        UpdateManualEnteringRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.common.Response
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public Response deleteManualEntering(
+        @WebParam(name = "deleteManualEnteringRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        DeleteManualEnteringRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.common.Response
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public Response setNotes(
+        @WebParam(name = "setNotesRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        SetNotesRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.common.Response
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public Response setExpectedHours(
+        @WebParam(name = "setExpectedHoursRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        SetExpectedHoursRequest request)
+        throws ResponseException
+    ;
+
+    /**
+     * 
+     * @param request
+     * @return
+     *     returns com.clkio.ws.domain.timecard.GetTotalTimeMonthlyResponse
+     * @throws ResponseException
+     */
+    @WebMethod
+    @WebResult(name = "getTotalTimeMonthlyResponse", targetNamespace = "http://schemas.clkio.com", partName = "request")
+    public GetTotalTimeMonthlyResponse getTotalTimeMonthly(
+        @WebParam(name = "getTotalTimeMonthlyRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
+        GetTotalTimeMonthlyRequest request)
         throws ResponseException
     ;
 

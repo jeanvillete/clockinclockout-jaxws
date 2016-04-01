@@ -1,6 +1,7 @@
 package com.clkio.test.timecard;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,6 +42,7 @@ public class TestTotalTime {
 		for ( int i = 1; i < 10 ; i ++ )
 			System.out.println( "2015-07-0" + i + ": " + timeCardService.getTotalTime( profile, LocalDate.parse( "2015-07-0" + i ) ) );
 		
+		System.out.println( timeCardService.getTotalTime( profile, YearMonth.parse( "2015-07" ).atEndOfMonth() ) );
 		System.out.println( timeCardService.getTotalTime( profile ) );
 	}
 }

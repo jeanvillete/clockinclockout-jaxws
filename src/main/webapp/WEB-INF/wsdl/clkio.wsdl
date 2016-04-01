@@ -28,40 +28,64 @@
 			<xs:import namespace="http://schemas.clkio.com/reason" schemaLocation="reason.xsd" />
 			<xs:import namespace="http://schemas.clkio.com/timecard" schemaLocation="timecard.xsd" />
 			<xs:import namespace="http://schemas.clkio.com/resetpassword" schemaLocation="resetpassword.xsd" />
+			<xs:import namespace="http://schemas.clkio.com/clockinclockout" schemaLocation="clockinclockout.xsd" />
+			<xs:import namespace="http://schemas.clkio.com/day" schemaLocation="day.xsd" />
+			<xs:import namespace="http://schemas.clkio.com/manualentering" schemaLocation="manualentering.xsd" />
 
-			<xs:element name="response" type="common:response" nillable="false"/>
-			<xs:element name="responseException" type="common:responseException" nillable="false"/>
-			<xs:element name="insertUserRequest" type="user:insertUserRequest" nillable="false"/>
-			<xs:element name="doLoginRequest" type="login:doLoginRequest" nillable="false"/>
-			<xs:element name="doLogoutRequest" type="login:doLogoutRequest" nillable="false"/>
-			<xs:element name="loginResponse" type="login:loginResponse" nillable="false"/>
-			<xs:element name="confirmEmailRequest" type="email:confirmEmailRequest" nillable="false"/>
-			<xs:element name="insertEmailRequest" type="email:insertEmailRequest" nillable="false"/>
-			<xs:element name="listEmailRequest" type="email:listEmailRequest" nillable="false"/>
-			<xs:element name="listEmailResponse" type="email:listEmailResponse" nillable="false"/>
-			<xs:element name="deleteEmailRequest" type="email:deleteEmailRequest" nillable="false"/>
-			<xs:element name="setEmailAsPrimaryRequest" type="email:setEmailAsPrimaryRequest" nillable="false"/>
-			<xs:element name="listProfileRequest" type="profile:listProfileRequest" nillable="false"/>
-			<xs:element name="listProfileResponse" type="profile:listProfileResponse" nillable="false"/>
-			<xs:element name="listAdjustingRequest" type="adjusting:listAdjustingRequest" nillable="false"/>
-			<xs:element name="listAdjustingResponse" type="adjusting:listAdjustingResponse" nillable="false"/>
-			<xs:element name="listManualEnteringReasonRequest" type="reason:listManualEnteringReasonRequest" nillable="false"/>
-			<xs:element name="listManualEnteringReasonResponse" type="reason:listManualEnteringReasonResponse" nillable="false"/>
-			<xs:element name="getTotalTimeRequest" type="timecard:getTotalTimeRequest" nillable="false"/>
-			<xs:element name="getTotalTimeResponse" type="timecard:getTotalTimeResponse" nillable="false"/>
-			<xs:element name="requestResetPasswordRequest" type="resetpassword:requestResetPasswordRequest" nillable="false"/>
-			<xs:element name="confirmResetPasswordRequest" type="resetpassword:confirmResetPasswordRequest" nillable="false"/>
-			<xs:element name="confirmResetPasswordResponse" type="resetpassword:confirmResetPasswordResponse" nillable="false"/>
-			<xs:element name="resetPasswordRequest" type="resetpassword:resetPasswordRequest" nillable="false"/>
-			<xs:element name="insertProfileRequest" type="profile:insertProfileRequest" nillable="false"/>
-			<xs:element name="updateProfileRequest" type="profile:updateProfileRequest" nillable="false"/>
-			<xs:element name="deleteProfileRequest" type="profile:deleteProfileRequest" nillable="false"/>
-			<xs:element name="insertAdjustingRequest" type="adjusting:insertAdjustingRequest" nillable="false"/>
-			<xs:element name="updateAdjustingRequest" type="adjusting:updateAdjustingRequest" nillable="false"/>
-			<xs:element name="deleteAdjustingRequest" type="adjusting:deleteAdjustingRequest" nillable="false"/>
-			<xs:element name="insertManualEnteringReasonRequest" type="reason:insertManualEnteringReasonRequest" nillable="false"/>
-			<xs:element name="updateManualEnteringReasonRequest" type="reason:updateManualEnteringReasonRequest" nillable="false"/>
-			<xs:element name="deleteManualEnteringReasonRequest" type="reason:deleteManualEnteringReasonRequest" nillable="false"/>
+			<xs:element type="common:response" name="response" nillable="false"/>
+			<xs:element type="common:responseException" name="responseException" nillable="false"/>
+			
+			<xs:element type="user:insertUserRequest" name="insertUserRequest" nillable="false"/>
+			
+			<xs:element type="login:doLoginRequest" name="doLoginRequest" nillable="false"/>
+			<xs:element type="login:doLogoutRequest" name="doLogoutRequest" nillable="false"/>
+			<xs:element type="login:loginResponse" name="loginResponse" nillable="false"/>
+			
+			<xs:element type="email:confirmEmailRequest" name="confirmEmailRequest" nillable="false"/>
+			<xs:element type="email:insertEmailRequest" name="insertEmailRequest" nillable="false"/>
+			<xs:element type="email:listEmailRequest" name="listEmailRequest" nillable="false"/>
+			<xs:element type="email:listEmailResponse" name="listEmailResponse" nillable="false"/>
+			<xs:element type="email:deleteEmailRequest" name="deleteEmailRequest" nillable="false"/>
+			<xs:element type="email:setEmailAsPrimaryRequest" name="setEmailAsPrimaryRequest" nillable="false"/>
+
+			<xs:element type="timecard:getTotalTimeRequest" name="getTotalTimeRequest" nillable="false"/>
+			<xs:element type="timecard:getTotalTimeResponse" name="getTotalTimeResponse" nillable="false"/>
+			<xs:element type="timecard:getTotalTimeMonthlyRequest" name="getTotalTimeMonthlyRequest" nillable="false"/>
+			<xs:element type="timecard:getTotalTimeMonthlyResponse" name="getTotalTimeMonthlyResponse" nillable="false"/>
+			<xs:element type="timecard:getTimeCardRequest" name="getTimeCardRequest" nillable="false"/>
+			<xs:element type="timecard:getTimeCardResponse" name="getTimeCardResponse" nillable="false"/>
+			<xs:element type="timecard:punchClockRequest" name="punchClockRequest" nillable="false"/>
+			<xs:element type="timecard:insertClockinClockoutRequest" name="insertClockinClockoutRequest" nillable="false"/>
+			<xs:element type="timecard:updateClockinClockoutRequest" name="updateClockinClockoutRequest" nillable="false"/>
+			<xs:element type="timecard:deleteClockinClockoutRequest" name="deleteClockinClockoutRequest" nillable="false"/>
+			<xs:element type="timecard:insertManualEnteringRequest" name="insertManualEnteringRequest" nillable="false"/>
+			<xs:element type="timecard:updateManualEnteringRequest" name="updateManualEnteringRequest" nillable="false"/>
+			<xs:element type="timecard:deleteManualEnteringRequest" name="deleteManualEnteringRequest" nillable="false"/>
+			<xs:element type="timecard:setNotesRequest" name="setNotesRequest" nillable="false"/>
+			<xs:element type="timecard:setExpectedHoursRequest" name="setExpectedHoursRequest" nillable="false"/>
+			
+			<xs:element type="resetpassword:requestResetPasswordRequest" name="requestResetPasswordRequest" nillable="false"/>
+			<xs:element type="resetpassword:confirmResetPasswordRequest" name="confirmResetPasswordRequest" nillable="false"/>
+			<xs:element type="resetpassword:confirmResetPasswordResponse" name="confirmResetPasswordResponse" nillable="false"/>
+			<xs:element type="resetpassword:resetPasswordRequest" name="resetPasswordRequest" nillable="false"/>
+			
+			<xs:element type="profile:listProfileRequest" name="listProfileRequest" nillable="false"/>
+			<xs:element type="profile:listProfileResponse" name="listProfileResponse" nillable="false"/>
+			<xs:element type="profile:insertProfileRequest" name="insertProfileRequest" nillable="false"/>
+			<xs:element type="profile:updateProfileRequest" name="updateProfileRequest" nillable="false"/>
+			<xs:element type="profile:deleteProfileRequest" name="deleteProfileRequest" nillable="false"/>
+			
+			<xs:element type="adjusting:insertAdjustingRequest" name="insertAdjustingRequest" nillable="false"/>
+			<xs:element type="adjusting:updateAdjustingRequest" name="updateAdjustingRequest" nillable="false"/>
+			<xs:element type="adjusting:deleteAdjustingRequest" name="deleteAdjustingRequest" nillable="false"/>
+			<xs:element type="adjusting:listAdjustingRequest" name="listAdjustingRequest" nillable="false"/>
+			<xs:element type="adjusting:listAdjustingResponse" name="listAdjustingResponse" nillable="false"/>
+						
+			<xs:element type="reason:insertManualEnteringReasonRequest" name="insertManualEnteringReasonRequest" nillable="false"/>
+			<xs:element type="reason:updateManualEnteringReasonRequest" name="updateManualEnteringReasonRequest" nillable="false"/>
+			<xs:element type="reason:deleteManualEnteringReasonRequest" name="deleteManualEnteringReasonRequest" nillable="false"/>
+			<xs:element type="reason:listManualEnteringReasonRequest" name="listManualEnteringReasonRequest" nillable="false"/>
+			<xs:element type="reason:listManualEnteringReasonResponse" name="listManualEnteringReasonResponse" nillable="false"/>
 		</xs:schema>
 	</wsdl:types>
 	
@@ -164,6 +188,45 @@
 	</wsdl:message>
 	<wsdl:message name="deleteManualEnteringReasonRequest">
 		<wsdl:part name="request" element="clkio:deleteManualEnteringReasonRequest" />
+	</wsdl:message>
+	<wsdl:message name="getTimeCardRequest">
+		<wsdl:part name="request" element="clkio:getTimeCardRequest" />
+	</wsdl:message>
+	<wsdl:message name="getTimeCardResponse">
+		<wsdl:part name="result" element="clkio:getTimeCardResponse" />
+	</wsdl:message>
+	<wsdl:message name="punchClockRequest">
+		<wsdl:part name="request" element="clkio:punchClockRequest" />
+	</wsdl:message>
+	<wsdl:message name="insertClockinClockoutRequest">
+		<wsdl:part name="request" element="clkio:insertClockinClockoutRequest" />
+	</wsdl:message>
+	<wsdl:message name="updateClockinClockoutRequest">
+		<wsdl:part name="request" element="clkio:updateClockinClockoutRequest" />
+	</wsdl:message>
+	<wsdl:message name="deleteClockinClockoutRequest">
+		<wsdl:part name="request" element="clkio:deleteClockinClockoutRequest" />
+	</wsdl:message>
+	<wsdl:message name="insertManualEnteringRequest">
+		<wsdl:part name="request" element="clkio:insertManualEnteringRequest" />
+	</wsdl:message>
+	<wsdl:message name="updateManualEnteringRequest">
+		<wsdl:part name="request" element="clkio:updateManualEnteringRequest" />
+	</wsdl:message>
+	<wsdl:message name="deleteManualEnteringRequest">
+		<wsdl:part name="request" element="clkio:deleteManualEnteringRequest" />
+	</wsdl:message>
+	<wsdl:message name="setNotesRequest">
+		<wsdl:part name="request" element="clkio:setNotesRequest" />
+	</wsdl:message>
+	<wsdl:message name="setExpectedHoursRequest">
+		<wsdl:part name="request" element="clkio:setExpectedHoursRequest" />
+	</wsdl:message>
+	<wsdl:message name="getTotalTimeMonthlyRequest">
+		<wsdl:part name="request" element="clkio:getTotalTimeMonthlyRequest" />
+	</wsdl:message>
+	<wsdl:message name="getTotalTimeMonthlyResponse">
+		<wsdl:part name="request" element="clkio:getTotalTimeMonthlyResponse" />
 	</wsdl:message>
 	
 	<!-- port types -->
@@ -284,6 +347,61 @@
 			<wsdl:input message="clkws:getTotalTimeRequest"/>
 			<wsdl:output message="clkws:getTotalTimeResponse"/>
 			<wsdl:fault message="clkws:responseException" name="getTotalTimeException" />
+		</wsdl:operation>
+		<wsdl:operation name="getTimeCard">
+			<wsdl:input message="clkws:getTimeCardRequest"/>
+			<wsdl:output message="clkws:getTimeCardResponse"/>
+			<wsdl:fault message="clkws:responseException" name="getTimeCardException" />
+		</wsdl:operation>
+		<wsdl:operation name="punchClock">
+			<wsdl:input message="clkws:punchClockRequest"/>
+			<wsdl:output message="clkws:response"/>
+			<wsdl:fault message="clkws:responseException" name="punchClockException" />
+		</wsdl:operation>
+		<wsdl:operation name="insertClockinClockout">
+			<wsdl:input message="clkws:insertClockinClockoutRequest"/>
+			<wsdl:output message="clkws:response"/>
+			<wsdl:fault message="clkws:responseException" name="insertClockinClockoutException" />
+		</wsdl:operation>
+		<wsdl:operation name="updateClockinClockout">
+			<wsdl:input message="clkws:updateClockinClockoutRequest"/>
+			<wsdl:output message="clkws:response"/>
+			<wsdl:fault message="clkws:responseException" name="updateClockinClockoutException" />
+		</wsdl:operation>
+		<wsdl:operation name="deleteClockinClockout">
+			<wsdl:input message="clkws:deleteClockinClockoutRequest"/>
+			<wsdl:output message="clkws:response"/>
+			<wsdl:fault message="clkws:responseException" name="deleteClockinClockoutException" />
+		</wsdl:operation>
+		<wsdl:operation name="insertManualEntering">
+			<wsdl:input message="clkws:insertManualEnteringRequest"/>
+			<wsdl:output message="clkws:response"/>
+			<wsdl:fault message="clkws:responseException" name="insertManualEnteringException" />
+		</wsdl:operation>
+		<wsdl:operation name="updateManualEntering">
+			<wsdl:input message="clkws:updateManualEnteringRequest"/>
+			<wsdl:output message="clkws:response"/>
+			<wsdl:fault message="clkws:responseException" name="updateManualEnteringException" />
+		</wsdl:operation>
+		<wsdl:operation name="deleteManualEntering">
+			<wsdl:input message="clkws:deleteManualEnteringRequest"/>
+			<wsdl:output message="clkws:response"/>
+			<wsdl:fault message="clkws:responseException" name="deleteManualEnteringException" />
+		</wsdl:operation>
+		<wsdl:operation name="setNotes">
+			<wsdl:input message="clkws:setNotesRequest"/>
+			<wsdl:output message="clkws:response"/>
+			<wsdl:fault message="clkws:responseException" name="setNotesException" />
+		</wsdl:operation>
+		<wsdl:operation name="setExpectedHours">
+			<wsdl:input message="clkws:setExpectedHoursRequest"/>
+			<wsdl:output message="clkws:response"/>
+			<wsdl:fault message="clkws:responseException" name="setExpectedHoursException" />
+		</wsdl:operation>
+		<wsdl:operation name="getTotalTimeMonthly">
+			<wsdl:input message="clkws:getTotalTimeMonthlyRequest"/>
+			<wsdl:output message="clkws:getTotalTimeMonthlyResponse"/>
+			<wsdl:fault message="clkws:responseException" name="getTotalTimeMonthlyException" />
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:portType name="ResetPasswordPort">
@@ -575,6 +693,138 @@
 			</wsdl:output>
 			<wsdl:fault name="getTotalTimeException">
 				<soap:fault name="getTotalTimeException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getTimeCard">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="getTimeCardException">
+				<soap:fault name="getTimeCardException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="punchClock">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="punchClockException">
+				<soap:fault name="punchClockException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="insertClockinClockout">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="insertClockinClockoutException">
+				<soap:fault name="insertClockinClockoutException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="updateClockinClockout">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="updateClockinClockoutException">
+				<soap:fault name="updateClockinClockoutException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="deleteClockinClockout">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="deleteClockinClockoutException">
+				<soap:fault name="deleteClockinClockoutException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="insertManualEntering">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="insertManualEnteringException">
+				<soap:fault name="insertManualEnteringException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="updateManualEntering">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="updateManualEnteringException">
+				<soap:fault name="updateManualEnteringException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="deleteManualEntering">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="deleteManualEnteringException">
+				<soap:fault name="deleteManualEnteringException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="setNotes">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="setNotesException">
+				<soap:fault name="setNotesException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="setExpectedHours">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="setExpectedHoursException">
+				<soap:fault name="setExpectedHoursException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getTotalTimeMonthly">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="getTotalTimeMonthlyException">
+				<soap:fault name="getTotalTimeMonthlyException" use="literal" />
 			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>

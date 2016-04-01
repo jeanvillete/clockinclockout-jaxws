@@ -9,16 +9,17 @@ import com.clkio.ws.domain.profile.Profile;
 
 
 /**
- * <p>Java class for getTotalTimeRequest complex type.
+ * <p>Java class for getTimeCardRequest complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="getTotalTimeRequest">
+ * &lt;complexType name="getTimeCardRequest">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="profile" type="{http://schemas.clkio.com/profile}profile"/>
+ *         &lt;element name="month" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -28,13 +29,16 @@ import com.clkio.ws.domain.profile.Profile;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "getTotalTimeRequest", propOrder = {
-    "profile"
+@XmlType(name = "getTimeCardRequest", propOrder = {
+    "profile",
+    "month"
 })
-public class GetTotalTimeRequest {
+public class GetTimeCardRequest {
 
     @XmlElement(required = true)
     protected Profile profile;
+    @XmlElement(required = true)
+    protected String month;
 
     /**
      * Gets the value of the profile property.
@@ -58,6 +62,30 @@ public class GetTotalTimeRequest {
      */
     public void setProfile(Profile value) {
         this.profile = value;
+    }
+
+    /**
+     * Gets the value of the month property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getMonth() {
+        return month;
+    }
+
+    /**
+     * Sets the value of the month property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setMonth(String value) {
+        this.month = value;
     }
 
 }

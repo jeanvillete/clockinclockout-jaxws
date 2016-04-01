@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://schemas.clkio.com/day"
+	xmlns:day="http://schemas.clkio.com/day"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	attributeFormDefault="qualified"
+	elementFormDefault="qualified">
+	
+	<xs:complexType name="day">
+		<xs:sequence>
+			<xs:element name="date" type="xs:string" maxOccurs="1" minOccurs="1" />
+			<xs:element name="expectedHours" type="xs:string" maxOccurs="1" minOccurs="1" />
+			<xs:element name="balance" type="xs:string" maxOccurs="1" minOccurs="1" />
+			<xs:element name="notes" type="xs:string" maxOccurs="1" minOccurs="1" />
+			<xs:element name="tableEntering" type="day:dayEntering" maxOccurs="unbounded" nillable="true"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="dayEntering"/>
+		
+</xs:schema>

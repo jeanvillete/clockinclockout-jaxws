@@ -57,4 +57,22 @@
 		</jaxb:schemaBindings>
 	</jaxb:bindings>
 
+	<jaxb:bindings schemaLocation="clockinclockout.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/clockinclockout']">
+		<jaxb:schemaBindings>
+			<jaxb:package name="com.clkio.ws.domain.clockinclockout" />
+		</jaxb:schemaBindings>
+	</jaxb:bindings>
+
+	<jaxb:bindings schemaLocation="day.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/day']">
+		<jaxb:schemaBindings>
+			<jaxb:package name="com.clkio.ws.domain.day" />
+		</jaxb:schemaBindings>
+	</jaxb:bindings>
+
+	<jaxb:bindings schemaLocation="manualentering.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/manualentering']">
+		<jaxb:schemaBindings>
+			<jaxb:package name="com.clkio.ws.domain.manualentering" />
+		</jaxb:schemaBindings>
+	</jaxb:bindings>
+
 </jaxb:bindings>
