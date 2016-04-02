@@ -104,6 +104,8 @@ public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
 			Assert.notNull( request );
 			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
 					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
+			Assert.notNull( request.getClockinclockout(),
+					"[clkiows] No 'clockinclockout' instance was found on the request." );
 			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
@@ -146,13 +148,39 @@ public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
 			Assert.notNull( request );
 			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
 					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
+			Assert.state( request.getClockinclockout() != null && request.getClockinclockout().getId() != null,
+					"[clkiows] No 'clockinclockout' instance was found on the request or its 'id' property was not provided." );
 
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
 			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
 					"No record found for the provided 'profile'." );
 			
-			return null;
+			String pattern = profile.getDateFormat() + profile.getHoursFormat();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( pattern );
+			
+			LocalDateTime clockin = null;
+			if ( StringUtils.hasText( request.getClockinclockout().getClockin() ) )
+				try {
+					clockin = LocalDateTime.parse( request.getClockinclockout().getClockin(), formatter );
+				} catch ( DateTimeParseException e ) {
+					throw new IllegalStateException( "The provided value for 'clockin' was not valid for the pattern=[" + pattern + "]. "
+							+ "Remember that this pattern is the 'dateFormat' concatenated with 'hoursFormat' set on the profile, in case you want to change it." );
+				}
+			
+			LocalDateTime clockout = null;
+			if ( StringUtils.hasText( request.getClockinclockout().getClockout() ) )
+				try {
+					clockout = LocalDateTime.parse( request.getClockinclockout().getClockout(), formatter );
+				} catch ( DateTimeParseException e ) {
+					throw new IllegalStateException( "The provided value for 'clockout' was not valid for the pattern=[" + pattern + "]. "
+							+ "Remember that this pattern is the 'dateFormat' concatenated with 'hoursFormat' set on the profile, in case you want to change it." );
+				}
+			
+			ClockinClockout clkio = new ClockinClockout( request.getClockinclockout().getId().intValue(), null, clockin, clockout );
+			this.getService( TimeCardService.class ).update( profile, clkio );
+			
+			return new Response( "Service 'updateClockinClockout' executed successfully." );
 		} catch ( Exception e ) {
 			LOG.error( e );
 			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
