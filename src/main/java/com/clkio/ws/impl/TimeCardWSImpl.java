@@ -1,5 +1,6 @@
 package com.clkio.ws.impl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -10,7 +11,11 @@ import org.apache.log4j.Logger;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import com.clkio.common.DurationUtil;
 import com.clkio.domain.ClockinClockout;
+import com.clkio.domain.Day;
+import com.clkio.domain.ManualEntering;
+import com.clkio.domain.ManualEnteringReason;
 import com.clkio.domain.Profile;
 import com.clkio.service.ProfileService;
 import com.clkio.service.TimeCardService;
@@ -216,13 +221,34 @@ public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
 			Assert.notNull( request );
 			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
 					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
+			Assert.state( request.getManualEntering() != null && StringUtils.hasText( request.getManualEntering().getTimeInterval() ),
+					"[clkiows] No 'manualEntering' instance was found on the request or its 'timeInterval' property was not provided." );
+			Assert.state( request.getManualEntering().getDay() != null && StringUtils.hasText( request.getManualEntering().getDay().getDate() ),
+					"[clkiows] No 'day' instance was found on the request or its 'date' property was not provided." );
+			Assert.state( request.getManualEntering().getReason() != null && request.getManualEntering().getReason().getId() != null,
+					"[clkiows] No 'reason' instance was found on the request or its 'id' property was not provided." );
 
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
 			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
 					"No record found for the provided 'profile'." );
 			
-			return null;
+			String pattern = profile.getDateFormat();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( pattern );
+			LocalDate day = null;
+			try {
+				day = LocalDate.parse( request.getManualEntering().getDay().getDate(), formatter );
+			} catch ( DateTimeParseException e ) {
+				throw new IllegalStateException( "The provided value for 'date' was not valid for the pattern=[" + pattern + "]. " );
+			}
+			
+			this.getService( TimeCardService.class ).insert( profile, 
+					new ManualEntering( 
+							new Day( day ), 
+							new ManualEnteringReason( request.getManualEntering().getReason().getId().intValue() ),
+							DurationUtil.fromString( request.getManualEntering().getTimeInterval(), profile.getHoursFormat() ) ) );
+			
+			return new Response( "Service 'insertManualEntering' executed successfully." );
 		} catch ( Exception e ) {
 			LOG.error( e );
 			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
