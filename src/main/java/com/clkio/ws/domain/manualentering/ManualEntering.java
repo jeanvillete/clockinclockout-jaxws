@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import com.clkio.ws.domain.day.Day;
 import com.clkio.ws.domain.day.DayEntering;
 import com.clkio.ws.domain.reason.Reason;
 
@@ -23,6 +24,7 @@ import com.clkio.ws.domain.reason.Reason;
  *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}integer"/>
  *         &lt;element name="timeInterval" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="reason" type="{http://schemas.clkio.com/reason}reason"/>
+ *         &lt;element name="day" type="{http://schemas.clkio.com/day}day"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -35,7 +37,8 @@ import com.clkio.ws.domain.reason.Reason;
 @XmlType(name = "manualEntering", propOrder = {
     "id",
     "timeInterval",
-    "reason"
+    "reason",
+    "day"
 })
 public class ManualEntering
     extends DayEntering
@@ -47,6 +50,8 @@ public class ManualEntering
     protected String timeInterval;
     @XmlElement(required = true)
     protected Reason reason;
+    @XmlElement(required = true)
+    protected Day day;
 
     /**
      * Gets the value of the id property.
@@ -118,6 +123,30 @@ public class ManualEntering
      */
     public void setReason(Reason value) {
         this.reason = value;
+    }
+
+    /**
+     * Gets the value of the day property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Day }
+     *     
+     */
+    public Day getDay() {
+        return day;
+    }
+
+    /**
+     * Sets the value of the day property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Day }
+     *     
+     */
+    public void setDay(Day value) {
+        this.day = value;
     }
 
 }
