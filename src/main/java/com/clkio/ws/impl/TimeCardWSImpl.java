@@ -305,13 +305,17 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 			Assert.notNull( request );
 			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
 					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
+			Assert.state( request.getManualEntering() != null && request.getManualEntering().getId() != null,
+					"[clkiows] No 'manualEntering' instance was found on the request or its 'id' property was not provided." );
 
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
 			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
 					"No record found for the provided 'profile'." );
 			
-			return null;
+			this.getService().delete( profile, new ManualEntering( request.getManualEntering().getId().intValue() ) );
+			
+			return new Response( "Service 'deleteManualEntering' executed successfully." );
 		} catch ( Exception e ) {
 			LOG.error( e );
 			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
