@@ -353,7 +353,18 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
 					"No record found for the provided 'profile'." );
 			
-			return null;
+			String dayPattern = profile.getDateFormat();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( dayPattern );
+			LocalDate day = null;
+			try {
+				day = LocalDate.parse( request.getDate(), formatter );
+			} catch ( DateTimeParseException e ) {
+				throw new IllegalStateException( "The provided value for 'date' was not valid for the pattern=[" + dayPattern + "]. " );
+			}
+			
+			this.getService().setExpectedHours( profile, day, DurationUtil.fromString( request.getExpectedHours(), profile.getHoursFormat() ) );
+			
+			return new Response( "Service 'setExpectedHours' executed successfully." );
 		} catch ( Exception e ) {
 			LOG.error( e );
 			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
