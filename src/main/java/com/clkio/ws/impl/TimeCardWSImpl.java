@@ -39,9 +39,13 @@ import com.clkio.ws.domain.timecard.UpdateClockinClockoutRequest;
 import com.clkio.ws.domain.timecard.UpdateManualEnteringRequest;
 
 @WebService( endpointInterface = "com.clkio.ws.TimeCardPort" )
-public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
+public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implements TimeCardPort {
 
 	private static final Logger LOG = Logger.getLogger( TimeCardWSImpl.class );
+	
+	public TimeCardWSImpl() {
+		super( TimeCardService.class );
+	}
 	
 	@Override
 	public GetTotalTimeResponse getTotalTime( GetTotalTimeRequest request ) throws ResponseException {
@@ -94,7 +98,7 @@ public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
 			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
 					"No record found for the provided 'profile'." );
 			
-			this.getService( TimeCardService.class ).punchClock( profile, request.getTimestamp() );
+			this.getService().punchClock( profile, request.getTimestamp() );
 			
 			return new Response( "Service 'punchClock' executed successfully." );
 		} catch ( Exception e ) {
@@ -138,7 +142,7 @@ public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
 							+ "Remember that this pattern is the 'dateFormat' concatenated with 'hoursFormat' set on the profile, in case you want to change it." );
 				}
 			
-			this.getService( TimeCardService.class ).insert( profile, new ClockinClockout( clockin, clockout ) );
+			this.getService().insert( profile, new ClockinClockout( clockin, clockout ) );
 			
 			return new Response( "Service 'insertClockinClockout' executed successfully." );
 		} catch ( Exception e ) {
@@ -183,7 +187,7 @@ public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
 				}
 			
 			ClockinClockout clkio = new ClockinClockout( request.getClockinclockout().getId().intValue(), null, clockin, clockout );
-			this.getService( TimeCardService.class ).update( profile, clkio );
+			this.getService().update( profile, clkio );
 			
 			return new Response( "Service 'updateClockinClockout' executed successfully." );
 		} catch ( Exception e ) {
@@ -206,7 +210,7 @@ public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
 			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
 					"No record found for the provided 'profile'." );
 			
-			this.getService( TimeCardService.class ).delete( profile, new ClockinClockout( request.getClockinclockout().getId().intValue() ) );
+			this.getService().delete( profile, new ClockinClockout( request.getClockinclockout().getId().intValue() ) );
 			
 			return new Response( "Service 'deleteClockinClockout' executed successfully." );
 		} catch ( Exception e ) {
@@ -242,7 +246,7 @@ public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
 				throw new IllegalStateException( "The provided value for 'date' was not valid for the pattern=[" + pattern + "]. " );
 			}
 			
-			this.getService( TimeCardService.class ).insert( profile, 
+			this.getService().insert( profile, 
 					new ManualEntering( 
 							new Day( day ), 
 							new ManualEnteringReason( request.getManualEntering().getReason().getId().intValue() ),
@@ -261,13 +265,34 @@ public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
 			Assert.notNull( request );
 			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
 					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
+			Assert.state( request.getManualEntering() != null && request.getManualEntering().getId() != null && StringUtils.hasText( request.getManualEntering().getTimeInterval() ),
+					"[clkiows] No 'manualEntering' instance was found on the request or either its 'id' or 'timeInterval' properties were not provided." );
+			Assert.state( request.getManualEntering().getDay() != null && StringUtils.hasText( request.getManualEntering().getDay().getDate() ),
+					"[clkiows] No 'day' instance was found on the request or its 'date' property was not provided." );
+			Assert.state( request.getManualEntering().getReason() != null && request.getManualEntering().getReason().getId() != null,
+					"[clkiows] No 'reason' instance was found on the request or its 'id' property was not provided." );
 
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
 			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
 					"No record found for the provided 'profile'." );
 			
-			return null;
+			String pattern = profile.getDateFormat();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( pattern );
+			LocalDate day = null;
+			try {
+				day = LocalDate.parse( request.getManualEntering().getDay().getDate(), formatter );
+			} catch ( DateTimeParseException e ) {
+				throw new IllegalStateException( "The provided value for 'date' was not valid for the pattern=[" + pattern + "]. " );
+			}
+			
+			this.getService().update( profile, 
+					new ManualEntering( request.getManualEntering().getId().intValue(), 
+							new Day( day ), 
+							new ManualEnteringReason( request.getManualEntering().getReason().getId().intValue() ),
+							DurationUtil.fromString( request.getManualEntering().getTimeInterval(), profile.getHoursFormat() ) ) );
+			
+			return new Response( "Service 'updateManualEntering' executed successfully." );
 		} catch ( Exception e ) {
 			LOG.error( e );
 			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
