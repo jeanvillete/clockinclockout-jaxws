@@ -1,10 +1,16 @@
 package com.clkio.ws.impl;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 import javax.jws.WebService;
 
 import org.apache.log4j.Logger;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
+import com.clkio.domain.ClockinClockout;
 import com.clkio.domain.Profile;
 import com.clkio.service.ProfileService;
 import com.clkio.service.TimeCardService;
@@ -104,7 +110,30 @@ public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
 			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
 					"No record found for the provided 'profile'." );
 			
-			return null;
+			String pattern = profile.getDateFormat() + profile.getHoursFormat();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( pattern );
+			
+			LocalDateTime clockin = null;
+			if ( StringUtils.hasText( request.getClockinclockout().getClockin() ) )
+				try {
+					clockin = LocalDateTime.parse( request.getClockinclockout().getClockin(), formatter );
+				} catch ( DateTimeParseException e ) {
+					throw new IllegalStateException( "The provided value for 'clockin' was not valid for the pattern=[" + pattern + "]. "
+							+ "Remember that this pattern is the 'dateFormat' concatenated with 'hoursFormat' set on the profile, in case you want to change it." );
+				}
+			
+			LocalDateTime clockout = null;
+			if ( StringUtils.hasText( request.getClockinclockout().getClockout() ) )
+				try {
+					clockout = LocalDateTime.parse( request.getClockinclockout().getClockout(), formatter );
+				} catch ( DateTimeParseException e ) {
+					throw new IllegalStateException( "The provided value for 'clockout' was not valid for the pattern=[" + pattern + "]. "
+							+ "Remember that this pattern is the 'dateFormat' concatenated with 'hoursFormat' set on the profile, in case you want to change it." );
+				}
+			
+			this.getService( TimeCardService.class ).insert( profile, new ClockinClockout( clockin, clockout ) );
+			
+			return new Response( "Service 'insertClockinClockout' executed successfully." );
 		} catch ( Exception e ) {
 			LOG.error( e );
 			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
