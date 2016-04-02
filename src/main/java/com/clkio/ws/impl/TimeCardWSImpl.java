@@ -5,6 +5,8 @@ import javax.jws.WebService;
 import org.apache.log4j.Logger;
 import org.springframework.util.Assert;
 
+import com.clkio.domain.Profile;
+import com.clkio.service.ProfileService;
 import com.clkio.ws.ResponseException;
 import com.clkio.ws.TimeCardPort;
 import com.clkio.ws.domain.common.Response;
@@ -36,6 +38,11 @@ public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
 			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
 					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
 			
+			Profile profile = new Profile( request.getProfile().getId().intValue() );
+			profile.setUser( this.getCurrentUser() );
+			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
+					"No record found for the provided 'profile'." );
+			
 			return null;
 		} catch ( Exception e ) {
 			LOG.error( e );
@@ -49,6 +56,11 @@ public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
 			Assert.notNull( request );
 			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
 					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
+
+			Profile profile = new Profile( request.getProfile().getId().intValue() );
+			profile.setUser( this.getCurrentUser() );
+			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
+					"No record found for the provided 'profile'." );
 			
 			return null;
 		} catch ( Exception e ) {
@@ -64,6 +76,11 @@ public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
 			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
 					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
 			
+			Profile profile = new Profile( request.getProfile().getId().intValue() );
+			profile.setUser( this.getCurrentUser() );
+			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
+					"No record found for the provided 'profile'." );
+			
 			return null;
 		} catch ( Exception e ) {
 			LOG.error( e );
@@ -78,6 +95,11 @@ public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
 			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
 					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
 			
+			Profile profile = new Profile( request.getProfile().getId().intValue() );
+			profile.setUser( this.getCurrentUser() );
+			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
+					"No record found for the provided 'profile'." );
+			
 			return null;
 		} catch ( Exception e ) {
 			LOG.error( e );
@@ -91,6 +113,11 @@ public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
 			Assert.notNull( request );
 			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
 					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
+
+			Profile profile = new Profile( request.getProfile().getId().intValue() );
+			profile.setUser( this.getCurrentUser() );
+			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
+					"No record found for the provided 'profile'." );
 			
 			return null;
 		} catch ( Exception e ) {
@@ -105,6 +132,11 @@ public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
 			Assert.notNull( request );
 			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
 					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
+
+			Profile profile = new Profile( request.getProfile().getId().intValue() );
+			profile.setUser( this.getCurrentUser() );
+			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
+					"No record found for the provided 'profile'." );
 			
 			return null;
 		} catch ( Exception e ) {
@@ -119,6 +151,11 @@ public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
 			Assert.notNull( request );
 			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
 					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
+
+			Profile profile = new Profile( request.getProfile().getId().intValue() );
+			profile.setUser( this.getCurrentUser() );
+			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
+					"No record found for the provided 'profile'." );
 			
 			return null;
 		} catch ( Exception e ) {
@@ -133,6 +170,11 @@ public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
 			Assert.notNull( request );
 			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
 					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
+
+			Profile profile = new Profile( request.getProfile().getId().intValue() );
+			profile.setUser( this.getCurrentUser() );
+			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
+					"No record found for the provided 'profile'." );
 			
 			return null;
 		} catch ( Exception e ) {
@@ -147,6 +189,11 @@ public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
 			Assert.notNull( request );
 			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
 					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
+
+			Profile profile = new Profile( request.getProfile().getId().intValue() );
+			profile.setUser( this.getCurrentUser() );
+			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
+					"No record found for the provided 'profile'." );
 			
 			return null;
 		} catch ( Exception e ) {
@@ -161,6 +208,11 @@ public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
 			Assert.notNull( request );
 			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
 					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
+
+			Profile profile = new Profile( request.getProfile().getId().intValue() );
+			profile.setUser( this.getCurrentUser() );
+			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
+					"No record found for the provided 'profile'." );
 			
 			return null;
 		} catch ( Exception e ) {
@@ -175,6 +227,11 @@ public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
 			Assert.notNull( request );
 			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
 					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
+
+			Profile profile = new Profile( request.getProfile().getId().intValue() );
+			profile.setUser( this.getCurrentUser() );
+			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
+					"No record found for the provided 'profile'." );
 			
 			return null;
 		} catch ( Exception e ) {
@@ -189,6 +246,11 @@ public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
 			Assert.notNull( request );
 			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
 					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
+
+			Profile profile = new Profile( request.getProfile().getId().intValue() );
+			profile.setUser( this.getCurrentUser() );
+			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
+					"No record found for the provided 'profile'." );
 			
 			return null;
 		} catch ( Exception e ) {
