@@ -24,10 +24,14 @@ import com.clkio.ws.domain.email.ListEmailResponse;
 import com.clkio.ws.domain.email.SetEmailAsPrimaryRequest;
 
 @WebService( endpointInterface = "com.clkio.ws.EmailPort" )
-public class EmailWSImpl extends WebServiceCommon implements EmailPort {
+public class EmailWSImpl extends WebServiceCommon< EmailService > implements EmailPort {
 
 	private static final Logger LOG = Logger.getLogger( EmailWSImpl.class );
 
+	public EmailWSImpl() {
+		super( EmailService.class );
+	}
+	
 	@Override
 	public Response confirm( ConfirmEmailRequest request ) throws ResponseException {
 		try {
@@ -37,7 +41,7 @@ public class EmailWSImpl extends WebServiceCommon implements EmailPort {
 			Email email = new Email( request.getEmail().getEmailAddress() );
 			email.setConfirmationCode( request.getEmail().getConfirmationCode() );
 			
-			this.getService( EmailService.class ).confirm( email );
+			this.getService().confirm( email );
 			
 			return new Response( "Email address confirmed successfully." );
 		} catch ( Exception e ) {
@@ -59,7 +63,7 @@ public class EmailWSImpl extends WebServiceCommon implements EmailPort {
 			NewEmailConfirmation emailConfirmation = new NewEmailConfirmation( email );
 			email.setConfirmationCode( emailConfirmation.getHash() );
 			
-			EmailService service = this.getService( EmailService.class );
+			EmailService service = this.getService();
 			service.insert( email );
 			service.send( emailConfirmation );
 			
@@ -73,7 +77,7 @@ public class EmailWSImpl extends WebServiceCommon implements EmailPort {
 	@Override
 	public ListEmailResponse list( ListEmailRequest request ) throws ResponseException {
 		try {
-			List< Email > emails = this.getService( EmailService.class ).list( this.getCurrentUser() );
+			List< Email > emails = this.getService().list( this.getCurrentUser() );
 			ListEmailResponse response = new ListEmailResponse();
 			
 			if ( !CollectionUtils.isEmpty( emails ) )
@@ -97,7 +101,7 @@ public class EmailWSImpl extends WebServiceCommon implements EmailPort {
 			Email email = new Email( request.getEmail().getId().intValue() );
 			email.setUser( getCurrentUser() );
 			
-			this.getService( EmailService.class ).delete( email );
+			this.getService().delete( email );
 			
 			return new Response( "Email address deleted successfully as requested." );
 		} catch ( Exception e ) {
@@ -116,7 +120,7 @@ public class EmailWSImpl extends WebServiceCommon implements EmailPort {
 			Email email = new Email( request.getEmail().getId().intValue() );
 			email.setUser( getCurrentUser() );
 			
-			this.getService( EmailService.class ).setAsPrimary( email );
+			this.getService().setAsPrimary( email );
 			
 			return new Response( "Operation set as primary processed successfully." );
 		} catch ( Exception e ) {

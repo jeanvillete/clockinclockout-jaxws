@@ -24,9 +24,13 @@ import com.clkio.ws.domain.reason.Reason;
 import com.clkio.ws.domain.reason.UpdateManualEnteringReasonRequest;
 
 @WebService( endpointInterface = "com.clkio.ws.ManualEnteringReasonPort" )
-public class ManualEnteringReasonWSImpl extends WebServiceCommon implements ManualEnteringReasonPort {
+public class ManualEnteringReasonWSImpl extends WebServiceCommon< ManualEnteringReasonService > implements ManualEnteringReasonPort {
 
 	private static final Logger LOG = Logger.getLogger( ManualEnteringReasonWSImpl.class );
+	
+	public ManualEnteringReasonWSImpl() {
+		super( ManualEnteringReasonService.class );
+	}
 	
 	@Override
 	public ListManualEnteringReasonResponse list( ListManualEnteringReasonRequest request ) throws ResponseException {
@@ -39,7 +43,7 @@ public class ManualEnteringReasonWSImpl extends WebServiceCommon implements Manu
 			profile.setUser( this.getCurrentUser() );
 			
 			ListManualEnteringReasonResponse response = new ListManualEnteringReasonResponse();
-			List< ManualEnteringReason > reasons = this.getService( ManualEnteringReasonService.class ).list( profile );
+			List< ManualEnteringReason > reasons = this.getService().list( profile );
 			if ( !CollectionUtils.isEmpty( reasons ) )
 				for ( ManualEnteringReason reason : reasons )
 					response.getReasons().add( new Reason( new BigInteger( reason.getId().toString() ), reason.getReason() ) );
@@ -64,7 +68,7 @@ public class ManualEnteringReasonWSImpl extends WebServiceCommon implements Manu
 			Assert.notNull( profile = this.getService( ProfileService.class ).get( profile ), "No 'profile' record was found." );
 			
 			ManualEnteringReason reason = new ManualEnteringReason( profile, request.getReason().getReason() );
-			this.getService( ManualEnteringReasonService.class ).insert( reason );
+			this.getService().insert( reason );
 			
 			return new Response( "Reason record stored successfully." );
 		} catch ( Exception e ) {
@@ -88,7 +92,7 @@ public class ManualEnteringReasonWSImpl extends WebServiceCommon implements Manu
 			
 			ManualEnteringReason reason = new ManualEnteringReason( 
 					request.getReason().getId().intValue(), profile, request.getReason().getReason() );
-			this.getService( ManualEnteringReasonService.class ).update( reason );
+			this.getService().update( reason );
 			
 			return new Response( "Reason record updated successfully." );
 		} catch ( Exception e ) {
@@ -112,7 +116,7 @@ public class ManualEnteringReasonWSImpl extends WebServiceCommon implements Manu
 			
 			ManualEnteringReason reason = new ManualEnteringReason( request.getReason().getId().intValue() );
 			reason.setProfile( profile );
-			this.getService( ManualEnteringReasonService.class ).delete( reason );
+			this.getService().delete( reason );
 			
 			return new Response( "Reason record deleted successfully." );
 		} catch ( Exception e ) {

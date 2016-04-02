@@ -13,12 +13,25 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import com.clkio.domain.User;
 import com.clkio.service.UserService;
 
-abstract class WebServiceCommon {
+abstract class WebServiceCommon< T > {
 
+	Class< T > target;
+	
+	WebServiceCommon() {
+	}
+	
+	WebServiceCommon( Class< T > defaultService ) {
+		this.target = defaultService;
+	}
+	
 	@Resource
 	private WebServiceContext wsContext;
 
-	protected < T > T getService( Class< T > target ) {
+	protected T getService() {
+		return this.getService( this.target );
+	}
+	
+	protected < E > E getService( Class< E > target ) {
 		ServletContext servletContext = ( ServletContext ) this.wsContext.getMessageContext().get( MessageContext.SERVLET_CONTEXT );
 		ApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext( servletContext );
 		return applicationContext.getBean( target );

@@ -22,15 +22,19 @@ import com.clkio.ws.domain.profile.ListProfileResponse;
 import com.clkio.ws.domain.profile.UpdateProfileRequest;
 
 @WebService( endpointInterface = "com.clkio.ws.ProfilePort" )
-public class ProfileWSImpl extends WebServiceCommon implements ProfilePort {
+public class ProfileWSImpl extends WebServiceCommon< ProfileService > implements ProfilePort {
 
 	private static final Logger LOG = Logger.getLogger( ProfileWSImpl.class );
+	
+	public ProfileWSImpl() {
+		super( ProfileService.class );
+	}
 	
 	@Override
 	public ListProfileResponse list( ListProfileRequest request ) throws ResponseException {
 		try {
 			ListProfileResponse response = new ListProfileResponse();
-			List< Profile > profiles = this.getService( ProfileService.class ).listBy( this.getCurrentUser() );
+			List< Profile > profiles = this.getService().listBy( this.getCurrentUser() );
 			if ( !CollectionUtils.isEmpty( profiles ) )
 				for ( Profile profile : profiles ) {
 					com.clkio.ws.domain.profile.Profile profileWs = 
@@ -73,7 +77,7 @@ public class ProfileWSImpl extends WebServiceCommon implements ProfilePort {
 			profile.setDefaultExpectedFriday( DurationUtil.fromString( request.getProfile().getExpectedFriday(), request.getProfile().getHoursFormat() ) );
 			profile.setDefaultExpectedSaturday( DurationUtil.fromString( request.getProfile().getExpectedSaturday(), request.getProfile().getHoursFormat() ) );
 			
-			this.getService( ProfileService.class ).insert( profile );
+			this.getService().insert( profile );
 			
 			return new Response( "Profile record stored successfully." );
 		} catch ( Exception e ) {
@@ -102,7 +106,7 @@ public class ProfileWSImpl extends WebServiceCommon implements ProfilePort {
 			profile.setDefaultExpectedFriday( DurationUtil.fromString( request.getProfile().getExpectedFriday(), request.getProfile().getHoursFormat() ) );
 			profile.setDefaultExpectedSaturday( DurationUtil.fromString( request.getProfile().getExpectedSaturday(), request.getProfile().getHoursFormat() ) );
 			
-			this.getService( ProfileService.class ).update( profile );
+			this.getService().update( profile );
 			
 			return new Response( "Profile record updated successfully." );
 		} catch ( Exception e ) {
@@ -121,7 +125,7 @@ public class ProfileWSImpl extends WebServiceCommon implements ProfilePort {
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( getCurrentUser() );
 			
-			this.getService( ProfileService.class ).delete( profile );
+			this.getService().delete( profile );
 			
 			return new Response( "Profile record deleted successfully." );
 		} catch ( Exception e ) {

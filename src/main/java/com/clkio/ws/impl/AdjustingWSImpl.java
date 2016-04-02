@@ -24,9 +24,13 @@ import com.clkio.ws.domain.adjusting.UpdateAdjustingRequest;
 import com.clkio.ws.domain.common.Response;
 
 @WebService( endpointInterface = "com.clkio.ws.AdjustingPort" )
-public class AdjustingWSImpl extends WebServiceCommon implements AdjustingPort {
+public class AdjustingWSImpl extends WebServiceCommon< AdjustingService > implements AdjustingPort {
 
 	private static final Logger LOG = Logger.getLogger( AdjustingWSImpl.class );
+	
+	public AdjustingWSImpl(){
+		super( AdjustingService.class );
+	}
 	
 	@Override
 	public ListAdjustingResponse list( ListAdjustingRequest request ) throws ResponseException {
@@ -40,7 +44,7 @@ public class AdjustingWSImpl extends WebServiceCommon implements AdjustingPort {
 			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
 					"No record found for the provided 'profile'." );
 
-			List< Adjusting > adjustings = this.getService( AdjustingService.class ).list( profile );
+			List< Adjusting > adjustings = this.getService().list( profile );
 			ListAdjustingResponse response = new ListAdjustingResponse();
 			if ( !CollectionUtils.isEmpty( adjustings ) )
 				for ( Adjusting adjusting : adjustings )
@@ -72,7 +76,7 @@ public class AdjustingWSImpl extends WebServiceCommon implements AdjustingPort {
 					DurationUtil.fromString( request.getAdjusting().getTimeInterval(), profile.getHoursFormat() ),
 					profile );
 			
-			this.getService( AdjustingService.class ).insert( adjusting );
+			this.getService().insert( adjusting );
 			
 			return new Response( "Profile record stored successfully." );
 		} catch ( Exception e ) {
@@ -99,7 +103,7 @@ public class AdjustingWSImpl extends WebServiceCommon implements AdjustingPort {
 					DurationUtil.fromString( request.getAdjusting().getTimeInterval(), profile.getHoursFormat() ),
 					profile );
 			
-			this.getService( AdjustingService.class ).update( adjusting );
+			this.getService().update( adjusting );
 			
 			return new Response( "Adjusting record updated successfully." );
 		} catch ( Exception e ) {
@@ -124,7 +128,7 @@ public class AdjustingWSImpl extends WebServiceCommon implements AdjustingPort {
 			Adjusting adjusting = new Adjusting( request.getAdjusting().getId().intValue() );
 			adjusting.setProfile( profile );
 			
-			this.getService( AdjustingService.class ).delete( adjusting );
+			this.getService().delete( adjusting );
 			
 			return new Response( "Adjusting record deleted successfully." );
 		} catch ( Exception e ) {

@@ -17,10 +17,14 @@ import com.clkio.ws.domain.login.DoLogoutRequest;
 import com.clkio.ws.domain.login.LoginResponse;
 
 @WebService( endpointInterface = "com.clkio.ws.LoginPort" )
-public class LoginWSImpl extends WebServiceCommon implements LoginPort {
+public class LoginWSImpl extends WebServiceCommon< LoginService > implements LoginPort {
 
 	private static final Logger LOG = Logger.getLogger( LoginWSImpl.class );
 
+	public LoginWSImpl() {
+		super( LoginService.class );
+	}
+	
 	@Override
 	public LoginResponse doLogin( DoLoginRequest request ) throws ResponseException {
 		try {
@@ -31,7 +35,7 @@ public class LoginWSImpl extends WebServiceCommon implements LoginPort {
 			com.clkio.domain.User user = new com.clkio.domain.User( new Email( request.getUser().getEmail() ), new Locale( request.getUser().getLocale() ) );
 			user.setPassword( request.getUser().getPassword(), false );
 			
-			return new LoginResponse( this.getService( LoginService.class ).login( user, this.getRequesterIP() ) );
+			return new LoginResponse( this.getService().login( user, this.getRequesterIP() ) );
 		} catch ( Exception e ) {
 			LOG.error( e );
 			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
@@ -43,7 +47,7 @@ public class LoginWSImpl extends WebServiceCommon implements LoginPort {
 		try {
 			Assert.notNull( request );
 			
-			this.getService( LoginService.class ).logout( this.getLoginCode() );
+			this.getService().logout( this.getLoginCode() );
 			
 			return new Response( "Logout succeeded." );
 		} catch ( Exception e ) {

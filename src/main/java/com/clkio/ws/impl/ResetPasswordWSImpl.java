@@ -21,9 +21,13 @@ import com.clkio.ws.domain.resetpassword.RequestResetPasswordRequest;
 import com.clkio.ws.domain.resetpassword.ResetPasswordRequest;
 
 @WebService( endpointInterface = "com.clkio.ws.ResetPasswordPort" )
-public class ResetPasswordWSImpl extends WebServiceCommon implements ResetPasswordPort {
+public class ResetPasswordWSImpl extends WebServiceCommon< RequestResetPasswordService > implements ResetPasswordPort {
 
 	private static final Logger LOG = Logger.getLogger( ResetPasswordWSImpl.class );
+	
+	public ResetPasswordWSImpl() {
+		super( RequestResetPasswordService.class );
+	}
 	
 	@Override
 	public Response requestResetPassword( RequestResetPasswordRequest request ) throws ResponseException {
@@ -35,7 +39,7 @@ public class ResetPasswordWSImpl extends WebServiceCommon implements ResetPasswo
 			Locale locale = StringUtils.hasText( request.getUser().getLocale() ) ? new Locale( request.getUser().getLocale() ) : Locale.getDefault();
 			User user = new User( new Email( request.getUser().getEmail() ), locale );
 			
-			this.getService( RequestResetPasswordService.class ).processRequest( new RequestResetPassword( user ) );
+			this.getService().processRequest( new RequestResetPassword( user ) );
 			
 			return new Response( "Request for reset password received successfully." );
 		} catch ( Exception e ) {
@@ -59,7 +63,7 @@ public class ResetPasswordWSImpl extends WebServiceCommon implements ResetPasswo
 			requestResetPassword.setRequestCodeValue( request.getRequestCode() );
 			
 			return new ConfirmResetPasswordResponse( 
-					this.getService( RequestResetPasswordService.class ).confirm( requestResetPassword ),
+					this.getService().confirm( requestResetPassword ),
 					"Confirmation processed successfully." );
 		} catch ( Exception e ) {
 			LOG.error( e );
@@ -81,7 +85,7 @@ public class ResetPasswordWSImpl extends WebServiceCommon implements ResetPasswo
 			requestResetPassword.setConfirmationCodeValue( request.getConfirmationCode() );
 			requestResetPassword.setNewPassword( request.getNewPassword() );
 			
-			this.getService( RequestResetPasswordService.class ).changePassword( requestResetPassword );
+			this.getService().changePassword( requestResetPassword );
 			
 			return new Response( "New password has been set successfully." );
 		} catch ( Exception e ) {
