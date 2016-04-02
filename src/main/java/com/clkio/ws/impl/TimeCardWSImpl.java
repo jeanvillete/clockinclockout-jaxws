@@ -193,13 +193,17 @@ public class TimeCardWSImpl extends WebServiceCommon implements TimeCardPort {
 			Assert.notNull( request );
 			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
 					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
+			Assert.state( request.getClockinclockout() != null && request.getClockinclockout().getId() != null,
+					"[clkiows] No 'clockinclockout' instance was found on the request or its 'id' property was not provided." );
 
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
 			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
 					"No record found for the provided 'profile'." );
 			
-			return null;
+			this.getService( TimeCardService.class ).delete( profile, new ClockinClockout( request.getClockinclockout().getId().intValue() ) );
+			
+			return new Response( "Service 'deleteClockinClockout' executed successfully." );
 		} catch ( Exception e ) {
 			LOG.error( e );
 			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
