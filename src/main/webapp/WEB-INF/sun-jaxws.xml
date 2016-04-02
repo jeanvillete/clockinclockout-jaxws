@@ -67,4 +67,13 @@
         port="{http://ws.clkio.com}ResetPasswordService"
         url-pattern="/requestresetpassword" />
 
+    <endpoint
+        name="timeCardService"
+        interface="com.clkio.ws.TimeCardPort"
+        implementation="com.clkio.ws.impl.TimeCardWSImpl"
+        wsdl="WEB-INF/wsdl/clkio.wsdl"
+        service="{http://ws.clkio.com}ClkIOWS"
+        port="{http://ws.clkio.com}TimeCardService"
+        url-pattern="/timecard" />
+
 </endpoints>

@@ -90,7 +90,7 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void punchClock( final Profile profile, final String clock ) {
+	public void punchClock( final Profile profile, final String timestamp ) {
 		Assert.state( profile != null && profile.getId() != null,
 				"Argument 'profile' and its 'id' property are mandatory." );
 		
@@ -98,9 +98,10 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 		LocalDateTime dateTime;
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( pattern );
-			dateTime = LocalDateTime.parse( clock, formatter );
+			dateTime = LocalDateTime.parse( timestamp, formatter );
 		} catch ( DateTimeParseException e ) {
-			throw new IllegalStateException( "Argument 'clock' doesn't meet the pattern for the provided 'profile': " + pattern );
+			throw new IllegalStateException( "The provided value for 'timestamp' was not valid for the pattern=[" + pattern + "]. "
+					+ "Remember that this pattern is the 'dateFormat' concatenated with 'hoursFormat' set on the profile, in case you want to change it." );
 		}
 		
 		LocalDate localDateDay = dateTime.toLocalDate();

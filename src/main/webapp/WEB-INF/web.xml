@@ -108,6 +108,16 @@
         <servlet-name>requestresetpasswordws</servlet-name>
         <url-pattern>/requestresetpassword</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <description>TimeCard WS</description>
+        <servlet-name>timecardws</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>timecardws</servlet-name>
+        <url-pattern>/timecard</url-pattern>
+    </servlet-mapping>
    
 	<session-config>
 		<session-timeout>1</session-timeout>
