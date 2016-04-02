@@ -328,13 +328,25 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 			Assert.notNull( request );
 			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
 					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
+			Assert.hasText( request.getDate(), "[clkiows] Argument 'date' is mandatory." );
 
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
 			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
 					"No record found for the provided 'profile'." );
 			
-			return null;
+			String dayPattern = profile.getDateFormat();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( dayPattern );
+			LocalDate day = null;
+			try {
+				day = LocalDate.parse( request.getDate(), formatter );
+			} catch ( DateTimeParseException e ) {
+				throw new IllegalStateException( "The provided value for 'date' was not valid for the pattern=[" + dayPattern + "]. " );
+			}
+			
+			this.getService().setNotes( profile, day, request.getText() );
+			
+			return new Response( "Service 'setNotes' executed successfully." );
 		} catch ( Exception e ) {
 			LOG.error( e );
 			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
@@ -347,6 +359,8 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 			Assert.notNull( request );
 			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
 					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
+			Assert.hasText( request.getDate(), "[clkiows] Argument 'date' is mandatory." );
+			Assert.hasText( request.getExpectedHours(), "[clkiows] Argument 'expectedHours' is mandatory." );
 
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
