@@ -38,7 +38,16 @@ public class GetTotalTimeMonthlyResponse
     @XmlElement(required = true)
     protected String totalTimeMonthly;
 
-    /**
+    public GetTotalTimeMonthlyResponse() {
+    	super();
+    }
+    
+    public GetTotalTimeMonthlyResponse( String totalTimeMonthly ) {
+		super();
+		this.totalTimeMonthly = totalTimeMonthly;
+	}
+
+	/**
      * Gets the value of the totalTimeMonthly property.
      * 
      * @return

@@ -38,6 +38,15 @@ public class GetTotalTimeResponse
     @XmlElement(required = true)
     protected String totalTime;
 
+    public GetTotalTimeResponse() {
+    	super();
+    }
+    
+    public GetTotalTimeResponse( String totalTime ) {
+    	super();
+    	this.totalTime = totalTime;
+    }
+    
     /**
      * Gets the value of the totalTime property.
      * 

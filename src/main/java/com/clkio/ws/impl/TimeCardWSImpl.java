@@ -2,6 +2,7 @@ package com.clkio.ws.impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
@@ -59,7 +60,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
 					"No record found for the provided 'profile'." );
 			
-			return null;
+			return new GetTotalTimeResponse( DurationUtil.fromDuration( this.getService().getTotalTime( profile ), profile.getHoursFormat() ) );
 		} catch ( Exception e ) {
 			LOG.error( e );
 			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
@@ -391,13 +392,23 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 			Assert.notNull( request );
 			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
 					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
+			Assert.hasText( request.getMonth(), "Argument 'month' is mandatory." );
 
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
 			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
 					"No record found for the provided 'profile'." );
 			
-			return null;
+			String pattern = "yyyy-MM";
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( pattern );
+			YearMonth month = null;
+			try {
+				month = YearMonth.parse( request.getMonth(), formatter );
+			} catch ( DateTimeParseException e ) {
+				throw new IllegalStateException( "The provided value for 'date' was not valid for the pattern=[" + pattern + "]. " );
+			}
+			
+			return new GetTotalTimeMonthlyResponse( DurationUtil.fromDuration( this.getService().getTotalTime( profile, month.atEndOfMonth() ), profile.getHoursFormat() ) );
 		} catch ( Exception e ) {
 			LOG.error( e );
 			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
