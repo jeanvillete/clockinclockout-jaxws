@@ -52,8 +52,19 @@ public class ManualEntering
     protected Reason reason;
     @XmlElement(required = true)
     protected Day day;
+    
+    public ManualEntering() {
+    	super();
+    }
 
-    /**
+    public ManualEntering( BigInteger id, String timeInterval, Reason reason ) {
+		super();
+		this.id = id;
+		this.timeInterval = timeInterval;
+		this.reason = reason;
+	}
+
+	/**
      * Gets the value of the id property.
      * 
      * @return

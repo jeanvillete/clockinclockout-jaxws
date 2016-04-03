@@ -53,7 +53,19 @@ public class Day {
     @XmlElement(required = true, nillable = true)
     protected List<DayEntering> tableEntering;
 
-    /**
+    public Day() {
+    	super();
+    }
+    
+    public Day( String date, String expectedHours, String balance, String notes ) {
+		super();
+		this.date = date;
+		this.expectedHours = expectedHours;
+		this.balance = balance;
+		this.notes = notes;
+	}
+
+	/**
      * Gets the value of the date property.
      * 
      * @return

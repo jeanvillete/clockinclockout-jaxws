@@ -35,9 +35,18 @@ public class GetTimeCardResponse
     extends Response
 {
 
-    @XmlElement(required = true)
+	@XmlElement(required = true)
     protected TimeCard timeCard;
+	
+	public GetTimeCardResponse() {
+		super();
+	}
 
+	public GetTimeCardResponse( TimeCard timeCard ) {
+		super();
+		this.timeCard = timeCard;
+	}
+	
     /**
      * Gets the value of the timeCard property.
      * 
