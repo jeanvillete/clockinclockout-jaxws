@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
-@WebServiceClient(name = "ClkIOWS", targetNamespace = "http://ws.clkio.com", wsdlLocation = "http://ws.clkio.com/clkio.wsdl")
+@WebServiceClient(name = "ClkIOWS", targetNamespace = "http://ws.clkio.com", wsdlLocation = "http://ws.clkio.com")
 public class ClkIOWS
     extends Service
 {
@@ -30,7 +30,7 @@ public class ClkIOWS
         URL url = null;
         WebServiceException e = null;
         try {
-            url = new URL("http://ws.clkio.com/clkio.wsdl");
+            url = new URL("http://ws.clkio.com");
         } catch (MalformedURLException ex) {
             e = new WebServiceException(ex);
         }

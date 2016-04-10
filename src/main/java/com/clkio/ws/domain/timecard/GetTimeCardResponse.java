@@ -35,7 +35,7 @@ public class GetTimeCardResponse
     extends Response
 {
 
-	@XmlElement(required = true)
+    @XmlElement(required = true)
     protected TimeCard timeCard;
 	
 	public GetTimeCardResponse() {
