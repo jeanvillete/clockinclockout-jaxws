@@ -8,3 +8,4 @@ https://github.com/jeanvillete/clockinclockout-jaxws/wiki
 
 Related projects;
 - clockinclockout-schemas; https://github.com/jeanvillete/clockinclockout-schemas
+- clockinclockout-rest; https://github.com/jeanvillete/clockinclockout-rest
