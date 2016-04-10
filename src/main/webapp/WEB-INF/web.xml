@@ -118,12 +118,16 @@
         <servlet-name>timecardws</servlet-name>
         <url-pattern>/timecard</url-pattern>
     </servlet-mapping>
+
+    <welcome-file-list>
+        <welcome-file>/WEB-INF/wsdl/clkio-jaxws.wsdl</welcome-file>
+    </welcome-file-list>
    
-	<session-config>
-		<session-timeout>1</session-timeout>
-		<cookie-config>
-			<max-age>0</max-age>
-		</cookie-config>
-	</session-config>
+    <session-config>
+        <session-timeout>1</session-timeout>
+        <cookie-config>
+            <max-age>0</max-age>
+        </cookie-config>
+    </session-config>
 
 </web-app>
