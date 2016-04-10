@@ -3,73 +3,73 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	version="1.0">
 
-	<jaxb:bindings schemaLocation="common.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/common']">
+	<jaxb:bindings schemaLocation="http://schemas.clkio.com/common.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/common']">
 		<jaxb:schemaBindings>
 			<jaxb:package name="com.clkio.ws.domain.common" />
 		</jaxb:schemaBindings>
 	</jaxb:bindings>
 
-	<jaxb:bindings schemaLocation="user.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/user']">
+	<jaxb:bindings schemaLocation="http://schemas.clkio.com/user.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/user']">
 		<jaxb:schemaBindings>
 			<jaxb:package name="com.clkio.ws.domain.user" />
 		</jaxb:schemaBindings>
 	</jaxb:bindings>
 
-	<jaxb:bindings schemaLocation="login.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/login']">
+	<jaxb:bindings schemaLocation="http://schemas.clkio.com/login.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/login']">
 		<jaxb:schemaBindings>
 			<jaxb:package name="com.clkio.ws.domain.login" />
 		</jaxb:schemaBindings>
 	</jaxb:bindings>
 
-	<jaxb:bindings schemaLocation="email.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/email']">
+	<jaxb:bindings schemaLocation="http://schemas.clkio.com/email.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/email']">
 		<jaxb:schemaBindings>
 			<jaxb:package name="com.clkio.ws.domain.email" />
 		</jaxb:schemaBindings>
 	</jaxb:bindings>
 
-	<jaxb:bindings schemaLocation="profile.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/profile']">
+	<jaxb:bindings schemaLocation="http://schemas.clkio.com/profile.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/profile']">
 		<jaxb:schemaBindings>
 			<jaxb:package name="com.clkio.ws.domain.profile" />
 		</jaxb:schemaBindings>
 	</jaxb:bindings>
 
-	<jaxb:bindings schemaLocation="adjusting.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/adjusting']">
+	<jaxb:bindings schemaLocation="http://schemas.clkio.com/adjusting.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/adjusting']">
 		<jaxb:schemaBindings>
 			<jaxb:package name="com.clkio.ws.domain.adjusting" />
 		</jaxb:schemaBindings>
 	</jaxb:bindings>
 
-	<jaxb:bindings schemaLocation="reason.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/reason']">
+	<jaxb:bindings schemaLocation="http://schemas.clkio.com/reason.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/reason']">
 		<jaxb:schemaBindings>
 			<jaxb:package name="com.clkio.ws.domain.reason" />
 		</jaxb:schemaBindings>
 	</jaxb:bindings>
 
-	<jaxb:bindings schemaLocation="timecard.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/timecard']">
+	<jaxb:bindings schemaLocation="http://schemas.clkio.com/timecard.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/timecard']">
 		<jaxb:schemaBindings>
 			<jaxb:package name="com.clkio.ws.domain.timecard" />
 		</jaxb:schemaBindings>
 	</jaxb:bindings>
 
-	<jaxb:bindings schemaLocation="resetpassword.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/resetpassword']">
+	<jaxb:bindings schemaLocation="http://schemas.clkio.com/resetpassword.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/resetpassword']">
 		<jaxb:schemaBindings>
 			<jaxb:package name="com.clkio.ws.domain.resetpassword" />
 		</jaxb:schemaBindings>
 	</jaxb:bindings>
 
-	<jaxb:bindings schemaLocation="clockinclockout.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/clockinclockout']">
+	<jaxb:bindings schemaLocation="http://schemas.clkio.com/clockinclockout.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/clockinclockout']">
 		<jaxb:schemaBindings>
 			<jaxb:package name="com.clkio.ws.domain.clockinclockout" />
 		</jaxb:schemaBindings>
 	</jaxb:bindings>
 
-	<jaxb:bindings schemaLocation="day.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/day']">
+	<jaxb:bindings schemaLocation="http://schemas.clkio.com/day.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/day']">
 		<jaxb:schemaBindings>
 			<jaxb:package name="com.clkio.ws.domain.day" />
 		</jaxb:schemaBindings>
 	</jaxb:bindings>
 
-	<jaxb:bindings schemaLocation="manualentering.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/manualentering']">
+	<jaxb:bindings schemaLocation="http://schemas.clkio.com/manualentering.xsd" node="//xsd:schema[@targetNamespace='http://schemas.clkio.com/manualentering']">
 		<jaxb:schemaBindings>
 			<jaxb:package name="com.clkio.ws.domain.manualentering" />
 		</jaxb:schemaBindings>

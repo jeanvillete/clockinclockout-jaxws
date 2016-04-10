@@ -8,7 +8,7 @@
         name="userService"
         interface="com.clkio.ws.UserPort"
         implementation="com.clkio.ws.impl.UserWSImpl"
-        wsdl="WEB-INF/wsdl/clkio.wsdl"
+        wsdl="WEB-INF/wsdl/clkio-jaxws.wsdl"
         service="{http://ws.clkio.com}ClkIOWS"
         port="{http://ws.clkio.com}UserService"
         url-pattern="/user" />
@@ -17,7 +17,7 @@
         name="userService"
         interface="com.clkio.ws.LoginPort"
         implementation="com.clkio.ws.impl.LoginWSImpl"
-        wsdl="WEB-INF/wsdl/clkio.wsdl"
+        wsdl="WEB-INF/wsdl/clkio-jaxws.wsdl"
         service="{http://ws.clkio.com}ClkIOWS"
         port="{http://ws.clkio.com}LoginService"
         url-pattern="/login" />
@@ -26,7 +26,7 @@
         name="emailService"
         interface="com.clkio.ws.EmailPort"
         implementation="com.clkio.ws.impl.EmailWSImpl"
-        wsdl="WEB-INF/wsdl/clkio.wsdl"
+        wsdl="WEB-INF/wsdl/clkio-jaxws.wsdl"
         service="{http://ws.clkio.com}ClkIOWS"
         port="{http://ws.clkio.com}EmailService"
         url-pattern="/email" />
@@ -35,7 +35,7 @@
         name="profileService"
         interface="com.clkio.ws.ProfilePort"
         implementation="com.clkio.ws.impl.ProfileWSImpl"
-        wsdl="WEB-INF/wsdl/clkio.wsdl"
+        wsdl="WEB-INF/wsdl/clkio-jaxws.wsdl"
         service="{http://ws.clkio.com}ClkIOWS"
         port="{http://ws.clkio.com}ProfileService"
         url-pattern="/profile" />
@@ -44,7 +44,7 @@
         name="adjustingService"
         interface="com.clkio.ws.AdjustingPort"
         implementation="com.clkio.ws.impl.AdjustingWSImpl"
-        wsdl="WEB-INF/wsdl/clkio.wsdl"
+        wsdl="WEB-INF/wsdl/clkio-jaxws.wsdl"
         service="{http://ws.clkio.com}ClkIOWS"
         port="{http://ws.clkio.com}AdjustingService"
         url-pattern="/adjusting" />
@@ -53,7 +53,7 @@
         name="manualEnteringReasonService"
         interface="com.clkio.ws.ManualEnteringReasonPort"
         implementation="com.clkio.ws.impl.ManualEnteringReasonWSImpl"
-        wsdl="WEB-INF/wsdl/clkio.wsdl"
+        wsdl="WEB-INF/wsdl/clkio-jaxws.wsdl"
         service="{http://ws.clkio.com}ClkIOWS"
         port="{http://ws.clkio.com}ManualEnteringReasonService"
         url-pattern="/manualenteringreason" />
@@ -62,7 +62,7 @@
         name="resetPasswordService"
         interface="com.clkio.ws.ResetPasswordPort"
         implementation="com.clkio.ws.impl.ResetPasswordWSImpl"
-        wsdl="WEB-INF/wsdl/clkio.wsdl"
+        wsdl="WEB-INF/wsdl/clkio-jaxws.wsdl"
         service="{http://ws.clkio.com}ClkIOWS"
         port="{http://ws.clkio.com}ResetPasswordService"
         url-pattern="/requestresetpassword" />
@@ -71,7 +71,7 @@
         name="timeCardService"
         interface="com.clkio.ws.TimeCardPort"
         implementation="com.clkio.ws.impl.TimeCardWSImpl"
-        wsdl="WEB-INF/wsdl/clkio.wsdl"
+        wsdl="WEB-INF/wsdl/clkio-jaxws.wsdl"
         service="{http://ws.clkio.com}ClkIOWS"
         port="{http://ws.clkio.com}TimeCardService"
         url-pattern="/timecard" />

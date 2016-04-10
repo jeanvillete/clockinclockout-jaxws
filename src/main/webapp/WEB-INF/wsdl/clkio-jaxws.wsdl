@@ -19,18 +19,18 @@
 			xmlns:resetpassword="http://schemas.clkio.com/resetpassword"
 			xmlns:xs="http://www.w3.org/2001/XMLSchema">
 			
-			<xs:import namespace="http://schemas.clkio.com/common" schemaLocation="common.xsd" />
-			<xs:import namespace="http://schemas.clkio.com/user" schemaLocation="user.xsd" />
-			<xs:import namespace="http://schemas.clkio.com/login" schemaLocation="login.xsd" />
-			<xs:import namespace="http://schemas.clkio.com/email" schemaLocation="email.xsd" />
-			<xs:import namespace="http://schemas.clkio.com/profile" schemaLocation="profile.xsd" />
-			<xs:import namespace="http://schemas.clkio.com/adjusting" schemaLocation="adjusting.xsd" />
-			<xs:import namespace="http://schemas.clkio.com/reason" schemaLocation="reason.xsd" />
-			<xs:import namespace="http://schemas.clkio.com/timecard" schemaLocation="timecard.xsd" />
-			<xs:import namespace="http://schemas.clkio.com/resetpassword" schemaLocation="resetpassword.xsd" />
-			<xs:import namespace="http://schemas.clkio.com/clockinclockout" schemaLocation="clockinclockout.xsd" />
-			<xs:import namespace="http://schemas.clkio.com/day" schemaLocation="day.xsd" />
-			<xs:import namespace="http://schemas.clkio.com/manualentering" schemaLocation="manualentering.xsd" />
+			<xs:import namespace="http://schemas.clkio.com/common" schemaLocation="http://schemas.clkio.com/common.xsd" />
+			<xs:import namespace="http://schemas.clkio.com/user" schemaLocation="http://schemas.clkio.com/user.xsd" />
+			<xs:import namespace="http://schemas.clkio.com/login" schemaLocation="http://schemas.clkio.com/login.xsd" />
+			<xs:import namespace="http://schemas.clkio.com/email" schemaLocation="http://schemas.clkio.com/email.xsd" />
+			<xs:import namespace="http://schemas.clkio.com/profile" schemaLocation="http://schemas.clkio.com/profile.xsd" />
+			<xs:import namespace="http://schemas.clkio.com/adjusting" schemaLocation="http://schemas.clkio.com/adjusting.xsd" />
+			<xs:import namespace="http://schemas.clkio.com/reason" schemaLocation="http://schemas.clkio.com/reason.xsd" />
+			<xs:import namespace="http://schemas.clkio.com/timecard" schemaLocation="http://schemas.clkio.com/timecard.xsd" />
+			<xs:import namespace="http://schemas.clkio.com/resetpassword" schemaLocation="http://schemas.clkio.com/resetpassword.xsd" />
+			<xs:import namespace="http://schemas.clkio.com/clockinclockout" schemaLocation="http://schemas.clkio.com/clockinclockout.xsd" />
+			<xs:import namespace="http://schemas.clkio.com/day" schemaLocation="http://schemas.clkio.com/day.xsd" />
+			<xs:import namespace="http://schemas.clkio.com/manualentering" schemaLocation="http://schemas.clkio.com/manualentering.xsd" />
 
 			<xs:element type="common:response" name="response" nillable="false"/>
 			<xs:element type="common:responseException" name="responseException" nillable="false"/>
@@ -871,28 +871,28 @@
 	<!-- port services -->
 	<wsdl:service name="ClkIOWS">
 		<wsdl:port name="UserService" binding="clkws:UserBinding">
-			<soap:address location="REPLACE_WITH_ACTUAL_URL" />
+			<soap:address location="http://ws.clkio.com/user" />
 		</wsdl:port>
 		<wsdl:port name="LoginService" binding="clkws:LoginBinding">
-			<soap:address location="REPLACE_WITH_ACTUAL_URL" />
+			<soap:address location="http://ws.clkio.com/login" />
 		</wsdl:port>
 		<wsdl:port name="EmailService" binding="clkws:EmailBinding">
-			<soap:address location="REPLACE_WITH_ACTUAL_URL" />
+			<soap:address location="http://ws.clkio.com/email" />
 		</wsdl:port>
 		<wsdl:port name="ProfileService" binding="clkws:ProfileBinding">
-			<soap:address location="REPLACE_WITH_ACTUAL_URL" />
+			<soap:address location="http://ws.clkio.com/profile" />
 		</wsdl:port>
 		<wsdl:port name="AdjustingService" binding="clkws:AdjustingBinding">
-			<soap:address location="REPLACE_WITH_ACTUAL_URL" />
+			<soap:address location="http://ws.clkio.com/adjusting" />
 		</wsdl:port>
 		<wsdl:port name="ManualEnteringReasonService" binding="clkws:ManualEnteringReasonBinding">
-			<soap:address location="REPLACE_WITH_ACTUAL_URL" />
+			<soap:address location="http://ws.clkio.com/manualenteringreason" />
 		</wsdl:port>
 		<wsdl:port name="TimeCardService" binding="clkws:TimeCardBinding">
-			<soap:address location="REPLACE_WITH_ACTUAL_URL" />
+			<soap:address location="http://ws.clkio.com/timecard" />
 		</wsdl:port>
 		<wsdl:port name="ResetPasswordService" binding="clkws:ResetPasswordBinding">
-			<soap:address location="REPLACE_WITH_ACTUAL_URL" />
+			<soap:address location="http://ws.clkio.com/requestresetpassword" />
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>
