@@ -8,10 +8,13 @@ import com.clkio.domain.EmailResetPassword;
 import com.clkio.domain.NewEmailConfirmation;
 import com.clkio.domain.NewUserEmailConfirmation;
 import com.clkio.domain.User;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.ConflictException;
+import com.clkio.exception.PersistenceException;
 
 public interface EmailService {
 
-	void insert( Email email );
+	void insert( Email email ) throws ValidationException, PersistenceException, ConflictException;
 	
 	void send( NewUserEmailConfirmation emailConfirmation );
 	
@@ -23,16 +26,17 @@ public interface EmailService {
 	 * Checks if the emailAddress exists on the database.
 	 * @param email
 	 * @return
+	 * @throws ValidationException 
 	 */
-	boolean exists( Email email );
+	boolean exists( Email email ) throws ValidationException;
 	
-	void confirm( Email email );
+	void confirm( Email email ) throws ValidationException, PersistenceException;
 
-	void delete( Email email );
+	void delete( Email email ) throws ValidationException, PersistenceException, ConflictException;
 	
-	Email get( Email email );
+	Email get( Email email ) throws ValidationException, PersistenceException;
 	
-	List< Email > list( User user );
+	List< Email > list( User user ) throws ValidationException;
 	
 	/**
 	 * This is meant for bring a synchronized instance from database based and the parameters 'emailAddress' and 'isPrimary',
@@ -40,12 +44,14 @@ public interface EmailService {
 	 * @param emailAddress
 	 * @param isPrimary
 	 * @return
+	 * @throws ValidationException 
+	 * @throws PersistenceException 
 	 */
-	Email getBy( String emailAddress, boolean isPrimary );
+	Email getBy( String emailAddress, boolean isPrimary ) throws ValidationException, PersistenceException;
 	
-	List< Email > listPrimaryNotConfirmed( LocalDateTime date );
+	List< Email > listPrimaryNotConfirmed( LocalDateTime date ) throws ValidationException;
 	
-	void deleteNotPrimaryNotConfirmed( LocalDateTime date );
+	void deleteNotPrimaryNotConfirmed( LocalDateTime date ) throws ValidationException;
 	
-	void setAsPrimary( Email email );
+	void setAsPrimary( Email email ) throws ValidationException, PersistenceException, ConflictException;
 }

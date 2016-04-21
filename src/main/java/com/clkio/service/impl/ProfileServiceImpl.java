@@ -10,12 +10,16 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import com.clkio.domain.Adjusting;
 import com.clkio.domain.Day;
 import com.clkio.domain.ManualEnteringReason;
 import com.clkio.domain.Profile;
 import com.clkio.domain.User;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.ConflictException;
+import com.clkio.exception.PersistenceException;
 import com.clkio.repository.ProfileRepository;
 import com.clkio.service.AdjustingService;
 import com.clkio.service.DayService;
@@ -47,23 +51,28 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 	
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void insert( final Profile profile ) {
-		Assert.notNull( profile );
-		Assert.state( !this.exists( profile.getDescription(), profile.getUser() ), "It does already exist a record with the given description associated with the provided user." );
-		Assert.state( this.repository.insert( profile ), "Some problem happened while performing insert for 'profile' record." );
+	public void insert( final Profile profile ) throws PersistenceException, ValidationException, ConflictException {
+		if ( profile == null )
+			throw new ValidationException( "Argument profile is mandatory." );
+		if ( this.exists( profile.getDescription(), profile.getUser() ) )
+			throw new ConflictException( "It does already exist a record with the given description associated with the provided user." );
+		if ( !this.repository.insert( profile ) )
+			throw new PersistenceException( "Some problem happened while performing insert for 'profile' record." );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true)
-	public List< Profile > listBy( final User user ) {
-		Assert.notNull( user );
+	public List< Profile > listBy( final User user ) throws ValidationException {
+		if ( user == null )
+			throw new ValidationException( "Argument user is mandatory." );
 		return this.repository.listBy( user );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void delete( final Profile profile ) {
-		Assert.notNull( profile );
+	public void delete( final Profile profile ) throws ValidationException, PersistenceException {
+		if ( profile == null )
+			throw new ValidationException( "Argument profile is mandatory." );
 		
 		List< Adjusting > listAdjusting = this.adjustingService.list( profile );
 		if ( !CollectionUtils.isEmpty( listAdjusting ) )
@@ -80,13 +89,15 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 			for ( ManualEnteringReason manualEnteringReason : listManualEnteringReason )
 				this.manualEnteringReasonService.delete( manualEnteringReason );
 		
-		Assert.state( this.repository.delete( profile ), "Some problem happened while performing a delete for 'profile' record." );
+		if ( !this.repository.delete( profile ) )
+			throw new PersistenceException( "It was not possbile performing a delete for 'profile' record." );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true)
-	public Profile get( final Profile profile ) {
-		Assert.notNull( profile, "Argument 'profile' is mandatory." );
+	public Profile get( final Profile profile ) throws ValidationException, PersistenceException {
+		if ( profile == null )
+			throw new ValidationException( "Argument profile is mandatory." );
 		try {
 			return this.repository.get( profile );
 		} catch ( EmptyResultDataAccessException e ) {
@@ -96,26 +107,34 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean exists( final String description, final User user ) {
-		Assert.hasText( description, "Argument 'description' is mandatory." );
-		Assert.notNull( user, "Argument 'user' is mandatory." );
+	public boolean exists( final String description, final User user ) throws ValidationException {
+		if ( !StringUtils.hasText( description ) )
+			throw new ValidationException( "Argument 'description' is mandatory." );
+		if ( user == null )
+			throw new ValidationException( "Argument 'user' is mandatory." );
 		return this.repository.exists( description, user );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void update( final Profile profile ) {
-		Assert.notNull( profile, "Argument 'profile' is mandatory." );
-		Assert.state( !this.exists( profile.getDescription(), profile.getUser(), profile.getId() ), "It does already exist a record with the given description associated with the provided user." );
-		Assert.state( this.repository.update( profile ), "Some problem happened while performing update on 'profile' record." );
+	public void update( final Profile profile ) throws ValidationException, ConflictException, PersistenceException {
+		if ( profile == null )
+			throw new ValidationException( "Argument profile is mandatory." );
+		if ( this.exists( profile.getDescription(), profile.getUser(), profile.getId() ) )
+			throw new ConflictException( "It does already exist a record with the given description associated with the provided user." );
+		if ( !this.repository.update( profile ) )
+			throw new PersistenceException( "It was not possible performing update on 'profile' record." );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean exists( final String description, final User user, final Integer id ) {
-		Assert.hasText( description, "Argument 'description' is mandatory." );
-		Assert.notNull( user, "Argument 'user' is mandatory." );
-		Assert.notNull( id, "Argument 'id' is mandatory." );
+	public boolean exists( final String description, final User user, final Integer id ) throws ValidationException {
+		if ( !StringUtils.hasText( description ) )
+			throw new ValidationException( "Argument 'description' is mandatory." );
+		if ( user == null )
+			throw new ValidationException( "Argument 'user' is mandatory." );
+		if ( id == null )
+			throw new ValidationException( "Argument 'id' is mandatory." );
 		return this.repository.exists( description, user, id );
 	}
 

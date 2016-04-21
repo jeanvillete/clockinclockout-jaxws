@@ -1,6 +1,6 @@
 package com.clkio.domain;
 
-import org.springframework.util.Assert;
+import com.clkio.exception.DomainValidationException;
 
 abstract class CommonDomain {
 
@@ -16,7 +16,7 @@ abstract class CommonDomain {
 	}
 	
 	public void setId( Integer id ) {
-		Assert.state( id == null || id > 0, "Argument id has to be greater than 0." );
+		if( id != null && id <= 0 ) throw new DomainValidationException( "Argument id has to be greater than 0." );
 		this.id = id;
 	}
 	

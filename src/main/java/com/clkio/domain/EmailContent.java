@@ -5,7 +5,9 @@ import java.net.URLEncoder;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
+import com.clkio.exception.DomainValidationException;
 
 public abstract class EmailContent {
 
@@ -21,8 +23,8 @@ public abstract class EmailContent {
 	public EmailContent( String velocityResource, Email email ) {
 		super();
 		
-		Assert.hasText( velocityResource );
-		Assert.notNull( email, "Argument email cannot be null.");
+		if( !StringUtils.hasText( velocityResource ) ) throw new DomainValidationException( "Argument 'velocityResource' is mandatory." );
+		if( email == null ) throw new DomainValidationException( "Argument email cannot be null.");
 		
 		this.email = email;
 		this.velocityResource = velocityResource + email.getUser().getLocale().getLanguage().toLowerCase() + ".vm";
@@ -54,12 +56,12 @@ public abstract class EmailContent {
 	}
 
 	public String getHash() {
-		Assert.hasText( hash, "The property 'hash' has not been initialized yet." );
+		if ( !StringUtils.hasText( hash ) ) throw new DomainValidationException( "The property 'hash' has not been initialized yet." );
 		return hash;
 	}
 
 	public String getEncodedHash() {
-		Assert.hasText( encodedHash, "The property 'encodedHash' has not been initialized yet." );
+		if ( !StringUtils.hasText( encodedHash ) ) throw new DomainValidationException( "The property 'encodedHash' has not been initialized yet." );
 		return encodedHash;
 	}
 

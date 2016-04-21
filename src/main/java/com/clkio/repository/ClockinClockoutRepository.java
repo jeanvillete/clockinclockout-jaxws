@@ -17,14 +17,14 @@ import com.clkio.rowmapper.RowMapperUtil;
 @Repository
 public class ClockinClockoutRepository extends CommonRepository {
 
-	public void insert( final ClockinClockout clockinClockout ) {
+	public boolean insert( final ClockinClockout clockinClockout ) {
 		clockinClockout.setId( this.nextVal( "CLOCKINCLOCKOUT_SEQ" ) );
-		this.jdbcTemplate.update( " INSERT INTO CLOCKINCLOCKOUT ( ID, ID_DAY, CLOCKIN, CLOCKOUT ) "
+		return this.jdbcTemplate.update( " INSERT INTO CLOCKINCLOCKOUT ( ID, ID_DAY, CLOCKIN, CLOCKOUT ) "
 				+ " VALUES ( ?, ?, ?, ?) ",
 				new Object[]{ clockinClockout.getId(),
 						clockinClockout.getDay().getId(),
 						LocalDateTimeUtil.getTimestamp( clockinClockout.getClockin() ),
-						LocalDateTimeUtil.getTimestamp( clockinClockout.getClockout() ) });
+						LocalDateTimeUtil.getTimestamp( clockinClockout.getClockout() ) }) == 1;
 	}
 
 	public boolean delete( final Profile profile, final ClockinClockout clockinClockout ) {

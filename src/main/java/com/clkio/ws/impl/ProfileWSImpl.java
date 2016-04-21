@@ -7,13 +7,16 @@ import javax.jws.WebService;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
-import org.springframework.util.Assert;
 
 import com.clkio.common.DurationUtil;
 import com.clkio.domain.Profile;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.ClkioException;
+import com.clkio.exception.ClkioRuntimeException;
 import com.clkio.service.ProfileService;
 import com.clkio.ws.ProfilePort;
 import com.clkio.ws.ResponseException;
+import com.clkio.ws.domain.common.InternalServerError;
 import com.clkio.ws.domain.common.Response;
 import com.clkio.ws.domain.profile.DeleteProfileRequest;
 import com.clkio.ws.domain.profile.InsertProfileRequest;
@@ -33,6 +36,9 @@ public class ProfileWSImpl extends WebServiceCommon< ProfileService > implements
 	@Override
 	public ListProfileResponse list( ListProfileRequest request ) throws ResponseException {
 		try {
+			if ( request == null )
+				throw new ValidationException( "No valid request was provided." );
+			
 			ListProfileResponse response = new ListProfileResponse();
 			List< Profile > profiles = this.getService().listBy( this.getCurrentUser() );
 			if ( !CollectionUtils.isEmpty( profiles ) )
@@ -53,17 +59,25 @@ public class ProfileWSImpl extends WebServiceCommon< ProfileService > implements
 				}
 			
 			return response;
+		} catch ( ClkioException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
+		} catch ( ClkioRuntimeException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
 		} catch ( Exception e ) {
 			LOG.error( e );
-			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+			throw new ResponseException( e.getMessage(), new InternalServerError() );
 		}
 	}
 
 	@Override
 	public Response insert( InsertProfileRequest request ) throws ResponseException {
 		try {
-			Assert.notNull( request );
-			Assert.notNull( request.getProfile(), "[clkiows] No 'profile' instance was found on the request." );
+			if ( request == null )
+				throw new ValidationException( "No valid request was provided." );
+			if ( request.getProfile() == null )
+				throw new ValidationException( "No 'profile' instance was found on the request." );
 			
 			Profile profile = new Profile( this.getCurrentUser(),
 					request.getProfile().getDescription(),
@@ -80,18 +94,25 @@ public class ProfileWSImpl extends WebServiceCommon< ProfileService > implements
 			this.getService().insert( profile );
 			
 			return new Response( "Profile record stored successfully." );
+		} catch ( ClkioException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
+		} catch ( ClkioRuntimeException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
 		} catch ( Exception e ) {
 			LOG.error( e );
-			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+			throw new ResponseException( e.getMessage(), new InternalServerError() );
 		}
 	}
 
 	@Override
 	public Response update( UpdateProfileRequest request ) throws ResponseException {
 		try {
-			Assert.notNull( request );
-			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
-					"[clkiows] No 'profile' instance was found on the request or its 'id' property is null." );
+			if ( request == null )
+				throw new ValidationException( "No valid request was provided." );
+			if ( request.getProfile() == null || request.getProfile().getId() == null )
+				throw new ValidationException( "No 'profile' instance was found on the request or its 'id' property is null." );
 			
 			Profile profile = new Profile( request.getProfile().getId().intValue(),
 					this.getCurrentUser(),
@@ -109,18 +130,25 @@ public class ProfileWSImpl extends WebServiceCommon< ProfileService > implements
 			this.getService().update( profile );
 			
 			return new Response( "Profile record updated successfully." );
+		} catch ( ClkioException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
+		} catch ( ClkioRuntimeException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
 		} catch ( Exception e ) {
 			LOG.error( e );
-			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+			throw new ResponseException( e.getMessage(), new InternalServerError() );
 		}
 	}
 
 	@Override
 	public Response delete( DeleteProfileRequest request ) throws ResponseException {
 		try {
-			Assert.notNull( request );
-			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
-					"[clkiows] No 'profile' instance was found on the request or its 'id' property is null." );
+			if ( request == null )
+				throw new ValidationException( "No valid request was provided." );
+			if ( request.getProfile() == null || request.getProfile().getId() == null )
+				throw new ValidationException( "No 'profile' instance was found on the request or its 'id' property is null." );
 			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( getCurrentUser() );
@@ -128,9 +156,15 @@ public class ProfileWSImpl extends WebServiceCommon< ProfileService > implements
 			this.getService().delete( profile );
 			
 			return new Response( "Profile record deleted successfully." );
+		} catch ( ClkioException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
+		} catch ( ClkioRuntimeException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
 		} catch ( Exception e ) {
 			LOG.error( e );
-			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+			throw new ResponseException( e.getMessage(), new InternalServerError() );
 		}
 	}
 

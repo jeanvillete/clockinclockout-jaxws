@@ -2,7 +2,9 @@ package com.clkio.domain;
 
 import java.time.LocalDateTime;
 
-import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
+import com.clkio.exception.DomainValidationException;
 
 public class Email extends CommonDomain {
 
@@ -34,12 +36,12 @@ public class Email extends CommonDomain {
 	}
 
 	public void setAddress( String address ) {
-		Assert.hasLength( address, "Argument address cannot be null nor empty." );
+		if ( !StringUtils.hasLength( address ) ) throw new DomainValidationException( "Argument address cannot be null nor empty." );
 		this.address = address;
 	}
 
 	public void setRecordedTime( LocalDateTime recordedTime ) {
-		Assert.notNull( recordedTime, "Argument recordedTime cannot be null." );
+		if( recordedTime == null ) throw new DomainValidationException( "Argument recordedTime cannot be null." );
 		this.recordedTime = recordedTime;
 	}
 
@@ -48,7 +50,7 @@ public class Email extends CommonDomain {
 	}
 
 	public void setConfirmationCode( String confirmationCode ) {
-		Assert.hasLength( confirmationCode, "Argument confirmationCode cannot be null nor empty." );
+		if ( !StringUtils.hasLength( confirmationCode ) ) throw new DomainValidationException( "Argument confirmationCode cannot be null nor empty." );
 		this.confirmationCode = confirmationCode;
 	}
 
@@ -57,7 +59,7 @@ public class Email extends CommonDomain {
 	}
 
 	public void setUser( User user ) {
-		Assert.notNull( user, "Argument user cannot be null." );
+		if( user == null ) throw new DomainValidationException( "Argument user cannot be null." );
 		this.user = user;
 	}
 
@@ -66,7 +68,7 @@ public class Email extends CommonDomain {
 	}
 
 	public LocalDateTime getRecordedTime() {
-		Assert.notNull( recordedTime, "Argument 'recordedTime' cannot be null." );
+		if( recordedTime == null ) throw new DomainValidationException( "Argument 'recordedTime' cannot be null." );
 		return recordedTime;
 	}
 

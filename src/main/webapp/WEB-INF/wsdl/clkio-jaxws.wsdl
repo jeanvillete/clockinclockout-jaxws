@@ -33,7 +33,7 @@
 			<xs:import namespace="http://schemas.clkio.com/manualentering" schemaLocation="http://schemas.clkio.com/manualentering.xsd" />
 
 			<xs:element type="common:response" name="response" nillable="false"/>
-			<xs:element type="common:responseException" name="responseException" nillable="false"/>
+			<xs:element type="common:responseFault" name="responseFault" nillable="false"/>
 			
 			<xs:element type="user:insertUserRequest" name="insertUserRequest" nillable="false"/>
 			
@@ -94,7 +94,7 @@
 		<wsdl:part name="result" element="clkio:response" />
 	</wsdl:message>
 	<wsdl:message name="responseException">
-		<wsdl:part name="exception" element="clkio:responseException" />
+		<wsdl:part name="exception" element="clkio:responseFault" />
 	</wsdl:message>
 	<wsdl:message name="insertUserRequest">
 		<wsdl:part name="request" element="clkio:insertUserRequest" />

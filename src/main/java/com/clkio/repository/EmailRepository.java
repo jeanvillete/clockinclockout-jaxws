@@ -13,16 +13,16 @@ import com.clkio.rowmapper.EmailRowMapper;
 @Repository
 public class EmailRepository extends CommonRepository {
 
-	public void insert( final Email email ) {
+	public boolean insert( final Email email ) {
 		email.setId( this.nextVal( "EMAIL_SEQ" ) );
-		this.jdbcTemplate.update( " INSERT INTO EMAIL ( ID, ID_CLK_USER, ADDRESS, RECORDED_TIME, CONFIRMATION_CODE, CONFIRMATION_DATE, IS_PRIMARY ) VALUES ( ?, ?, ?, ?, ?, ?, ? ) ",
+		return this.jdbcTemplate.update( " INSERT INTO EMAIL ( ID, ID_CLK_USER, ADDRESS, RECORDED_TIME, CONFIRMATION_CODE, CONFIRMATION_DATE, IS_PRIMARY ) VALUES ( ?, ?, ?, ?, ?, ?, ? ) ",
 				new Object[]{ email.getId(),
 						email.getUser().getId(),
 						email.getAddress(),
 						LocalDateTimeUtil.getTimestamp( email.getRecordedTime() ),
 						email.getConfirmationCode(),
 						LocalDateTimeUtil.getTimestamp( email.getConfirmationDate() ),
-						email.isPrimary() });
+						email.isPrimary() }) == 1;
 	}
 
 	public boolean exists( final Email email ) {

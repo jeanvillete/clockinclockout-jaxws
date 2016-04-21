@@ -6,15 +6,18 @@ import java.util.List;
 import javax.jws.WebService;
 
 import org.apache.log4j.Logger;
-import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import com.clkio.domain.ManualEnteringReason;
 import com.clkio.domain.Profile;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.ClkioException;
+import com.clkio.exception.ClkioRuntimeException;
 import com.clkio.service.ManualEnteringReasonService;
 import com.clkio.service.ProfileService;
 import com.clkio.ws.ManualEnteringReasonPort;
 import com.clkio.ws.ResponseException;
+import com.clkio.ws.domain.common.InternalServerError;
 import com.clkio.ws.domain.common.Response;
 import com.clkio.ws.domain.reason.DeleteManualEnteringReasonRequest;
 import com.clkio.ws.domain.reason.InsertManualEnteringReasonRequest;
@@ -35,9 +38,10 @@ public class ManualEnteringReasonWSImpl extends WebServiceCommon< ManualEntering
 	@Override
 	public ListManualEnteringReasonResponse list( ListManualEnteringReasonRequest request ) throws ResponseException {
 		try {
-			Assert.notNull( request );
-			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
-					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
+			if ( request == null )
+				throw new ValidationException( "No valid request was provided." );
+			if ( request.getProfile() == null || request.getProfile().getId() == null )
+				throw new ValidationException( "No 'profile' instance was found on the request or its 'id' property was not provided." );
 			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
@@ -49,79 +53,110 @@ public class ManualEnteringReasonWSImpl extends WebServiceCommon< ManualEntering
 					response.getReasons().add( new Reason( new BigInteger( reason.getId().toString() ), reason.getReason() ) );
 			
 			return response;
+		} catch ( ClkioException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
+		} catch ( ClkioRuntimeException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
 		} catch ( Exception e ) {
 			LOG.error( e );
-			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+			throw new ResponseException( e.getMessage(), new InternalServerError() );
 		}
 	}
 
 	@Override
 	public Response insert( InsertManualEnteringReasonRequest request ) throws ResponseException {
 		try {
-			Assert.notNull( request );
-			Assert.notNull( request.getReason(), "[clkiows] No 'reason' instance was found on the request." );
-			Assert.state( request.getReason().getProfile() != null && request.getReason().getProfile().getId() != null,
-					"[clkiows] Nested 'reason's property profile.id is mandatory." );
+			if ( request == null )
+				throw new ValidationException( "No valid request was provided." );
+			if ( request.getReason() == null )
+				throw new ValidationException( "No 'reason' instance was found on the request." );
+			if ( request.getReason().getProfile() == null || request.getReason().getProfile().getId() == null )
+				throw new ValidationException( "Nested 'reason's property profile.id is mandatory." );
 			
 			Profile profile = new Profile( request.getReason().getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
-			Assert.notNull( profile = this.getService( ProfileService.class ).get( profile ), "No 'profile' record was found." );
+			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
+				throw new ValidationException( "No 'profile' record was found." );
 			
 			ManualEnteringReason reason = new ManualEnteringReason( profile, request.getReason().getReason() );
 			this.getService().insert( reason );
 			
 			return new Response( "Reason record stored successfully." );
+		} catch ( ClkioException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
+		} catch ( ClkioRuntimeException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
 		} catch ( Exception e ) {
 			LOG.error( e );
-			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+			throw new ResponseException( e.getMessage(), new InternalServerError() );
 		}
 	}
 
 	@Override
 	public Response update( UpdateManualEnteringReasonRequest request ) throws ResponseException {
 		try {
-			Assert.notNull( request );
-			Assert.state( request.getReason() != null && request.getReason().getId() != null,
-					"[clkiows] No 'reason' instance was found on the request or its 'id' property was not provided." );
-			Assert.state( request.getReason().getProfile() != null && request.getReason().getProfile().getId() != null,
-					"[clkiows] Nested 'reason's property profile.id is mandatory." );
+			if ( request == null )
+				throw new ValidationException( "No valid request was provided." );
+			if ( request.getReason() == null || request.getReason().getId() == null )
+				throw new ValidationException( "No 'reason' instance was found on the request or its 'id' property was not provided." );
+			if ( request.getReason().getProfile() == null || request.getReason().getProfile().getId() == null )
+				throw new ValidationException( "Nested 'reason's property profile.id is mandatory." );
 			
 			Profile profile = new Profile( request.getReason().getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
-			Assert.notNull( profile = this.getService( ProfileService.class ).get( profile ), "No 'profile' record was found." );
+			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
+				throw new ValidationException( "No 'profile' record was found." );
 			
 			ManualEnteringReason reason = new ManualEnteringReason( 
 					request.getReason().getId().intValue(), profile, request.getReason().getReason() );
 			this.getService().update( reason );
 			
 			return new Response( "Reason record updated successfully." );
+		} catch ( ClkioException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
+		} catch ( ClkioRuntimeException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
 		} catch ( Exception e ) {
 			LOG.error( e );
-			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+			throw new ResponseException( e.getMessage(), new InternalServerError() );
 		}
 	}
 
 	@Override
 	public Response delete( DeleteManualEnteringReasonRequest request ) throws ResponseException {
 		try {
-			Assert.notNull( request );
-			Assert.state( request.getReason() != null && request.getReason().getId() != null,
-					"[clkiows] No 'reason' instance was found on the request or its 'id' property was not provided." );
-			Assert.state( request.getReason().getProfile() != null && request.getReason().getProfile().getId() != null,
-					"[clkiows] Nested 'reason's property profile.id is mandatory." );
+			if ( request == null )
+				throw new ValidationException( "No valid request was provided." );
+			if ( request.getReason() == null || request.getReason().getId() == null )
+				throw new ValidationException( "No 'reason' instance was found on the request or its 'id' property was not provided." );
+			if ( request.getReason().getProfile() == null || request.getReason().getProfile().getId() == null )
+				throw new ValidationException( "Nested 'reason's property profile.id is mandatory." );
 			
 			Profile profile = new Profile( request.getReason().getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
-			Assert.notNull( profile = this.getService( ProfileService.class ).get( profile ), "No 'profile' record was found." );
+			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
+				throw new ValidationException( "No 'profile' record was found." );
 			
 			ManualEnteringReason reason = new ManualEnteringReason( request.getReason().getId().intValue() );
 			reason.setProfile( profile );
 			this.getService().delete( reason );
 			
 			return new Response( "Reason record deleted successfully." );
+		} catch ( ClkioException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
+		} catch ( ClkioRuntimeException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
 		} catch ( Exception e ) {
 			LOG.error( e );
-			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+			throw new ResponseException( e.getMessage(), new InternalServerError() );
 		}
 	}
 

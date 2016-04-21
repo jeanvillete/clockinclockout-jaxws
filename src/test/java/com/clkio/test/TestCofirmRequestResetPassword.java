@@ -13,6 +13,8 @@ import org.springframework.util.Assert;
 import com.clkio.domain.Email;
 import com.clkio.domain.RequestResetPassword;
 import com.clkio.domain.User;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.PersistenceException;
 import com.clkio.service.RequestResetPasswordService;
 
 @RunWith( SpringJUnit4ClassRunner.class )
@@ -35,7 +37,12 @@ public class TestCofirmRequestResetPassword {
 		User jean = new User( new Email( "jean.villete@gmail.com" ), new Locale( "en" ) );
 		RequestResetPassword requestResetPassword = new RequestResetPassword( jean );
 		requestResetPassword.setRequestCodeValue( "%242a%2410%24lf78i1Et8nVUvfsjiAqVS.GR35VNh0yCjFLBUjSSS8SJSi7nfaNlm" );
-		String confirmationCodeValue = this.resetPasswordService.confirm( requestResetPassword );
-		System.out.println( "Confirmation code value received from the confirmation invoking: " + confirmationCodeValue );
+		try {
+			String confirmationCodeValue;
+			confirmationCodeValue = this.resetPasswordService.confirm( requestResetPassword );
+			System.out.println( "Confirmation code value received from the confirmation invoking: " + confirmationCodeValue );
+		} catch ( ValidationException | PersistenceException e ) {
+			e.printStackTrace();
+		}
 	}
 }

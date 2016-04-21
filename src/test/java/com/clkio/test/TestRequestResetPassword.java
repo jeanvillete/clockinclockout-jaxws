@@ -13,6 +13,8 @@ import org.springframework.util.Assert;
 import com.clkio.domain.Email;
 import com.clkio.domain.RequestResetPassword;
 import com.clkio.domain.User;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.PersistenceException;
 import com.clkio.service.RequestResetPasswordService;
 
 @RunWith( SpringJUnit4ClassRunner.class )
@@ -34,6 +36,10 @@ public class TestRequestResetPassword {
 		
 		User jean = new User( new Email( "jean.villete@gmail.com" ), new Locale( "en" ) );
 		RequestResetPassword requestResetPassword = new RequestResetPassword( jean );
-		this.resetPasswordService.processRequest( requestResetPassword );
+		try {
+			this.resetPasswordService.processRequest( requestResetPassword );
+		} catch ( ValidationException | PersistenceException e ) {
+			e.printStackTrace();
+		}
 	}
 }

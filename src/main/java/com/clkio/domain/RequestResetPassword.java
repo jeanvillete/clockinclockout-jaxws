@@ -2,7 +2,9 @@ package com.clkio.domain;
 
 import java.time.LocalDateTime;
 
-import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
+import com.clkio.exception.DomainValidationException;
 
 public class RequestResetPassword extends CommonDomain {
 
@@ -25,32 +27,32 @@ public class RequestResetPassword extends CommonDomain {
 	}
 
 	public void setUser( User user ) {
-		Assert.notNull( user, "Argument user cannot be null." );
+		if( user == null ) throw new DomainValidationException( "Argument user cannot be null." );
 		this.user = user;
 	}
 
 	public void setRequestCodeValue( String requestCodeValue ) {
-		Assert.hasLength( requestCodeValue, "Argument requestCodeValue cannot be null nor empty." );
+		if( !StringUtils.hasText( requestCodeValue ) ) throw new DomainValidationException( "Argument requestCodeValue cannot be null nor empty." );
 		this.requestCodeValue = requestCodeValue;
 	}
 
 	public void setConfirmationDate( LocalDateTime confirmationDate ) {
-		Assert.notNull( confirmationDate, "Argument confirmationDate cannot be null." );
+		if( confirmationDate == null ) throw new DomainValidationException( "Argument confirmationDate cannot be null." );
 		this.confirmationDate = confirmationDate;
 	}
 
 	public void setConfirmationCodeValue( String confirmationCodeValue ) {
-		Assert.hasLength( confirmationCodeValue, "Argument confirmationCodeValue cannot be null nor empty." );
+		if( !StringUtils.hasText( confirmationCodeValue ) ) throw new DomainValidationException( "Argument confirmationCodeValue cannot be null nor empty." );
 		this.confirmationCodeValue = confirmationCodeValue;
 	}
 
 	public void setChangeDate( LocalDateTime changeDate ) {
-		Assert.notNull( changeDate, "Argument changeDate cannot be null." );
+		if( changeDate == null ) throw new DomainValidationException( "Argument changeDate cannot be null." );
 		this.changeDate = changeDate;
 	}
 
 	public User getUser() {
-		Assert.notNull( user, "Argument user has not been properly provided yet." );
+		if( user == null ) throw new DomainValidationException( "Argument user has not been properly provided yet." );
 		return user;
 	}
 
@@ -83,7 +85,7 @@ public class RequestResetPassword extends CommonDomain {
 	}
 
 	public void setNewPassword( String newPassword ) {
-		Assert.hasText( newPassword );
+		if( !StringUtils.hasText( newPassword ) ) throw new DomainValidationException( "Property 'newPassword' has not been set yet." );
 		this.newPassword = newPassword;
 	}
 }

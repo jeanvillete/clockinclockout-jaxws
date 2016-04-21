@@ -1,7 +1,8 @@
 package com.clkio.domain;
 
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import com.clkio.exception.DomainValidationException;
 
 public class ManualEnteringReason extends CommonDomain {
 
@@ -24,19 +25,19 @@ public class ManualEnteringReason extends CommonDomain {
 	}
 
 	public void setProfile(Profile profile) {
-		Assert.notNull( profile, "Argument profile cannot be null." );
+		if( profile == null ) throw new DomainValidationException( "Argument profile cannot be null." );
 		this.profile = profile;
 	}
 	public void setReason(String reason) {
-		Assert.hasLength( reason, "Argument reason cannot be null nor empty." );
+		if( !StringUtils.hasText( reason ) ) throw new DomainValidationException( "Argument reason cannot be null nor empty." );
 		this.reason = reason;
 	}	
 	public Profile getProfile() {
-		Assert.state( profile != null, "The property 'profile' has not been initialized yet." );
+		if( profile == null ) throw new DomainValidationException( "The property 'profile' has not been initialized yet." );
 		return profile;
 	}
 	public String getReason() {
-		Assert.state( StringUtils.hasText( reason ), "The property 'reason' has not been initialized yet." );
+		if( !StringUtils.hasText( reason ) ) throw new DomainValidationException( "The property 'reason' has not been initialized yet." );
 		return reason;
 	}
 }

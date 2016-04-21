@@ -4,8 +4,9 @@ import java.util.List;
 import java.util.Locale;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import com.clkio.exception.DomainValidationException;
 
 public class User extends CommonDomain {
 
@@ -38,33 +39,35 @@ public class User extends CommonDomain {
 	}
 	
 	public void setPassword( String password, boolean toBeEncoded ) {
-		Assert.state( StringUtils.hasText( password ) && password.length() > 6, "Argument password cannot be null nor empty, and must be greater than 6 characters." );
+		if ( !StringUtils.hasText( password ) || password.length() <= 6 )
+			throw new DomainValidationException( "Argument password cannot be null nor empty, and must be greater than 6 characters." );
+		
 		this.password = toBeEncoded ? new BCryptPasswordEncoder().encode( password ) : password;
 	}
 	
 	public void setEmail(Email email) {
-		Assert.notNull( email, "Argument email cannot be null." );
+		if( email == null ) throw new DomainValidationException( "Argument email cannot be null." );
 		
 		this.email = email;
 		this.email.setUser( this );
 	}
 	
 	public void setLocale(Locale locale) {
-		Assert.notNull( locale, "Argument locale cannot be null." );
+		if( locale == null ) throw new DomainValidationException( "Argument locale cannot be null." );
 		this.locale = locale;
 	}
 	
 	public String getPassword() {
-		Assert.state( StringUtils.hasText( password ), "The field 'password' has not been initialized yet." );
+		if( !StringUtils.hasText( password ) ) throw new DomainValidationException( "The field 'password' has not been initialized yet." );
 		return password;
 	}
 	public Email getEmail() {
-		Assert.state( email != null, "Field email has not been initialized yet." );
+		if( email == null ) throw new DomainValidationException( "Field email has not been initialized yet." );
 		return email;
 	}
 
 	public Locale getLocale() {
-		Assert.state( locale != null, "Field locale has not been initialized yet." );
+		if( locale == null ) throw new DomainValidationException( "Field locale has not been initialized yet." );
 		return locale;
 	}
 

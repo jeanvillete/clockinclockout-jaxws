@@ -2,7 +2,9 @@ package com.clkio.domain;
 
 import java.time.Duration;
 
-import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
+import com.clkio.exception.DomainValidationException;
 
 public class Adjusting extends CommonDomain {
 
@@ -27,15 +29,15 @@ public class Adjusting extends CommonDomain {
 	}
 	
 	public void setDescription(String description) {
-		Assert.hasLength( description, "Argument description cannot be null nor empty." );
+		if ( !StringUtils.hasLength( description ) ) throw new DomainValidationException( "Argument description cannot be null nor empty." );
 		this.description = description;
 	}
 	public void setProfile(Profile profile) {
-		Assert.notNull( profile, "Argument profile cannot be null." );
+		if( profile == null ) throw new DomainValidationException( "Argument profile cannot be null." );
 		this.profile = profile;
 	}
 	public void setTimeInterval( Duration timeInterval ) {
-		Assert.state( timeInterval != null, "Argument timeInterval has to be not null." );
+		if( timeInterval == null ) throw new DomainValidationException( "Argument timeInterval has to be not null." );
 		this.timeInterval = timeInterval;
 	}
 	public String getDescription() {

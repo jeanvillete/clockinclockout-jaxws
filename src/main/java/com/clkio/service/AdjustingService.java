@@ -4,10 +4,13 @@ import java.util.List;
 
 import com.clkio.domain.Adjusting;
 import com.clkio.domain.Profile;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.ConflictException;
+import com.clkio.exception.PersistenceException;
 
 public interface AdjustingService {
 
-	void insert( Adjusting adjusting );
+	void insert( Adjusting adjusting ) throws ValidationException, ConflictException, PersistenceException;
 	
 	/**
 	 * Method responsable to check if already exists some 'adjusting' record for a given
@@ -19,7 +22,7 @@ public interface AdjustingService {
 	 */
 	boolean exists( String description, Profile profile );
 	
-	void update( Adjusting adjusting );
+	void update( Adjusting adjusting ) throws ValidationException, ConflictException, PersistenceException;
 
 	/**
 	 * Method responsable to check if already exists some 'adjusting' record for a given
@@ -32,8 +35,8 @@ public interface AdjustingService {
 	 */
 	boolean exists( String description, Profile profile, Integer id );
 	
-	void delete( Adjusting adjusting );
+	void delete( Adjusting adjusting ) throws ValidationException, PersistenceException;
 	
-	List< Adjusting > list( Profile profile );
+	List< Adjusting > list( Profile profile ) throws ValidationException;
 
 }

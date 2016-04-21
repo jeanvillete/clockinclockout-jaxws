@@ -10,6 +10,8 @@ import org.springframework.util.Assert;
 
 import com.clkio.domain.Email;
 import com.clkio.domain.User;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.PersistenceException;
 import com.clkio.service.LoginService;
 
 @RunWith( SpringJUnit4ClassRunner.class )
@@ -29,12 +31,17 @@ public class TestDoLogin {
 	public void test() {
 		Assert.notNull( loginService, "No instance was assigned to loginService." );
 		
-		User jean = new User( new Email( "jean.villete@gmail.com" ) );
-		jean.setPassword( "mynewpassword", false );
-		String code = this.loginService.login( jean, "127.0.0.1" );
+		try {
+			User jean = new User( new Email( "jean.villete@gmail.com" ) );
+			jean.setPassword( "mynewpassword", false );
+			String code;
+			code = this.loginService.login( jean, "127.0.0.1" );
+			Assert.hasText( code );
+			
+			System.out.println( "[User logged successfully] code:" + code );
+		} catch ( ValidationException | PersistenceException e ) {
+			e.printStackTrace();
+		}
 		
-		Assert.hasText( code );
-		
-		System.out.println( "[User logged successfully] code:" + code );
 	}
 }

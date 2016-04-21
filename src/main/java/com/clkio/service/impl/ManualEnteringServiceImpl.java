@@ -15,6 +15,8 @@ import com.clkio.domain.Day;
 import com.clkio.domain.ManualEntering;
 import com.clkio.domain.ManualEnteringReason;
 import com.clkio.domain.Profile;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.PersistenceException;
 import com.clkio.repository.ManualEnteringRepository;
 import com.clkio.service.ManualEnteringService;
 
@@ -31,49 +33,53 @@ public class ManualEnteringServiceImpl implements ManualEnteringService, Initial
 	
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public List< ManualEntering > listBy( ManualEnteringReason manualEnteringReason ) {
-		Assert.notNull( manualEnteringReason );
+	public List< ManualEntering > listBy( ManualEnteringReason manualEnteringReason ) throws ValidationException {
+		if( manualEnteringReason == null )
+			throw new ValidationException( "Argument 'manualEnteringReason' is mandatory." );
 		return this.repository.listBy( manualEnteringReason );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void insert( final ManualEntering manualEntering ) {
-		Assert.notNull( manualEntering, "Argument 'manualEntering' is mandatory." );
-		Assert.state( manualEntering.getDay() != null && manualEntering.getDay().getId() != null,
-				"Nested 'day' and its 'date' properties are mandatory." );
-		Assert.state( manualEntering.getReason() != null && manualEntering.getReason().getId() != null,
-				"Nested 'reason' and its 'id' properties are mandatory." );
-		Assert.notNull( manualEntering.getTimeInterval(), "Nested 'timeInterval' property is mandatoy." );
-		Assert.state( this.repository.insert( manualEntering ),
-				"Some problem happend while performing insert for 'manualEntering' record." );
+	public void insert( final ManualEntering manualEntering ) throws ValidationException, PersistenceException {
+		if( manualEntering == null )
+			throw new ValidationException( "Argument 'manualEntering' is mandatory." );
+		if( manualEntering.getDay() == null || manualEntering.getDay().getId() == null )
+			throw new ValidationException( "Nested 'day' and its 'date' properties are mandatory." );
+		if( manualEntering.getReason() == null || manualEntering.getReason().getId() == null )
+			throw new ValidationException( "Nested 'reason' and its 'id' properties are mandatory." );
+		if( manualEntering.getTimeInterval() == null )
+			throw new ValidationException( "Nested 'timeInterval' property is mandatoy." );
+		if( !this.repository.insert( manualEntering ) )
+			throw new PersistenceException( "It was not possible performing insert for 'manualEntering' record." );
 	}
 	
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void delete( final Profile profile, final ManualEntering manualEntering ) {
-		Assert.state( profile != null && profile.getId() != null,
-				"Argument 'profile' and its 'id' property are mandatory." );
-		Assert.state( manualEntering != null && manualEntering.getId() != null,
-				"Argument 'manualEntering' and its 'id' property are mandatory." );
-		Assert.state( this.repository.delete( profile, manualEntering ),
-				"Some problem happened while performing delete for 'manualEntering' record." );
+	public void delete( final Profile profile, final ManualEntering manualEntering ) throws ValidationException, PersistenceException {
+		if( profile == null || profile.getId() == null )
+			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
+		if( manualEntering == null || manualEntering.getId() == null )
+			throw new ValidationException( "Argument 'manualEntering' and its 'id' property are mandatory." );
+		if( !this.repository.delete( profile, manualEntering ) )
+			throw new PersistenceException( "It was not possible performing delete for 'manualEntering' record." );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public List< ManualEntering > listBy( final Day day ) {
-		Assert.notNull( day );
+	public List< ManualEntering > listBy( final Day day ) throws ValidationException {
+		if( day == null)
+			throw new ValidationException( "Argument 'day' is mandatory." );
 		return this.repository.listBy( day );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public ManualEntering get( final Profile profile, final ManualEntering manualEntering ) {
-		Assert.state( profile != null && profile.getId() != null,
-				"Argument 'profile' and its 'id' property are mandatory." );
-		Assert.state( manualEntering != null && manualEntering.getId() != null,
-				"Argument 'manualEntering' and its 'id' property are mandatory." );
+	public ManualEntering get( final Profile profile, final ManualEntering manualEntering ) throws ValidationException, PersistenceException {
+		if( profile == null || profile.getId() == null )
+			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
+		if( manualEntering == null || manualEntering.getId() == null )
+			throw new ValidationException( "Argument 'manualEntering' and its 'id' property are mandatory." );
 		try {
 			return this.repository.get( profile, manualEntering );
 		} catch ( EmptyResultDataAccessException e ) {
@@ -83,24 +89,28 @@ public class ManualEnteringServiceImpl implements ManualEnteringService, Initial
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void update( final ManualEntering manualEntering ) {
-		Assert.notNull( manualEntering, "Argument 'manualEntering' is mandatory." );
-		Assert.state( manualEntering.getDay() != null && manualEntering.getDay().getId() != null,
-				"Nested 'day' and its 'date' properties are mandatory." );
-		Assert.state( manualEntering.getReason() != null && manualEntering.getReason().getId() != null,
-				"Nested 'reason' and its 'id' properties are mandatory." );
-		Assert.notNull( manualEntering.getTimeInterval(), "Nested 'timeInterval' property is mandatoy." );
-		Assert.state( this.repository.update( manualEntering ),
-				"Some problem happened while performing update for 'manualEntering' record." );
+	public void update( final ManualEntering manualEntering ) throws ValidationException, PersistenceException {
+		if( manualEntering == null )
+			throw new ValidationException( "Argument 'manualEntering' is mandatory." );
+		if( manualEntering.getDay() == null || manualEntering.getDay().getId() == null )
+			throw new ValidationException( "Nested 'day' and its 'date' properties are mandatory." );
+		if( manualEntering.getReason() == null || manualEntering.getReason().getId() == null )
+			throw new ValidationException( "Nested 'reason' and its 'id' properties are mandatory." );
+		if( manualEntering.getTimeInterval() == null )
+			throw new ValidationException( "Nested 'timeInterval' property is mandatoy." );
+		if( !this.repository.update( manualEntering ) )
+			throw new PersistenceException( "It was not possible performing update for 'manualEntering' record." );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public List< ManualEntering > list( Profile profile, LocalDate startDate, LocalDate endDate ) {
-		Assert.notNull( profile, "Argument 'profile' is mandatory." );
-		Assert.notNull( profile.getId(), "Argument 'profile's id property is mandatory." );
-		Assert.notNull( startDate, "Argument 'startDate' is mandatory." );
-		Assert.notNull( endDate, "Argument 'endDate' is mandatory." );
+	public List< ManualEntering > list( Profile profile, LocalDate startDate, LocalDate endDate ) throws ValidationException {
+		if( profile == null || profile.getId() == null )
+			throw new ValidationException( "Argument 'profile' and its nested 'id' property are mandatory." );
+		if( startDate == null )
+			throw new ValidationException( "Argument 'startDate' is mandatory." );
+		if( endDate == null )
+			throw new ValidationException( "Argument 'endDate' is mandatory." );
 		
 		return this.repository.list( profile, startDate, endDate );
 	}

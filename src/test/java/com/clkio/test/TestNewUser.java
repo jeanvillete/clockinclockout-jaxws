@@ -12,6 +12,9 @@ import org.springframework.util.Assert;
 
 import com.clkio.domain.Email;
 import com.clkio.domain.User;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.ConflictException;
+import com.clkio.exception.PersistenceException;
 import com.clkio.service.UserService;
 
 @RunWith( SpringJUnit4ClassRunner.class )
@@ -31,9 +34,12 @@ public class TestNewUser {
 	public void test() {
 		Assert.notNull( userService, "No instance was assigned to userService." );
 		
-		User jean = new User( new Email( "jean.villete@gmail.com" ), new Locale( "en" ) );
-		jean.setPassword( "passwordtest" );
-		
-		this.userService.insert( jean );
+		try {
+			User jean = new User( new Email( "jean.villete@gmail.com" ), new Locale( "en" ) );
+			jean.setPassword( "passwordtest" );
+			this.userService.insert( jean );
+		} catch ( ConflictException | ValidationException | PersistenceException e ) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -7,10 +7,13 @@ import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.handler.MessageContext;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.clkio.domain.User;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.PersistenceException;
+import com.clkio.exception.UnauthorizedException;
 import com.clkio.service.UserService;
 
 abstract class WebServiceCommon< T > {
@@ -65,17 +68,19 @@ abstract class WebServiceCommon< T > {
 		return ip;
 	}
 	
-	protected String getLoginCode() {
+	protected String getLoginCode() throws UnauthorizedException {
 		HttpServletRequest request = ( HttpServletRequest ) this.wsContext.getMessageContext().get( MessageContext.SERVLET_REQUEST );
 		String loginCode = request.getHeader( "CLKIO-LOGIN-CODE" );
-		Assert.hasText( loginCode, "[clkiows] No 'CLKIO-LOGIN-CODE' header was provided." );
+		if ( !StringUtils.hasText( loginCode ) )
+			throw new UnauthorizedException( "No 'CLKIO-LOGIN-CODE' header was provided." );
 
 		return loginCode;
 	}
 	
-	protected User getCurrentUser() {
+	protected User getCurrentUser() throws UnauthorizedException, PersistenceException, ValidationException {
 		User user = this.getService( UserService.class ).getBy( this.getLoginCode() );
-		Assert.notNull( user, "[clkiows] The provided value for 'CLKIO-LOGIN-CODE' header is not valid." );
+		if ( user == null )
+			throw new UnauthorizedException( "The provided value for 'CLKIO-LOGIN-CODE' header is not valid." );
 		
 		return user;
 	}

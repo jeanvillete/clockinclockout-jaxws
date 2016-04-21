@@ -13,6 +13,9 @@ import org.springframework.util.CollectionUtils;
 import com.clkio.domain.ManualEntering;
 import com.clkio.domain.ManualEnteringReason;
 import com.clkio.domain.Profile;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.ConflictException;
+import com.clkio.exception.PersistenceException;
 import com.clkio.repository.ManualEnteringReasonRepository;
 import com.clkio.service.ManualEnteringReasonService;
 import com.clkio.service.ManualEnteringService;
@@ -34,34 +37,35 @@ public class ManualEnteringReasonServiceImpl implements ManualEnteringReasonServ
 	
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void insert( final ManualEnteringReason manualEnteringReason ) {
-		Assert.state( manualEnteringReason != null && manualEnteringReason.getProfile() != null, 
-				"Argument 'manualEnteringReason' and its nested 'id' property are mandatory." );
-		Assert.state( !this.exists( manualEnteringReason.getReason(), manualEnteringReason.getProfile() ),
-				"It already exists a record with the provided 'reason'." );
-		Assert.state( this.repository.insert( manualEnteringReason ),
-				"Some problem happened while performing insert for 'reason' record." );
+	public void insert( final ManualEnteringReason manualEnteringReason ) throws PersistenceException, ValidationException, ConflictException {
+		if( manualEnteringReason == null || manualEnteringReason.getProfile() == null ) 
+			throw new ValidationException( "Argument 'manualEnteringReason' and its nested 'id' property are mandatory." );
+		if( this.exists( manualEnteringReason.getReason(), manualEnteringReason.getProfile() ) )
+			throw new ConflictException( "It already exists a record with the provided 'reason'." );
+		if( !this.repository.insert( manualEnteringReason ) )
+			throw new PersistenceException( "It was not possible performing insert for 'reason' record." );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void delete( final ManualEnteringReason manualEnteringReason ) {
-		Assert.notNull( manualEnteringReason, "Argument 'manualEnteringReason' is mandatory." );
+	public void delete( final ManualEnteringReason manualEnteringReason ) throws PersistenceException, ValidationException {
+		if( manualEnteringReason == null )
+			throw new ValidationException( "Argument 'manualEnteringReason' is mandatory." );
 	
 		List< ManualEntering > listManualEntering = this.manualEnteringService.listBy( manualEnteringReason );
 		if ( !CollectionUtils.isEmpty( listManualEntering ) )
 			for ( ManualEntering manualEntering : listManualEntering )
 				this.manualEnteringService.delete( manualEnteringReason.getProfile(), manualEntering );
 		
-		Assert.state( this.repository.delete( manualEnteringReason ),
-				"Some problem happened while performing delete operation for 'reason' record." );
+		if( !this.repository.delete( manualEnteringReason ) )
+			throw new PersistenceException( "It was not possible performing delete for 'reason' record." );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public List< ManualEnteringReason > list( final Profile profile ) {
-		Assert.state( profile != null && profile.getUser() != null,
-				"The argument 'profile' and its nested 'user' property are mandatory." );
+	public List< ManualEnteringReason > list( final Profile profile ) throws ValidationException {
+		if( profile == null || profile.getUser() == null )
+			throw new ValidationException( "The argument 'profile' and its nested 'user' property are mandatory." );
 		return this.repository.list( profile );
 	}
 
@@ -79,12 +83,13 @@ public class ManualEnteringReasonServiceImpl implements ManualEnteringReasonServ
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void update( final ManualEnteringReason manualEnteringReason ) {
-		Assert.state( manualEnteringReason != null && manualEnteringReason.getId() != null,
-				"Argument 'manualEnteringReason' and its 'id' property are mandatory." );
-		Assert.state( !exists( manualEnteringReason.getReason(), manualEnteringReason.getProfile(), manualEnteringReason.getId() ) );
-		Assert.state( this.repository.update( manualEnteringReason ), 
-				"Some problem happened while performing update for 'reason' record." );
+	public void update( final ManualEnteringReason manualEnteringReason ) throws ValidationException, ConflictException, PersistenceException {
+		if( manualEnteringReason == null || manualEnteringReason.getId() == null )
+			throw new ValidationException( "Argument 'manualEnteringReason' and its 'id' property are mandatory." );
+		if( exists( manualEnteringReason.getReason(), manualEnteringReason.getProfile(), manualEnteringReason.getId() ) )
+			throw new ConflictException( "It already exists another 'manualEnteringReason' with the same 'reason' description." );
+		if( !this.repository.update( manualEnteringReason ) )
+			throw new PersistenceException( "It was not possible performing update for 'reason' record." );
 	}
 
 }

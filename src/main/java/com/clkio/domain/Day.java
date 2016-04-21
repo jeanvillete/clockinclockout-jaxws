@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.util.Assert;
+import com.clkio.exception.DomainValidationException;
 
 public class Day extends CommonDomain {
 
@@ -56,17 +56,17 @@ public class Day extends CommonDomain {
 	
 	@Override
 	public int hashCode() {
-		Assert.state( date != null, "Property 'date' has not been initialized." );
+		if( date == null ) throw new DomainValidationException( "Property 'date' has not been initialized." );
 		return this.date.hashCode();
 	}
 	
 	public void setDate( LocalDate date ) {
-		Assert.notNull( date, "Argument date cannot be null." );
+		if( date == null ) throw new DomainValidationException( "Argument date cannot be null." );
 		this.date = date;
 	}
 
 	public void setExpectedHours( Duration expectedHours ) {
-		Assert.state( expectedHours != null, "Argument expectedHours has to be not null and greater than 0." );
+		if( expectedHours == null ) throw new DomainValidationException( "Argument expectedHours has to be not null and greater than 0." );
 		this.expectedHours = expectedHours;
 	}
 
@@ -75,12 +75,12 @@ public class Day extends CommonDomain {
 	}
 
 	public void setProfile( Profile profile ) {
-		Assert.notNull( profile, "Argument profile cannot be null." );
+		if( profile == null ) throw new DomainValidationException( "Argument profile cannot be null." );
 		this.profile = profile;
 	}
 
 	public LocalDate getDate() {
-		Assert.state( date != null, "The property 'date' has not been properly initialized." );
+		if( date == null ) throw new DomainValidationException( "The property 'date' has not been properly initialized." );
 		return date;
 	}
 
@@ -93,7 +93,7 @@ public class Day extends CommonDomain {
 	}
 
 	public Profile getProfile() {
-		Assert.state( profile != null, "The property 'profile' has not been properly initialized." );
+		if( profile == null ) throw new DomainValidationException( "The property 'profile' has not been properly initialized." );
 		return profile;
 	}
 

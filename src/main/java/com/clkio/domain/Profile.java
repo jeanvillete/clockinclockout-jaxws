@@ -2,10 +2,10 @@ package com.clkio.domain;
 
 import java.time.Duration;
 
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import com.clkio.common.IntervalUtil;
+import com.clkio.exception.DomainValidationException;
 
 public class Profile extends CommonDomain {
 	
@@ -39,63 +39,63 @@ public class Profile extends CommonDomain {
 	}
 	
 	public void setUser(User user) {
-		Assert.notNull( user, "Argument user cannot be null." );
+		if( user == null ) throw new DomainValidationException( "Argument user cannot be null." );
 		this.user = user;
 	}
 	public void setDescription(String description) {
-		Assert.hasLength( description, "Argument description cannot be null nor empty." );
+		if( !StringUtils.hasText( description ) ) throw new DomainValidationException( "Argument description cannot be null nor empty." );
 		this.description = description;
 	}
 	public void setHoursFormat(String hoursFormat) {
-		Assert.state( IntervalUtil.isHoursFormatValid( hoursFormat ), "The provided value for 'hoursFormat' is not valid." );
+		if( !IntervalUtil.isHoursFormatValid( hoursFormat ) ) throw new DomainValidationException( "The provided value for 'hoursFormat' is not valid." );
 		this.hoursFormat = hoursFormat;
 	}
 	public void setDateFormat(String dateFormat) {
-		Assert.state( IntervalUtil.isDateFormatValid( dateFormat ), "The provided value for 'dateFormat' is not valid." );
+		if( !IntervalUtil.isDateFormatValid( dateFormat ) ) throw new DomainValidationException( "The provided value for 'dateFormat' is not valid." );
 		this.dateFormat = dateFormat;
 	}
 	public void setDefaultExpectedSunday(Duration defaultExpectedSunday) {
-		Assert.notNull( defaultExpectedSunday, "The argument 'defaultExpectedSunday' is mandatory." );
+		if( defaultExpectedSunday == null ) throw new DomainValidationException( "The argument 'defaultExpectedSunday' is mandatory." );
 		this.defaultExpectedSunday = defaultExpectedSunday;
 	}
 	public void setDefaultExpectedMonday(Duration defaultExpectedMonday) {
-		Assert.notNull( defaultExpectedMonday, "The argument 'defaultExpectedMonday' is mandatory." );
+		if( defaultExpectedMonday == null ) throw new DomainValidationException( "The argument 'defaultExpectedMonday' is mandatory." );
 		this.defaultExpectedMonday = defaultExpectedMonday;
 	}
 	public void setDefaultExpectedTuesday(Duration defaultExpectedTuesday) {
-		Assert.notNull( defaultExpectedTuesday, "The argument 'defaultExpectedTuesday' is mandatory." );
+		if( defaultExpectedTuesday == null ) throw new DomainValidationException( "The argument 'defaultExpectedTuesday' is mandatory." );
 		this.defaultExpectedTuesday = defaultExpectedTuesday;
 	}
 	public void setDefaultExpectedWednesday(Duration defaultExpectedWednesday) {
-		Assert.notNull( defaultExpectedWednesday, "The argument 'defaultExpectedWednesday' is mandatory." );
+		if( defaultExpectedWednesday == null ) throw new DomainValidationException( "The argument 'defaultExpectedWednesday' is mandatory." );
 		this.defaultExpectedWednesday = defaultExpectedWednesday;
 	}
 	public void setDefaultExpectedThursday(Duration defaultExpectedThursday) {
-		Assert.notNull( defaultExpectedThursday, "The argument 'defaultExpectedThursday' is mandatory." );
+		if( defaultExpectedThursday == null ) throw new DomainValidationException( "The argument 'defaultExpectedThursday' is mandatory." );
 		this.defaultExpectedThursday = defaultExpectedThursday;
 	}
 	public void setDefaultExpectedFriday(Duration defaultExpectedFriday) {
-		Assert.notNull( defaultExpectedFriday, "The argument 'defaultExpectedFriday' is mandatory." );
+		if( defaultExpectedFriday == null ) throw new DomainValidationException( "The argument 'defaultExpectedFriday' is mandatory." );
 		this.defaultExpectedFriday = defaultExpectedFriday;
 	}
 	public void setDefaultExpectedSaturday(Duration defaultExpectedSaturday) {
-		Assert.notNull( defaultExpectedSaturday, "The argument 'defaultExpectedSaturday' is mandatory." );
+		if( defaultExpectedSaturday == null ) throw new DomainValidationException( "The argument 'defaultExpectedSaturday' is mandatory." );
 		this.defaultExpectedSaturday = defaultExpectedSaturday;
 	}
 	public User getUser() {
-		Assert.state( user != null, "The field 'user' was not properly initialized." );
+		if( user == null ) throw new DomainValidationException( "The field 'user' was not properly initialized." );
 		return user;
 	}
 	public String getDescription() {
-		Assert.state( StringUtils.hasText( description ), "The field 'description' was not properly initialized." );
+		if( !StringUtils.hasText( description ) ) throw new DomainValidationException( "The field 'description' was not properly initialized." );
 		return description;
 	}
 	public String getHoursFormat() {
-		Assert.state( StringUtils.hasText( hoursFormat ), "The field 'hoursFormat' was not properly initialized." );
+		if( !StringUtils.hasText( hoursFormat ) ) throw new DomainValidationException( "The field 'hoursFormat' was not properly initialized." );
 		return hoursFormat;
 	}
 	public String getDateFormat() {
-		Assert.state( StringUtils.hasText( dateFormat ), "The field 'dateFormat' was not properly initialized." );
+		if( !StringUtils.hasText( dateFormat ) ) throw new DomainValidationException( "The field 'dateFormat' was not properly initialized." );
 		return dateFormat;
 	}
 	public Duration getDefaultExpectedSunday() {

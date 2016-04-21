@@ -7,14 +7,14 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-import org.springframework.util.Assert;
+import com.clkio.exception.DomainValidationException;
 
 public class TimeCard {
 
 	private HashMap< LocalDate, Day > days;
 	
 	public TimeCard( YearMonth month ) {
-		Assert.notNull( month );
+		if( month == null) throw new DomainValidationException( "Argument 'month' is mandatory." );
 		days = new HashMap< LocalDate, Day >();
 		
 		LocalDate endOfMonth = month.atEndOfMonth();

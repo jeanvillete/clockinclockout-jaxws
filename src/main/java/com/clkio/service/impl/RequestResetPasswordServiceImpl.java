@@ -16,6 +16,8 @@ import com.clkio.domain.Email;
 import com.clkio.domain.EmailResetPassword;
 import com.clkio.domain.RequestResetPassword;
 import com.clkio.domain.User;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.PersistenceException;
 import com.clkio.repository.RequestResetPasswordRepository;
 import com.clkio.service.EmailService;
 import com.clkio.service.LoginService;
@@ -49,11 +51,13 @@ public class RequestResetPasswordServiceImpl implements RequestResetPasswordServ
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void processRequest( final RequestResetPassword requestResetPassword ) {
-		Assert.notNull( requestResetPassword );
+	public void processRequest( final RequestResetPassword requestResetPassword ) throws ValidationException, PersistenceException {
+		if ( requestResetPassword == null )
+			throw new ValidationException( "Argument 'requestResetPassword' is mandatory" );
 		
 		Email syncEmail = this.emailService.getBy( requestResetPassword.getUser().getEmail().getAddress(), true ); // email's database synchronized reference
-		Assert.notNull( syncEmail, "No record found for the provided emailAddress." );
+		if ( syncEmail == null )
+			throw new PersistenceException( "No record found for the provided emailAddress." );
 		
 		User syncUser = this.userService.getBy( syncEmail ); // user's database synchronized reference
 		requestResetPassword.setUser( syncUser );
@@ -63,7 +67,8 @@ public class RequestResetPasswordServiceImpl implements RequestResetPasswordServ
 		
 		EmailResetPassword emailResetPassword = new EmailResetPassword( syncEmail );
 		requestResetPassword.setRequestCodeValue( emailResetPassword.getHash() );
-		this.repository.insert( requestResetPassword );
+		if ( !this.repository.insert( requestResetPassword ) )
+			throw new PersistenceException( "It was not possible perfoming insert for 'requestResetPassword' record." );
 		
 		this.emailService.send( emailResetPassword );
 	}
@@ -83,12 +88,15 @@ public class RequestResetPasswordServiceImpl implements RequestResetPasswordServ
 	
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public String confirm( final RequestResetPassword requestResetPassword ) {
-		Assert.notNull( requestResetPassword );
-		Assert.state( StringUtils.hasText( requestResetPassword.getRequestCodeValue() ), "Invalid parameters. No 'requestCodeValue' was provided." );
+	public String confirm( final RequestResetPassword requestResetPassword ) throws ValidationException, PersistenceException {
+		if ( requestResetPassword == null )
+			throw new ValidationException( "Argument 'requestResetPassword' is mandatory" );
+		if ( !StringUtils.hasText( requestResetPassword.getRequestCodeValue() ) )
+			throw new ValidationException( "Invalid parameters. No 'requestCodeValue' was provided." );
 		
 		Email syncEmail = this.emailService.getBy( requestResetPassword.getUser().getEmail().getAddress(), true ); // email's database synchronized reference
-		Assert.notNull( syncEmail, "No record found for the provided emailAddress." );
+		if ( syncEmail == null )
+			throw new PersistenceException( "No record found for the provided emailAddress." );
 		
 		User syncUser = this.userService.getBy( syncEmail ); // user's database synchronized reference
 		requestResetPassword.setUser( syncUser );
@@ -96,31 +104,38 @@ public class RequestResetPasswordServiceImpl implements RequestResetPasswordServ
 		requestResetPassword.setConfirmationDate( LocalDateTime.now() );
 		requestResetPassword.setConfirmationCodeValue( new BCryptPasswordEncoder().encode( syncEmail.getAddress() + DTF.format( requestResetPassword.getConfirmationDate() ) ) );
 		
-		Assert.state( this.repository.confirm( requestResetPassword, LocalDateTime.now().minusDays( 1 ) ), "Invalid parameters. No 'requestResetPassword' record was found on database." );
+		if ( !this.repository.confirm( requestResetPassword, LocalDateTime.now().minusDays( 1 ) ) )
+			throw new PersistenceException( "Invalid parameters. No 'requestResetPassword' record was found on database." );
 		
 		return requestResetPassword.getConfirmationCodeValue();
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public boolean changePassword( final RequestResetPassword requestResetPassword ) {
-		Assert.notNull( requestResetPassword );
-		Assert.state( StringUtils.hasText( requestResetPassword.getConfirmationCodeValue() ) );
-		Assert.state( StringUtils.hasText( requestResetPassword.getNewPassword() ) );
+	public boolean changePassword( final RequestResetPassword requestResetPassword ) throws ValidationException, PersistenceException {
+		if ( requestResetPassword == null )
+			throw new ValidationException( "Argument 'requestResetPassword' is mandatory" );
+		if ( !StringUtils.hasText( requestResetPassword.getConfirmationCodeValue() ) )
+			throw new ValidationException( "Nested 'confirmationCodeValue' property is mandatory." );
+		if ( !StringUtils.hasText( requestResetPassword.getNewPassword() ) )
+			throw new ValidationException( "Nested 'newPassword' property is mandatory." );
 		
 		Email syncEmail = this.emailService.getBy( requestResetPassword.getUser().getEmail().getAddress(), true ); // email's database synchronized reference
-		Assert.notNull( syncEmail, "No record found for the provided emailAddress." );
+		if ( syncEmail == null )
+			throw new PersistenceException( "No record found for the provided emailAddress." );
 		
 		User syncUser = this.userService.getBy( syncEmail ); // user's database synchronized reference
 		requestResetPassword.setUser( syncUser );
 		requestResetPassword.setChangeDate( LocalDateTime.now() );
 		
-		Assert.state( this.repository.changePassword( requestResetPassword, LocalDateTime.now().minusMinutes( 10 ) ), "Invalid request. It was not possible to perform the request." );
+		if ( !this.repository.changePassword( requestResetPassword, LocalDateTime.now().minusMinutes( 10 ) ) )
+			throw new PersistenceException( "Invalid request. It was not possible to perform the request." );
 		
 		this.loginService.setAsInvalid( syncUser );
 		
 		syncUser.setPassword( requestResetPassword.getNewPassword() );
-		Assert.state( this.userService.changePassword( syncUser ), "Invalid request. It was not possible to perform the request." );
+		if( !this.userService.changePassword( syncUser ) )
+			throw new PersistenceException( "Invalid request. It was not possible to perform the request." );
 		
 		return true;
 	}

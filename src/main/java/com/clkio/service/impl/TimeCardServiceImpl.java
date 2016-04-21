@@ -16,12 +16,16 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import com.clkio.domain.ClockinClockout;
 import com.clkio.domain.Day;
 import com.clkio.domain.ManualEntering;
 import com.clkio.domain.Profile;
 import com.clkio.domain.TimeCard;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.ConflictException;
+import com.clkio.exception.PersistenceException;
 import com.clkio.repository.TimeCardRepository;
 import com.clkio.service.ClockinClockoutService;
 import com.clkio.service.DayService;
@@ -45,12 +49,13 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		Assert.notNull( repository, "Property 'repository' has not been properly initialized." );
 		Assert.notNull( dayService, "Property 'dayService' has not been properly initialized." );
 		Assert.notNull( clockinClockoutService, "Property 'clockinClockoutService' has not been properly initialized." );
 		Assert.notNull( manualEnteringService, "Property 'manualEnteringService' has not been properly initialized." );
 	}
 
-	private Day insert( final Profile profile, final LocalDate localDate ) {
+	private Day insert( final Profile profile, final LocalDate localDate ) throws PersistenceException, ValidationException, ConflictException {
 		Day day = new Day();
 		day.setDate( localDate );
 		day.setProfile( profile );
@@ -82,7 +87,9 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 			throw new IllegalStateException( "No valid value was retrieved for 'dayOfWeek'." );
 		}
 		
-		Assert.notNull( day.getExpectedHours(), "A proper value for 'expectedHours' is mandatory for 'day' instance." );
+		if( day.getExpectedHours() == null )
+			throw new ConflictException( "It was not possible infer a proper value for 'expectedHours'." );
+		
 		this.dayService.insert( day );
 		
 		return day;
@@ -90,9 +97,9 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void punchClock( final Profile profile, final String timestamp ) {
-		Assert.state( profile != null && profile.getId() != null,
-				"Argument 'profile' and its 'id' property are mandatory." );
+	public void punchClock( final Profile profile, final String timestamp ) throws ValidationException, PersistenceException, ConflictException {
+		if( profile == null || profile.getId() == null )
+			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
 		
 		String pattern = profile.getDateFormat() + profile.getHoursFormat();
 		LocalDateTime dateTime;
@@ -100,7 +107,7 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( pattern );
 			dateTime = LocalDateTime.parse( timestamp, formatter );
 		} catch ( DateTimeParseException e ) {
-			throw new IllegalStateException( "The provided value for 'timestamp' was not valid for the pattern=[" + pattern + "]. "
+			throw new ValidationException( "The provided value for 'timestamp' was not valid for the pattern=[" + pattern + "]. "
 					+ "Remember that this pattern is the 'dateFormat' concatenated with 'hoursFormat' set on the profile, in case you want to change it." );
 		}
 		
@@ -123,12 +130,13 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void insert( final Profile profile, final ClockinClockout clockinClockout ) {
-		Assert.state( profile != null && profile.getId() != null,
-				"Argument 'profile' and its 'id' property are mandatory." );
-		Assert.notNull( clockinClockout, "Argument 'clock' is mandatory." );
-		Assert.state( clockinClockout.getClockin() != null || clockinClockout.getClockout() != null,
-				"At least 'clockin' or 'clockout' has to be provided." );
+	public void insert( final Profile profile, final ClockinClockout clockinClockout ) throws ValidationException, PersistenceException, ConflictException {
+		if( profile == null || profile.getId() == null )
+			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
+		if( clockinClockout == null )
+			throw new ValidationException( "Argument 'clock' is mandatory." );
+		if( clockinClockout.getClockin() == null && clockinClockout.getClockout() == null )
+			throw new ValidationException( "At least 'clockin' or 'clockout' has to be provided." );
 		
 		LocalDate localDateDay = clockinClockout.getClockin() != null ?
 				clockinClockout.getClockin().toLocalDate() :
@@ -143,23 +151,24 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void update( final Profile profile, final ClockinClockout clockinClockout ) {
-		Assert.state( profile != null && profile.getId() != null,
-				"Argument 'profile' and its 'id' property are mandatory." );
-		Assert.state( clockinClockout != null && clockinClockout.getId() != null,
-				"Argument 'clockinClockout' and its 'id' property are mandatory." );
-		Assert.state( clockinClockout.getClockin() != null || clockinClockout.getClockout() != null,
-				"At least 'clockin' or 'clockout' has to be provided." );
+	public void update( final Profile profile, final ClockinClockout clockinClockout ) throws ValidationException, PersistenceException {
+		if( profile == null || profile.getId() == null )
+			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
+		if( clockinClockout == null || clockinClockout.getId() == null )
+			throw new ValidationException( "Argument 'clockinClockout' and its 'id' property are mandatory." );
+		if( clockinClockout.getClockin() == null && clockinClockout.getClockout() == null )
+			throw new ValidationException( "At least 'clockin' or 'clockout' has to be provided." );
 		
 		ClockinClockout syncClockinClockout = this.clockinClockoutService.get( profile, clockinClockout );
-		Assert.notNull( syncClockinClockout, "No 'clockinClockout' register was found given the provided 'id'." );
+		if( syncClockinClockout == null )
+			throw new PersistenceException( "No 'clockinClockout' register was found given the provided 'id'." );
 
 		Day day = this.dayService.get( syncClockinClockout.getDay() );
-		Assert.notNull( day, "No 'day' register was found for the given 'clockinClockout's 'id' property." );
+		if( day == null )
+			throw new PersistenceException( "No 'day' register was found for the given 'clockinClockout's 'id' property." );
 		
-		Assert.state( clockinClockout.getClockin() == null || 
-				day.getDate().equals( clockinClockout.getClockin().toLocalDate() ), 
-				"The provided date value for 'clockin' has to be the same as its 'day' relationship." );
+		if( clockinClockout.getClockin() != null && !day.getDate().equals( clockinClockout.getClockin().toLocalDate() ) ) 
+			throw new ValidationException( "The provided date value for 'clockin' has to be the same as its 'day' relationship." );
 		
 		syncClockinClockout.setClockin( clockinClockout.getClockin() );
 		syncClockinClockout.setClockout( clockinClockout.getClockout() );
@@ -169,25 +178,27 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void delete( final Profile profile, final ClockinClockout clockinClockout ) {
-		Assert.state( profile != null && profile.getId() != null,
-				"Argument 'profile' and its 'id' property are mandatory." );
-		Assert.state( clockinClockout != null && clockinClockout.getId() != null,
-				"Argument 'clockinClockout' and its 'id' property are mandatory." );
+	public void delete( final Profile profile, final ClockinClockout clockinClockout ) throws ValidationException, PersistenceException {
+		if( profile == null || profile.getId() == null )
+			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
+		if( clockinClockout == null || clockinClockout.getId() == null )
+			throw new ValidationException( "Argument 'clockinClockout' and its 'id' property are mandatory." );
 		this.clockinClockoutService.delete( profile, clockinClockout );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void insert( final Profile profile, final ManualEntering manualEntering ) {
-		Assert.state( profile != null && profile.getId() != null,
-				"Argument 'profile' and its 'id' property are mandatory." );
-		Assert.notNull( manualEntering, "Argument 'manualEntering' is mandatory." );
-		Assert.state( manualEntering.getDay() != null && manualEntering.getDay().getDate() != null,
-				"Nested 'day' and its 'date' properties are mandatory." );
-		Assert.state( manualEntering.getReason() != null && manualEntering.getReason().getId() != null,
-				"Nested 'reason' and its 'id' properties are mandatory." );
-		Assert.notNull( manualEntering.getTimeInterval(), "Nested 'timeInterval' property is mandatoy." );
+	public void insert( final Profile profile, final ManualEntering manualEntering ) throws ValidationException, PersistenceException, ConflictException {
+		if( profile == null || profile.getId() == null )
+			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
+		if( manualEntering == null )
+			throw new ValidationException( "Argument 'manualEntering' is mandatory." );
+		if( manualEntering.getDay() == null || manualEntering.getDay().getDate() == null )
+			throw new ValidationException( "Nested 'day' and its 'date' properties are mandatory." );
+		if( manualEntering.getReason() == null || manualEntering.getReason().getId() == null )
+			throw new ValidationException( "Nested 'reason' and its 'id' properties are mandatory." );
+		if( manualEntering.getTimeInterval() == null )
+			throw new ValidationException( "Nested 'timeInterval' property is mandatoy." );
 		
 		Day day = this.dayService.get( profile, manualEntering.getDay().getDate() );
 		if ( day == null )
@@ -199,24 +210,28 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void update( final Profile profile, final ManualEntering manualEntering ) {
-		Assert.state( profile != null && profile.getId() != null,
-				"Argument 'profile' and its 'id' property are mandatory." );
-		Assert.notNull( manualEntering, "Argument 'manualEntering' is mandatory." );
-		Assert.state( manualEntering.getDay() != null && manualEntering.getDay().getDate() != null,
-				"Nested 'day' and its 'date' properties are mandatory." );
-		Assert.state( manualEntering.getReason() != null && manualEntering.getReason().getId() != null,
-				"Nested 'reason' and its 'id' properties are mandatory." );
-		Assert.notNull( manualEntering.getTimeInterval(), "Nested 'timeInterval' property is mandatoy." );
+	public void update( final Profile profile, final ManualEntering manualEntering ) throws ValidationException, PersistenceException {
+		if( profile == null || profile.getId() == null )
+			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
+		if( manualEntering == null )
+			throw new ValidationException( "Argument 'manualEntering' is mandatory." );
+		if( manualEntering.getDay() == null || manualEntering.getDay().getDate() == null )
+			throw new ValidationException( "Nested 'day' and its 'date' properties are mandatory." );
+		if( manualEntering.getReason() == null || manualEntering.getReason().getId() == null )
+			throw new ValidationException( "Nested 'reason' and its 'id' properties are mandatory." );
+		if( manualEntering.getTimeInterval() == null )
+			throw new ValidationException( "Nested 'timeInterval' property is mandatoy." );
 		
 		ManualEntering syncManualEntering = this.manualEnteringService.get( profile, manualEntering );
-		Assert.notNull( syncManualEntering, "No 'manualEntering' record was found." );
+		if( syncManualEntering == null )
+			throw new PersistenceException( "No 'manualEntering' record was found." );
 		
 		Day day = this.dayService.get( syncManualEntering.getDay() );
-		Assert.notNull( day, "No 'day' register was found for the given 'clockinClockout's 'id' property." );
+		if( day == null )
+			throw new PersistenceException( "No 'day' register was found for the given 'clockinClockout's 'id' property." );
 		
-		Assert.state( day.getDate().equals( manualEntering.getDay().getDate() ), 
-				"The provided date value for 'day' instance has to be the same as its 'day' relationship." );
+		if( !day.getDate().equals( manualEntering.getDay().getDate() ) ) 
+			throw new ValidationException( "The provided date value for 'day' instance has to be the same as its 'day' relationship." );
 		
 		syncManualEntering.setReason( manualEntering.getReason() );
 		syncManualEntering.setTimeInterval( manualEntering.getTimeInterval() );
@@ -226,21 +241,23 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void delete( final Profile profile, final ManualEntering manualEntering ) {
-		Assert.state( profile != null && profile.getId() != null,
-				"Argument 'profile' and its 'id' property are mandatory." );
-		Assert.state( manualEntering != null && manualEntering.getId() != null,
-				"Argument 'manualEntering' and its 'id' property are mandatory." );
+	public void delete( final Profile profile, final ManualEntering manualEntering ) throws ValidationException, PersistenceException {
+		if( profile == null || profile.getId() == null )
+			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
+		if( manualEntering == null || manualEntering.getId() == null )
+			throw new ValidationException( "Argument 'manualEntering' and its 'id' property are mandatory." );
 		this.manualEnteringService.delete( profile, manualEntering );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void setNotes( final Profile profile, final LocalDate date, final String text ) {
-		Assert.state( profile != null && profile.getId() != null,
-				"Argument 'profile' and its 'id' property are mandatory." );
-		Assert.notNull( date, "Argument 'date' is mandatory." );
-		Assert.hasText( text, "Argument 'text' is mandatory." );
+	public void setNotes( final Profile profile, final LocalDate date, final String text ) throws ValidationException, PersistenceException, ConflictException {
+		if( profile == null || profile.getId() == null )
+			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
+		if( date == null )
+			throw new ValidationException( "Argument 'date' is mandatory." );
+		if( !StringUtils.hasText( text ) )
+			throw new ValidationException( "Argument 'text' is mandatory." );
 		
 		Day day = this.dayService.get( profile, date );
 		if ( day == null )
@@ -252,11 +269,13 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void setExpectedHours( final Profile profile, final LocalDate date, final Duration expectedHours ) {
-		Assert.state( profile != null && profile.getId() != null,
-				"Argument 'profile' and its 'id' property are mandatory." );
-		Assert.notNull( date, "Argument 'date' is mandatory." );
-		Assert.notNull( expectedHours, "Argument 'expectedHours' is mandatory." );
+	public void setExpectedHours( final Profile profile, final LocalDate date, final Duration expectedHours ) throws ValidationException, PersistenceException, ConflictException {
+		if( profile == null || profile.getId() == null )
+			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
+		if( date == null )
+			throw new ValidationException( "Argument 'date' is mandatory." );
+		if( expectedHours == null )
+			throw new ValidationException( "Argument 'expectedHours' is mandatory." );
 		
 		Day day = this.dayService.get( profile, date );
 		if ( day == null )
@@ -267,24 +286,25 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 	}
 
 	@Override
-	public Duration getTotalTime( Profile profile ) {
+	public Duration getTotalTime( Profile profile ) throws ValidationException {
 		return this.getTotalTime( profile, null );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.NOT_SUPPORTED, readOnly = true )
-	public Duration getTotalTime( Profile profile, LocalDate until ) {
-		Assert.state( profile != null && profile.getId() != null, 
-				"Argument profile and its 'id' property are mandatory." );
+	public Duration getTotalTime( Profile profile, LocalDate until ) throws ValidationException {
+		if( profile == null || profile.getId() == null ) 
+			throw new ValidationException( "Argument profile and its 'id' property are mandatory." );
 		return this.repository.getTotalTime( profile, until );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.NOT_SUPPORTED, readOnly = true )
-	public TimeCard getTimeCard( Profile profile, YearMonth month ) {
-		Assert.state( profile != null && profile.getId() != null, 
-				"Argument profile and its 'id' property are mandatory." );
-		Assert.notNull( month, "Argument 'month' is mandatory." );
+	public TimeCard getTimeCard( Profile profile, YearMonth month ) throws ValidationException {
+		if( profile == null || profile.getId() == null ) 
+			throw new ValidationException( "Argument profile and its 'id' property are mandatory." );
+		if( month == null )
+			throw new ValidationException( "Argument 'month' is mandatory." );
 		
 		TimeCard timeCard = new TimeCard( month );
 		

@@ -10,7 +10,6 @@ import java.time.format.DateTimeParseException;
 import javax.jws.WebService;
 
 import org.apache.log4j.Logger;
-import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -22,11 +21,15 @@ import com.clkio.domain.ManualEntering;
 import com.clkio.domain.ManualEnteringReason;
 import com.clkio.domain.Profile;
 import com.clkio.domain.TimeCard;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.ClkioException;
+import com.clkio.exception.ClkioRuntimeException;
 import com.clkio.service.ProfileService;
 import com.clkio.service.TimeCardService;
 import com.clkio.ws.ResponseException;
 import com.clkio.ws.TimeCardPort;
 import com.clkio.ws.domain.clockinclockout.Clockinclockout;
+import com.clkio.ws.domain.common.InternalServerError;
 import com.clkio.ws.domain.common.Response;
 import com.clkio.ws.domain.reason.Reason;
 import com.clkio.ws.domain.timecard.DeleteClockinClockoutRequest;
@@ -57,34 +60,43 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 	@Override
 	public GetTotalTimeResponse getTotalTime( GetTotalTimeRequest request ) throws ResponseException {
 		try {
-			Assert.notNull( request );
-			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
-					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
+			if ( request == null )
+				throw new ValidationException( "No valid request was provided." );
+			if ( request.getProfile() == null || request.getProfile().getId() == null )
+				throw new ValidationException( "No 'profile' instance was found on the request or its 'id' property was not provided." );
 			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
-			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
-					"No record found for the provided 'profile'." );
+			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
+				throw new ValidationException( "No record found for the provided 'profile'." );
 			
 			return new GetTotalTimeResponse( DurationUtil.fromDuration( this.getService().getTotalTime( profile ), profile.getHoursFormat() ) );
+		} catch ( ClkioException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
+		} catch ( ClkioRuntimeException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
 		} catch ( Exception e ) {
 			LOG.error( e );
-			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+			throw new ResponseException( e.getMessage(), new InternalServerError() );
 		}
 	}
 
 	@Override
 	public GetTimeCardResponse getTimeCard( GetTimeCardRequest request ) throws ResponseException {
 		try {
-			Assert.notNull( request );
-			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
-					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
-			Assert.hasText( request.getMonth(), "Argument 'month' is mandatory." );
-
+			if ( request == null )
+				throw new ValidationException( "No valid request was provided." );
+			if ( request.getProfile() == null || request.getProfile().getId() == null )
+				throw new ValidationException( "No 'profile' instance was found on the request or its 'id' property was not provided." );
+			if ( !StringUtils.hasText( request.getMonth() ) )
+				throw new ValidationException( "Argument 'month' is mandatory." );
+			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
-			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
-					"No record found for the provided 'profile'." );
+			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
+				throw new ValidationException( "No record found for the provided 'profile'." );
 			
 			String pattern = "yyyy-MM";
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( pattern );
@@ -127,47 +139,62 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 			}
 			
 			return response;
+		} catch ( ClkioException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
+		} catch ( ClkioRuntimeException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
 		} catch ( Exception e ) {
 			LOG.error( e );
-			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+			throw new ResponseException( e.getMessage(), new InternalServerError() );
 		}
 	}
 
 	@Override
 	public Response punchClock( PunchClockRequest request ) throws ResponseException {
 		try {
-			Assert.notNull( request );
-			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
-					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
-			Assert.hasText( request.getTimestamp(), "Argument 'timestamp' is mandatory." );
+			if ( request == null )
+				throw new ValidationException( "No valid request was provided." );
+			if ( request.getProfile() == null || request.getProfile().getId() == null )
+				throw new ValidationException( "No 'profile' instance was found on the request or its 'id' property was not provided." );
+			if ( !StringUtils.hasText( request.getTimestamp() ) )
+				throw new ValidationException( "Argument 'timestamp' is mandatory." );
 			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
-			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
-					"No record found for the provided 'profile'." );
+			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
+				throw new ValidationException( "No record found for the provided 'profile'." );
 			
 			this.getService().punchClock( profile, request.getTimestamp() );
 			
 			return new Response( "Service 'punchClock' executed successfully." );
+		} catch ( ClkioException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
+		} catch ( ClkioRuntimeException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
 		} catch ( Exception e ) {
 			LOG.error( e );
-			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+			throw new ResponseException( e.getMessage(), new InternalServerError() );
 		}
 	}
 
 	@Override
 	public Response insertClockinClockout( InsertClockinClockoutRequest request ) throws ResponseException {
 		try {
-			Assert.notNull( request );
-			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
-					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
-			Assert.notNull( request.getClockinclockout(),
-					"[clkiows] No 'clockinclockout' instance was found on the request." );
+			if ( request == null )
+				throw new ValidationException( "No valid request was provided." );
+			if ( request.getProfile() == null || request.getProfile().getId() == null )
+				throw new ValidationException( "No 'profile' instance was found on the request or its 'id' property was not provided." );
+			if ( request.getClockinclockout() == null )
+				throw new ValidationException( "No 'clockinclockout' instance was found on the request." );
 			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
-			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
-					"No record found for the provided 'profile'." );
+			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
+				throw new ValidationException( "No record found for the provided 'profile'." );
 			
 			String pattern = profile.getDateFormat() + profile.getHoursFormat();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( pattern );
@@ -193,25 +220,32 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 			this.getService().insert( profile, new ClockinClockout( clockin, clockout ) );
 			
 			return new Response( "Service 'insertClockinClockout' executed successfully." );
+		} catch ( ClkioException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
+		} catch ( ClkioRuntimeException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
 		} catch ( Exception e ) {
 			LOG.error( e );
-			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+			throw new ResponseException( e.getMessage(), new InternalServerError() );
 		}
 	}
 
 	@Override
 	public Response updateClockinClockout( UpdateClockinClockoutRequest request ) throws ResponseException {
 		try {
-			Assert.notNull( request );
-			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
-					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
-			Assert.state( request.getClockinclockout() != null && request.getClockinclockout().getId() != null,
-					"[clkiows] No 'clockinclockout' instance was found on the request or its 'id' property was not provided." );
-
+			if ( request == null )
+				throw new ValidationException( "No valid request was provided." );
+			if ( request.getProfile() == null || request.getProfile().getId() == null )
+				throw new ValidationException( "No 'profile' instance was found on the request or its 'id' property was not provided." );
+			if ( request.getClockinclockout() == null || request.getClockinclockout().getId() == null )
+				throw new ValidationException( "No 'clockinclockout' instance was found on the request or its 'id' property was not provided." );
+			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
-			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
-					"No record found for the provided 'profile'." );
+			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
+				throw new ValidationException( "No record found for the provided 'profile'." );
 			
 			String pattern = profile.getDateFormat() + profile.getHoursFormat();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( pattern );
@@ -238,52 +272,66 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 			this.getService().update( profile, clkio );
 			
 			return new Response( "Service 'updateClockinClockout' executed successfully." );
+		} catch ( ClkioException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
+		} catch ( ClkioRuntimeException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
 		} catch ( Exception e ) {
 			LOG.error( e );
-			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+			throw new ResponseException( e.getMessage(), new InternalServerError() );
 		}
 	}
 
 	@Override
 	public Response deleteClockinClockout( DeleteClockinClockoutRequest request ) throws ResponseException {
 		try {
-			Assert.notNull( request );
-			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
-					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
-			Assert.state( request.getClockinclockout() != null && request.getClockinclockout().getId() != null,
-					"[clkiows] No 'clockinclockout' instance was found on the request or its 'id' property was not provided." );
-
+			if ( request == null )
+				throw new ValidationException( "No valid request was provided." );
+			if ( request.getProfile() == null || request.getProfile().getId() == null )
+				throw new ValidationException( "No 'profile' instance was found on the request or its 'id' property was not provided." );
+			if ( request.getClockinclockout() == null || request.getClockinclockout().getId() == null )
+				throw new ValidationException( "No 'clockinclockout' instance was found on the request or its 'id' property was not provided." );
+			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
-			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
-					"No record found for the provided 'profile'." );
+			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
+				throw new ValidationException( "No record found for the provided 'profile'." );
 			
 			this.getService().delete( profile, new ClockinClockout( request.getClockinclockout().getId().intValue() ) );
 			
 			return new Response( "Service 'deleteClockinClockout' executed successfully." );
+		} catch ( ClkioException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
+		} catch ( ClkioRuntimeException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
 		} catch ( Exception e ) {
 			LOG.error( e );
-			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+			throw new ResponseException( e.getMessage(), new InternalServerError() );
 		}
 	}
 
 	@Override
 	public Response insertManualEntering( InsertManualEnteringRequest request ) throws ResponseException {
 		try {
-			Assert.notNull( request );
-			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
-					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
-			Assert.state( request.getManualEntering() != null && StringUtils.hasText( request.getManualEntering().getTimeInterval() ),
-					"[clkiows] No 'manualEntering' instance was found on the request or its 'timeInterval' property was not provided." );
-			Assert.state( request.getManualEntering().getDay() != null && StringUtils.hasText( request.getManualEntering().getDay().getDate() ),
-					"[clkiows] No 'day' instance was found on the request or its 'date' property was not provided." );
-			Assert.state( request.getManualEntering().getReason() != null && request.getManualEntering().getReason().getId() != null,
-					"[clkiows] No 'reason' instance was found on the request or its 'id' property was not provided." );
-
+			if ( request == null )
+				throw new ValidationException( "No valid request was provided." );
+			if ( request.getProfile() == null || request.getProfile().getId() == null )
+				throw new ValidationException( "No 'profile' instance was found on the request or its 'id' property was not provided." );
+			if ( request.getManualEntering() == null || !StringUtils.hasText( request.getManualEntering().getTimeInterval() ) )
+				throw new ValidationException( "No 'manualEntering' instance was found on the request or its 'timeInterval' property was not provided." );
+			if ( request.getManualEntering().getDay() == null || !StringUtils.hasText( request.getManualEntering().getDay().getDate() ) )
+				throw new ValidationException( "No 'day' instance was found on the request or its 'date' property was not provided." );
+			if ( request.getManualEntering().getReason() == null || request.getManualEntering().getReason().getId() == null )
+				throw new ValidationException( "No 'reason' instance was found on the request or its 'id' property was not provided." );
+			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
-			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
-					"No record found for the provided 'profile'." );
+			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
+				throw new ValidationException( "No record found for the provided 'profile'." );
 			
 			String pattern = profile.getDateFormat();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( pattern );
@@ -301,29 +349,36 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 							DurationUtil.fromString( request.getManualEntering().getTimeInterval(), profile.getHoursFormat() ) ) );
 			
 			return new Response( "Service 'insertManualEntering' executed successfully." );
+		} catch ( ClkioException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
+		} catch ( ClkioRuntimeException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
 		} catch ( Exception e ) {
 			LOG.error( e );
-			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+			throw new ResponseException( e.getMessage(), new InternalServerError() );
 		}
 	}
 
 	@Override
 	public Response updateManualEntering( UpdateManualEnteringRequest request ) throws ResponseException {
 		try {
-			Assert.notNull( request );
-			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
-					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
-			Assert.state( request.getManualEntering() != null && request.getManualEntering().getId() != null && StringUtils.hasText( request.getManualEntering().getTimeInterval() ),
-					"[clkiows] No 'manualEntering' instance was found on the request or either its 'id' or 'timeInterval' properties were not provided." );
-			Assert.state( request.getManualEntering().getDay() != null && StringUtils.hasText( request.getManualEntering().getDay().getDate() ),
-					"[clkiows] No 'day' instance was found on the request or its 'date' property was not provided." );
-			Assert.state( request.getManualEntering().getReason() != null && request.getManualEntering().getReason().getId() != null,
-					"[clkiows] No 'reason' instance was found on the request or its 'id' property was not provided." );
+			if ( request == null )
+				throw new ValidationException( "No valid request was provided." );
+			if ( request.getProfile() == null || request.getProfile().getId() == null )
+				throw new ValidationException( "No 'profile' instance was found on the request or its 'id' property was not provided." );
+			if ( request.getManualEntering() == null || request.getManualEntering().getId() == null || !StringUtils.hasText( request.getManualEntering().getTimeInterval() ) )
+				throw new ValidationException( "No 'manualEntering' instance was found on the request or either its 'id' or 'timeInterval' properties were not provided." );
+			if ( request.getManualEntering().getDay() == null || !StringUtils.hasText( request.getManualEntering().getDay().getDate() ) )
+				throw new ValidationException( "No 'day' instance was found on the request or its 'date' property was not provided." );
+			if ( request.getManualEntering().getReason() == null || request.getManualEntering().getReason().getId() == null )
+				throw new ValidationException( "No 'reason' instance was found on the request or its 'id' property was not provided." );
 
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
-			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
-					"No record found for the provided 'profile'." );
+			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
+				throw new ValidationException( "No record found for the provided 'profile'." );
 			
 			String pattern = profile.getDateFormat();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( pattern );
@@ -341,47 +396,62 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 							DurationUtil.fromString( request.getManualEntering().getTimeInterval(), profile.getHoursFormat() ) ) );
 			
 			return new Response( "Service 'updateManualEntering' executed successfully." );
+		} catch ( ClkioException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
+		} catch ( ClkioRuntimeException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
 		} catch ( Exception e ) {
 			LOG.error( e );
-			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+			throw new ResponseException( e.getMessage(), new InternalServerError() );
 		}
 	}
 
 	@Override
 	public Response deleteManualEntering( DeleteManualEnteringRequest request ) throws ResponseException {
 		try {
-			Assert.notNull( request );
-			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
-					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
-			Assert.state( request.getManualEntering() != null && request.getManualEntering().getId() != null,
-					"[clkiows] No 'manualEntering' instance was found on the request or its 'id' property was not provided." );
-
+			if ( request == null )
+				throw new ValidationException( "No valid request was provided." );
+			if ( request.getProfile() == null || request.getProfile().getId() == null )
+				throw new ValidationException( "No 'profile' instance was found on the request or its 'id' property was not provided." );
+			if ( request.getManualEntering() == null || request.getManualEntering().getId() == null )
+				throw new ValidationException( "No 'manualEntering' instance was found on the request or its 'id' property was not provided." );
+			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
-			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
-					"No record found for the provided 'profile'." );
+			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
+				throw new ValidationException( "No record found for the provided 'profile'." );
 			
 			this.getService().delete( profile, new ManualEntering( request.getManualEntering().getId().intValue() ) );
 			
 			return new Response( "Service 'deleteManualEntering' executed successfully." );
+		} catch ( ClkioException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
+		} catch ( ClkioRuntimeException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
 		} catch ( Exception e ) {
 			LOG.error( e );
-			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+			throw new ResponseException( e.getMessage(), new InternalServerError() );
 		}
 	}
 
 	@Override
 	public Response setNotes( SetNotesRequest request ) throws ResponseException {
 		try {
-			Assert.notNull( request );
-			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
-					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
-			Assert.hasText( request.getDate(), "[clkiows] Argument 'date' is mandatory." );
-
+			if ( request == null )
+				throw new ValidationException( "No valid request was provided." );
+			if ( request.getProfile() == null || request.getProfile().getId() == null )
+				throw new ValidationException( "No 'profile' instance was found on the request or its 'id' property was not provided." );
+			if ( !StringUtils.hasText( request.getDate() ) )
+				throw new ValidationException( "Argument 'date' is mandatory." );
+			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
-			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
-					"No record found for the provided 'profile'." );
+			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
+				throw new ValidationException( "No record found for the provided 'profile'." );
 			
 			String dayPattern = profile.getDateFormat();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( dayPattern );
@@ -395,25 +465,34 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 			this.getService().setNotes( profile, day, request.getText() );
 			
 			return new Response( "Service 'setNotes' executed successfully." );
+		} catch ( ClkioException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
+		} catch ( ClkioRuntimeException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
 		} catch ( Exception e ) {
 			LOG.error( e );
-			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+			throw new ResponseException( e.getMessage(), new InternalServerError() );
 		}
 	}
 
 	@Override
 	public Response setExpectedHours( SetExpectedHoursRequest request ) throws ResponseException {
 		try {
-			Assert.notNull( request );
-			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
-					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
-			Assert.hasText( request.getDate(), "[clkiows] Argument 'date' is mandatory." );
-			Assert.hasText( request.getExpectedHours(), "[clkiows] Argument 'expectedHours' is mandatory." );
+			if ( request == null )
+				throw new ValidationException( "No valid request was provided." );
+			if ( request.getProfile() == null || request.getProfile().getId() == null )
+				throw new ValidationException( "No 'profile' instance was found on the request or its 'id' property was not provided." );
+			if ( !StringUtils.hasText( request.getDate() ) )
+				throw new ValidationException( "Argument 'date' is mandatory." );
+			if ( !StringUtils.hasText( request.getExpectedHours() ) )
+				throw new ValidationException( "Argument 'expectedHours' is mandatory." );
 
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
-			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
-					"No record found for the provided 'profile'." );
+			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
+				throw new ValidationException( "No record found for the provided 'profile'." );
 			
 			String dayPattern = profile.getDateFormat();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( dayPattern );
@@ -427,24 +506,33 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 			this.getService().setExpectedHours( profile, day, DurationUtil.fromString( request.getExpectedHours(), profile.getHoursFormat() ) );
 			
 			return new Response( "Service 'setExpectedHours' executed successfully." );
+		} catch ( ClkioException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
+		} catch ( ClkioRuntimeException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
 		} catch ( Exception e ) {
 			LOG.error( e );
-			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+			throw new ResponseException( e.getMessage(), new InternalServerError() );
 		}
 	}
 
 	@Override
 	public GetTotalTimeMonthlyResponse getTotalTimeMonthly( GetTotalTimeMonthlyRequest request ) throws ResponseException {
 		try {
-			Assert.notNull( request );
-			Assert.state( request.getProfile() != null && request.getProfile().getId() != null,
-					"[clkiows] No 'profile' instance was found on the request or its 'id' property was not provided." );
-			Assert.hasText( request.getMonth(), "Argument 'month' is mandatory." );
+			if ( request == null )
+				throw new ValidationException( "No valid request was provided." );
+			if ( request.getProfile() == null || request.getProfile().getId() == null )
+				throw new ValidationException( "No 'profile' instance was found on the request or its 'id' property was not provided." );
+			
+			if ( !StringUtils.hasText( request.getMonth() ) )
+				throw new ValidationException( "Argument 'month' is mandatory." );
 
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser() );
-			Assert.state( ( profile = this.getService( ProfileService.class ).get( profile ) ) != null,
-					"No record found for the provided 'profile'." );
+			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
+				throw new ValidationException( "No record found for the provided 'profile'." );
 			
 			String pattern = "yyyy-MM";
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( pattern );
@@ -456,9 +544,15 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 			}
 			
 			return new GetTotalTimeMonthlyResponse( DurationUtil.fromDuration( this.getService().getTotalTime( profile, month.atEndOfMonth() ), profile.getHoursFormat() ) );
+		} catch ( ClkioException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
+		} catch ( ClkioRuntimeException e ) {
+			LOG.debug( e );
+			throw new ResponseException( e.getMessage(), e.getFault() );
 		} catch ( Exception e ) {
 			LOG.error( e );
-			throw new ResponseException( e.getMessage(), new com.clkio.ws.domain.common.ResponseException() );
+			throw new ResponseException( e.getMessage(), new InternalServerError() );
 		}
 	}
 

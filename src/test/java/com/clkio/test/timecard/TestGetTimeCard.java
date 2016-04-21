@@ -20,6 +20,7 @@ import com.clkio.domain.ManualEntering;
 import com.clkio.domain.Profile;
 import com.clkio.domain.TimeCard;
 import com.clkio.domain.User;
+import com.clkio.exception.ValidationException;
 import com.clkio.service.ProfileService;
 import com.clkio.service.TimeCardService;
 
@@ -44,30 +45,35 @@ public class TestGetTimeCard {
 		Assert.notNull( timeCardService, "No instance was assigned to 'timeCardService'." );
 		Assert.notNull( profileService, "No instance was assigned to 'profileService'." );
 
-		Profile profile = profileService.listBy( new User( 46 ) ).get( 0 );
-		
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern( profile.getDateFormat() );
-		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern( profile.getHoursFormat() );
-		
-		TimeCard tc = timeCardService.getTimeCard( profile, YearMonth.parse( "2015-08" ) );
-		
-		for ( Day day : tc.getDaysSorted() ) {
-			System.out.println( "[DAY] id=[" + day.getId() + "], date=[" + day.getDate().format( dateTimeFormatter ) + 
-					"], expectedHours=[" + ( day.getExpectedHours() != null ? DurationUtil.fromDuration( day.getExpectedHours(), profile.getHoursFormat() ) : null ) + 
-					"], notes=[" + day.getNotes() + "], balance=[" + DurationUtil.fromDuration( day.getBalance(), profile.getHoursFormat() ) + "]" );
-			if ( !CollectionUtils.isEmpty( day.getTableEntering() ) )
-				for ( DayEntering entering : day.getTableEntering() )
-					if ( entering instanceof ClockinClockout ) {
-						ClockinClockout clkio = ( ClockinClockout ) entering;
-						System.out.println( "\t[CLOCKINCLOCKOUT] id=[" + entering.getId() + "], clockin=[" + ( clkio.getClockin() != null ? clkio.getClockin().format( timeFormatter ) : null ) + 
-								"], clockout=[" + ( clkio.getClockout() != null ? clkio.getClockout().format( timeFormatter ) : null ) + "]" );
-					} else if ( entering instanceof ManualEntering ) {
-						ManualEntering me = ( ManualEntering ) entering;
-						System.out.println( "\t[MANUALENTERING] id=[" + entering.getId() + 
-								"], time_interval=[" + DurationUtil.fromDuration( me.getTimeInterval(), profile.getHoursFormat() ) + 
-								"], reason.id=[" + me.getReason().getId() + 
-								"], reason.reason=[" + me.getReason().getReason() + "]" );
-					} else throw new IllegalStateException( "Invalid value for 'entering'" );
+		Profile profile;
+		try {
+			profile = profileService.listBy( new User( 46 ) ).get( 0 );
+			DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern( profile.getDateFormat() );
+			DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern( profile.getHoursFormat() );
+			
+			TimeCard tc = timeCardService.getTimeCard( profile, YearMonth.parse( "2015-08" ) );
+			
+			for ( Day day : tc.getDaysSorted() ) {
+				System.out.println( "[DAY] id=[" + day.getId() + "], date=[" + day.getDate().format( dateTimeFormatter ) + 
+						"], expectedHours=[" + ( day.getExpectedHours() != null ? DurationUtil.fromDuration( day.getExpectedHours(), profile.getHoursFormat() ) : null ) + 
+						"], notes=[" + day.getNotes() + "], balance=[" + DurationUtil.fromDuration( day.getBalance(), profile.getHoursFormat() ) + "]" );
+				if ( !CollectionUtils.isEmpty( day.getTableEntering() ) )
+					for ( DayEntering entering : day.getTableEntering() )
+						if ( entering instanceof ClockinClockout ) {
+							ClockinClockout clkio = ( ClockinClockout ) entering;
+							System.out.println( "\t[CLOCKINCLOCKOUT] id=[" + entering.getId() + "], clockin=[" + ( clkio.getClockin() != null ? clkio.getClockin().format( timeFormatter ) : null ) + 
+									"], clockout=[" + ( clkio.getClockout() != null ? clkio.getClockout().format( timeFormatter ) : null ) + "]" );
+						} else if ( entering instanceof ManualEntering ) {
+							ManualEntering me = ( ManualEntering ) entering;
+							System.out.println( "\t[MANUALENTERING] id=[" + entering.getId() + 
+									"], time_interval=[" + DurationUtil.fromDuration( me.getTimeInterval(), profile.getHoursFormat() ) + 
+									"], reason.id=[" + me.getReason().getId() + 
+									"], reason.reason=[" + me.getReason().getReason() + "]" );
+						} else throw new IllegalStateException( "Invalid value for 'entering'" );
+			}
+		} catch ( ValidationException e ) {
+			e.printStackTrace();
 		}
+		
 	}
 }

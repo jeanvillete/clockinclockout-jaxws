@@ -12,11 +12,15 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import com.clkio.domain.Email;
 import com.clkio.domain.NewUserEmailConfirmation;
 import com.clkio.domain.Profile;
 import com.clkio.domain.User;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.ConflictException;
+import com.clkio.exception.PersistenceException;
 import com.clkio.repository.UserRepository;
 import com.clkio.service.EmailService;
 import com.clkio.service.ProfileService;
@@ -36,16 +40,19 @@ public class UserServiceImpl implements UserService, InitializingBean {
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		Assert.notNull( this.repository, "The field repository shouldn't be null." );
-		Assert.notNull( this.emailService, "The field emailService shouldn't be null." );
+		Assert.notNull( this.repository, "The field 'repository' shouldn't be null." );
+		Assert.notNull( this.profileService, "The field 'profileService' shouldn't be null." );
+		Assert.notNull( this.emailService, "The field 'emailService' shouldn't be null." );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void insert( final User user ) {
-		Assert.state( user.getLocale() != null, "No locale was provided to argument user.");
-		
-		this.repository.insert( user );
+	public void insert( final User user ) throws ConflictException, ValidationException, PersistenceException {
+		if ( user.getLocale() == null )
+			throw new ValidationException( "No locale was provided to argument user." );
+
+		if ( !this.repository.insert( user ) )
+			throw new PersistenceException( "It was not possible perfoming insert for the 'user' record." );
 		
 		Profile profile = new Profile( user, "default profile", "HH:mm", "yyyy-MM-dd" );
 		profile.setDefaultExpectedSunday( Duration.ofHours( 0 ) );
@@ -67,8 +74,9 @@ public class UserServiceImpl implements UserService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public User getBy( final Email email ) {
-		Assert.notNull( email );
+	public User getBy( final Email email ) throws PersistenceException, ValidationException {
+		if ( email == null )
+			throw new ValidationException( "Argument 'email' is mandatory." );
 		try {
 			User syncUser = this.repository.getBy( email );
 			syncUser.setEmail( email );
@@ -80,8 +88,9 @@ public class UserServiceImpl implements UserService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void delete( final User user ) {
-		Assert.notNull( user );
+	public void delete( final User user ) throws ValidationException, PersistenceException {
+		if ( user == null )
+			throw new ValidationException( "Argument 'user' is mandatory." );
 		
 		List< Profile > profiles = this.profileService.listBy( user );
 		if ( !CollectionUtils.isEmpty( profiles ) ) {
@@ -90,19 +99,21 @@ public class UserServiceImpl implements UserService, InitializingBean {
 			}
 		}
 		
-		this.repository.delete( user );
+		if ( !this.repository.delete( user ) )
+			throw new PersistenceException( "It was not possible performing delete for 'user' record." );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.MANDATORY )
-	public boolean changePassword( final User syncUser ) {
-		Assert.notNull( syncUser );
-		return this.repository.changePassword( syncUser );
+	public boolean changePassword( final User user ) throws ValidationException {
+		if ( user == null )
+			throw new ValidationException( "Argument 'user' is mandatory." );
+		return this.repository.changePassword( user );
 	}
 	
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void cleanNotConfirmed() {
+	public void cleanNotConfirmed() throws ValidationException, PersistenceException, ConflictException {
 		LocalDateTime range = LocalDateTime.now().minusDays( 1 );
 		
 		List< Email > emails = this.emailService.listPrimaryNotConfirmed( range );
@@ -118,8 +129,9 @@ public class UserServiceImpl implements UserService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public User getBy( final String loginCode ) {
-		Assert.hasText( loginCode, "No value was provide for 'loginCode' argument." );
+	public User getBy( final String loginCode ) throws PersistenceException, ValidationException {
+		if ( !StringUtils.hasText( loginCode ) )
+			throw new ValidationException( "No value was provide for 'loginCode'." );
 		try {
 			return this.repository.getBy( loginCode );
 		} catch ( EmptyResultDataAccessException e ) {

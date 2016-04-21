@@ -2,7 +2,7 @@ package com.clkio.domain;
 
 import java.time.Duration;
 
-import org.springframework.util.Assert;
+import com.clkio.exception.DomainValidationException;
 
 public class ManualEntering extends DayEntering {
 
@@ -27,15 +27,15 @@ public class ManualEntering extends DayEntering {
 	}
 	
 	public void setDay(Day day) {
-		Assert.notNull( day, "Argument day cannot be null." );
+		if( day == null ) throw new DomainValidationException( "Argument day cannot be null." );
 		this.day = day;
 	}
 	public void setReason(ManualEnteringReason reason) {
-		Assert.notNull( reason, "Argument reason cannot be null." );
+		if( reason == null ) throw new DomainValidationException( "Argument reason cannot be null." );
 		this.reason = reason;
 	}
 	public void setTimeInterval( Duration timeInterval ) {
-		Assert.state( timeInterval != null, "Argument timeInterval has to be not null and greater than 0." );
+		if( timeInterval == null ) throw new DomainValidationException( "Argument timeInterval has to be not null and greater than 0." );
 		this.timeInterval = timeInterval;
 	}
 	public Day getDay() {

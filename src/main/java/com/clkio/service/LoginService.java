@@ -1,6 +1,8 @@
 package com.clkio.service;
 
 import com.clkio.domain.User;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.PersistenceException;
 
 public interface LoginService {
 
@@ -12,21 +14,25 @@ public interface LoginService {
 	 * @param user
 	 * @param ip
 	 * @return
+	 * @throws PersistenceException 
+	 * @throws ValidationException 
 	 */
-	String login( User user, String ip );
+	String login( User user, String ip ) throws ValidationException, PersistenceException;
 
 	/**
 	 * Service responsable to check if the provided 'code' is valid for login.
 	 * @param code
 	 * @return
+	 * @throws ValidationException 
 	 */
-	boolean check( String code );
+	boolean check( String code ) throws ValidationException;
 	
-	void logout( String code );
+	void logout( String code ) throws ValidationException, PersistenceException;
 	
 	/**
 	 * Service responsible to turn invalid all login records related to the provided 'user' parameter.
 	 * @param user
+	 * @throws ValidationException 
 	 */
-	void setAsInvalid( User user );
+	void setAsInvalid( User user ) throws ValidationException;
 }

@@ -9,6 +9,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 
 import com.clkio.domain.Email;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.PersistenceException;
 import com.clkio.service.EmailService;
 
 @RunWith( SpringJUnit4ClassRunner.class )
@@ -30,6 +32,10 @@ public class TestConfirmEmail {
 		
 		Email email = new Email( "jean.villete@gmail.com" );
 		email.setConfirmationCode( "%242a%2410%24tAuuQRy4kKLQwDTsFA%2FvR.trvC9c7UijU2h8jMOs2KeYyou0pSoOS" );
-		this.emailService.confirm( email );
+		try {
+			this.emailService.confirm( email );
+		} catch ( ValidationException | PersistenceException e ) {
+			e.printStackTrace();
+		}
 	}
 }

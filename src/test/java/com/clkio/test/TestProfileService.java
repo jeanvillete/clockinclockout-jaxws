@@ -11,6 +11,8 @@ import org.springframework.util.Assert;
 import com.clkio.domain.Email;
 import com.clkio.domain.Profile;
 import com.clkio.domain.User;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.PersistenceException;
 import com.clkio.service.EmailService;
 import com.clkio.service.ProfileService;
 import com.clkio.service.UserService;
@@ -38,9 +40,14 @@ public class TestProfileService {
 	public void test() {
 		Assert.notNull( profileService, "No instance was assigned to profileService." );
 
-		Email email = this.emailService.getBy( "jean.villete@gmail.com", true );
-		User user = this.userService.getBy( email );
-		for ( Profile profile : profileService.listBy( user ) )
-			System.out.println( profile.toString() );
+		Email email;
+		try {
+			email = this.emailService.getBy( "jean.villete@gmail.com", true );
+			User user = this.userService.getBy( email );
+			for ( Profile profile : profileService.listBy( user ) )
+				System.out.println( profile.toString() );
+		} catch ( ValidationException | PersistenceException e ) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -11,9 +11,9 @@ import com.clkio.domain.User;
 @Repository
 public class RequestResetPasswordRepository extends CommonRepository {
 
-	public void insert( final RequestResetPassword requestResetPassword ) {
+	public boolean insert( final RequestResetPassword requestResetPassword ) {
 		requestResetPassword.setId( this.nextVal( "REQUEST_RESET_PASSWORD_SEQ" ) );
-		this.jdbcTemplate.update( " INSERT INTO REQUEST_RESET_PASSWORD "
+		return this.jdbcTemplate.update( " INSERT INTO REQUEST_RESET_PASSWORD "
 				+ " ( ID, ID_CLK_USER, REQUEST_CODE_VALUE, REQUEST_DATE, CONFIRMATION_CODE_VALUE, CONFIRMATION_DATE, CHANGE_DATE ) "
 				+ " VALUES ( ?, ?, ?, ?, ?, ?, ? ) ",
 				new Object[]{ 
@@ -24,7 +24,7 @@ public class RequestResetPasswordRepository extends CommonRepository {
 					requestResetPassword.getConfirmationCodeValue(),
 					LocalDateTimeUtil.getTimestamp( requestResetPassword.getConfirmationDate() ),
 					LocalDateTimeUtil.getTimestamp( requestResetPassword.getChangeDate() )
-				});
+				}) == 1;
 	}
 
 	public void deleteNotConfirmed( final User user ) {

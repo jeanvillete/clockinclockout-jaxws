@@ -8,6 +8,9 @@ import com.clkio.domain.ClockinClockout;
 import com.clkio.domain.ManualEntering;
 import com.clkio.domain.Profile;
 import com.clkio.domain.TimeCard;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.ConflictException;
+import com.clkio.exception.PersistenceException;
 
 public interface TimeCardService {
 
@@ -20,29 +23,32 @@ public interface TimeCardService {
 	 * 
 	 * @param profile
 	 * @param clock
+	 * @throws ValidationException 
+	 * @throws PersistenceException 
+	 * @throws ConflictException 
 	 */
-	void punchClock( Profile profile, String clock );
+	void punchClock( Profile profile, String clock ) throws ValidationException, PersistenceException, ConflictException;
 	
-	void insert( Profile profile, ClockinClockout clockinClockout );
+	void insert( Profile profile, ClockinClockout clockinClockout ) throws ValidationException, PersistenceException, ConflictException;
 
-	void update( Profile profile, ClockinClockout clockinClockout );
+	void update( Profile profile, ClockinClockout clockinClockout ) throws ValidationException, PersistenceException;
 
-	void delete( Profile profile, ClockinClockout clockinClockout );
+	void delete( Profile profile, ClockinClockout clockinClockout ) throws ValidationException, PersistenceException;
 	
-	void insert( Profile profile, ManualEntering manualEntering );
+	void insert( Profile profile, ManualEntering manualEntering ) throws ValidationException, PersistenceException, ConflictException;
 
-	void update( Profile profile, ManualEntering manualEntering );
+	void update( Profile profile, ManualEntering manualEntering ) throws ValidationException, PersistenceException;
 
-	void delete( Profile profile, ManualEntering manualEntering );
+	void delete( Profile profile, ManualEntering manualEntering ) throws ValidationException, PersistenceException;
 	
-	void setNotes( Profile profile, LocalDate date, String text );
+	void setNotes( Profile profile, LocalDate date, String text ) throws ValidationException, PersistenceException, ConflictException;
 
-	void setExpectedHours( Profile profile, LocalDate date, Duration expectedHours );
+	void setExpectedHours( Profile profile, LocalDate date, Duration expectedHours ) throws ValidationException, PersistenceException, ConflictException;
 	
-	Duration getTotalTime( Profile profile );
+	Duration getTotalTime( Profile profile ) throws ValidationException;
 	
-	Duration getTotalTime( Profile profile, LocalDate until );
+	Duration getTotalTime( Profile profile, LocalDate until ) throws ValidationException;
 	
-	TimeCard getTimeCard( Profile profile, YearMonth month );
+	TimeCard getTimeCard( Profile profile, YearMonth month ) throws ValidationException;
 	
 }

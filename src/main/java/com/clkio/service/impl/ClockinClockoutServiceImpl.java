@@ -14,6 +14,8 @@ import org.springframework.util.Assert;
 import com.clkio.domain.ClockinClockout;
 import com.clkio.domain.Day;
 import com.clkio.domain.Profile;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.PersistenceException;
 import com.clkio.repository.ClockinClockoutRepository;
 import com.clkio.service.ClockinClockoutService;
 
@@ -30,35 +32,37 @@ public class ClockinClockoutServiceImpl implements ClockinClockoutService, Initi
 	
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void insert( final ClockinClockout clockinClockout ) {
-		Assert.notNull( clockinClockout, "Argument 'clockinClockout' is mandatory." );
-		Assert.state( clockinClockout.getDay() != null && clockinClockout.getDay().getId() != null,
-				"Nested property 'day' and its deeper nested 'id' property are mandatory." );
-		
-		this.repository.insert( clockinClockout );
+	public void insert( final ClockinClockout clockinClockout ) throws ValidationException, PersistenceException {
+		if( clockinClockout == null )
+			throw new ValidationException( "Argument 'clockinClockout' is mandatory." );
+		if( clockinClockout.getDay() == null || clockinClockout.getDay().getId() == null )
+			throw new ValidationException( "Nested property 'day' and its deeper nested 'id' property are mandatory." );
+		if( !this.repository.insert( clockinClockout ) )
+			throw new PersistenceException( "It was not possible performing insert for 'clockinClockout' record." );
 	}
 	
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void delete( final Profile profile, final ClockinClockout clockinClockout ) {
-		Assert.state( clockinClockout != null && clockinClockout.getId() != null,
-				"Argument 'clockinClockout' and its 'id' property are mandatory." );
-		Assert.state( this.repository.delete( profile, clockinClockout ), 
-				"Some problem happened while deleting the 'clockinClockout' record." );
+	public void delete( final Profile profile, final ClockinClockout clockinClockout ) throws ValidationException, PersistenceException {
+		if( clockinClockout == null || clockinClockout.getId() == null )
+			throw new ValidationException( "Argument 'clockinClockout' and its 'id' property are mandatory." );
+		if( !this.repository.delete( profile, clockinClockout ) ) 
+			throw new PersistenceException( "Some problem happened while deleting the 'clockinClockout' record." );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public List< ClockinClockout > listBy( final Day day ) {
-		Assert.notNull( day );
+	public List< ClockinClockout > listBy( final Day day ) throws ValidationException {
+		if( day == null ) 
+			throw new ValidationException( "Argument 'day' is mandatory." );
 		return this.repository.listBy( day );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public ClockinClockout getNewest( final Day day ) {
-		Assert.state( day != null && day.getId() != null, 
-				"Argument 'day' and its nested 'id' property are mandatory." );
+	public ClockinClockout getNewest( final Day day ) throws ValidationException, PersistenceException {
+		if( day == null || day.getId() == null ) 
+			throw new ValidationException( "Argument 'day' and its nested 'id' property are mandatory." );
 		try {
 			return this.repository.getNewest( day );
 		} catch ( EmptyResultDataAccessException e ) {
@@ -68,18 +72,18 @@ public class ClockinClockoutServiceImpl implements ClockinClockoutService, Initi
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void update( final ClockinClockout clockinClockout ) {
-		Assert.state( clockinClockout != null && clockinClockout.getId() != null,
-				"Argument 'clockinClockout' and its 'id' property are mandatory." );
-		Assert.state( this.repository.update( clockinClockout ),
-				"Some problem happened while performin update for the 'clockinClockout' record." );
+	public void update( final ClockinClockout clockinClockout ) throws ValidationException, PersistenceException {
+		if( clockinClockout == null || clockinClockout.getId() == null )
+			throw new ValidationException( "Argument 'clockinClockout' and its 'id' property are mandatory." );
+		if ( !this.repository.update( clockinClockout ) )
+			throw new PersistenceException( "It was not possible performing update for 'clockinClockout' record." );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public ClockinClockout get( final Profile profile, final ClockinClockout clockinClockout ) {
-		Assert.state( clockinClockout != null && clockinClockout.getId() != null,
-				"Argument 'clockinClockout' and its property 'id' are mandatory." );
+	public ClockinClockout get( final Profile profile, final ClockinClockout clockinClockout ) throws PersistenceException, ValidationException {
+		if( clockinClockout == null || clockinClockout.getId() == null )
+			throw new ValidationException( "Argument 'clockinClockout' and its property 'id' are mandatory." );
 		try {
 			return this.repository.get( profile, clockinClockout );
 		} catch ( EmptyResultDataAccessException e ) {
@@ -89,12 +93,14 @@ public class ClockinClockoutServiceImpl implements ClockinClockoutService, Initi
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public List< ClockinClockout > list( Profile profile, LocalDate startDate, LocalDate endDate ) {
-		Assert.notNull( profile, "Argument 'profile' is mandatory." );
-		Assert.notNull( profile.getId(), "Argument 'profile's id property is mandatory." );
-		Assert.notNull( startDate, "Argument 'startDate' is mandatory." );
-		Assert.notNull( endDate, "Argument 'endDate' is mandatory." );
-		
+	public List< ClockinClockout > list( Profile profile, LocalDate startDate, LocalDate endDate ) throws ValidationException {
+		if( profile == null || profile.getId() == null )
+			throw new ValidationException( "Argument 'profile' and its nested 'id' property are mandatory." );
+		if( startDate == null)
+			throw new ValidationException( "Argument 'startDate' is mandatory." );
+		if( endDate == null )
+			throw new ValidationException( "Argument 'endDate' is mandatory." );
+
 		return this.repository.list( profile, startDate, endDate );
 	}
 

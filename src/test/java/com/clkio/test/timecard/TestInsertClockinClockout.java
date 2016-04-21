@@ -13,6 +13,9 @@ import org.springframework.util.Assert;
 import com.clkio.domain.ClockinClockout;
 import com.clkio.domain.Profile;
 import com.clkio.domain.User;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.ConflictException;
+import com.clkio.exception.PersistenceException;
 import com.clkio.service.ProfileService;
 import com.clkio.service.TimeCardService;
 
@@ -50,6 +53,12 @@ public class TestInsertClockinClockout {
 			
 			timeCardService.insert( profile, new ClockinClockout( LocalDateTime.now(), LocalDateTime.now().plusMinutes( 20 ) ) );
 		} catch ( InterruptedException e ) {
+			e.printStackTrace();
+		} catch ( ValidationException e ) {
+			e.printStackTrace();
+		} catch ( PersistenceException e ) {
+			e.printStackTrace();
+		} catch ( ConflictException e ) {
 			e.printStackTrace();
 		}
 		

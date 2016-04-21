@@ -2,7 +2,7 @@ package com.clkio.domain;
 
 import java.time.LocalDateTime;
 
-import org.springframework.util.Assert;
+import com.clkio.exception.DomainValidationException;
 
 public class ClockinClockout extends DayEntering {
 
@@ -42,7 +42,7 @@ public class ClockinClockout extends DayEntering {
 	}
 
 	public Day getDay() {
-		Assert.state( day != null, "The property 'day' has not been initialized yet." );
+		if( day == null ) throw new DomainValidationException( "The property 'day' has not been initialized yet." );
 		return day;
 	}
 

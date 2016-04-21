@@ -16,6 +16,8 @@ import com.clkio.domain.ClockinClockout;
 import com.clkio.domain.Day;
 import com.clkio.domain.ManualEntering;
 import com.clkio.domain.Profile;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.PersistenceException;
 import com.clkio.repository.DayRepository;
 import com.clkio.service.ClockinClockoutService;
 import com.clkio.service.DayService;
@@ -37,36 +39,42 @@ public class DayServiceImpl implements DayService, InitializingBean {
 	public void afterPropertiesSet() throws Exception {
 		Assert.state( repository != null, "The property 'repository' has not been properly initialized." );
 		Assert.state( manualEnteringService != null, "The property 'manualEnteringService' has not been properly initialized." );
+		Assert.state( clockinClockoutService != null, "The property 'clockinClockoutService' has not been properly initialized." );
 	}
 	
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void insert( final Day day ) {
-		Assert.notNull( day, "Argument 'day' is mandatory." );
-		Assert.notNull( day.getDate(), "Nested argument's property 'date' cannot be null." );
-		Assert.notNull( day.getExpectedHours(), "Nested argument's property 'expectedHours' cannot be null." );
-		Assert.state( day.getProfile() != null && day.getProfile().getId() != null, 
-				"Nested argument's property 'profile' alongside its 'id' attribute cannot be null." );
-		Assert.state( this.repository.insert( day ), 
-				"Some problem happened while performing insert for 'day' record." );
+	public void insert( final Day day ) throws PersistenceException, ValidationException {
+		if( day == null )
+			throw new ValidationException( "Argument 'day' is mandatory." );
+		if( day.getDate() == null )
+			throw new ValidationException( "Nested argument's property 'date' cannot be null." );
+		if( day.getExpectedHours() == null )
+			throw new ValidationException( "Nested argument's property 'expectedHours' cannot be null." );
+		if( day.getProfile() == null || day.getProfile().getId() == null ) 
+			throw new ValidationException( "Nested argument's property 'profile' alongside its 'id' attribute cannot be null." );
+		if( !this.repository.insert( day ) ) 
+			throw new PersistenceException( "It was not possible performing insert for 'day' record." );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void update( final Day day ) {
-		Assert.state( day != null && day.getId() != null,
-				"Argument 'day' and its 'id' property are mandatory." );
-		Assert.notNull( day.getExpectedHours(), "Nested argument's property 'expectedHours' cannot be null." );
-		Assert.state( day.getProfile() != null && day.getProfile().getId() != null, 
-				"Nested argument's property 'profile' alongside its 'id' attribute cannot be null." );
-		Assert.state( this.repository.update( day ),
-				"Some problem happened while performnig update for 'day' record." );
+	public void update( final Day day ) throws ValidationException, PersistenceException {
+		if( day == null || day.getId() == null )
+			throw new ValidationException( "Argument 'day' and its 'id' property are mandatory." );
+		if( day.getExpectedHours() == null )
+			throw new ValidationException( "Nested argument's property 'expectedHours' cannot be null." );
+		if( day.getProfile() == null || day.getProfile().getId() == null ) 
+			throw new ValidationException( "Nested argument's property 'profile' alongside its 'id' attribute cannot be null." );
+		if( !this.repository.update( day ) )
+			throw new PersistenceException( "Some problem happened while performnig update for 'day' record." );
 	}
 	
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void delete( final Day day ) {
-		Assert.notNull( day );
+	public void delete( final Day day ) throws ValidationException, PersistenceException {
+		if( day == null )
+			throw new ValidationException( "Argument 'day' is mandatory." );
 		
 		List< ClockinClockout > listClockinClockout = this.clockinClockoutService.listBy( day );
 		if ( !CollectionUtils.isEmpty( listClockinClockout ) )
@@ -78,23 +86,25 @@ public class DayServiceImpl implements DayService, InitializingBean {
 			for ( ManualEntering manualEntering : listManualEntering )
 				this.manualEnteringService.delete( day.getProfile(),manualEntering );
 		
-		Assert.state( this.repository.delete( day ), 
-				"Some problem happend while performing delete for 'day' record." );
+		if( !this.repository.delete( day ) )
+			throw new PersistenceException( "It was not possible performing delete for 'day' record." );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = false )
-	public List< Day > listBy( final Profile profile ) {
-		Assert.notNull( profile );
+	public List< Day > listBy( final Profile profile ) throws ValidationException {
+		if( profile == null )
+			throw new ValidationException( "Argument 'profile' is mandatory." );
 		return this.repository.listBy( profile );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = false )
-	public Day get( final Profile profile, final LocalDate localDateDay ) {
-		Assert.notNull( profile, "Argument 'profile' is mandatory." );
-		Assert.notNull( localDateDay, "Argument 'localDateDay' is mandatory." );
-		
+	public Day get( final Profile profile, final LocalDate localDateDay ) throws ValidationException, PersistenceException {
+		if( profile == null )
+			throw new ValidationException( "Argument 'profile' is mandatory." );
+		if( localDateDay == null )
+			throw new ValidationException( "Argument 'localDateDay' is mandatory." );
 		try {
 			return this.repository.get( profile, localDateDay );
 		} catch ( EmptyResultDataAccessException e ) {
@@ -104,9 +114,9 @@ public class DayServiceImpl implements DayService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = false )
-	public Day get( final Day day ) {
-		Assert.state( day != null && day.getId() != null, 
-				"Argument 'day' and its 'id' property are mandatory." );
+	public Day get( final Day day ) throws ValidationException, PersistenceException {
+		if( day == null || day.getId() == null ) 
+			throw new ValidationException( "Argument 'day' and its 'id' property are mandatory." );
 		try {
 			return this.repository.get( day );
 		} catch ( EmptyResultDataAccessException e ) {
@@ -116,11 +126,13 @@ public class DayServiceImpl implements DayService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = false )
-	public List< Day > list( Profile profile, LocalDate startDate, LocalDate endDate ) {
-		Assert.notNull( profile, "Argument 'profile' is mandatory." );
-		Assert.notNull( profile.getId(), "Argument 'profile's id property is mandatory." );
-		Assert.notNull( startDate, "Argument 'startDate' is mandatory." );
-		Assert.notNull( endDate, "Argument 'endDate' is mandatory." );
+	public List< Day > list( Profile profile, LocalDate startDate, LocalDate endDate ) throws ValidationException {
+		if( profile == null || profile.getId() == null )
+			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
+		if( startDate == null )
+			throw new ValidationException( "Argument 'startDate' is mandatory." );
+		if( endDate == null )
+			throw new ValidationException( "Argument 'endDate' is mandatory." );
 		
 		return this.repository.list( profile, startDate, endDate );
 	}

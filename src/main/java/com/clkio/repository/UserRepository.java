@@ -9,12 +9,12 @@ import com.clkio.rowmapper.UserRowMapper;
 @Repository
 public class UserRepository extends CommonRepository {
 
-	public void insert( final User user ) {
+	public boolean insert( final User user ) {
 		user.setId( this.nextVal( "CLK_USER_SEQ" ) );
-		this.jdbcTemplate.update( " INSERT INTO CLK_USER( ID, LOCALE, PASSWORD ) VALUES ( ?, ?, ? ) ",
+		return this.jdbcTemplate.update( " INSERT INTO CLK_USER( ID, LOCALE, PASSWORD ) VALUES ( ?, ?, ? ) ",
 				new Object[]{ user.getId(),
 						user.getLocale().getLanguage(),
-						user.getPassword() });
+						user.getPassword() }) == 1;
 	}
 
 	public User getBy( final Email email ) {
@@ -25,8 +25,8 @@ public class UserRepository extends CommonRepository {
 				new UserRowMapper() );
 	}
 
-	public void delete( final User user ) {
-		this.jdbcTemplate.update( " DELETE FROM CLK_USER WHERE ID = ? ", new Object[]{ user.getId() } );
+	public boolean delete( final User user ) {
+		return this.jdbcTemplate.update( " DELETE FROM CLK_USER WHERE ID = ? ", new Object[]{ user.getId() } ) == 1;
 	}
 
 	public boolean changePassword( final User user ) {

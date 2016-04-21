@@ -14,6 +14,8 @@ import org.springframework.util.Assert;
 import com.clkio.domain.Email;
 import com.clkio.domain.RequestResetPassword;
 import com.clkio.domain.User;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.PersistenceException;
 import com.clkio.service.RequestResetPasswordService;
 
 @RunWith( SpringJUnit4ClassRunner.class )
@@ -37,7 +39,11 @@ public class TestDoChangePassword {
 		requestResetPassword.setConfirmationCodeValue( "$2a$10$4cVRd/C6omc4LGcHUHx.LuApY6K8ZntmrAiV7EdzY1q8oKkMlL3Ja" );
 		requestResetPassword.setNewPassword( "mynewpassword" );
 		
-		this.resetPasswordService.changePassword( requestResetPassword );
+		try {
+			this.resetPasswordService.changePassword( requestResetPassword );
+		} catch ( ValidationException | PersistenceException e ) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test

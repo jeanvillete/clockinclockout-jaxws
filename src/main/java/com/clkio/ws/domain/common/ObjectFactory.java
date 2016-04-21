@@ -30,11 +30,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ResponseException }
+     * Create an instance of {@link ResponseFault }
      * 
      */
-    public ResponseException createResponseException() {
-        return new ResponseException();
+    public ResponseFault createResponseFault() {
+        return new ResponseFault();
     }
 
     /**
@@ -43,6 +43,46 @@ public class ObjectFactory {
      */
     public Response createResponse() {
         return new Response();
+    }
+
+    /**
+     * Create an instance of {@link ForbiddenFault }
+     * 
+     */
+    public ForbiddenFault createForbiddenFault() {
+        return new ForbiddenFault();
+    }
+
+    /**
+     * Create an instance of {@link UnauthorizedFault }
+     * 
+     */
+    public UnauthorizedFault createUnauthorizedFault() {
+        return new UnauthorizedFault();
+    }
+
+    /**
+     * Create an instance of {@link ConflictFault }
+     * 
+     */
+    public ConflictFault createConflictFault() {
+        return new ConflictFault();
+    }
+
+    /**
+     * Create an instance of {@link InternalServerError }
+     * 
+     */
+    public InternalServerError createInternalServerError() {
+        return new InternalServerError();
+    }
+
+    /**
+     * Create an instance of {@link BadRequestFault }
+     * 
+     */
+    public BadRequestFault createBadRequestFault() {
+        return new BadRequestFault();
     }
 
 }

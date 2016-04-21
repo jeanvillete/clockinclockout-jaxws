@@ -10,8 +10,8 @@ import com.clkio.domain.User;
 @Repository
 public class LoginRepository extends CommonRepository {
 
-	public void insert( final User user, final String code, final LocalDateTime since, final String ip ) {
-		this.jdbcTemplate.update( " INSERT INTO LOGIN ( ID, ID_CLK_USER, CODE, SINCE, IP, VALID ) "
+	public boolean insert( final User user, final String code, final LocalDateTime since, final String ip ) {
+		return this.jdbcTemplate.update( " INSERT INTO LOGIN ( ID, ID_CLK_USER, CODE, SINCE, IP, VALID ) "
 				+ " VALUES ( NEXTVAL( ? ), ?, ?, ?, ?, ? ) ",
 				new Object[]{
 						"LOGIN_SEQ", 
@@ -19,7 +19,7 @@ public class LoginRepository extends CommonRepository {
 						code, 
 						LocalDateTimeUtil.getTimestamp( since ), 
 						ip, 
-						true });
+						true }) == 1;
 	}
 
 	public boolean check( final String code ) {

@@ -33,6 +33,9 @@ import com.clkio.domain.EmailResetPassword;
 import com.clkio.domain.NewEmailConfirmation;
 import com.clkio.domain.NewUserEmailConfirmation;
 import com.clkio.domain.User;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.ConflictException;
+import com.clkio.exception.PersistenceException;
 import com.clkio.repository.EmailRepository;
 import com.clkio.service.EmailService;
 
@@ -62,19 +65,30 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		Assert.notNull( this.repository, "The field repository shouldn't be null." );
+		Assert.notNull( this.repository, "The field 'repository' shouldn't be null." );
+		Assert.notNull( this.javaMailSender, "The field 'javaMailSender' shouldn't be null." );
+		Assert.notNull( this.velocityEngine, "The field 'velocityEngine' shouldn't be null." );
+		Assert.notNull( this.messageSource, "The field 'messageSource' shouldn't be null." );
+		Assert.hasText( this.from, "No value was provided for the property 'from'." );
+		Assert.hasText( this.linkSite, "No value was provided for the property 'linkSite'." );
 	}
 	
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void insert( final Email email ) {
-		Assert.notNull( email, "Argument email cannot be null." );
-		Assert.state( email.getAddress().matches( "^([a-zA-Z0-9_.+-])+\\@(([a-zA-Z0-9-])+\\.)+([a-zA-Z0-9]{2,4})+$" ), "The provided email address is not valid." );
-		Assert.state( email.getRecordedTime() != null, "No recordedTime was provided to argument email." );
-		Assert.state( StringUtils.hasText( email.getConfirmationCode() ), "No confirmationCode was provided to argument email." );
-		Assert.state( !this.exists( email ), "The provided email address is already in use." );
+	public void insert( final Email email ) throws ValidationException, PersistenceException, ConflictException {
+		if ( email == null )
+			throw new ValidationException( "Argument email cannot be null." );
+		if ( !email.getAddress().matches( "^([a-zA-Z0-9_.+-])+\\@(([a-zA-Z0-9-])+\\.)+([a-zA-Z0-9]{2,4})+$" ) )
+			throw new ValidationException( "The provided email address is not valid." );
+		if ( email.getRecordedTime() == null )
+			throw new ValidationException( "No recordedTime was provided to argument email." );
+		if ( !StringUtils.hasText( email.getConfirmationCode() ) )
+			throw new ValidationException( "No confirmationCode was provided to argument email." );
+		if ( this.exists( email ) )
+			throw new ConflictException( "The provided email address is already in use." );
 		
-		this.repository.insert( email );
+		if ( !this.repository.insert( email ) )
+			throw new PersistenceException( "It was not possible performing insert for the 'email' record." );
 	}
 
 	@Override
@@ -136,40 +150,50 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public boolean exists( final Email email ) {
-		Assert.notNull( email );
+	public boolean exists( final Email email ) throws ValidationException {
+		if ( email == null )
+			throw new ValidationException( "Argument 'email' is mandatory." );
 		return this.repository.exists( email );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void confirm( final Email email ) {
-		Assert.notNull( email );
-		Assert.hasText( email.getConfirmationCode() );
+	public void confirm( final Email email ) throws ValidationException, PersistenceException {
+		if ( email == null )
+			throw new ValidationException( "Argument 'email' is mandatory." );
+		if ( !StringUtils.hasText( email.getConfirmationCode() ) )
+			throw new ValidationException( "Nested property 'confirmationCode' is mandatory." );
 		
-		Assert.state(  this.repository.confirm( email, LocalDateTime.now().minusDays( 1 ) ), "Problems while performing email confirmation." );
+		if (  !this.repository.confirm( email, LocalDateTime.now().minusDays( 1 ) ) )
+			throw new PersistenceException( "Problems while performing email confirmation." );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void delete( final Email email ) {
-		Assert.notNull( email );
-		Assert.state( email.getUser() != null && email.getUser().getId() != null );
+	public void delete( final Email email ) throws ValidationException, PersistenceException, ConflictException {
+		if ( email == null )
+			throw new ValidationException( "Argument 'email' is mandatory." );
+		if ( email.getUser() == null || email.getUser().getId() == null )
+			throw new ValidationException( "Nested property 'user' and its more nested 'id' properties are mandatory." );
 		
 		Email syncEmail = this.get( email );
-		Assert.notNull( syncEmail, "Email record not found for deletion." );
+		if ( syncEmail == null)
+			throw new PersistenceException( "Email record not found for deletion." );
 		
-		if ( syncEmail.isPrimary() )
-			Assert.state( syncEmail.getConfirmationDate() == null , "A 'primary email' record cannot be deleted." );
+		if ( syncEmail.isPrimary() && syncEmail.getConfirmationDate() != null )
+			throw new ConflictException( "A 'primary email' record cannot be deleted." );
 		
-		Assert.state( this.repository.delete( email ), "Something wrong happend while deleting 'email' record." );
+		if( !this.repository.delete( email ) )
+			throw new PersistenceException( "It was not possible delete 'email' record." );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public Email getBy( final String emailAddress, final boolean isPrimary ) {
-		Assert.hasText( emailAddress );
-		Assert.state( emailAddress.matches( "^([a-zA-Z0-9_.+-])+\\@(([a-zA-Z0-9-])+\\.)+([a-zA-Z0-9]{2,4})+$" ), "The provided email address is not valid." );
+	public Email getBy( final String emailAddress, final boolean isPrimary ) throws ValidationException, PersistenceException {
+		if ( !StringUtils.hasText( emailAddress ) )
+			throw new ValidationException( "Argument 'emailAddress' is mandatory." );
+		if ( !emailAddress.matches( "^([a-zA-Z0-9_.+-])+\\@(([a-zA-Z0-9-])+\\.)+([a-zA-Z0-9]{2,4})+$" ) )
+			throw new ValidationException( "The provided email address is not valid." );
 		try {
 			return this.repository.getBy( emailAddress, isPrimary );
 		} catch ( EmptyResultDataAccessException e ) {
@@ -179,30 +203,35 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public List< Email > listPrimaryNotConfirmed( final LocalDateTime date ) {
-		Assert.notNull( date, "Parameter 'date' cannot be null." );
+	public List< Email > listPrimaryNotConfirmed( final LocalDateTime date ) throws ValidationException {
+		if ( date == null )
+			throw new ValidationException( "Parameter 'date' cannot be null." );
 		return this.repository.listPrimaryNotConfirmed( date );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void deleteNotPrimaryNotConfirmed( final LocalDateTime date ) {
-		Assert.notNull( date, "Parameter 'date' cannot be null." );
+	public void deleteNotPrimaryNotConfirmed( final LocalDateTime date ) throws ValidationException {
+		if ( date == null )
+			throw new ValidationException( "Parameter 'date' cannot be null." );
 		this.repository.deleteNotPrimaryNotConfirmed( date );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public List< Email > list( final User user ) {
-		Assert.notNull( user );
+	public List< Email > list( final User user ) throws ValidationException {
+		if ( user == null )
+			throw new ValidationException( "Parameter 'user' cannot be null." );
 		return this.repository.list( user );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public Email get( final Email email ) {
-		Assert.notNull( email );
-		Assert.state( email.getUser() != null && email.getUser().getId() != null );
+	public Email get( final Email email ) throws ValidationException, PersistenceException {
+		if ( email == null )
+			throw new ValidationException( "Parameter 'email' cannot be null." );
+		if ( email.getUser() == null || email.getUser().getId() == null )
+			throw new ValidationException( "Nested property 'user' along its more nested 'id' property are mandatory." );
 		try {
 			return this.repository.get( email );
 		} catch ( EmptyResultDataAccessException e ) {
@@ -212,16 +241,20 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void setAsPrimary( final Email email ) {
-		Assert.notNull( email );
+	public void setAsPrimary( final Email email ) throws ValidationException, PersistenceException, ConflictException {
+		if ( email == null )
+			throw new ValidationException( "Parameter 'email' cannot be null." );
 		
 		Email syncEmail = this.get( email );
-		Assert.state( syncEmail != null, "No result found." );
-		Assert.state( syncEmail.getConfirmationDate() != null, "The provided 'email' has not been confirmed yet!." );
-		Assert.state( !syncEmail.isPrimary(), "The provided email is already the 'PRIMARY' one." );
-		
-		Assert.state( this.repository.unsetPrimary( email.getUser() ), "Some problem happed while setting email as primary." );
-		Assert.state( this.repository.setAsPrimary( email ), "Some problem happed while setting email as primary." );
+		if ( syncEmail == null )
+			throw new PersistenceException( "No 'email' record was retrieved." );
+		if ( syncEmail.getConfirmationDate() == null )
+			throw new ConflictException( "The provided 'email' has not been confirmed yet!" );
+		if ( syncEmail.isPrimary() )
+			throw new ConflictException( "The provided email is already the 'PRIMARY' one." );
+			
+		if ( !( this.repository.unsetPrimary( email.getUser() ) && this.repository.setAsPrimary( email ) ) )
+			throw new PersistenceException( "Operation 'setAsPrimary' not performed." );
 	}
 
 }

@@ -11,7 +11,7 @@ import com.clkio.ws.domain.adjusting.ListAdjustingRequest;
 import com.clkio.ws.domain.adjusting.ListAdjustingResponse;
 import com.clkio.ws.domain.adjusting.UpdateAdjustingRequest;
 import com.clkio.ws.domain.common.Response;
-import com.clkio.ws.domain.common.ResponseException;
+import com.clkio.ws.domain.common.ResponseFault;
 import com.clkio.ws.domain.email.ConfirmEmailRequest;
 import com.clkio.ws.domain.email.DeleteEmailRequest;
 import com.clkio.ws.domain.email.InsertEmailRequest;
@@ -102,7 +102,7 @@ public class ObjectFactory {
     private final static QName _DeleteEmailRequest_QNAME = new QName("http://schemas.clkio.com", "deleteEmailRequest");
     private final static QName _DeleteAdjustingRequest_QNAME = new QName("http://schemas.clkio.com", "deleteAdjustingRequest");
     private final static QName _ListManualEnteringReasonRequest_QNAME = new QName("http://schemas.clkio.com", "listManualEnteringReasonRequest");
-    private final static QName _ResponseException_QNAME = new QName("http://schemas.clkio.com", "responseException");
+    private final static QName _ResponseFault_QNAME = new QName("http://schemas.clkio.com", "responseFault");
     private final static QName _SetEmailAsPrimaryRequest_QNAME = new QName("http://schemas.clkio.com", "setEmailAsPrimaryRequest");
     private final static QName _ListProfileResponse_QNAME = new QName("http://schemas.clkio.com", "listProfileResponse");
     private final static QName _InsertManualEnteringReasonRequest_QNAME = new QName("http://schemas.clkio.com", "insertManualEnteringReasonRequest");
@@ -413,12 +413,12 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ResponseException }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ResponseFault }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "responseException")
-    public JAXBElement<ResponseException> createResponseException(ResponseException value) {
-        return new JAXBElement<ResponseException>(_ResponseException_QNAME, ResponseException.class, null, value);
+    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "responseFault")
+    public JAXBElement<ResponseFault> createResponseFault(ResponseFault value) {
+        return new JAXBElement<ResponseFault>(_ResponseFault_QNAME, ResponseFault.class, null, value);
     }
 
     /**

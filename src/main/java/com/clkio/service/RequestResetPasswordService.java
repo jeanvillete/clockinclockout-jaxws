@@ -2,6 +2,8 @@ package com.clkio.service;
 
 import com.clkio.domain.RequestResetPassword;
 import com.clkio.domain.User;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.PersistenceException;
 
 public interface RequestResetPasswordService {
 
@@ -20,8 +22,10 @@ public interface RequestResetPasswordService {
 	/**
 	 * This service is meant to be used when the user requests a reset password.
 	 * @param requestResetPassword
+	 * @throws ValidationException 
+	 * @throws PersistenceException 
 	 */
-	void processRequest( RequestResetPassword requestResetPassword );
+	void processRequest( RequestResetPassword requestResetPassword ) throws ValidationException, PersistenceException;
 
 	/**
 	 * This service is responsable to deal with a confirmation step from the user, that is, the user received the
@@ -29,8 +33,10 @@ public interface RequestResetPasswordService {
 	 * @param requestResetPassword
 	 * @return The return is the value for <b>confirmationCodeValue</b> and means a valid identifier to be used
 	 *  later by the user with the new password.
+	 * @throws ValidationException 
+	 * @throws PersistenceException 
 	 */
-	String confirm( RequestResetPassword requestResetPassword );
+	String confirm( RequestResetPassword requestResetPassword ) throws ValidationException, PersistenceException;
 	
 	/**
 	 * Service responsable to effectively change a user's password.
@@ -38,6 +44,8 @@ public interface RequestResetPasswordService {
 	 * 
 	 * @param requestResetPassword
 	 * @return
+	 * @throws ValidationException 
+	 * @throws PersistenceException 
 	 */
-	boolean changePassword( RequestResetPassword requestResetPassword );
+	boolean changePassword( RequestResetPassword requestResetPassword ) throws ValidationException, PersistenceException;
 }

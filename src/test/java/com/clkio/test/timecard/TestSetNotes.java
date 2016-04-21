@@ -12,6 +12,9 @@ import org.springframework.util.Assert;
 
 import com.clkio.domain.Profile;
 import com.clkio.domain.User;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.ConflictException;
+import com.clkio.exception.PersistenceException;
 import com.clkio.service.ProfileService;
 import com.clkio.service.TimeCardService;
 
@@ -36,8 +39,17 @@ public class TestSetNotes {
 		Assert.notNull( timeCardService, "No instance was assigned to 'timeCardService'." );
 		Assert.notNull( profileService, "No instance was assigned to 'profileService'." );
 
-		Profile profile = profileService.listBy( new User( 46 ) ).get( 0 );
+		try {
+			Profile profile;
+			profile = profileService.listBy( new User( 46 ) ).get( 0 );
+			timeCardService.setNotes( profile, LocalDate.now(), "adding sample notes" );
+		} catch ( ValidationException e ) {
+			e.printStackTrace();
+		} catch ( PersistenceException e ) {
+			e.printStackTrace();
+		} catch ( ConflictException e ) {
+			e.printStackTrace();
+		}
 		
-		timeCardService.setNotes( profile, LocalDate.now(), "adding sample notes" );
 	}
 }

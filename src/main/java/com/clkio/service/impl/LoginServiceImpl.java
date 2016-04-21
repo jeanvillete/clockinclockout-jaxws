@@ -3,7 +3,6 @@ package com.clkio.service.impl;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,6 +14,8 @@ import org.springframework.util.StringUtils;
 
 import com.clkio.domain.Email;
 import com.clkio.domain.User;
+import com.clkio.exception.ValidationException;
+import com.clkio.exception.PersistenceException;
 import com.clkio.repository.LoginRepository;
 import com.clkio.service.EmailService;
 import com.clkio.service.LoginService;
@@ -23,7 +24,6 @@ import com.clkio.service.UserService;
 @Service
 public class LoginServiceImpl implements LoginService, InitializingBean {
 
-	private static final Logger LOG = Logger.getLogger( LoginServiceImpl.class );
 	private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern( "yyyyMMddHHmmss" );
 	
 	@Autowired
@@ -37,60 +37,68 @@ public class LoginServiceImpl implements LoginService, InitializingBean {
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		Assert.notNull( this.repository, "The property 'repository' has not been properly initialized." );
 		Assert.notNull( this.emailService, "The property 'emailService' has not been properly initialized." );
 		Assert.notNull( this.userService, "The property 'userService' has not been properly initialized." );
 	}
 	
 	@Override
 	@Transactional( propagation = Propagation.REQUIRES_NEW )
-	public String login( final User user, final String ip ) {
-		Assert.notNull( user );
-		Assert.state( StringUtils.hasText( user.getPassword() ), "No proper password was provided." );
-		Assert.state( StringUtils.hasText( ip ), "Argument 'ip' is mandatory." );
+	public String login( final User user, final String ip ) throws ValidationException, PersistenceException {
+		if ( user == null )
+			throw new ValidationException( "Argument 'user' is mandatory." );
+		if ( !StringUtils.hasText( user.getPassword() ) )
+			throw new ValidationException( "No proper password was provided." );
+		if( !StringUtils.hasText( ip ) )
+			throw new ValidationException( "Argument 'ip' is mandatory." );
 		
-		try {
-			Email syncEmail = this.emailService.getBy( user.getEmail().getAddress(), true );
-			Assert.state( syncEmail != null );
-			
-			User syncUser = this.userService.getBy( syncEmail );
-			Assert.state( syncUser != null );
-			
-			BCryptPasswordEncoder pwdCrypter = new BCryptPasswordEncoder();
-			
-			Assert.state( pwdCrypter.matches( user.getPassword(), syncUser.getPassword() ) );
-			
-			LocalDateTime now = LocalDateTime.now();
-			String code = pwdCrypter.encode( DTF.format( now ) + user.getEmail().getAddress() );
-			
-			this.repository.insert( syncUser, code, now, ip );
-			
-			return code;
-		} catch ( IllegalStateException e ) {
-			LOG.error( e );
-			throw new IllegalArgumentException( "Email address and/or password not found or they do not match." );
-		}
+		String loginFailed = "Email address and/or password not found or they do not match.";
+		
+		Email syncEmail = this.emailService.getBy( user.getEmail().getAddress(), true );
+		if ( syncEmail == null )
+			throw new PersistenceException( loginFailed );
+		
+		User syncUser = this.userService.getBy( syncEmail );
+		if ( syncUser == null )
+			throw new PersistenceException( loginFailed );
+		
+		BCryptPasswordEncoder pwdCrypter = new BCryptPasswordEncoder();
+		if ( !pwdCrypter.matches( user.getPassword(), syncUser.getPassword() ) )
+			throw new PersistenceException( loginFailed );
+		
+		LocalDateTime now = LocalDateTime.now();
+		String code = pwdCrypter.encode( DTF.format( now ) + user.getEmail().getAddress() );
+		
+		if ( !this.repository.insert( syncUser, code, now, ip ) )
+			throw new PersistenceException( "It was not possible performing insert for 'login' record." );
+		
+		return code;
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.SUPPORTS, readOnly = true )
-	public boolean check( final String code ) {
-		Assert.hasText( code, "The argument 'code' is mandatory." );
+	public boolean check( final String code ) throws ValidationException {
+		if ( !StringUtils.hasText( code ) )
+			throw new ValidationException( "The argument 'code' is mandatory." );
 		return this.repository.check( code );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void setAsInvalid( final User user ) {
-		Assert.state( user != null && user.getId() != null,
-				"The argument 'user' and its nested 'id' property are mandatory." );
+	public void setAsInvalid( final User user ) throws ValidationException {
+		if ( user == null || user.getId() == null )
+			throw new ValidationException( "The argument 'user' and its nested 'id' property are mandatory." );
 		this.repository.setAsInvalid( user );
 	}
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED )
-	public void logout( final String code ) {
-		Assert.hasText( code, "The argument 'code' is mandatory." );
-		Assert.state( this.repository.logout( code ), "Logout failed." );
+	public void logout( final String code ) throws ValidationException, PersistenceException {
+		if ( !StringUtils.hasText( code ) )
+			throw new ValidationException( "The argument 'code' is mandatory." );
+		
+		if( !this.repository.logout( code ) )
+			throw new PersistenceException( "Logout failed." );
 	}
 	
 }
