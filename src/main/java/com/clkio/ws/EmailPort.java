@@ -60,6 +60,7 @@ public interface EmailPort {
     /**
      * 
      * @param request
+     * @param clkioLoginCode
      * @return
      *     returns com.clkio.ws.domain.common.Response
      * @throws ResponseException
@@ -67,6 +68,8 @@ public interface EmailPort {
     @WebMethod
     @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public Response insert(
+        @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
+        String clkioLoginCode,
         @WebParam(name = "insertEmailRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         InsertEmailRequest request)
         throws ResponseException
@@ -75,6 +78,7 @@ public interface EmailPort {
     /**
      * 
      * @param request
+     * @param clkioLoginCode
      * @return
      *     returns com.clkio.ws.domain.email.ListEmailResponse
      * @throws ResponseException
@@ -82,6 +86,8 @@ public interface EmailPort {
     @WebMethod
     @WebResult(name = "listEmailResponse", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public ListEmailResponse list(
+        @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
+        String clkioLoginCode,
         @WebParam(name = "listEmailRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         ListEmailRequest request)
         throws ResponseException
@@ -90,6 +96,7 @@ public interface EmailPort {
     /**
      * 
      * @param request
+     * @param clkioLoginCode
      * @return
      *     returns com.clkio.ws.domain.common.Response
      * @throws ResponseException
@@ -97,6 +104,8 @@ public interface EmailPort {
     @WebMethod
     @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public Response delete(
+        @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
+        String clkioLoginCode,
         @WebParam(name = "deleteEmailRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         DeleteEmailRequest request)
         throws ResponseException
@@ -105,6 +114,7 @@ public interface EmailPort {
     /**
      * 
      * @param request
+     * @param clkioLoginCode
      * @return
      *     returns com.clkio.ws.domain.common.Response
      * @throws ResponseException
@@ -112,6 +122,8 @@ public interface EmailPort {
     @WebMethod
     @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public Response setEmailAsPrimary(
+        @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
+        String clkioLoginCode,
         @WebParam(name = "setEmailAsPrimaryRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         SetEmailAsPrimaryRequest request)
         throws ResponseException

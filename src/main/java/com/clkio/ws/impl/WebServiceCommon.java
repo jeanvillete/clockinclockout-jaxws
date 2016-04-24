@@ -68,19 +68,13 @@ abstract class WebServiceCommon< T > {
 		return ip;
 	}
 	
-	protected String getLoginCode() throws UnauthorizedException {
-		HttpServletRequest request = ( HttpServletRequest ) this.wsContext.getMessageContext().get( MessageContext.SERVLET_REQUEST );
-		String loginCode = request.getHeader( "CLKIO-LOGIN-CODE" );
+	protected User getCurrentUser( String loginCode ) throws UnauthorizedException, PersistenceException, ValidationException {
 		if ( !StringUtils.hasText( loginCode ) )
-			throw new UnauthorizedException( "No 'CLKIO-LOGIN-CODE' header was provided." );
-
-		return loginCode;
-	}
-	
-	protected User getCurrentUser() throws UnauthorizedException, PersistenceException, ValidationException {
-		User user = this.getService( UserService.class ).getBy( this.getLoginCode() );
+			throw new UnauthorizedException( "No 'clkioLoginCode' header was provided." );
+		
+		User user = this.getService( UserService.class ).getBy( loginCode );
 		if ( user == null )
-			throw new UnauthorizedException( "The provided value for 'CLKIO-LOGIN-CODE' header is not valid." );
+			throw new UnauthorizedException( "The provided value for 'clkioLoginCode' header is not valid." );
 		
 		return user;
 	}

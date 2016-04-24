@@ -58,7 +58,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 	}
 	
 	@Override
-	public GetTotalTimeResponse getTotalTime( GetTotalTimeRequest request ) throws ResponseException {
+	public GetTotalTimeResponse getTotalTime( String clkioLoginCode, GetTotalTimeRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -66,7 +66,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 				throw new ValidationException( "No 'profile' instance was found on the request or its 'id' property was not provided." );
 			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
-			profile.setUser( this.getCurrentUser() );
+			profile.setUser( this.getCurrentUser( clkioLoginCode ) );
 			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
 				throw new ValidationException( "No record found for the provided 'profile'." );
 			
@@ -84,7 +84,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 	}
 
 	@Override
-	public GetTimeCardResponse getTimeCard( GetTimeCardRequest request ) throws ResponseException {
+	public GetTimeCardResponse getTimeCard( String clkioLoginCode, GetTimeCardRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -94,7 +94,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 				throw new ValidationException( "Argument 'month' is mandatory." );
 			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
-			profile.setUser( this.getCurrentUser() );
+			profile.setUser( this.getCurrentUser( clkioLoginCode ) );
 			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
 				throw new ValidationException( "No record found for the provided 'profile'." );
 			
@@ -152,7 +152,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 	}
 
 	@Override
-	public Response punchClock( PunchClockRequest request ) throws ResponseException {
+	public Response punchClock( String clkioLoginCode, PunchClockRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -162,7 +162,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 				throw new ValidationException( "Argument 'timestamp' is mandatory." );
 			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
-			profile.setUser( this.getCurrentUser() );
+			profile.setUser( this.getCurrentUser( clkioLoginCode ) );
 			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
 				throw new ValidationException( "No record found for the provided 'profile'." );
 			
@@ -182,7 +182,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 	}
 
 	@Override
-	public Response insertClockinClockout( InsertClockinClockoutRequest request ) throws ResponseException {
+	public Response insertClockinClockout( String clkioLoginCode, InsertClockinClockoutRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -192,7 +192,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 				throw new ValidationException( "No 'clockinclockout' instance was found on the request." );
 			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
-			profile.setUser( this.getCurrentUser() );
+			profile.setUser( this.getCurrentUser( clkioLoginCode ) );
 			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
 				throw new ValidationException( "No record found for the provided 'profile'." );
 			
@@ -233,7 +233,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 	}
 
 	@Override
-	public Response updateClockinClockout( UpdateClockinClockoutRequest request ) throws ResponseException {
+	public Response updateClockinClockout( String clkioLoginCode, UpdateClockinClockoutRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -243,7 +243,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 				throw new ValidationException( "No 'clockinclockout' instance was found on the request or its 'id' property was not provided." );
 			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
-			profile.setUser( this.getCurrentUser() );
+			profile.setUser( this.getCurrentUser( clkioLoginCode ) );
 			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
 				throw new ValidationException( "No record found for the provided 'profile'." );
 			
@@ -285,7 +285,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 	}
 
 	@Override
-	public Response deleteClockinClockout( DeleteClockinClockoutRequest request ) throws ResponseException {
+	public Response deleteClockinClockout( String clkioLoginCode, DeleteClockinClockoutRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -295,7 +295,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 				throw new ValidationException( "No 'clockinclockout' instance was found on the request or its 'id' property was not provided." );
 			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
-			profile.setUser( this.getCurrentUser() );
+			profile.setUser( this.getCurrentUser( clkioLoginCode ) );
 			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
 				throw new ValidationException( "No record found for the provided 'profile'." );
 			
@@ -315,7 +315,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 	}
 
 	@Override
-	public Response insertManualEntering( InsertManualEnteringRequest request ) throws ResponseException {
+	public Response insertManualEntering( String clkioLoginCode, InsertManualEnteringRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -329,7 +329,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 				throw new ValidationException( "No 'reason' instance was found on the request or its 'id' property was not provided." );
 			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
-			profile.setUser( this.getCurrentUser() );
+			profile.setUser( this.getCurrentUser( clkioLoginCode ) );
 			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
 				throw new ValidationException( "No record found for the provided 'profile'." );
 			
@@ -362,7 +362,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 	}
 
 	@Override
-	public Response updateManualEntering( UpdateManualEnteringRequest request ) throws ResponseException {
+	public Response updateManualEntering( String clkioLoginCode, UpdateManualEnteringRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -376,7 +376,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 				throw new ValidationException( "No 'reason' instance was found on the request or its 'id' property was not provided." );
 
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
-			profile.setUser( this.getCurrentUser() );
+			profile.setUser( this.getCurrentUser( clkioLoginCode ) );
 			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
 				throw new ValidationException( "No record found for the provided 'profile'." );
 			
@@ -409,7 +409,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 	}
 
 	@Override
-	public Response deleteManualEntering( DeleteManualEnteringRequest request ) throws ResponseException {
+	public Response deleteManualEntering( String clkioLoginCode, DeleteManualEnteringRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -419,7 +419,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 				throw new ValidationException( "No 'manualEntering' instance was found on the request or its 'id' property was not provided." );
 			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
-			profile.setUser( this.getCurrentUser() );
+			profile.setUser( this.getCurrentUser( clkioLoginCode ) );
 			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
 				throw new ValidationException( "No record found for the provided 'profile'." );
 			
@@ -439,7 +439,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 	}
 
 	@Override
-	public Response setNotes( SetNotesRequest request ) throws ResponseException {
+	public Response setNotes( String clkioLoginCode, SetNotesRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -449,7 +449,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 				throw new ValidationException( "Argument 'date' is mandatory." );
 			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
-			profile.setUser( this.getCurrentUser() );
+			profile.setUser( this.getCurrentUser( clkioLoginCode ) );
 			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
 				throw new ValidationException( "No record found for the provided 'profile'." );
 			
@@ -478,7 +478,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 	}
 
 	@Override
-	public Response setExpectedHours( SetExpectedHoursRequest request ) throws ResponseException {
+	public Response setExpectedHours( String clkioLoginCode, SetExpectedHoursRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -490,7 +490,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 				throw new ValidationException( "Argument 'expectedHours' is mandatory." );
 
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
-			profile.setUser( this.getCurrentUser() );
+			profile.setUser( this.getCurrentUser( clkioLoginCode ) );
 			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
 				throw new ValidationException( "No record found for the provided 'profile'." );
 			
@@ -519,7 +519,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 	}
 
 	@Override
-	public GetTotalTimeMonthlyResponse getTotalTimeMonthly( GetTotalTimeMonthlyRequest request ) throws ResponseException {
+	public GetTotalTimeMonthlyResponse getTotalTimeMonthly( String clkioLoginCode, GetTotalTimeMonthlyRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -530,7 +530,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 				throw new ValidationException( "Argument 'month' is mandatory." );
 
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
-			profile.setUser( this.getCurrentUser() );
+			profile.setUser( this.getCurrentUser( clkioLoginCode ) );
 			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
 				throw new ValidationException( "No record found for the provided 'profile'." );
 			

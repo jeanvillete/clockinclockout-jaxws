@@ -57,6 +57,7 @@ public interface LoginPort {
     /**
      * 
      * @param request
+     * @param clkioLoginCode
      * @return
      *     returns com.clkio.ws.domain.common.Response
      * @throws ResponseException
@@ -64,6 +65,8 @@ public interface LoginPort {
     @WebMethod
     @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public Response doLogout(
+        @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
+        String clkioLoginCode,
         @WebParam(name = "doLogoutRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         DoLogoutRequest request)
         throws ResponseException

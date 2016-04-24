@@ -36,7 +36,7 @@ public class AdjustingWSImpl extends WebServiceCommon< AdjustingService > implem
 	}
 	
 	@Override
-	public ListAdjustingResponse list( ListAdjustingRequest request ) throws ResponseException {
+	public ListAdjustingResponse list( String clkioLoginCode, ListAdjustingRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -44,7 +44,7 @@ public class AdjustingWSImpl extends WebServiceCommon< AdjustingService > implem
 				throw new ValidationException( "No 'profile' instance was found on the request or its 'id' property was not provided." );
 			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
-			profile.setUser( this.getCurrentUser() );
+			profile.setUser( this.getCurrentUser( clkioLoginCode ) );
 			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
 				throw new ValidationException( "No record found for the provided 'profile'." );
 			
@@ -71,7 +71,7 @@ public class AdjustingWSImpl extends WebServiceCommon< AdjustingService > implem
 	}
 
 	@Override
-	public Response insert( InsertAdjustingRequest request ) throws ResponseException {
+	public Response insert( String clkioLoginCode, InsertAdjustingRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -81,7 +81,7 @@ public class AdjustingWSImpl extends WebServiceCommon< AdjustingService > implem
 				throw new ValidationException( "Nested 'adjusting's property profile.id is mandatory." );
 			
 			Profile profile = new Profile( request.getAdjusting().getProfile().getId().intValue() );
-			profile.setUser( this.getCurrentUser() );
+			profile.setUser( this.getCurrentUser( clkioLoginCode ) );
 			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
 				throw new ValidationException( "No 'profile' record was found." );
 			
@@ -105,7 +105,7 @@ public class AdjustingWSImpl extends WebServiceCommon< AdjustingService > implem
 	}
 
 	@Override
-	public Response update( UpdateAdjustingRequest request ) throws ResponseException {
+	public Response update( String clkioLoginCode, UpdateAdjustingRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -115,7 +115,7 @@ public class AdjustingWSImpl extends WebServiceCommon< AdjustingService > implem
 				throw new ValidationException( "Nested 'adjusting's property profile.id is mandatory." );
 			
 			Profile profile = new Profile( request.getAdjusting().getProfile().getId().intValue() );
-			profile.setUser( this.getCurrentUser() );
+			profile.setUser( this.getCurrentUser( clkioLoginCode ) );
 			
 			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
 				throw new ValidationException( "No 'profile' record was found." );
@@ -141,7 +141,7 @@ public class AdjustingWSImpl extends WebServiceCommon< AdjustingService > implem
 	}
 
 	@Override
-	public Response delete( DeleteAdjustingRequest request ) throws ResponseException {
+	public Response delete( String clkioLoginCode, DeleteAdjustingRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -151,7 +151,7 @@ public class AdjustingWSImpl extends WebServiceCommon< AdjustingService > implem
 				throw new ValidationException( "Nested 'adjusting's property profile.id is mandatory." );
 			
 			Profile profile = new Profile( request.getAdjusting().getProfile().getId().intValue() );
-			profile.setUser( this.getCurrentUser() );
+			profile.setUser( this.getCurrentUser( clkioLoginCode ) );
 			
 			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
 				throw new ValidationException( "No 'profile' record was found." );

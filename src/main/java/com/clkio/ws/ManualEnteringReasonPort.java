@@ -44,6 +44,7 @@ public interface ManualEnteringReasonPort {
     /**
      * 
      * @param request
+     * @param clkioLoginCode
      * @return
      *     returns com.clkio.ws.domain.reason.ListManualEnteringReasonResponse
      * @throws ResponseException
@@ -51,6 +52,8 @@ public interface ManualEnteringReasonPort {
     @WebMethod
     @WebResult(name = "listManualEnteringReasonResponse", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public ListManualEnteringReasonResponse list(
+        @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
+        String clkioLoginCode,
         @WebParam(name = "listManualEnteringReasonRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         ListManualEnteringReasonRequest request)
         throws ResponseException
@@ -59,6 +62,7 @@ public interface ManualEnteringReasonPort {
     /**
      * 
      * @param request
+     * @param clkioLoginCode
      * @return
      *     returns com.clkio.ws.domain.common.Response
      * @throws ResponseException
@@ -66,6 +70,8 @@ public interface ManualEnteringReasonPort {
     @WebMethod
     @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public Response insert(
+        @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
+        String clkioLoginCode,
         @WebParam(name = "insertManualEnteringReasonRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         InsertManualEnteringReasonRequest request)
         throws ResponseException
@@ -74,6 +80,7 @@ public interface ManualEnteringReasonPort {
     /**
      * 
      * @param request
+     * @param clkioLoginCode
      * @return
      *     returns com.clkio.ws.domain.common.Response
      * @throws ResponseException
@@ -81,6 +88,8 @@ public interface ManualEnteringReasonPort {
     @WebMethod
     @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public Response update(
+        @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
+        String clkioLoginCode,
         @WebParam(name = "updateManualEnteringReasonRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         UpdateManualEnteringReasonRequest request)
         throws ResponseException
@@ -89,6 +98,7 @@ public interface ManualEnteringReasonPort {
     /**
      * 
      * @param request
+     * @param clkioLoginCode
      * @return
      *     returns com.clkio.ws.domain.common.Response
      * @throws ResponseException
@@ -96,6 +106,8 @@ public interface ManualEnteringReasonPort {
     @WebMethod
     @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public Response delete(
+        @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
+        String clkioLoginCode,
         @WebParam(name = "deleteManualEnteringReasonRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         DeleteManualEnteringReasonRequest request)
         throws ResponseException

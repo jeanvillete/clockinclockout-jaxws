@@ -36,7 +36,7 @@ public class ManualEnteringReasonWSImpl extends WebServiceCommon< ManualEntering
 	}
 	
 	@Override
-	public ListManualEnteringReasonResponse list( ListManualEnteringReasonRequest request ) throws ResponseException {
+	public ListManualEnteringReasonResponse list( String clkioLoginCode, ListManualEnteringReasonRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -44,7 +44,7 @@ public class ManualEnteringReasonWSImpl extends WebServiceCommon< ManualEntering
 				throw new ValidationException( "No 'profile' instance was found on the request or its 'id' property was not provided." );
 			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
-			profile.setUser( this.getCurrentUser() );
+			profile.setUser( this.getCurrentUser( clkioLoginCode ) );
 			
 			ListManualEnteringReasonResponse response = new ListManualEnteringReasonResponse();
 			List< ManualEnteringReason > reasons = this.getService().list( profile );
@@ -66,7 +66,7 @@ public class ManualEnteringReasonWSImpl extends WebServiceCommon< ManualEntering
 	}
 
 	@Override
-	public Response insert( InsertManualEnteringReasonRequest request ) throws ResponseException {
+	public Response insert( String clkioLoginCode, InsertManualEnteringReasonRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -76,7 +76,7 @@ public class ManualEnteringReasonWSImpl extends WebServiceCommon< ManualEntering
 				throw new ValidationException( "Nested 'reason's property profile.id is mandatory." );
 			
 			Profile profile = new Profile( request.getReason().getProfile().getId().intValue() );
-			profile.setUser( this.getCurrentUser() );
+			profile.setUser( this.getCurrentUser( clkioLoginCode ) );
 			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
 				throw new ValidationException( "No 'profile' record was found." );
 			
@@ -97,7 +97,7 @@ public class ManualEnteringReasonWSImpl extends WebServiceCommon< ManualEntering
 	}
 
 	@Override
-	public Response update( UpdateManualEnteringReasonRequest request ) throws ResponseException {
+	public Response update( String clkioLoginCode, UpdateManualEnteringReasonRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -107,7 +107,7 @@ public class ManualEnteringReasonWSImpl extends WebServiceCommon< ManualEntering
 				throw new ValidationException( "Nested 'reason's property profile.id is mandatory." );
 			
 			Profile profile = new Profile( request.getReason().getProfile().getId().intValue() );
-			profile.setUser( this.getCurrentUser() );
+			profile.setUser( this.getCurrentUser( clkioLoginCode ) );
 			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
 				throw new ValidationException( "No 'profile' record was found." );
 			
@@ -129,7 +129,7 @@ public class ManualEnteringReasonWSImpl extends WebServiceCommon< ManualEntering
 	}
 
 	@Override
-	public Response delete( DeleteManualEnteringReasonRequest request ) throws ResponseException {
+	public Response delete( String clkioLoginCode, DeleteManualEnteringReasonRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -139,7 +139,7 @@ public class ManualEnteringReasonWSImpl extends WebServiceCommon< ManualEntering
 				throw new ValidationException( "Nested 'reason's property profile.id is mandatory." );
 			
 			Profile profile = new Profile( request.getReason().getProfile().getId().intValue() );
-			profile.setUser( this.getCurrentUser() );
+			profile.setUser( this.getCurrentUser( clkioLoginCode ) );
 			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
 				throw new ValidationException( "No 'profile' record was found." );
 			

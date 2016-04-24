@@ -106,6 +106,7 @@ public class ObjectFactory {
     private final static QName _SetEmailAsPrimaryRequest_QNAME = new QName("http://schemas.clkio.com", "setEmailAsPrimaryRequest");
     private final static QName _ListProfileResponse_QNAME = new QName("http://schemas.clkio.com", "listProfileResponse");
     private final static QName _InsertManualEnteringReasonRequest_QNAME = new QName("http://schemas.clkio.com", "insertManualEnteringReasonRequest");
+    private final static QName _ClkioLoginCode_QNAME = new QName("http://schemas.clkio.com", "clkioLoginCode");
     private final static QName _ConfirmResetPasswordResponse_QNAME = new QName("http://schemas.clkio.com", "confirmResetPasswordResponse");
     private final static QName _ListAdjustingRequest_QNAME = new QName("http://schemas.clkio.com", "listAdjustingRequest");
     private final static QName _DeleteManualEnteringRequest_QNAME = new QName("http://schemas.clkio.com", "deleteManualEnteringRequest");
@@ -446,6 +447,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "insertManualEnteringReasonRequest")
     public JAXBElement<InsertManualEnteringReasonRequest> createInsertManualEnteringReasonRequest(InsertManualEnteringReasonRequest value) {
         return new JAXBElement<InsertManualEnteringReasonRequest>(_InsertManualEnteringReasonRequest_QNAME, InsertManualEnteringReasonRequest.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "clkioLoginCode")
+    public JAXBElement<String> createClkioLoginCode(String value) {
+        return new JAXBElement<String>(_ClkioLoginCode_QNAME, String.class, null, value);
     }
 
     /**

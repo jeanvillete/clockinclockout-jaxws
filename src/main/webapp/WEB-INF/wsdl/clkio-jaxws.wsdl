@@ -32,6 +32,8 @@
 			<xs:import namespace="http://schemas.clkio.com/day" schemaLocation="http://schemas.clkio.com/day.xsd" />
 			<xs:import namespace="http://schemas.clkio.com/manualentering" schemaLocation="http://schemas.clkio.com/manualentering.xsd" />
 
+			<xs:element type="xs:string" name="clkioLoginCode"/>
+
 			<xs:element type="common:response" name="response" nillable="false"/>
 			<xs:element type="common:responseFault" name="responseFault" nillable="false"/>
 			
@@ -103,6 +105,7 @@
 		<wsdl:part name="request" element="clkio:doLoginRequest" />
 	</wsdl:message>
 	<wsdl:message name="doLogoutRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:doLogoutRequest" />
 	</wsdl:message>
 	<wsdl:message name="loginResponse">
@@ -112,39 +115,47 @@
 		<wsdl:part name="request" element="clkio:confirmEmailRequest" />
 	</wsdl:message>
 	<wsdl:message name="insertEmailRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:insertEmailRequest" />
 	</wsdl:message>
 	<wsdl:message name="listEmailRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:listEmailRequest" />
 	</wsdl:message>
 	<wsdl:message name="listEmailResponse">
 		<wsdl:part name="result" element="clkio:listEmailResponse" />
 	</wsdl:message>
 	<wsdl:message name="deleteEmailRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:deleteEmailRequest" />
 	</wsdl:message>
 	<wsdl:message name="setEmailAsPrimaryRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:setEmailAsPrimaryRequest" />
 	</wsdl:message>
 	<wsdl:message name="listProfileRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:listProfileRequest" />
 	</wsdl:message>
 	<wsdl:message name="listProfileResponse">
 		<wsdl:part name="result" element="clkio:listProfileResponse" />
 	</wsdl:message>
 	<wsdl:message name="listAdjustingRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:listAdjustingRequest" />
 	</wsdl:message>
 	<wsdl:message name="listAdjustingResponse">
 		<wsdl:part name="result" element="clkio:listAdjustingResponse" />
 	</wsdl:message>
 	<wsdl:message name="listManualEnteringReasonRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:listManualEnteringReasonRequest" />
 	</wsdl:message>
 	<wsdl:message name="listManualEnteringReasonResponse">
 		<wsdl:part name="result" element="clkio:listManualEnteringReasonResponse" />
 	</wsdl:message>
 	<wsdl:message name="getTotalTimeRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:getTotalTimeRequest" />
 	</wsdl:message>
 	<wsdl:message name="getTotalTimeResponse">
@@ -163,70 +174,90 @@
 		<wsdl:part name="request" element="clkio:resetPasswordRequest" />
 	</wsdl:message>
 	<wsdl:message name="insertProfileRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:insertProfileRequest" />
 	</wsdl:message>
 	<wsdl:message name="updateProfileRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:updateProfileRequest" />
 	</wsdl:message>
 	<wsdl:message name="deleteProfileRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:deleteProfileRequest" />
 	</wsdl:message>
 	<wsdl:message name="insertAdjustingRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:insertAdjustingRequest" />
 	</wsdl:message>
 	<wsdl:message name="updateAdjustingRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:updateAdjustingRequest" />
 	</wsdl:message>
 	<wsdl:message name="deleteAdjustingRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:deleteAdjustingRequest" />
 	</wsdl:message>
 	<wsdl:message name="insertManualEnteringReasonRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:insertManualEnteringReasonRequest" />
 	</wsdl:message>
 	<wsdl:message name="updateManualEnteringReasonRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:updateManualEnteringReasonRequest" />
 	</wsdl:message>
 	<wsdl:message name="deleteManualEnteringReasonRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:deleteManualEnteringReasonRequest" />
 	</wsdl:message>
 	<wsdl:message name="getTimeCardRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:getTimeCardRequest" />
 	</wsdl:message>
 	<wsdl:message name="getTimeCardResponse">
 		<wsdl:part name="result" element="clkio:getTimeCardResponse" />
 	</wsdl:message>
 	<wsdl:message name="punchClockRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:punchClockRequest" />
 	</wsdl:message>
 	<wsdl:message name="insertClockinClockoutRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:insertClockinClockoutRequest" />
 	</wsdl:message>
 	<wsdl:message name="updateClockinClockoutRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:updateClockinClockoutRequest" />
 	</wsdl:message>
 	<wsdl:message name="deleteClockinClockoutRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:deleteClockinClockoutRequest" />
 	</wsdl:message>
 	<wsdl:message name="insertManualEnteringRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:insertManualEnteringRequest" />
 	</wsdl:message>
 	<wsdl:message name="updateManualEnteringRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:updateManualEnteringRequest" />
 	</wsdl:message>
 	<wsdl:message name="deleteManualEnteringRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:deleteManualEnteringRequest" />
 	</wsdl:message>
 	<wsdl:message name="setNotesRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:setNotesRequest" />
 	</wsdl:message>
 	<wsdl:message name="setExpectedHoursRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:setExpectedHoursRequest" />
 	</wsdl:message>
 	<wsdl:message name="getTotalTimeMonthlyRequest">
+		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:getTotalTimeMonthlyRequest" />
 	</wsdl:message>
 	<wsdl:message name="getTotalTimeMonthlyResponse">
-		<wsdl:part name="request" element="clkio:getTotalTimeMonthlyResponse" />
+		<wsdl:part name="result" element="clkio:getTotalTimeMonthlyResponse" />
 	</wsdl:message>
 	
 	<!-- port types -->
@@ -455,7 +486,8 @@
 		<wsdl:operation name="doLogout">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:doLogoutRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -482,7 +514,8 @@
 		<wsdl:operation name="insert">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:insertEmailRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -494,7 +527,8 @@
 		<wsdl:operation name="list">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:listEmailRequest" use="literal"/>
+				<soap:body parts="request" use="literal"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -506,7 +540,8 @@
 		<wsdl:operation name="delete">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:deleteEmailRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -518,7 +553,8 @@
 		<wsdl:operation name="setEmailAsPrimary">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:setEmailAsPrimaryRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -533,7 +569,8 @@
 		<wsdl:operation name="list">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:listProfileRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -545,7 +582,8 @@
 		<wsdl:operation name="insert">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:insertProfileRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -557,7 +595,8 @@
 		<wsdl:operation name="update">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:updateProfileRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -569,7 +608,8 @@
 		<wsdl:operation name="delete">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:deleteProfileRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -584,7 +624,8 @@
 		<wsdl:operation name="list">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:listAdjustingRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -596,7 +637,8 @@
 		<wsdl:operation name="insert">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:insertAdjustingRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -608,7 +650,8 @@
 		<wsdl:operation name="update">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:updateAdjustingRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -620,7 +663,8 @@
 		<wsdl:operation name="delete">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:deleteAdjustingRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -635,7 +679,8 @@
 		<wsdl:operation name="list">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:listManualEnteringReasonRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -647,7 +692,8 @@
 		<wsdl:operation name="insert">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:insertManualEnteringReasonRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -659,7 +705,8 @@
 		<wsdl:operation name="update">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:updateManualEnteringReasonRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -671,7 +718,8 @@
 		<wsdl:operation name="delete">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:deleteManualEnteringReasonRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -686,7 +734,8 @@
 		<wsdl:operation name="getTotalTime">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:getTotalTimeRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -698,7 +747,8 @@
 		<wsdl:operation name="getTimeCard">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:getTimeCardRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -710,7 +760,8 @@
 		<wsdl:operation name="punchClock">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:punchClockRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -722,7 +773,8 @@
 		<wsdl:operation name="insertClockinClockout">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:insertClockinClockoutRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -734,7 +786,8 @@
 		<wsdl:operation name="updateClockinClockout">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:updateClockinClockoutRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -746,7 +799,8 @@
 		<wsdl:operation name="deleteClockinClockout">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:deleteClockinClockoutRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -758,7 +812,8 @@
 		<wsdl:operation name="insertManualEntering">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:insertManualEnteringRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -770,7 +825,8 @@
 		<wsdl:operation name="updateManualEntering">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:updateManualEnteringRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -782,7 +838,8 @@
 		<wsdl:operation name="deleteManualEntering">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:deleteManualEnteringRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -794,7 +851,8 @@
 		<wsdl:operation name="setNotes">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:setNotesRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -806,7 +864,8 @@
 		<wsdl:operation name="setExpectedHours">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:setExpectedHoursRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
@@ -818,7 +877,8 @@
 		<wsdl:operation name="getTotalTimeMonthly">
 			<soap:operation soapAction="" />
 			<wsdl:input>
-				<soap:body use="literal" />
+				<soap:header part="clkioLoginCode" message="clkws:getTotalTimeMonthlyRequest" use="literal"/>
+				<soap:body use="literal" parts="request"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />

@@ -62,7 +62,7 @@ public class EmailWSImpl extends WebServiceCommon< EmailService > implements Ema
 	}
 
 	@Override
-	public Response insert( InsertEmailRequest request ) throws ResponseException {
+	public Response insert( String clkioLoginCode, InsertEmailRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -71,7 +71,7 @@ public class EmailWSImpl extends WebServiceCommon< EmailService > implements Ema
 				throw new ValidationException( "No 'email' instance was found on the request." );
 			
 			Email email = new Email( request.getEmail().getEmailAddress() );
-			email.setUser( this.getCurrentUser() );
+			email.setUser( this.getCurrentUser( clkioLoginCode ) );
 			email.setRecordedTime( LocalDateTime.now() );
 			email.setPrimary( false );
 			NewEmailConfirmation emailConfirmation = new NewEmailConfirmation( email );
@@ -95,12 +95,12 @@ public class EmailWSImpl extends WebServiceCommon< EmailService > implements Ema
 	}
 
 	@Override
-	public ListEmailResponse list( ListEmailRequest request ) throws ResponseException {
+	public ListEmailResponse list( String clkioLoginCode, ListEmailRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
 			
-			List< Email > emails = this.getService().list( this.getCurrentUser() );
+			List< Email > emails = this.getService().list( this.getCurrentUser( clkioLoginCode ) );
 			ListEmailResponse response = new ListEmailResponse();
 			
 			if ( !CollectionUtils.isEmpty( emails ) )
@@ -121,7 +121,7 @@ public class EmailWSImpl extends WebServiceCommon< EmailService > implements Ema
 	}
 
 	@Override
-	public Response delete( DeleteEmailRequest request ) throws ResponseException {
+	public Response delete( String clkioLoginCode, DeleteEmailRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -131,7 +131,7 @@ public class EmailWSImpl extends WebServiceCommon< EmailService > implements Ema
 				throw new ValidationException( "No value found for 'email's 'id' property found on the request." );
 			
 			Email email = new Email( request.getEmail().getId().intValue() );
-			email.setUser( getCurrentUser() );
+			email.setUser( getCurrentUser( clkioLoginCode ) );
 			
 			this.getService().delete( email );
 			
@@ -149,7 +149,7 @@ public class EmailWSImpl extends WebServiceCommon< EmailService > implements Ema
 	}
 
 	@Override
-	public Response setEmailAsPrimary( SetEmailAsPrimaryRequest request ) throws ResponseException {
+	public Response setEmailAsPrimary( String clkioLoginCode, SetEmailAsPrimaryRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -160,7 +160,7 @@ public class EmailWSImpl extends WebServiceCommon< EmailService > implements Ema
 				throw new ValidationException( "No value found for 'email's 'id' property found on the request." );
 			
 			Email email = new Email( request.getEmail().getId().intValue() );
-			email.setUser( getCurrentUser() );
+			email.setUser( getCurrentUser( clkioLoginCode ) );
 			
 			this.getService().setAsPrimary( email );
 			

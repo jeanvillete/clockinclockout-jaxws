@@ -34,13 +34,13 @@ public class ProfileWSImpl extends WebServiceCommon< ProfileService > implements
 	}
 	
 	@Override
-	public ListProfileResponse list( ListProfileRequest request ) throws ResponseException {
+	public ListProfileResponse list( String clkioLoginCode, ListProfileRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
 			
 			ListProfileResponse response = new ListProfileResponse();
-			List< Profile > profiles = this.getService().listBy( this.getCurrentUser() );
+			List< Profile > profiles = this.getService().listBy( this.getCurrentUser( clkioLoginCode ) );
 			if ( !CollectionUtils.isEmpty( profiles ) )
 				for ( Profile profile : profiles ) {
 					com.clkio.ws.domain.profile.Profile profileWs = 
@@ -72,14 +72,14 @@ public class ProfileWSImpl extends WebServiceCommon< ProfileService > implements
 	}
 
 	@Override
-	public Response insert( InsertProfileRequest request ) throws ResponseException {
+	public Response insert( String clkioLoginCode, InsertProfileRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
 			if ( request.getProfile() == null )
 				throw new ValidationException( "No 'profile' instance was found on the request." );
 			
-			Profile profile = new Profile( this.getCurrentUser(),
+			Profile profile = new Profile( this.getCurrentUser( clkioLoginCode ),
 					request.getProfile().getDescription(),
 					request.getProfile().getHoursFormat(),
 					request.getProfile().getDateFormat() );
@@ -107,7 +107,7 @@ public class ProfileWSImpl extends WebServiceCommon< ProfileService > implements
 	}
 
 	@Override
-	public Response update( UpdateProfileRequest request ) throws ResponseException {
+	public Response update( String clkioLoginCode, UpdateProfileRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -115,7 +115,7 @@ public class ProfileWSImpl extends WebServiceCommon< ProfileService > implements
 				throw new ValidationException( "No 'profile' instance was found on the request or its 'id' property is null." );
 			
 			Profile profile = new Profile( request.getProfile().getId().intValue(),
-					this.getCurrentUser(),
+					this.getCurrentUser( clkioLoginCode ),
 					request.getProfile().getDescription(),
 					request.getProfile().getHoursFormat(),
 					request.getProfile().getDateFormat() );
@@ -143,7 +143,7 @@ public class ProfileWSImpl extends WebServiceCommon< ProfileService > implements
 	}
 
 	@Override
-	public Response delete( DeleteProfileRequest request ) throws ResponseException {
+	public Response delete( String clkioLoginCode, DeleteProfileRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -151,7 +151,7 @@ public class ProfileWSImpl extends WebServiceCommon< ProfileService > implements
 				throw new ValidationException( "No 'profile' instance was found on the request or its 'id' property is null." );
 			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
-			profile.setUser( getCurrentUser() );
+			profile.setUser( getCurrentUser( clkioLoginCode ) );
 			
 			this.getService().delete( profile );
 			

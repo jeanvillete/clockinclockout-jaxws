@@ -53,12 +53,12 @@ public class LoginWSImpl extends WebServiceCommon< LoginService > implements Log
 	}
 
 	@Override
-	public Response doLogout( DoLogoutRequest request ) throws ResponseException {
+	public Response doLogout( String clkioLoginCode, DoLogoutRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
 			
-			this.getService().logout( this.getLoginCode() );
+			this.getService().logout( clkioLoginCode );
 			
 			return new Response( "Logout succeeded." );
 		} catch ( ClkioException e ) {

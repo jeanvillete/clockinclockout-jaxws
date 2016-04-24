@@ -44,6 +44,7 @@ public interface ProfilePort {
     /**
      * 
      * @param request
+     * @param clkioLoginCode
      * @return
      *     returns com.clkio.ws.domain.profile.ListProfileResponse
      * @throws ResponseException
@@ -51,6 +52,8 @@ public interface ProfilePort {
     @WebMethod
     @WebResult(name = "listProfileResponse", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public ListProfileResponse list(
+        @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
+        String clkioLoginCode,
         @WebParam(name = "listProfileRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         ListProfileRequest request)
         throws ResponseException
@@ -59,6 +62,7 @@ public interface ProfilePort {
     /**
      * 
      * @param request
+     * @param clkioLoginCode
      * @return
      *     returns com.clkio.ws.domain.common.Response
      * @throws ResponseException
@@ -66,6 +70,8 @@ public interface ProfilePort {
     @WebMethod
     @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public Response insert(
+        @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
+        String clkioLoginCode,
         @WebParam(name = "insertProfileRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         InsertProfileRequest request)
         throws ResponseException
@@ -74,6 +80,7 @@ public interface ProfilePort {
     /**
      * 
      * @param request
+     * @param clkioLoginCode
      * @return
      *     returns com.clkio.ws.domain.common.Response
      * @throws ResponseException
@@ -81,6 +88,8 @@ public interface ProfilePort {
     @WebMethod
     @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public Response update(
+        @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
+        String clkioLoginCode,
         @WebParam(name = "updateProfileRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         UpdateProfileRequest request)
         throws ResponseException
@@ -89,6 +98,7 @@ public interface ProfilePort {
     /**
      * 
      * @param request
+     * @param clkioLoginCode
      * @return
      *     returns com.clkio.ws.domain.common.Response
      * @throws ResponseException
@@ -96,6 +106,8 @@ public interface ProfilePort {
     @WebMethod
     @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public Response delete(
+        @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
+        String clkioLoginCode,
         @WebParam(name = "deleteProfileRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         DeleteProfileRequest request)
         throws ResponseException

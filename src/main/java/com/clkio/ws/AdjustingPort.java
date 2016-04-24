@@ -44,6 +44,7 @@ public interface AdjustingPort {
     /**
      * 
      * @param request
+     * @param clkioLoginCode
      * @return
      *     returns com.clkio.ws.domain.adjusting.ListAdjustingResponse
      * @throws ResponseException
@@ -51,6 +52,8 @@ public interface AdjustingPort {
     @WebMethod
     @WebResult(name = "listAdjustingResponse", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public ListAdjustingResponse list(
+        @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
+        String clkioLoginCode,
         @WebParam(name = "listAdjustingRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         ListAdjustingRequest request)
         throws ResponseException
@@ -59,6 +62,7 @@ public interface AdjustingPort {
     /**
      * 
      * @param request
+     * @param clkioLoginCode
      * @return
      *     returns com.clkio.ws.domain.common.Response
      * @throws ResponseException
@@ -66,6 +70,8 @@ public interface AdjustingPort {
     @WebMethod
     @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public Response insert(
+        @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
+        String clkioLoginCode,
         @WebParam(name = "insertAdjustingRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         InsertAdjustingRequest request)
         throws ResponseException
@@ -74,6 +80,7 @@ public interface AdjustingPort {
     /**
      * 
      * @param request
+     * @param clkioLoginCode
      * @return
      *     returns com.clkio.ws.domain.common.Response
      * @throws ResponseException
@@ -81,6 +88,8 @@ public interface AdjustingPort {
     @WebMethod
     @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public Response update(
+        @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
+        String clkioLoginCode,
         @WebParam(name = "updateAdjustingRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         UpdateAdjustingRequest request)
         throws ResponseException
@@ -89,6 +98,7 @@ public interface AdjustingPort {
     /**
      * 
      * @param request
+     * @param clkioLoginCode
      * @return
      *     returns com.clkio.ws.domain.common.Response
      * @throws ResponseException
@@ -96,6 +106,8 @@ public interface AdjustingPort {
     @WebMethod
     @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
     public Response delete(
+        @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
+        String clkioLoginCode,
         @WebParam(name = "deleteAdjustingRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         DeleteAdjustingRequest request)
         throws ResponseException

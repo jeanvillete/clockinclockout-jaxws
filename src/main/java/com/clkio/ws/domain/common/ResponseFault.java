@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlType;
     ForbiddenFault.class,
     UnauthorizedFault.class,
     ConflictFault.class,
+    InternalServerError.class,
     BadRequestFault.class
 })
 public class ResponseFault {
