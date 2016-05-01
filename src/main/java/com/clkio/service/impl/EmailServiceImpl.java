@@ -74,7 +74,7 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	}
 	
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void insert( final Email email ) throws ValidationException, PersistenceException, ConflictException {
 		if ( email == null )
 			throw new ValidationException( "Argument email cannot be null." );
@@ -157,7 +157,7 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void confirm( final Email email ) throws ValidationException, PersistenceException {
 		if ( email == null )
 			throw new ValidationException( "Argument 'email' is mandatory." );
@@ -169,7 +169,7 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void delete( final Email email ) throws ValidationException, PersistenceException, ConflictException {
 		if ( email == null )
 			throw new ValidationException( "Argument 'email' is mandatory." );
@@ -210,7 +210,7 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void deleteNotPrimaryNotConfirmed( final LocalDateTime date ) throws ValidationException {
 		if ( date == null )
 			throw new ValidationException( "Parameter 'date' cannot be null." );
@@ -240,7 +240,7 @@ public class EmailServiceImpl implements EmailService, InitializingBean {
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void setAsPrimary( final Email email ) throws ValidationException, PersistenceException, ConflictException {
 		if ( email == null )
 			throw new ValidationException( "Parameter 'email' cannot be null." );

@@ -43,7 +43,7 @@ public class DayServiceImpl implements DayService, InitializingBean {
 	}
 	
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void insert( final Day day ) throws PersistenceException, ValidationException {
 		if( day == null )
 			throw new ValidationException( "Argument 'day' is mandatory." );
@@ -58,7 +58,7 @@ public class DayServiceImpl implements DayService, InitializingBean {
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void update( final Day day ) throws ValidationException, PersistenceException {
 		if( day == null || day.getId() == null )
 			throw new ValidationException( "Argument 'day' and its 'id' property are mandatory." );
@@ -71,7 +71,7 @@ public class DayServiceImpl implements DayService, InitializingBean {
 	}
 	
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void delete( final Day day ) throws ValidationException, PersistenceException {
 		if( day == null )
 			throw new ValidationException( "Argument 'day' is mandatory." );

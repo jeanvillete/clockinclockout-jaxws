@@ -36,7 +36,7 @@ public class ManualEnteringReasonServiceImpl implements ManualEnteringReasonServ
 	}
 	
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void insert( final ManualEnteringReason manualEnteringReason ) throws PersistenceException, ValidationException, ConflictException {
 		if( manualEnteringReason == null || manualEnteringReason.getProfile() == null ) 
 			throw new ValidationException( "Argument 'manualEnteringReason' and its nested 'id' property are mandatory." );
@@ -47,7 +47,7 @@ public class ManualEnteringReasonServiceImpl implements ManualEnteringReasonServ
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void delete( final ManualEnteringReason manualEnteringReason ) throws PersistenceException, ValidationException {
 		if( manualEnteringReason == null )
 			throw new ValidationException( "Argument 'manualEnteringReason' is mandatory." );
@@ -82,7 +82,7 @@ public class ManualEnteringReasonServiceImpl implements ManualEnteringReasonServ
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void update( final ManualEnteringReason manualEnteringReason ) throws ValidationException, ConflictException, PersistenceException {
 		if( manualEnteringReason == null || manualEnteringReason.getId() == null )
 			throw new ValidationException( "Argument 'manualEnteringReason' and its 'id' property are mandatory." );

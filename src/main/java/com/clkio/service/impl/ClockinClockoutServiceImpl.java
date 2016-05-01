@@ -31,7 +31,7 @@ public class ClockinClockoutServiceImpl implements ClockinClockoutService, Initi
 	}
 	
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void insert( final ClockinClockout clockinClockout ) throws ValidationException, PersistenceException {
 		if( clockinClockout == null )
 			throw new ValidationException( "Argument 'clockinClockout' is mandatory." );
@@ -42,7 +42,7 @@ public class ClockinClockoutServiceImpl implements ClockinClockoutService, Initi
 	}
 	
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void delete( final Profile profile, final ClockinClockout clockinClockout ) throws ValidationException, PersistenceException {
 		if( clockinClockout == null || clockinClockout.getId() == null )
 			throw new ValidationException( "Argument 'clockinClockout' and its 'id' property are mandatory." );
@@ -71,7 +71,7 @@ public class ClockinClockoutServiceImpl implements ClockinClockoutService, Initi
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void update( final ClockinClockout clockinClockout ) throws ValidationException, PersistenceException {
 		if( clockinClockout == null || clockinClockout.getId() == null )
 			throw new ValidationException( "Argument 'clockinClockout' and its 'id' property are mandatory." );

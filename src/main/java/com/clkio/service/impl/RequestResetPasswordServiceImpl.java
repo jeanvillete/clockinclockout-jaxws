@@ -50,7 +50,7 @@ public class RequestResetPasswordServiceImpl implements RequestResetPasswordServ
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void processRequest( final RequestResetPassword requestResetPassword ) throws ValidationException, PersistenceException {
 		if ( requestResetPassword == null )
 			throw new ValidationException( "Argument 'requestResetPassword' is mandatory" );
@@ -74,20 +74,20 @@ public class RequestResetPasswordServiceImpl implements RequestResetPasswordServ
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void deleteNotConfirmed( final User user ) {
 		Assert.notNull( user );
 		this.repository.deleteNotConfirmed( user );
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void cleanNotConfirmed() {
 		this.repository.cleanNotConfirmed( LocalDateTime.now().minusDays( 1 ) );
 	}
 	
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public String confirm( final RequestResetPassword requestResetPassword ) throws ValidationException, PersistenceException {
 		if ( requestResetPassword == null )
 			throw new ValidationException( "Argument 'requestResetPassword' is mandatory" );
@@ -111,7 +111,7 @@ public class RequestResetPasswordServiceImpl implements RequestResetPasswordServ
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public boolean changePassword( final RequestResetPassword requestResetPassword ) throws ValidationException, PersistenceException {
 		if ( requestResetPassword == null )
 			throw new ValidationException( "Argument 'requestResetPassword' is mandatory" );

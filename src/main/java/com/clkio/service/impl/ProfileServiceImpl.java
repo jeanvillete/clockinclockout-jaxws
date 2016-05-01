@@ -50,7 +50,7 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 	}
 	
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void insert( final Profile profile ) throws PersistenceException, ValidationException, ConflictException {
 		if ( profile == null )
 			throw new ValidationException( "Argument profile is mandatory." );
@@ -69,7 +69,7 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void delete( final Profile profile ) throws ValidationException, PersistenceException {
 		if ( profile == null )
 			throw new ValidationException( "Argument profile is mandatory." );
@@ -116,7 +116,7 @@ public class ProfileServiceImpl implements ProfileService, InitializingBean {
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void update( final Profile profile ) throws ValidationException, ConflictException, PersistenceException {
 		if ( profile == null )
 			throw new ValidationException( "Argument profile is mandatory." );

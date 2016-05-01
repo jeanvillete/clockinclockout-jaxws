@@ -43,7 +43,7 @@ public class LoginServiceImpl implements LoginService, InitializingBean {
 	}
 	
 	@Override
-	@Transactional( propagation = Propagation.REQUIRES_NEW )
+	@Transactional( propagation = Propagation.REQUIRES_NEW, rollbackFor = { Exception.class, RuntimeException.class } )
 	public String login( final User user, final String ip ) throws ValidationException, PersistenceException {
 		if ( user == null )
 			throw new ValidationException( "Argument 'user' is mandatory." );
@@ -84,7 +84,7 @@ public class LoginServiceImpl implements LoginService, InitializingBean {
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void setAsInvalid( final User user ) throws ValidationException {
 		if ( user == null || user.getId() == null )
 			throw new ValidationException( "The argument 'user' and its nested 'id' property are mandatory." );
@@ -92,7 +92,7 @@ public class LoginServiceImpl implements LoginService, InitializingBean {
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void logout( final String code ) throws ValidationException, PersistenceException {
 		if ( !StringUtils.hasText( code ) )
 			throw new ValidationException( "The argument 'code' is mandatory." );

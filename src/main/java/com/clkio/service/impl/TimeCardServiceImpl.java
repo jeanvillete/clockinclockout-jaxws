@@ -96,7 +96,7 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void punchClock( final Profile profile, final String timestamp ) throws ValidationException, PersistenceException, ConflictException {
 		if( profile == null || profile.getId() == null )
 			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
@@ -129,7 +129,7 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void insert( final Profile profile, final ClockinClockout clockinClockout ) throws ValidationException, PersistenceException, ConflictException {
 		if( profile == null || profile.getId() == null )
 			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
@@ -150,7 +150,7 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void update( final Profile profile, final ClockinClockout clockinClockout ) throws ValidationException, PersistenceException {
 		if( profile == null || profile.getId() == null )
 			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
@@ -177,7 +177,7 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void delete( final Profile profile, final ClockinClockout clockinClockout ) throws ValidationException, PersistenceException {
 		if( profile == null || profile.getId() == null )
 			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
@@ -187,7 +187,7 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void insert( final Profile profile, final ManualEntering manualEntering ) throws ValidationException, PersistenceException, ConflictException {
 		if( profile == null || profile.getId() == null )
 			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
@@ -209,7 +209,7 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void update( final Profile profile, final ManualEntering manualEntering ) throws ValidationException, PersistenceException {
 		if( profile == null || profile.getId() == null )
 			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
@@ -240,7 +240,7 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void delete( final Profile profile, final ManualEntering manualEntering ) throws ValidationException, PersistenceException {
 		if( profile == null || profile.getId() == null )
 			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
@@ -250,7 +250,7 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void setNotes( final Profile profile, final LocalDate date, final String text ) throws ValidationException, PersistenceException, ConflictException {
 		if( profile == null || profile.getId() == null )
 			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
@@ -268,7 +268,7 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void setExpectedHours( final Profile profile, final LocalDate date, final Duration expectedHours ) throws ValidationException, PersistenceException, ConflictException {
 		if( profile == null || profile.getId() == null )
 			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );

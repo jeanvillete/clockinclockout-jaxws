@@ -30,7 +30,7 @@ public class AdjustingServiceImpl implements AdjustingService, InitializingBean 
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void insert( final Adjusting adjusting ) throws ValidationException, ConflictException, PersistenceException {
 		if ( adjusting == null )
 			throw new ValidationException( "Argument 'adjusting' is mandatory." );
@@ -43,7 +43,7 @@ public class AdjustingServiceImpl implements AdjustingService, InitializingBean 
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void delete( final Adjusting adjusting ) throws ValidationException, PersistenceException {
 		if ( adjusting == null )
 			throw new ValidationException( "Argument 'adjusting' is mandatory." );
@@ -62,7 +62,7 @@ public class AdjustingServiceImpl implements AdjustingService, InitializingBean 
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void update( final Adjusting adjusting ) throws ValidationException, ConflictException, PersistenceException {
 		if( adjusting == null || adjusting.getId() == null )
 			throw new ValidationException( "Argument 'adjusting' and its 'id' property are mandatory." );

@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService, InitializingBean {
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void insert( final User user ) throws ConflictException, ValidationException, PersistenceException {
 		if ( user.getLocale() == null )
 			throw new ValidationException( "No locale was provided to argument user." );
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService, InitializingBean {
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void delete( final User user ) throws ValidationException, PersistenceException {
 		if ( user == null )
 			throw new ValidationException( "Argument 'user' is mandatory." );
@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService, InitializingBean {
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.MANDATORY )
+	@Transactional( propagation = Propagation.MANDATORY, rollbackFor = { Exception.class, RuntimeException.class } )
 	public boolean changePassword( final User user ) throws ValidationException {
 		if ( user == null )
 			throw new ValidationException( "Argument 'user' is mandatory." );
@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService, InitializingBean {
 	}
 	
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void cleanNotConfirmed() throws ValidationException, PersistenceException, ConflictException {
 		LocalDateTime range = LocalDateTime.now().minusDays( 1 );
 		

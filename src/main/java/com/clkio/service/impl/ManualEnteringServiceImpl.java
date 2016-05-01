@@ -40,7 +40,7 @@ public class ManualEnteringServiceImpl implements ManualEnteringService, Initial
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void insert( final ManualEntering manualEntering ) throws ValidationException, PersistenceException {
 		if( manualEntering == null )
 			throw new ValidationException( "Argument 'manualEntering' is mandatory." );
@@ -55,7 +55,7 @@ public class ManualEnteringServiceImpl implements ManualEnteringService, Initial
 	}
 	
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void delete( final Profile profile, final ManualEntering manualEntering ) throws ValidationException, PersistenceException {
 		if( profile == null || profile.getId() == null )
 			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
@@ -88,7 +88,7 @@ public class ManualEnteringServiceImpl implements ManualEnteringService, Initial
 	}
 
 	@Override
-	@Transactional( propagation = Propagation.REQUIRED )
+	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
 	public void update( final ManualEntering manualEntering ) throws ValidationException, PersistenceException {
 		if( manualEntering == null )
 			throw new ValidationException( "Argument 'manualEntering' is mandatory." );
