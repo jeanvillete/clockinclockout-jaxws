@@ -5,11 +5,13 @@ import java.util.Locale;
 import javax.jws.WebService;
 
 import org.apache.log4j.Logger;
+import org.springframework.util.StringUtils;
 
 import com.clkio.domain.Email;
-import com.clkio.exception.ValidationException;
+import com.clkio.domain.User;
 import com.clkio.exception.ClkioException;
 import com.clkio.exception.ClkioRuntimeException;
+import com.clkio.exception.ValidationException;
 import com.clkio.service.LoginService;
 import com.clkio.ws.LoginPort;
 import com.clkio.ws.ResponseException;
@@ -36,7 +38,8 @@ public class LoginWSImpl extends WebServiceCommon< LoginService > implements Log
 			if ( request.getUser() == null || request.getUser().getEmail() == null || request.getUser().getPassword() == null )
 				throw new ValidationException( "Instance 'user' alongside its 'email' and 'password' properties are mandatory." );
 			
-			com.clkio.domain.User user = new com.clkio.domain.User( new Email( request.getUser().getEmail() ), new Locale( request.getUser().getLocale() ) );
+			Locale locale = !StringUtils.isEmpty( request.getUser().getLocale() ) ? new Locale( request.getUser().getLocale() ) : Locale.getDefault();
+			User user = new User( new Email( request.getUser().getEmail() ), locale );
 			user.setPassword( request.getUser().getPassword(), false );
 			
 			return new LoginResponse( this.getService().login( user, this.getRequesterIP() ) );

@@ -5,6 +5,7 @@ import java.util.Locale;
 import javax.jws.WebService;
 
 import org.apache.log4j.Logger;
+import org.springframework.util.StringUtils;
 
 import com.clkio.domain.Email;
 import com.clkio.domain.User;
@@ -35,7 +36,8 @@ public class UserWSImpl extends WebServiceCommon< UserService > implements UserP
 			if ( request.getUser() == null || request.getUser().getEmail() == null || request.getUser().getPassword() == null )
 				throw new ValidationException( "Instance 'user' alongside its 'email' and 'password' properties are mandatory." );
 			
-			User newUser = new User( new Email( request.getUser().getEmail() ), new Locale( request.getUser().getLocale() ) );
+			Locale locale = !StringUtils.isEmpty( request.getUser().getLocale() ) ? new Locale( request.getUser().getLocale() ) : Locale.getDefault();
+			User newUser = new User( new Email( request.getUser().getEmail() ), locale );
 			newUser.setPassword( request.getUser().getPassword() );
 			this.getService().insert( newUser );
 			
