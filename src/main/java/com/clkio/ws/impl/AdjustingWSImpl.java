@@ -91,7 +91,7 @@ public class AdjustingWSImpl extends WebServiceCommon< AdjustingService > implem
 			
 			this.getService().insert( adjusting );
 			
-			return new Response( "Profile record stored successfully." );
+			return new Response( "Adjusting record stored successfully." );
 		} catch ( ClkioException e ) {
 			LOG.debug( e );
 			throw new ResponseException( e.getMessage(), e.getFault() );
