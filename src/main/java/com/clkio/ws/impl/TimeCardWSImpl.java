@@ -90,22 +90,23 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 				throw new ValidationException( "No valid request was provided." );
 			if ( request.getProfile() == null || request.getProfile().getId() == null )
 				throw new ValidationException( "No 'profile' instance was found on the request or its 'id' property was not provided." );
-			if ( !StringUtils.hasText( request.getMonth() ) )
-				throw new ValidationException( "Argument 'month' is mandatory." );
 			
 			Profile profile = new Profile( request.getProfile().getId().intValue() );
 			profile.setUser( this.getCurrentUser( clkioLoginCode ) );
 			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
 				throw new ValidationException( "No record found for the provided 'profile'." );
 			
-			String pattern = "yyyy-MM";
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( pattern );
 			YearMonth month = null;
-			try {
-				month = YearMonth.parse( request.getMonth(), formatter );
-			} catch ( DateTimeParseException e ) {
-				throw new IllegalStateException( "The provided value for 'month' was not valid for the pattern=[" + pattern + "]. " );
-			}
+			if ( StringUtils.hasText( request.getMonth() ) ) {
+				String pattern = "yyyy-MM";
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern( pattern );
+				try {
+					month = YearMonth.parse( request.getMonth(), formatter );
+				} catch ( DateTimeParseException e ) {
+					throw new IllegalStateException( "The provided value for 'month' was not valid for the pattern=[" + pattern + "]. " );
+				}
+			} else 
+				month = YearMonth.now();
 			
 			DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern( profile.getDateFormat() );
 			DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern( profile.getHoursFormat() );
