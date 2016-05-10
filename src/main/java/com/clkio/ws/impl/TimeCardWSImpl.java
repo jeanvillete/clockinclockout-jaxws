@@ -109,7 +109,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 				month = YearMonth.now();
 			
 			DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern( profile.getDateFormat() );
-			DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern( profile.getHoursFormat() );
+			DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern( profile.getDateFormat() + " " + profile.getHoursFormat() );
 			
 			TimeCard tc = this.getService().getTimeCard( profile, month );
 			GetTimeCardResponse response = new GetTimeCardResponse( new com.clkio.ws.domain.timecard.TimeCard() );
@@ -197,7 +197,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
 				throw new ValidationException( "No record found for the provided 'profile'." );
 			
-			String pattern = profile.getDateFormat() + profile.getHoursFormat();
+			String pattern = profile.getDateFormat() + " " + profile.getHoursFormat();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( pattern );
 			
 			LocalDateTime clockin = null;
@@ -248,7 +248,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
 				throw new ValidationException( "No record found for the provided 'profile'." );
 			
-			String pattern = profile.getDateFormat() + profile.getHoursFormat();
+			String pattern = profile.getDateFormat() + " "+ profile.getHoursFormat();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( pattern );
 			
 			LocalDateTime clockin = null;
