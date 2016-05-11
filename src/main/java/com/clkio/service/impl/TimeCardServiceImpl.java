@@ -101,7 +101,7 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 		if( profile == null || profile.getId() == null )
 			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
 		
-		String pattern = profile.getDateFormat() + profile.getHoursFormat();
+		String pattern = profile.getDateFormat() + " " + profile.getHoursFormat();
 		LocalDateTime dateTime;
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( pattern );

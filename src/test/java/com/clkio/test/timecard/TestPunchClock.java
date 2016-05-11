@@ -43,7 +43,7 @@ public class TestPunchClock {
 		try {
 			Profile profile;
 			profile = profileService.listBy( new User( 46 ) ).get( 0 );
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( profile.getDateFormat() + profile.getHoursFormat() );
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( profile.getDateFormat() + " " + profile.getHoursFormat() );
 			LocalDateTime dateTime = LocalDateTime.now();
 			
 			timeCardService.punchClock( profile, dateTime.format( formatter ) );
