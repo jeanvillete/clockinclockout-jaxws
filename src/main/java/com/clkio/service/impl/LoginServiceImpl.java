@@ -14,8 +14,9 @@ import org.springframework.util.StringUtils;
 
 import com.clkio.domain.Email;
 import com.clkio.domain.User;
-import com.clkio.exception.ValidationException;
 import com.clkio.exception.PersistenceException;
+import com.clkio.exception.UnauthorizedException;
+import com.clkio.exception.ValidationException;
 import com.clkio.repository.LoginRepository;
 import com.clkio.service.EmailService;
 import com.clkio.service.LoginService;
@@ -44,7 +45,7 @@ public class LoginServiceImpl implements LoginService, InitializingBean {
 	
 	@Override
 	@Transactional( propagation = Propagation.REQUIRES_NEW, rollbackFor = { Exception.class, RuntimeException.class } )
-	public String login( final User user, final String ip ) throws ValidationException, PersistenceException {
+	public String login( final User user, final String ip ) throws ValidationException, UnauthorizedException, PersistenceException {
 		if ( user == null )
 			throw new ValidationException( "Argument 'user' is mandatory." );
 		if ( !StringUtils.hasText( user.getPassword() ) )
@@ -56,21 +57,21 @@ public class LoginServiceImpl implements LoginService, InitializingBean {
 		
 		Email syncEmail = this.emailService.getBy( user.getEmail().getAddress(), true );
 		if ( syncEmail == null )
-			throw new PersistenceException( loginFailed );
+			throw new UnauthorizedException( loginFailed );
 		
 		User syncUser = this.userService.getBy( syncEmail );
 		if ( syncUser == null )
-			throw new PersistenceException( loginFailed );
+			throw new UnauthorizedException( loginFailed );
 		
 		BCryptPasswordEncoder pwdCrypter = new BCryptPasswordEncoder();
 		if ( !pwdCrypter.matches( user.getPassword(), syncUser.getPassword() ) )
-			throw new PersistenceException( loginFailed );
+			throw new UnauthorizedException( loginFailed );
 		
 		LocalDateTime now = LocalDateTime.now();
 		String code = pwdCrypter.encode( DTF.format( now ) + user.getEmail().getAddress() );
 		
 		if ( !this.repository.insert( syncUser, code, now, ip ) )
-			throw new PersistenceException( "It was not possible performing insert for 'login' record." );
+			throw new UnauthorizedException( "It was not possible performing insert for 'login' record." );
 		
 		return code;
 	}

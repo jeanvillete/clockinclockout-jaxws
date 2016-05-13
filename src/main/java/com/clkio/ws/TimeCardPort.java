@@ -8,6 +8,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import com.clkio.ws.domain.common.Response;
+import com.clkio.ws.domain.common.ResponseCreated;
 import com.clkio.ws.domain.timecard.DeleteClockinClockoutRequest;
 import com.clkio.ws.domain.timecard.DeleteManualEnteringRequest;
 import com.clkio.ws.domain.timecard.GetTimeCardRequest;
@@ -92,12 +93,12 @@ public interface TimeCardPort {
      * @param request
      * @param clkioLoginCode
      * @return
-     *     returns com.clkio.ws.domain.common.Response
+     *     returns com.clkio.ws.domain.common.ResponseCreated
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
-    public Response punchClock(
+    @WebResult(name = "responseCreated", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public ResponseCreated punchClock(
         @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
         String clkioLoginCode,
         @WebParam(name = "punchClockRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
@@ -110,12 +111,12 @@ public interface TimeCardPort {
      * @param request
      * @param clkioLoginCode
      * @return
-     *     returns com.clkio.ws.domain.common.Response
+     *     returns com.clkio.ws.domain.common.ResponseCreated
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
-    public Response insertClockinClockout(
+    @WebResult(name = "responseCreated", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public ResponseCreated insertClockinClockout(
         @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
         String clkioLoginCode,
         @WebParam(name = "insertClockinClockoutRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
@@ -164,12 +165,12 @@ public interface TimeCardPort {
      * @param request
      * @param clkioLoginCode
      * @return
-     *     returns com.clkio.ws.domain.common.Response
+     *     returns com.clkio.ws.domain.common.ResponseCreated
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
-    public Response insertManualEntering(
+    @WebResult(name = "responseCreated", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public ResponseCreated insertManualEntering(
         @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
         String clkioLoginCode,
         @WebParam(name = "insertManualEnteringRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")

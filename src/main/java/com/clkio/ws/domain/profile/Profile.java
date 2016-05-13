@@ -2,10 +2,13 @@
 package com.clkio.ws.domain.profile;
 
 import java.math.BigInteger;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+
+import com.clkio.ws.domain.common.CommonDomain;
 
 
 /**
@@ -16,9 +19,8 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="profile">
  *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *     &lt;extension base="{http://schemas.clkio.com/common}commonDomain">
  *       &lt;sequence>
- *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}integer"/>
  *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="hoursFormat" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="dateFormat" type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -30,7 +32,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="expectedFriday" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="expectedSaturday" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
- *     &lt;/restriction>
+ *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
@@ -39,7 +41,6 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "profile", propOrder = {
-    "id",
     "description",
     "hoursFormat",
     "dateFormat",
@@ -51,10 +52,10 @@ import javax.xml.bind.annotation.XmlType;
     "expectedFriday",
     "expectedSaturday"
 })
-public class Profile {
+public class Profile
+    extends CommonDomain
+{
 
-    @XmlElement(required = true)
-    protected BigInteger id;
     @XmlElement(required = true)
     protected String description;
     @XmlElement(required = true, defaultValue = "H:mm")
@@ -81,33 +82,9 @@ public class Profile {
     
     public Profile( BigInteger id, String description ) {
 		super();
-		this.id = id;
+		this.setId( id );
 		this.description = description;
 	}
-
-	/**
-     * Gets the value of the id property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
-     */
-    public BigInteger getId() {
-        return id;
-    }
-
-    /**
-     * Sets the value of the id property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
-     */
-    public void setId(BigInteger value) {
-        this.id = value;
-    }
 
     /**
      * Gets the value of the description property.

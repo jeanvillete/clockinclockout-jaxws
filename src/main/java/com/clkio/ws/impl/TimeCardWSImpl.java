@@ -21,9 +21,9 @@ import com.clkio.domain.ManualEntering;
 import com.clkio.domain.ManualEnteringReason;
 import com.clkio.domain.Profile;
 import com.clkio.domain.TimeCard;
-import com.clkio.exception.ValidationException;
 import com.clkio.exception.ClkioException;
 import com.clkio.exception.ClkioRuntimeException;
+import com.clkio.exception.ValidationException;
 import com.clkio.service.ProfileService;
 import com.clkio.service.TimeCardService;
 import com.clkio.ws.ResponseException;
@@ -31,6 +31,7 @@ import com.clkio.ws.TimeCardPort;
 import com.clkio.ws.domain.clockinclockout.Clockinclockout;
 import com.clkio.ws.domain.common.InternalServerError;
 import com.clkio.ws.domain.common.Response;
+import com.clkio.ws.domain.common.ResponseCreated;
 import com.clkio.ws.domain.reason.Reason;
 import com.clkio.ws.domain.timecard.DeleteClockinClockoutRequest;
 import com.clkio.ws.domain.timecard.DeleteManualEnteringRequest;
@@ -153,7 +154,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 	}
 
 	@Override
-	public Response punchClock( String clkioLoginCode, PunchClockRequest request ) throws ResponseException {
+	public ResponseCreated punchClock( String clkioLoginCode, PunchClockRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -167,9 +168,14 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 			if ( ( profile = this.getService( ProfileService.class ).get( profile ) ) == null )
 				throw new ValidationException( "No record found for the provided 'profile'." );
 			
-			this.getService().punchClock( profile, request.getTimestamp() );
+			String pattern = profile.getDateFormat() + " " + profile.getHoursFormat();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern( pattern );
 			
-			return new Response( "Service 'punchClock' executed successfully." );
+			ClockinClockout clockinClockout = this.getService().punchClock( profile, request.getTimestamp() );
+			
+			return new ResponseCreated( new Clockinclockout( new BigInteger( clockinClockout.getId().toString() ),
+					clockinClockout.getClockin() != null ? formatter.format( clockinClockout.getClockin() ) : null,
+					clockinClockout.getClockout() != null ? formatter.format( clockinClockout.getClockout() ) : null) );
 		} catch ( ClkioException e ) {
 			LOG.debug( e );
 			throw new ResponseException( e.getMessage(), e.getFault() );
@@ -183,7 +189,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 	}
 
 	@Override
-	public Response insertClockinClockout( String clkioLoginCode, InsertClockinClockoutRequest request ) throws ResponseException {
+	public ResponseCreated insertClockinClockout( String clkioLoginCode, InsertClockinClockoutRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -218,9 +224,11 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 							+ "Remember that this pattern is the 'dateFormat' concatenated with 'hoursFormat' set on the profile, in case you want to change it." );
 				}
 			
-			this.getService().insert( profile, new ClockinClockout( clockin, clockout ) );
+			ClockinClockout clockinClockout = new ClockinClockout( clockin, clockout );
+			this.getService().insert( profile, clockinClockout );
+			request.getClockinclockout().setId( new BigInteger( clockinClockout.getId().toString() ) );
 			
-			return new Response( "Service 'insertClockinClockout' executed successfully." );
+			return new ResponseCreated( request.getClockinclockout() );
 		} catch ( ClkioException e ) {
 			LOG.debug( e );
 			throw new ResponseException( e.getMessage(), e.getFault() );
@@ -316,7 +324,7 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 	}
 
 	@Override
-	public Response insertManualEntering( String clkioLoginCode, InsertManualEnteringRequest request ) throws ResponseException {
+	public ResponseCreated insertManualEntering( String clkioLoginCode, InsertManualEnteringRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -343,13 +351,14 @@ public class TimeCardWSImpl extends WebServiceCommon< TimeCardService > implemen
 				throw new IllegalStateException( "The provided value for 'date' was not valid for the pattern=[" + pattern + "]. " );
 			}
 			
-			this.getService().insert( profile, 
-					new ManualEntering( 
-							new Day( day ), 
-							new ManualEnteringReason( request.getManualEntering().getReason().getId().intValue() ),
-							DurationUtil.fromString( request.getManualEntering().getTimeInterval(), profile.getHoursFormat() ) ) );
+			ManualEntering manualEntering = new ManualEntering( 
+					new Day( day ), 
+					new ManualEnteringReason( request.getManualEntering().getReason().getId().intValue() ),
+					DurationUtil.fromString( request.getManualEntering().getTimeInterval(), profile.getHoursFormat() ) );
+			this.getService().insert( profile, manualEntering );
+			request.getManualEntering().setId( new BigInteger( manualEntering.getId().toString() ) );
 			
-			return new Response( "Service 'insertManualEntering' executed successfully." );
+			return new ResponseCreated( request.getManualEntering() );
 		} catch ( ClkioException e ) {
 			LOG.debug( e );
 			throw new ResponseException( e.getMessage(), e.getFault() );

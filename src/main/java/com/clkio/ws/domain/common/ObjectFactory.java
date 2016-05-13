@@ -46,11 +46,27 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ResponseCreated }
+     * 
+     */
+    public ResponseCreated createResponseCreated() {
+        return new ResponseCreated();
+    }
+
+    /**
      * Create an instance of {@link ForbiddenFault }
      * 
      */
     public ForbiddenFault createForbiddenFault() {
         return new ForbiddenFault();
+    }
+
+    /**
+     * Create an instance of {@link CommonDomain }
+     * 
+     */
+    public CommonDomain createCommonDomain() {
+        return new CommonDomain();
     }
 
     /**

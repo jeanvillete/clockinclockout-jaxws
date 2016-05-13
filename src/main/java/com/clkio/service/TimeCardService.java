@@ -23,11 +23,12 @@ public interface TimeCardService {
 	 * 
 	 * @param profile
 	 * @param clock
-	 * @throws ValidationException 
-	 * @throws PersistenceException 
-	 * @throws ConflictException 
+	 * @return
+	 * @throws ValidationException
+	 * @throws PersistenceException
+	 * @throws ConflictException
 	 */
-	void punchClock( Profile profile, String clock ) throws ValidationException, PersistenceException, ConflictException;
+	ClockinClockout punchClock( Profile profile, String clock ) throws ValidationException, PersistenceException, ConflictException;
 	
 	void insert( Profile profile, ClockinClockout clockinClockout ) throws ValidationException, PersistenceException, ConflictException;
 

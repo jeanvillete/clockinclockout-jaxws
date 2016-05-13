@@ -49,7 +49,8 @@ import com.clkio.ws.domain.timecard.GetTotalTimeResponse;
     GetTimeCardResponse.class,
     ListAdjustingResponse.class,
     ListProfileResponse.class,
-    ConfirmResetPasswordResponse.class
+    ConfirmResetPasswordResponse.class,
+    ResponseCreated.class
 })
 public class Response {
 

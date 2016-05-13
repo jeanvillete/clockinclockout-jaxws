@@ -8,6 +8,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import com.clkio.ws.domain.common.Response;
+import com.clkio.ws.domain.common.ResponseCreated;
 import com.clkio.ws.domain.reason.DeleteManualEnteringReasonRequest;
 import com.clkio.ws.domain.reason.InsertManualEnteringReasonRequest;
 import com.clkio.ws.domain.reason.ListManualEnteringReasonRequest;
@@ -64,12 +65,12 @@ public interface ManualEnteringReasonPort {
      * @param request
      * @param clkioLoginCode
      * @return
-     *     returns com.clkio.ws.domain.common.Response
+     *     returns com.clkio.ws.domain.common.ResponseCreated
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
-    public Response insert(
+    @WebResult(name = "responseCreated", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public ResponseCreated insert(
         @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
         String clkioLoginCode,
         @WebParam(name = "insertManualEnteringReasonRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")

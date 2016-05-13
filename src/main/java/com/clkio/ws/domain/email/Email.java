@@ -2,10 +2,13 @@
 package com.clkio.ws.domain.email;
 
 import java.math.BigInteger;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+
+import com.clkio.ws.domain.common.CommonDomain;
 
 
 /**
@@ -16,15 +19,14 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="email">
  *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *     &lt;extension base="{http://schemas.clkio.com/common}commonDomain">
  *       &lt;sequence>
- *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}integer"/>
  *         &lt;element name="emailAddress" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="confirmationCode" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="confirmed" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *         &lt;element name="primary" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *       &lt;/sequence>
- *     &lt;/restriction>
+ *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
@@ -33,16 +35,15 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "email", propOrder = {
-    "id",
     "emailAddress",
     "confirmationCode",
     "confirmed",
     "primary"
 })
-public class Email {
+public class Email
+    extends CommonDomain
+{
 
-    @XmlElement(required = true)
-    protected BigInteger id;
     @XmlElement(required = true)
     protected String emailAddress;
     @XmlElement(required = true)
@@ -55,35 +56,11 @@ public class Email {
     
     public Email( BigInteger id, String emailAddress, boolean confirmed, boolean primary ) {
 		super();
-		this.id = id;
+		this.setId( id );
 		this.emailAddress = emailAddress;
 		this.confirmed = confirmed;
 		this.primary = primary;
 	}
-
-	/**
-     * Gets the value of the id property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
-     */
-    public BigInteger getId() {
-        return id;
-    }
-
-    /**
-     * Sets the value of the id property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
-     */
-    public void setId(BigInteger value) {
-        this.id = value;
-    }
 
     /**
      * Gets the value of the emailAddress property.

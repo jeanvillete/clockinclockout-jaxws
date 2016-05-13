@@ -97,7 +97,7 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 
 	@Override
 	@Transactional( propagation = Propagation.REQUIRED, rollbackFor = { Exception.class, RuntimeException.class } )
-	public void punchClock( final Profile profile, final String timestamp ) throws ValidationException, PersistenceException, ConflictException {
+	public ClockinClockout punchClock( final Profile profile, final String timestamp ) throws ValidationException, PersistenceException, ConflictException {
 		if( profile == null || profile.getId() == null )
 			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
 		
@@ -114,18 +114,20 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 		LocalDate localDateDay = dateTime.toLocalDate();
 		Day day = this.dayService.get( profile, localDateDay );
 		
+		ClockinClockout clockinClockout = null;
 		if ( day == null ) {
 			day = this.insert( profile, localDateDay );
-			this.clockinClockoutService.insert( new ClockinClockout( day, dateTime, null ) );
+			this.clockinClockoutService.insert( clockinClockout = new ClockinClockout( day, dateTime, null ) );
 		} else {
-			ClockinClockout clockinClockout = this.clockinClockoutService.getNewest( day );
+			clockinClockout = this.clockinClockoutService.getNewest( day );
 			if ( clockinClockout == null || clockinClockout.getClockout() != null )
-				this.clockinClockoutService.insert( new ClockinClockout( day, dateTime, null ) );
+				this.clockinClockoutService.insert( clockinClockout = new ClockinClockout( day, dateTime, null ) );
 			else {
 				clockinClockout.setClockout( dateTime );
 				this.clockinClockoutService.update( clockinClockout );
 			}
 		}
+		return clockinClockout;
 	}
 
 	@Override

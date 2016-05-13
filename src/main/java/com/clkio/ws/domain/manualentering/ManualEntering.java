@@ -2,10 +2,12 @@
 package com.clkio.ws.domain.manualentering;
 
 import java.math.BigInteger;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+
 import com.clkio.ws.domain.day.Day;
 import com.clkio.ws.domain.day.DayEntering;
 import com.clkio.ws.domain.reason.Reason;
@@ -21,7 +23,6 @@ import com.clkio.ws.domain.reason.Reason;
  *   &lt;complexContent>
  *     &lt;extension base="{http://schemas.clkio.com/day}dayEntering">
  *       &lt;sequence>
- *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}integer"/>
  *         &lt;element name="timeInterval" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="reason" type="{http://schemas.clkio.com/reason}reason"/>
  *         &lt;element name="day" type="{http://schemas.clkio.com/day}day"/>
@@ -35,7 +36,6 @@ import com.clkio.ws.domain.reason.Reason;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "manualEntering", propOrder = {
-    "id",
     "timeInterval",
     "reason",
     "day"
@@ -44,8 +44,6 @@ public class ManualEntering
     extends DayEntering
 {
 
-    @XmlElement(required = true)
-    protected BigInteger id;
     @XmlElement(required = true)
     protected String timeInterval;
     @XmlElement(required = true)
@@ -59,34 +57,11 @@ public class ManualEntering
 
     public ManualEntering( BigInteger id, String timeInterval, Reason reason ) {
 		super();
-		this.id = id;
+		this.setId( id );
 		this.timeInterval = timeInterval;
 		this.reason = reason;
 	}
 
-	/**
-     * Gets the value of the id property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
-     */
-    public BigInteger getId() {
-        return id;
-    }
-
-    /**
-     * Sets the value of the id property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
-     */
-    public void setId(BigInteger value) {
-        this.id = value;
-    }
 
     /**
      * Gets the value of the timeInterval property.

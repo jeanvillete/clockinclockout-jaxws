@@ -1,8 +1,9 @@
 package com.clkio.service;
 
 import com.clkio.domain.User;
-import com.clkio.exception.ValidationException;
 import com.clkio.exception.PersistenceException;
+import com.clkio.exception.UnauthorizedException;
+import com.clkio.exception.ValidationException;
 
 public interface LoginService {
 
@@ -14,10 +15,11 @@ public interface LoginService {
 	 * @param user
 	 * @param ip
 	 * @return
-	 * @throws PersistenceException 
 	 * @throws ValidationException 
+	 * @throws UnauthorizedException 
+	 * @throws PersistenceException 
 	 */
-	String login( User user, String ip ) throws ValidationException, PersistenceException;
+	String login( User user, String ip ) throws ValidationException, UnauthorizedException, PersistenceException;
 
 	/**
 	 * Service responsable to check if the provided 'code' is valid for login.

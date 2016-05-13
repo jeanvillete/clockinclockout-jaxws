@@ -2,10 +2,13 @@
 package com.clkio.ws.domain.adjusting;
 
 import java.math.BigInteger;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+
+import com.clkio.ws.domain.common.CommonDomain;
 import com.clkio.ws.domain.profile.Profile;
 
 
@@ -17,14 +20,13 @@ import com.clkio.ws.domain.profile.Profile;
  * <pre>
  * &lt;complexType name="adjusting">
  *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *     &lt;extension base="{http://schemas.clkio.com/common}commonDomain">
  *       &lt;sequence>
- *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}integer"/>
  *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="timeInterval" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="profile" type="{http://schemas.clkio.com/profile}profile"/>
  *       &lt;/sequence>
- *     &lt;/restriction>
+ *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
@@ -33,15 +35,14 @@ import com.clkio.ws.domain.profile.Profile;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "adjusting", propOrder = {
-    "id",
     "description",
     "timeInterval",
     "profile"
 })
-public class Adjusting {
+public class Adjusting
+    extends CommonDomain
+{
 
-    @XmlElement(required = true)
-    protected BigInteger id;
     @XmlElement(required = true)
     protected String description;
     @XmlElement(required = true)
@@ -55,34 +56,10 @@ public class Adjusting {
     
     public Adjusting( BigInteger id, String description, String timeInterval ) {
 		super();
-		this.id = id;
+		this.setId( id );
 		this.description = description;
 		this.timeInterval = timeInterval;
 	}
-
-    /**
-     * Gets the value of the id property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
-     */
-    public BigInteger getId() {
-        return id;
-    }
-
-    /**
-     * Sets the value of the id property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
-     */
-    public void setId(BigInteger value) {
-        this.id = value;
-    }
 
     /**
      * Gets the value of the description property.

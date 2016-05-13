@@ -35,6 +35,7 @@
 			<xs:element type="xs:string" name="clkioLoginCode"/>
 
 			<xs:element type="common:response" name="response" nillable="false"/>
+			<xs:element type="common:responseCreated" name="responseCreated" nillable="false"/>
 			<xs:element type="common:responseFault" name="responseFault" nillable="false"/>
 			
 			<xs:element type="user:insertUserRequest" name="insertUserRequest" nillable="false"/>
@@ -94,6 +95,9 @@
 	<!-- messages -->
 	<wsdl:message name="response">
 		<wsdl:part name="result" element="clkio:response" />
+	</wsdl:message>
+	<wsdl:message name="responseCreated">
+		<wsdl:part name="result" element="clkio:responseCreated" />
 	</wsdl:message>
 	<wsdl:message name="responseException">
 		<wsdl:part name="exception" element="clkio:responseFault" />
@@ -288,7 +292,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="insert">
 			<wsdl:input message="clkws:insertEmailRequest" />
-			<wsdl:output message="clkws:response" />
+			<wsdl:output message="clkws:responseCreated" />
 			<wsdl:fault message="clkws:responseException" name="insertEmailException" />
 		</wsdl:operation>
 		<wsdl:operation name="list">
@@ -315,7 +319,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="insert">
 			<wsdl:input message="clkws:insertProfileRequest" />
-			<wsdl:output message="clkws:response" />
+			<wsdl:output message="clkws:responseCreated" />
 			<wsdl:fault message="clkws:responseException" name="insertProfileException" />
 		</wsdl:operation>
 		<wsdl:operation name="update">
@@ -337,7 +341,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="insert">
 			<wsdl:input message="clkws:insertAdjustingRequest"/>
-			<wsdl:output message="clkws:response"/>
+			<wsdl:output message="clkws:responseCreated"/>
 			<wsdl:fault message="clkws:responseException" name="insertAdjustingException" />
 		</wsdl:operation>
 		<wsdl:operation name="update">
@@ -359,7 +363,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="insert">
 			<wsdl:input message="clkws:insertManualEnteringReasonRequest"/>
-			<wsdl:output message="clkws:response"/>
+			<wsdl:output message="clkws:responseCreated"/>
 			<wsdl:fault message="clkws:responseException" name="insertManualEnteringReasonException" />
 		</wsdl:operation>
 		<wsdl:operation name="update">
@@ -386,12 +390,12 @@
 		</wsdl:operation>
 		<wsdl:operation name="punchClock">
 			<wsdl:input message="clkws:punchClockRequest"/>
-			<wsdl:output message="clkws:response"/>
+			<wsdl:output message="clkws:responseCreated"/>
 			<wsdl:fault message="clkws:responseException" name="punchClockException" />
 		</wsdl:operation>
 		<wsdl:operation name="insertClockinClockout">
 			<wsdl:input message="clkws:insertClockinClockoutRequest"/>
-			<wsdl:output message="clkws:response"/>
+			<wsdl:output message="clkws:responseCreated"/>
 			<wsdl:fault message="clkws:responseException" name="insertClockinClockoutException" />
 		</wsdl:operation>
 		<wsdl:operation name="updateClockinClockout">
@@ -406,7 +410,7 @@
 		</wsdl:operation>
 		<wsdl:operation name="insertManualEntering">
 			<wsdl:input message="clkws:insertManualEnteringRequest"/>
-			<wsdl:output message="clkws:response"/>
+			<wsdl:output message="clkws:responseCreated"/>
 			<wsdl:fault message="clkws:responseException" name="insertManualEnteringException" />
 		</wsdl:operation>
 		<wsdl:operation name="updateManualEntering">

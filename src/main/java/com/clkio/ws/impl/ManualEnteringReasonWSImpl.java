@@ -19,6 +19,7 @@ import com.clkio.ws.ManualEnteringReasonPort;
 import com.clkio.ws.ResponseException;
 import com.clkio.ws.domain.common.InternalServerError;
 import com.clkio.ws.domain.common.Response;
+import com.clkio.ws.domain.common.ResponseCreated;
 import com.clkio.ws.domain.reason.DeleteManualEnteringReasonRequest;
 import com.clkio.ws.domain.reason.InsertManualEnteringReasonRequest;
 import com.clkio.ws.domain.reason.ListManualEnteringReasonRequest;
@@ -66,7 +67,7 @@ public class ManualEnteringReasonWSImpl extends WebServiceCommon< ManualEntering
 	}
 
 	@Override
-	public Response insert( String clkioLoginCode, InsertManualEnteringReasonRequest request ) throws ResponseException {
+	public ResponseCreated insert( String clkioLoginCode, InsertManualEnteringReasonRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -82,8 +83,9 @@ public class ManualEnteringReasonWSImpl extends WebServiceCommon< ManualEntering
 			
 			ManualEnteringReason reason = new ManualEnteringReason( profile, request.getReason().getReason() );
 			this.getService().insert( reason );
+			request.getReason().setId( new BigInteger( reason.getId().toString() ) );
 			
-			return new Response( "Reason record stored successfully." );
+			return new ResponseCreated( request.getReason() );
 		} catch ( ClkioException e ) {
 			LOG.debug( e );
 			throw new ResponseException( e.getMessage(), e.getFault() );

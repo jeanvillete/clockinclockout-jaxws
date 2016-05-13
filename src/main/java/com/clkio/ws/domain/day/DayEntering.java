@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import com.clkio.ws.domain.clockinclockout.Clockinclockout;
+import com.clkio.ws.domain.common.CommonDomain;
 import com.clkio.ws.domain.manualentering.ManualEntering;
 
 
@@ -17,8 +18,8 @@ import com.clkio.ws.domain.manualentering.ManualEntering;
  * <pre>
  * &lt;complexType name="dayEntering">
  *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *     &lt;/restriction>
+ *     &lt;extension base="{http://schemas.clkio.com/common}commonDomain">
+ *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
@@ -31,7 +32,9 @@ import com.clkio.ws.domain.manualentering.ManualEntering;
     Clockinclockout.class,
     ManualEntering.class
 })
-public class DayEntering {
+public class DayEntering
+    extends CommonDomain
+{
 
 
 }

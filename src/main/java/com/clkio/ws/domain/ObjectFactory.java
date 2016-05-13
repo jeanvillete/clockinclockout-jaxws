@@ -11,6 +11,7 @@ import com.clkio.ws.domain.adjusting.ListAdjustingRequest;
 import com.clkio.ws.domain.adjusting.ListAdjustingResponse;
 import com.clkio.ws.domain.adjusting.UpdateAdjustingRequest;
 import com.clkio.ws.domain.common.Response;
+import com.clkio.ws.domain.common.ResponseCreated;
 import com.clkio.ws.domain.common.ResponseFault;
 import com.clkio.ws.domain.email.ConfirmEmailRequest;
 import com.clkio.ws.domain.email.DeleteEmailRequest;
@@ -114,6 +115,7 @@ public class ObjectFactory {
     private final static QName _ResetPasswordRequest_QNAME = new QName("http://schemas.clkio.com", "resetPasswordRequest");
     private final static QName _Response_QNAME = new QName("http://schemas.clkio.com", "response");
     private final static QName _InsertUserRequest_QNAME = new QName("http://schemas.clkio.com", "insertUserRequest");
+    private final static QName _ResponseCreated_QNAME = new QName("http://schemas.clkio.com", "responseCreated");
     private final static QName _RequestResetPasswordRequest_QNAME = new QName("http://schemas.clkio.com", "requestResetPasswordRequest");
     private final static QName _UpdateAdjustingRequest_QNAME = new QName("http://schemas.clkio.com", "updateAdjustingRequest");
     private final static QName _SetNotesRequest_QNAME = new QName("http://schemas.clkio.com", "setNotesRequest");
@@ -519,6 +521,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "insertUserRequest")
     public JAXBElement<InsertUserRequest> createInsertUserRequest(InsertUserRequest value) {
         return new JAXBElement<InsertUserRequest>(_InsertUserRequest_QNAME, InsertUserRequest.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ResponseCreated }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "responseCreated")
+    public JAXBElement<ResponseCreated> createResponseCreated(ResponseCreated value) {
+        return new JAXBElement<ResponseCreated>(_ResponseCreated_QNAME, ResponseCreated.class, null, value);
     }
 
     /**

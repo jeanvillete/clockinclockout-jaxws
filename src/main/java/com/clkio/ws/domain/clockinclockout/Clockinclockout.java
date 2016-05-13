@@ -2,10 +2,12 @@
 package com.clkio.ws.domain.clockinclockout;
 
 import java.math.BigInteger;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+
 import com.clkio.ws.domain.day.DayEntering;
 
 
@@ -19,7 +21,6 @@ import com.clkio.ws.domain.day.DayEntering;
  *   &lt;complexContent>
  *     &lt;extension base="{http://schemas.clkio.com/day}dayEntering">
  *       &lt;sequence>
- *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}integer"/>
  *         &lt;element name="clockin" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="clockout" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
@@ -32,7 +33,6 @@ import com.clkio.ws.domain.day.DayEntering;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "clockinclockout", propOrder = {
-    "id",
     "clockin",
     "clockout"
 })
@@ -41,8 +41,6 @@ public class Clockinclockout
 {
 
     @XmlElement(required = true)
-    protected BigInteger id;
-    @XmlElement(required = true)
     protected String clockin;
     @XmlElement(required = true)
     protected String clockout;
@@ -50,37 +48,14 @@ public class Clockinclockout
     public Clockinclockout() {
     	super();
     }
-
+    
     public Clockinclockout( BigInteger id, String clockin, String clockout ) {
 		super();
-		this.id = id;
+		this.setId( id );
 		this.clockin = clockin;
 		this.clockout = clockout;
 	}
 
-	/**
-     * Gets the value of the id property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
-     */
-    public BigInteger getId() {
-        return id;
-    }
-
-    /**
-     * Sets the value of the id property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
-     */
-    public void setId(BigInteger value) {
-        this.id = value;
-    }
 
     /**
      * Gets the value of the clockin property.

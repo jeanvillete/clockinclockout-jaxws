@@ -12,6 +12,7 @@ import com.clkio.domain.Email;
 import com.clkio.domain.User;
 import com.clkio.exception.ValidationException;
 import com.clkio.exception.PersistenceException;
+import com.clkio.exception.UnauthorizedException;
 import com.clkio.service.LoginService;
 
 @RunWith( SpringJUnit4ClassRunner.class )
@@ -39,7 +40,7 @@ public class TestDoLogin {
 			Assert.hasText( code );
 			
 			System.out.println( "[User logged successfully] code:" + code );
-		} catch ( ValidationException | PersistenceException e ) {
+		} catch ( ValidationException | PersistenceException | UnauthorizedException e ) {
 			e.printStackTrace();
 		}
 		

@@ -19,6 +19,7 @@ import com.clkio.ws.EmailPort;
 import com.clkio.ws.ResponseException;
 import com.clkio.ws.domain.common.InternalServerError;
 import com.clkio.ws.domain.common.Response;
+import com.clkio.ws.domain.common.ResponseCreated;
 import com.clkio.ws.domain.email.ConfirmEmailRequest;
 import com.clkio.ws.domain.email.DeleteEmailRequest;
 import com.clkio.ws.domain.email.InsertEmailRequest;
@@ -62,7 +63,7 @@ public class EmailWSImpl extends WebServiceCommon< EmailService > implements Ema
 	}
 
 	@Override
-	public Response insert( String clkioLoginCode, InsertEmailRequest request ) throws ResponseException {
+	public ResponseCreated insert( String clkioLoginCode, InsertEmailRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -80,8 +81,9 @@ public class EmailWSImpl extends WebServiceCommon< EmailService > implements Ema
 			EmailService service = this.getService();
 			service.insert( email );
 			service.send( emailConfirmation );
+			request.getEmail().setId( new BigInteger( email.getId().toString() ) );
 			
-			return new Response( "Email address stored successfully. An email is going to be sent you in order to confirm it." );
+			return new ResponseCreated( request.getEmail() );
 		} catch ( ClkioException e ) {
 			LOG.debug( e );
 			throw new ResponseException( e.getMessage(), e.getFault() );

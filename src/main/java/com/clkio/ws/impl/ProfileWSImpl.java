@@ -18,6 +18,7 @@ import com.clkio.ws.ProfilePort;
 import com.clkio.ws.ResponseException;
 import com.clkio.ws.domain.common.InternalServerError;
 import com.clkio.ws.domain.common.Response;
+import com.clkio.ws.domain.common.ResponseCreated;
 import com.clkio.ws.domain.profile.DeleteProfileRequest;
 import com.clkio.ws.domain.profile.InsertProfileRequest;
 import com.clkio.ws.domain.profile.ListProfileRequest;
@@ -72,7 +73,7 @@ public class ProfileWSImpl extends WebServiceCommon< ProfileService > implements
 	}
 
 	@Override
-	public Response insert( String clkioLoginCode, InsertProfileRequest request ) throws ResponseException {
+	public ResponseCreated insert( String clkioLoginCode, InsertProfileRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -92,8 +93,9 @@ public class ProfileWSImpl extends WebServiceCommon< ProfileService > implements
 			profile.setDefaultExpectedSaturday( DurationUtil.fromString( request.getProfile().getExpectedSaturday(), request.getProfile().getHoursFormat() ) );
 			
 			this.getService().insert( profile );
+			request.getProfile().setId( new BigInteger( profile.getId().toString() ) );
 			
-			return new Response( "Profile record stored successfully." );
+			return new ResponseCreated( request.getProfile() );
 		} catch ( ClkioException e ) {
 			LOG.debug( e );
 			throw new ResponseException( e.getMessage(), e.getFault() );

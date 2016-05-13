@@ -25,6 +25,7 @@ import com.clkio.ws.domain.adjusting.ListAdjustingResponse;
 import com.clkio.ws.domain.adjusting.UpdateAdjustingRequest;
 import com.clkio.ws.domain.common.InternalServerError;
 import com.clkio.ws.domain.common.Response;
+import com.clkio.ws.domain.common.ResponseCreated;
 
 @WebService( endpointInterface = "com.clkio.ws.AdjustingPort" )
 public class AdjustingWSImpl extends WebServiceCommon< AdjustingService > implements AdjustingPort {
@@ -71,7 +72,7 @@ public class AdjustingWSImpl extends WebServiceCommon< AdjustingService > implem
 	}
 
 	@Override
-	public Response insert( String clkioLoginCode, InsertAdjustingRequest request ) throws ResponseException {
+	public ResponseCreated insert( String clkioLoginCode, InsertAdjustingRequest request ) throws ResponseException {
 		try {
 			if ( request == null )
 				throw new ValidationException( "No valid request was provided." );
@@ -90,8 +91,9 @@ public class AdjustingWSImpl extends WebServiceCommon< AdjustingService > implem
 					profile );
 			
 			this.getService().insert( adjusting );
+			request.getAdjusting().setId( new BigInteger( adjusting.getId().toString() ) );
 			
-			return new Response( "Adjusting record stored successfully." );
+			return new ResponseCreated( request.getAdjusting() );
 		} catch ( ClkioException e ) {
 			LOG.debug( e );
 			throw new ResponseException( e.getMessage(), e.getFault() );
