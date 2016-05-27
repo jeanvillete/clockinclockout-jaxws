@@ -9,9 +9,9 @@ import org.springframework.util.StringUtils;
 
 import com.clkio.domain.Email;
 import com.clkio.domain.User;
-import com.clkio.exception.ValidationException;
 import com.clkio.exception.ClkioException;
 import com.clkio.exception.ClkioRuntimeException;
+import com.clkio.exception.ValidationException;
 import com.clkio.service.UserService;
 import com.clkio.ws.ResponseException;
 import com.clkio.ws.UserPort;
@@ -36,7 +36,15 @@ public class UserWSImpl extends WebServiceCommon< UserService > implements UserP
 			if ( request.getUser() == null || request.getUser().getEmail() == null || request.getUser().getPassword() == null )
 				throw new ValidationException( "Instance 'user' alongside its 'email' and 'password' properties are mandatory." );
 			
-			Locale locale = !StringUtils.isEmpty( request.getUser().getLocale() ) ? new Locale( request.getUser().getLocale() ) : Locale.getDefault();
+			Locale locale = null;
+			if ( !StringUtils.isEmpty( request.getUser().getLocale() ) ) {
+				String strLocale = request.getUser().getLocale();
+				if ( !strLocale.equals( "pt_br" ) && !strLocale.equals( "en" ) )
+					throw new ValidationException( "Invalid value provided for 'locale', it has to be either 'pt_br' or 'en'." );
+				locale = new Locale( strLocale );
+			} else
+				locale = new Locale( "en" );
+			
 			User newUser = new User( new Email( request.getUser().getEmail() ), locale );
 			newUser.setPassword( request.getUser().getPassword() );
 			this.getService().insert( newUser );
