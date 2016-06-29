@@ -77,7 +77,7 @@ public class ClockinClockoutRepository extends CommonRepository {
 				+ " FROM CLOCKINCLOCKOUT CLKIO "
 				+ " JOIN DAY D ON CLKIO.ID_DAY = D.ID "
 				+ " WHERE D.ID_PROFILE = ? AND D.DATE >= ? AND D.DATE <= ? "
-				+ " ORDER BY CLKIO.ID ",
+				+ " ORDER BY CLKIO.ID " ,
 				new Object[]{
 					profile.getId(),
 					LocalDateTimeUtil.getTimestamp( startDate ),

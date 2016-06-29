@@ -43,14 +43,14 @@ public class ManualEnteringRepository extends CommonRepository {
 	public List< ManualEntering > listBy( final ManualEnteringReason manualEnteringReason ) {
 		return this.jdbcTemplate.query( " SELECT ID, ID_DAY, ID_MANUAL_ENTERING_REASON, TIME_INTERVAL "
 				+ " FROM MANUAL_ENTERING WHERE ID_MANUAL_ENTERING_REASON = ? "
-				+ " ORDER BY ID ",
+				+ " ORDER BY ID " ,
 				new Object[]{ manualEnteringReason.getId() }, new ManualEnteringRowMapper() );
 	}
 
 	public List< ManualEntering > listBy( final Day day ) {
 		return this.jdbcTemplate.query( " SELECT ID, ID_DAY, ID_MANUAL_ENTERING_REASON, TIME_INTERVAL "
 				+ " FROM MANUAL_ENTERING WHERE ID_DAY = ? "
-				+ " ORDER BY ID ",
+				+ " ORDER BY ID " ,
 				new Object[]{ day.getId() }, new ManualEnteringRowMapper() );
 	}
 
@@ -82,7 +82,7 @@ public class ManualEnteringRepository extends CommonRepository {
 				+ " JOIN MANUAL_ENTERING_REASON MER ON ME.ID_MANUAL_ENTERING_REASON = MER.ID "
 				+ " JOIN DAY D ON ME.ID_DAY = D.ID "
 				+ " WHERE D.ID_PROFILE = ? AND D.DATE >= ? AND D.DATE <= ? "
-				+ " ORDER BY ME.ID ",
+				+ " ORDER BY ME.ID " ,
 				new Object[]{
 					profile.getId(),
 					LocalDateTimeUtil.getTimestamp( startDate ),
