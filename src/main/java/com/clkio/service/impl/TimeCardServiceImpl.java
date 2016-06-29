@@ -16,16 +16,15 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import com.clkio.domain.ClockinClockout;
 import com.clkio.domain.Day;
 import com.clkio.domain.ManualEntering;
 import com.clkio.domain.Profile;
 import com.clkio.domain.TimeCard;
-import com.clkio.exception.ValidationException;
 import com.clkio.exception.ConflictException;
 import com.clkio.exception.PersistenceException;
+import com.clkio.exception.ValidationException;
 import com.clkio.repository.TimeCardRepository;
 import com.clkio.service.ClockinClockoutService;
 import com.clkio.service.DayService;
@@ -258,8 +257,6 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
 		if( date == null )
 			throw new ValidationException( "Argument 'date' is mandatory." );
-		if( !StringUtils.hasText( text ) )
-			throw new ValidationException( "Argument 'text' is mandatory." );
 		
 		Day day = this.dayService.get( profile, date );
 		if ( day == null )
