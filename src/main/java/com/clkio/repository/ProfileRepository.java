@@ -56,7 +56,8 @@ public class ProfileRepository extends CommonRepository {
 				+ " DEFAULT_EXPECTED_FRIDAY, "
 				+ " DEFAULT_EXPECTED_SATURDAY "
 				+ " FROM PROFILE "
-				+ " WHERE ID_CLK_USER = ? ",
+				+ " WHERE ID_CLK_USER = ? "
+				+ " ORDER BY ID ",
 				new Object[]{ user.getId() },
 				new ProfileRowMapper() );
 	}
