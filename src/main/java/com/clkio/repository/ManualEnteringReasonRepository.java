@@ -31,7 +31,8 @@ public class ManualEnteringReasonRepository extends CommonRepository {
 		return this.jdbcTemplate.query( " SELECT REASON.ID, REASON.REASON, REASON.ID_PROFILE "
 				+ " FROM MANUAL_ENTERING_REASON REASON "
 				+ " JOIN PROFILE PROF ON REASON.ID_PROFILE = PROF.ID "
-				+ " WHERE PROF.ID_CLK_USER = ? AND REASON.ID_PROFILE = ? ",
+				+ " WHERE PROF.ID_CLK_USER = ? AND REASON.ID_PROFILE = ? "
+				+ " ORDER BY REASON.ID ",
 				new Object[]{ profile.getUser().getId(), profile.getId() }, new ManualEnteringReasonRowMapper() );
 	}
 

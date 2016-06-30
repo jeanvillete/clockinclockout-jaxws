@@ -34,7 +34,8 @@ public class AdjustingRepository extends CommonRepository {
 		return this.jdbcTemplate.query( " SELECT ADJ.ID, ADJ.DESCRIPTION, ADJ.TIME_INTERVAL, ADJ.ID_PROFILE "
 				+ " FROM ADJUSTING ADJ "
 				+ " JOIN PROFILE PROF ON ADJ.ID_PROFILE = PROF.ID "
-				+ " WHERE PROF.ID_CLK_USER = ? AND ADJ.ID_PROFILE = ? ",
+				+ " WHERE PROF.ID_CLK_USER = ? AND ADJ.ID_PROFILE = ? "
+				+ " ORDER BY ADJ.ID ",
 				new Object[]{ 
 						profile.getUser().getId(), 
 						profile.getId() }, 
