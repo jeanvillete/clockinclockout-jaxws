@@ -35,7 +35,7 @@ import com.clkio.ws.domain.reason.Reason;
  *         &lt;element name="expectedFriday" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="expectedSaturday" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="adjustings" type="{http://schemas.clkio.com/adjusting}adjusting" maxOccurs="unbounded"/>
- *         &lt;element name="reason" type="{http://schemas.clkio.com/reason}reason" maxOccurs="unbounded"/>
+ *         &lt;element name="reasons" type="{http://schemas.clkio.com/reason}reason" maxOccurs="unbounded"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -57,7 +57,7 @@ import com.clkio.ws.domain.reason.Reason;
     "expectedFriday",
     "expectedSaturday",
     "adjustings",
-    "reason"
+    "reasons"
 })
 public class Profile
     extends CommonDomain
@@ -86,7 +86,7 @@ public class Profile
     @XmlElement(required = true, nillable = true)
     protected List<Adjusting> adjustings;
     @XmlElement(required = true, nillable = true)
-    protected List<Reason> reason;
+    protected List<Reason> reasons;
 
     public Profile() {
     }
@@ -367,18 +367,18 @@ public class Profile
     }
 
     /**
-     * Gets the value of the reason property.
+     * Gets the value of the reasons property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the reason property.
+     * This is why there is not a <CODE>set</CODE> method for the reasons property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getReason().add(newItem);
+     *    getReasons().add(newItem);
      * </pre>
      * 
      * 
@@ -388,11 +388,11 @@ public class Profile
      * 
      * 
      */
-    public List<Reason> getReason() {
-        if (reason == null) {
-            reason = new ArrayList<Reason>();
+    public List<Reason> getReasons() {
+        if (reasons == null) {
+            reasons = new ArrayList<Reason>();
         }
-        return this.reason;
+        return this.reasons;
     }
 
 }

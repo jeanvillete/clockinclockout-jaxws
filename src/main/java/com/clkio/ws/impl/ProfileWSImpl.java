@@ -72,7 +72,7 @@ public class ProfileWSImpl extends WebServiceCommon< ProfileService > implements
 					List< ManualEnteringReason > reasons = this.getService( ManualEnteringReasonService.class ).list( profile );
 					if ( !CollectionUtils.isEmpty( reasons ) )
 						for ( ManualEnteringReason reason : reasons )
-							profileWs.getReason().add( new Reason( new BigInteger( reason.getId().toString() ), reason.getReason() ) );
+							profileWs.getReasons().add( new Reason( new BigInteger( reason.getId().toString() ), reason.getReason() ) );
 					
 					response.getProfiles().add( profileWs );
 				}
