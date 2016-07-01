@@ -9,10 +9,14 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 
 import com.clkio.common.DurationUtil;
+import com.clkio.domain.Adjusting;
+import com.clkio.domain.ManualEnteringReason;
 import com.clkio.domain.Profile;
 import com.clkio.exception.ValidationException;
 import com.clkio.exception.ClkioException;
 import com.clkio.exception.ClkioRuntimeException;
+import com.clkio.service.AdjustingService;
+import com.clkio.service.ManualEnteringReasonService;
 import com.clkio.service.ProfileService;
 import com.clkio.ws.ProfilePort;
 import com.clkio.ws.ResponseException;
@@ -24,6 +28,7 @@ import com.clkio.ws.domain.profile.InsertProfileRequest;
 import com.clkio.ws.domain.profile.ListProfileRequest;
 import com.clkio.ws.domain.profile.ListProfileResponse;
 import com.clkio.ws.domain.profile.UpdateProfileRequest;
+import com.clkio.ws.domain.reason.Reason;
 
 @WebService( endpointInterface = "com.clkio.ws.ProfilePort" )
 public class ProfileWSImpl extends WebServiceCommon< ProfileService > implements ProfilePort {
@@ -55,6 +60,19 @@ public class ProfileWSImpl extends WebServiceCommon< ProfileService > implements
 					profileWs.setExpectedThursday( DurationUtil.fromDuration( profile.getDefaultExpectedThursday(), profile.getHoursFormat() ) );
 					profileWs.setExpectedFriday( DurationUtil.fromDuration( profile.getDefaultExpectedFriday(), profile.getHoursFormat() ) );
 					profileWs.setExpectedSaturday( DurationUtil.fromDuration( profile.getDefaultExpectedSaturday(), profile.getHoursFormat() ) );
+					
+					List< Adjusting > adjustings = this.getService( AdjustingService.class ).list( profile );
+					if ( !CollectionUtils.isEmpty( adjustings ) )
+						for ( Adjusting adjusting : adjustings )
+							profileWs.getAdjustings().add( new com.clkio.ws.domain.adjusting.Adjusting(
+									new BigInteger( adjusting.getId().toString() ),
+									adjusting.getDescription(),
+									DurationUtil.fromDuration( adjusting.getTimeInterval(), profile.getHoursFormat() ) ) );
+					
+					List< ManualEnteringReason > reasons = this.getService( ManualEnteringReasonService.class ).list( profile );
+					if ( !CollectionUtils.isEmpty( reasons ) )
+						for ( ManualEnteringReason reason : reasons )
+							profileWs.getReason().add( new Reason( new BigInteger( reason.getId().toString() ), reason.getReason() ) );
 					
 					response.getProfiles().add( profileWs );
 				}

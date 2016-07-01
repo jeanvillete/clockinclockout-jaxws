@@ -3,12 +3,15 @@ package com.clkio.ws.domain.profile;
 
 import java.math.BigInteger;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-
+import com.clkio.ws.domain.adjusting.Adjusting;
 import com.clkio.ws.domain.common.CommonDomain;
+import com.clkio.ws.domain.reason.Reason;
 
 
 /**
@@ -31,6 +34,8 @@ import com.clkio.ws.domain.common.CommonDomain;
  *         &lt;element name="expectedThursday" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="expectedFriday" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="expectedSaturday" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="adjustings" type="{http://schemas.clkio.com/adjusting}adjusting" maxOccurs="unbounded"/>
+ *         &lt;element name="reason" type="{http://schemas.clkio.com/reason}reason" maxOccurs="unbounded"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -50,7 +55,9 @@ import com.clkio.ws.domain.common.CommonDomain;
     "expectedWednesday",
     "expectedThursday",
     "expectedFriday",
-    "expectedSaturday"
+    "expectedSaturday",
+    "adjustings",
+    "reason"
 })
 public class Profile
     extends CommonDomain
@@ -76,6 +83,10 @@ public class Profile
     protected String expectedFriday;
     @XmlElement(required = true)
     protected String expectedSaturday;
+    @XmlElement(required = true, nillable = true)
+    protected List<Adjusting> adjustings;
+    @XmlElement(required = true, nillable = true)
+    protected List<Reason> reason;
 
     public Profile() {
     }
@@ -324,6 +335,64 @@ public class Profile
      */
     public void setExpectedSaturday(String value) {
         this.expectedSaturday = value;
+    }
+
+    /**
+     * Gets the value of the adjustings property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the adjustings property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getAdjustings().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link Adjusting }
+     * 
+     * 
+     */
+    public List<Adjusting> getAdjustings() {
+        if (adjustings == null) {
+            adjustings = new ArrayList<Adjusting>();
+        }
+        return this.adjustings;
+    }
+
+    /**
+     * Gets the value of the reason property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the reason property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getReason().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link Reason }
+     * 
+     * 
+     */
+    public List<Reason> getReason() {
+        if (reason == null) {
+            reason = new ArrayList<Reason>();
+        }
+        return this.reason;
     }
 
 }
