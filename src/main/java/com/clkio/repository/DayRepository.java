@@ -31,7 +31,7 @@ public class DayRepository extends CommonRepository {
 
 	public List< Day > listBy( final Profile profile ) {
 		return this.jdbcTemplate.query( " SELECT ID, DATE, EXPECTED_HOURS, NOTES, ID_PROFILE "
-				+ " FROM DAY WHERE ID_PROFILE = ? ",
+				+ " FROM DAY WHERE ID_PROFILE = ? ORDER BY ID ",
 				new Object[]{ profile.getId() }, new DayRowMaper() );
 	}
 
@@ -64,7 +64,7 @@ public class DayRepository extends CommonRepository {
 
 	public List< Day > list( Profile profile, LocalDate startDate, LocalDate endDate ) {
 		return this.jdbcTemplate.query( " SELECT ID, DATE, EXPECTED_HOURS, NOTES, ID_PROFILE "
-				+ " FROM DAY WHERE ID_PROFILE = ? AND DATE >= ? AND DATE <= ? ",
+				+ " FROM DAY WHERE ID_PROFILE = ? AND DATE >= ? AND DATE <= ? ORDER BY ID",
 				new Object[]{ 
 					profile.getId(),
 					LocalDateTimeUtil.getTimestamp( startDate ),

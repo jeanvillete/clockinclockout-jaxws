@@ -70,7 +70,7 @@ public class EmailRepository extends CommonRepository {
 
 	public List< Email > list( final User user ) {
 		return this.jdbcTemplate.query(  " SELECT ID, ADDRESS, RECORDED_TIME, CONFIRMATION_CODE, CONFIRMATION_DATE, IS_PRIMARY, ID_CLK_USER FROM EMAIL "
-				+ " WHERE ID_CLK_USER = ? ",
+				+ " WHERE ID_CLK_USER = ? ORDER BY ID ",
 				new Object[]{ user.getId() },
 				new EmailRowMapper() );
 	}
