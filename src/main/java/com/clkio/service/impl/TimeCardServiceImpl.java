@@ -138,6 +138,8 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 			throw new ValidationException( "Argument 'clock' is mandatory." );
 		if( clockinClockout.getClockin() == null && clockinClockout.getClockout() == null )
 			throw new ValidationException( "At least 'clockin' or 'clockout' has to be provided." );
+		else if( ( clockinClockout.getClockin() != null && clockinClockout.getClockout() != null ) && clockinClockout.getClockout().isBefore( clockinClockout.getClockin() ) )
+			throw new ValidationException( "The provided 'clockout' has to be greater than 'clockin'." );
 		
 		LocalDate localDateDay = clockinClockout.getClockin() != null ?
 				clockinClockout.getClockin().toLocalDate() :
@@ -159,6 +161,8 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 			throw new ValidationException( "Argument 'clockinClockout' and its 'id' property are mandatory." );
 		if( clockinClockout.getClockin() == null && clockinClockout.getClockout() == null )
 			throw new ValidationException( "At least 'clockin' or 'clockout' has to be provided." );
+		else if( ( clockinClockout.getClockin() != null && clockinClockout.getClockout() != null ) && clockinClockout.getClockout().isBefore( clockinClockout.getClockin() ) )
+			throw new ValidationException( "The provided 'clockout' has to be greater than 'clockin'." );
 		
 		ClockinClockout syncClockinClockout = this.clockinClockoutService.get( profile, clockinClockout );
 		if( syncClockinClockout == null )
