@@ -50,6 +50,21 @@ public interface TimeCardService {
 	
 	Duration getTotalTime( Profile profile, LocalDate until ) throws ValidationException;
 	
+	/**
+	 * This service aims retrieve a whole timecard for the entire month supplied as parameter.
+	 * @param profile
+	 * @param month
+	 * @return
+	 * @throws ValidationException
+	 */
 	TimeCard getTimeCard( Profile profile, YearMonth month ) throws ValidationException;
-	
+
+	/**
+	 * This service aims retrieve a timecard containing only the "day/date" with the updated data from the database.
+	 * @param profile
+	 * @param date
+	 * @return
+	 * @throws ValidationException
+	 */
+	TimeCard getTimeCard( Profile profile, LocalDate date ) throws ValidationException;
 }

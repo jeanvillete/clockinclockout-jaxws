@@ -172,6 +172,8 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 		if( day == null )
 			throw new PersistenceException( "No 'day' register was found for the given 'clockinClockout's 'id' property." );
 		
+		clockinClockout.setDay( day );
+		
 		if( clockinClockout.getClockin() != null && !day.getDate().equals( clockinClockout.getClockin().toLocalDate() ) ) 
 			throw new ValidationException( "The provided date value for 'clockin' has to be the same as its 'day' relationship." );
 		
@@ -188,6 +190,17 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
 		if( clockinClockout == null || clockinClockout.getId() == null )
 			throw new ValidationException( "Argument 'clockinClockout' and its 'id' property are mandatory." );
+		
+		ClockinClockout syncClockinClockout = this.clockinClockoutService.get( profile, clockinClockout );
+		if( syncClockinClockout == null )
+			throw new PersistenceException( "No 'clockinClockout' register was found given the provided 'id'." );
+		
+		Day day = this.dayService.get( syncClockinClockout.getDay() );
+		if( day == null )
+			throw new PersistenceException( "No 'day' register was found for the given 'clockinClockout's 'id' property." );
+		
+		clockinClockout.setDay( day );
+		
 		this.clockinClockoutService.delete( profile, clockinClockout );
 	}
 
@@ -251,6 +264,17 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 			throw new ValidationException( "Argument 'profile' and its 'id' property are mandatory." );
 		if( manualEntering == null || manualEntering.getId() == null )
 			throw new ValidationException( "Argument 'manualEntering' and its 'id' property are mandatory." );
+		
+		ManualEntering syncManualEntering = this.manualEnteringService.get( profile, manualEntering );
+		if( syncManualEntering == null )
+			throw new PersistenceException( "No 'manualEntering' record was found." );
+		
+		Day day = this.dayService.get( syncManualEntering.getDay() );
+		if( day == null )
+			throw new PersistenceException( "No 'day' register was found for the given 'clockinClockout's 'id' property." );
+		
+		manualEntering.setDay( day );
+		
 		this.manualEnteringService.delete( profile, manualEntering );
 	}
 
@@ -333,6 +357,43 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 			}
 		
 		List< ManualEntering > listManualEntering = this.manualEnteringService.list( profile, startDate, endDate );
+		if ( !CollectionUtils.isEmpty( listManualEntering ) )
+			for ( ManualEntering entering : listManualEntering ) {
+				Day day  = timeCard.getDays().get( entering.getDay().getDate() );
+				day.getTableEntering().add( entering );
+				day.setBalance( entering.getTimeInterval().plus( day.getBalance() ) );
+			}
+		
+		return timeCard;
+	}
+	
+	@Override
+	@Transactional( propagation = Propagation.NOT_SUPPORTED, readOnly = true )
+	public TimeCard getTimeCard( Profile profile, LocalDate date ) throws ValidationException {
+		if( profile == null || profile.getId() == null ) 
+			throw new ValidationException( "Argument profile and its 'id' property are mandatory." );
+		if( date == null )
+			throw new ValidationException( "Argument 'date' is mandatory." );
+		
+		TimeCard timeCard = new TimeCard( date );
+		
+		List< Day > listDay = this.dayService.list( profile, date, date );
+		if ( !CollectionUtils.isEmpty( listDay ) )
+			for ( Day day : listDay ) {
+				day.setBalance( day.getExpectedHours().negated() );
+				timeCard.getDays().put( day.getDate(), day );
+			}
+		
+		List< ClockinClockout > listClockinClockout = this.clockinClockoutService.list( profile, date, date );
+		if ( !CollectionUtils.isEmpty( listClockinClockout ) )
+			for ( ClockinClockout clkio : listClockinClockout ) {
+				Day day = timeCard.getDays().get( clkio.getDay().getDate() );
+				day.getTableEntering().add( clkio );
+				if ( clkio.getClockin() != null && clkio.getClockout() != null )
+					day.setBalance( Duration.between( clkio.getClockin(), clkio.getClockout() ).plus( day.getBalance() ) );
+			}
+		
+		List< ManualEntering > listManualEntering = this.manualEnteringService.list( profile, date, date );
 		if ( !CollectionUtils.isEmpty( listManualEntering ) )
 			for ( ManualEntering entering : listManualEntering ) {
 				Day day  = timeCard.getDays().get( entering.getDay().getDate() );

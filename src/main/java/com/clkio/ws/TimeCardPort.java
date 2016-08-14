@@ -7,21 +7,15 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
-import com.clkio.ws.domain.common.Response;
-import com.clkio.ws.domain.common.ResponseCreated;
 import com.clkio.ws.domain.timecard.DeleteClockinClockoutRequest;
 import com.clkio.ws.domain.timecard.DeleteManualEnteringRequest;
 import com.clkio.ws.domain.timecard.GetTimeCardRequest;
-import com.clkio.ws.domain.timecard.GetTimeCardResponse;
-import com.clkio.ws.domain.timecard.GetTotalTimeMonthlyRequest;
-import com.clkio.ws.domain.timecard.GetTotalTimeMonthlyResponse;
-import com.clkio.ws.domain.timecard.GetTotalTimeRequest;
-import com.clkio.ws.domain.timecard.GetTotalTimeResponse;
 import com.clkio.ws.domain.timecard.InsertClockinClockoutRequest;
 import com.clkio.ws.domain.timecard.InsertManualEnteringRequest;
 import com.clkio.ws.domain.timecard.PunchClockRequest;
 import com.clkio.ws.domain.timecard.SetExpectedHoursRequest;
 import com.clkio.ws.domain.timecard.SetNotesRequest;
+import com.clkio.ws.domain.timecard.TimeCardResponse;
 import com.clkio.ws.domain.timecard.UpdateClockinClockoutRequest;
 import com.clkio.ws.domain.timecard.UpdateManualEnteringRequest;
 
@@ -57,30 +51,12 @@ public interface TimeCardPort {
      * @param request
      * @param clkioLoginCode
      * @return
-     *     returns com.clkio.ws.domain.timecard.GetTotalTimeResponse
+     *     returns com.clkio.ws.domain.timecard.TimeCardResponse
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "getTotalTimeResponse", targetNamespace = "http://schemas.clkio.com", partName = "result")
-    public GetTotalTimeResponse getTotalTime(
-        @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
-        String clkioLoginCode,
-        @WebParam(name = "getTotalTimeRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
-        GetTotalTimeRequest request)
-        throws ResponseException
-    ;
-
-    /**
-     * 
-     * @param request
-     * @param clkioLoginCode
-     * @return
-     *     returns com.clkio.ws.domain.timecard.GetTimeCardResponse
-     * @throws ResponseException
-     */
-    @WebMethod
-    @WebResult(name = "getTimeCardResponse", targetNamespace = "http://schemas.clkio.com", partName = "result")
-    public GetTimeCardResponse getTimeCard(
+    @WebResult(name = "timeCardResponse", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public TimeCardResponse getTimeCard(
         @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
         String clkioLoginCode,
         @WebParam(name = "getTimeCardRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
@@ -93,12 +69,12 @@ public interface TimeCardPort {
      * @param request
      * @param clkioLoginCode
      * @return
-     *     returns com.clkio.ws.domain.common.ResponseCreated
+     *     returns com.clkio.ws.domain.timecard.TimeCardResponse
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "responseCreated", targetNamespace = "http://schemas.clkio.com", partName = "result")
-    public ResponseCreated punchClock(
+    @WebResult(name = "timeCardResponse", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public TimeCardResponse punchClock(
         @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
         String clkioLoginCode,
         @WebParam(name = "punchClockRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
@@ -111,12 +87,12 @@ public interface TimeCardPort {
      * @param request
      * @param clkioLoginCode
      * @return
-     *     returns com.clkio.ws.domain.common.ResponseCreated
+     *     returns com.clkio.ws.domain.timecard.TimeCardResponse
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "responseCreated", targetNamespace = "http://schemas.clkio.com", partName = "result")
-    public ResponseCreated insertClockinClockout(
+    @WebResult(name = "timeCardResponse", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public TimeCardResponse insertClockinClockout(
         @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
         String clkioLoginCode,
         @WebParam(name = "insertClockinClockoutRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
@@ -129,12 +105,12 @@ public interface TimeCardPort {
      * @param request
      * @param clkioLoginCode
      * @return
-     *     returns com.clkio.ws.domain.common.Response
+     *     returns com.clkio.ws.domain.timecard.TimeCardResponse
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
-    public Response updateClockinClockout(
+    @WebResult(name = "timeCardResponse", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public TimeCardResponse updateClockinClockout(
         @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
         String clkioLoginCode,
         @WebParam(name = "updateClockinClockoutRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
@@ -147,12 +123,12 @@ public interface TimeCardPort {
      * @param request
      * @param clkioLoginCode
      * @return
-     *     returns com.clkio.ws.domain.common.Response
+     *     returns com.clkio.ws.domain.timecard.TimeCardResponse
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
-    public Response deleteClockinClockout(
+    @WebResult(name = "timeCardResponse", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public TimeCardResponse deleteClockinClockout(
         @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
         String clkioLoginCode,
         @WebParam(name = "deleteClockinClockoutRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
@@ -165,12 +141,12 @@ public interface TimeCardPort {
      * @param request
      * @param clkioLoginCode
      * @return
-     *     returns com.clkio.ws.domain.common.ResponseCreated
+     *     returns com.clkio.ws.domain.timecard.TimeCardResponse
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "responseCreated", targetNamespace = "http://schemas.clkio.com", partName = "result")
-    public ResponseCreated insertManualEntering(
+    @WebResult(name = "timeCardResponse", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public TimeCardResponse insertManualEntering(
         @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
         String clkioLoginCode,
         @WebParam(name = "insertManualEnteringRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
@@ -183,12 +159,12 @@ public interface TimeCardPort {
      * @param request
      * @param clkioLoginCode
      * @return
-     *     returns com.clkio.ws.domain.common.Response
+     *     returns com.clkio.ws.domain.timecard.TimeCardResponse
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
-    public Response updateManualEntering(
+    @WebResult(name = "timeCardResponse", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public TimeCardResponse updateManualEntering(
         @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
         String clkioLoginCode,
         @WebParam(name = "updateManualEnteringRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
@@ -201,12 +177,12 @@ public interface TimeCardPort {
      * @param request
      * @param clkioLoginCode
      * @return
-     *     returns com.clkio.ws.domain.common.Response
+     *     returns com.clkio.ws.domain.timecard.TimeCardResponse
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
-    public Response deleteManualEntering(
+    @WebResult(name = "timeCardResponse", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public TimeCardResponse deleteManualEntering(
         @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
         String clkioLoginCode,
         @WebParam(name = "deleteManualEnteringRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
@@ -219,12 +195,12 @@ public interface TimeCardPort {
      * @param request
      * @param clkioLoginCode
      * @return
-     *     returns com.clkio.ws.domain.common.Response
+     *     returns com.clkio.ws.domain.timecard.TimeCardResponse
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
-    public Response setNotes(
+    @WebResult(name = "timeCardResponse", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public TimeCardResponse setNotes(
         @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
         String clkioLoginCode,
         @WebParam(name = "setNotesRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
@@ -237,34 +213,16 @@ public interface TimeCardPort {
      * @param request
      * @param clkioLoginCode
      * @return
-     *     returns com.clkio.ws.domain.common.Response
+     *     returns com.clkio.ws.domain.timecard.TimeCardResponse
      * @throws ResponseException
      */
     @WebMethod
-    @WebResult(name = "response", targetNamespace = "http://schemas.clkio.com", partName = "result")
-    public Response setExpectedHours(
+    @WebResult(name = "timeCardResponse", targetNamespace = "http://schemas.clkio.com", partName = "result")
+    public TimeCardResponse setExpectedHours(
         @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
         String clkioLoginCode,
         @WebParam(name = "setExpectedHoursRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
         SetExpectedHoursRequest request)
-        throws ResponseException
-    ;
-
-    /**
-     * 
-     * @param request
-     * @param clkioLoginCode
-     * @return
-     *     returns com.clkio.ws.domain.timecard.GetTotalTimeMonthlyResponse
-     * @throws ResponseException
-     */
-    @WebMethod
-    @WebResult(name = "getTotalTimeMonthlyResponse", targetNamespace = "http://schemas.clkio.com", partName = "result")
-    public GetTotalTimeMonthlyResponse getTotalTimeMonthly(
-        @WebParam(name = "clkioLoginCode", targetNamespace = "http://schemas.clkio.com", header = true, partName = "clkioLoginCode")
-        String clkioLoginCode,
-        @WebParam(name = "getTotalTimeMonthlyRequest", targetNamespace = "http://schemas.clkio.com", partName = "request")
-        GetTotalTimeMonthlyRequest request)
         throws ResponseException
     ;
 

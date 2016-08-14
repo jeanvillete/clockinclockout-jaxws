@@ -12,6 +12,14 @@ import com.clkio.exception.DomainValidationException;
 public class TimeCard {
 
 	private HashMap< LocalDate, Day > days;
+	private String totalTime;
+	private String totalTimeMonthly;
+	
+	public TimeCard( LocalDate date ) {
+		if( date == null) throw new DomainValidationException( "Argument 'date' is mandatory." );
+		days = new HashMap< LocalDate, Day >();
+		days.put( date, new Day( date ) );
+	}
 	
 	public TimeCard( YearMonth month ) {
 		if( month == null) throw new DomainValidationException( "Argument 'month' is mandatory." );
@@ -39,6 +47,22 @@ public class TimeCard {
 			}
 		} );
 		return days;
+	}
+
+	public String getTotalTime() {
+		return totalTime;
+	}
+
+	public String getTotalTimeMonthly() {
+		return totalTimeMonthly;
+	}
+
+	public void setTotalTime( String totalTime ) {
+		this.totalTime = totalTime;
+	}
+
+	public void setTotalTimeMonthly( String totalTimeMonthly ) {
+		this.totalTimeMonthly = totalTimeMonthly;
 	}
 	
 }

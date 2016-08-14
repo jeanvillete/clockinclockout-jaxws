@@ -51,12 +51,8 @@
 			<xs:element type="email:deleteEmailRequest" name="deleteEmailRequest" nillable="false"/>
 			<xs:element type="email:setEmailAsPrimaryRequest" name="setEmailAsPrimaryRequest" nillable="false"/>
 
-			<xs:element type="timecard:getTotalTimeRequest" name="getTotalTimeRequest" nillable="false"/>
-			<xs:element type="timecard:getTotalTimeResponse" name="getTotalTimeResponse" nillable="false"/>
-			<xs:element type="timecard:getTotalTimeMonthlyRequest" name="getTotalTimeMonthlyRequest" nillable="false"/>
-			<xs:element type="timecard:getTotalTimeMonthlyResponse" name="getTotalTimeMonthlyResponse" nillable="false"/>
 			<xs:element type="timecard:getTimeCardRequest" name="getTimeCardRequest" nillable="false"/>
-			<xs:element type="timecard:getTimeCardResponse" name="getTimeCardResponse" nillable="false"/>
+			<xs:element type="timecard:timeCardResponse" name="timeCardResponse" nillable="false"/>
 			<xs:element type="timecard:punchClockRequest" name="punchClockRequest" nillable="false"/>
 			<xs:element type="timecard:insertClockinClockoutRequest" name="insertClockinClockoutRequest" nillable="false"/>
 			<xs:element type="timecard:updateClockinClockoutRequest" name="updateClockinClockoutRequest" nillable="false"/>
@@ -158,13 +154,6 @@
 	<wsdl:message name="listManualEnteringReasonResponse">
 		<wsdl:part name="result" element="clkio:listManualEnteringReasonResponse" />
 	</wsdl:message>
-	<wsdl:message name="getTotalTimeRequest">
-		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
-		<wsdl:part name="request" element="clkio:getTotalTimeRequest" />
-	</wsdl:message>
-	<wsdl:message name="getTotalTimeResponse">
-		<wsdl:part name="result" element="clkio:getTotalTimeResponse" />
-	</wsdl:message>
 	<wsdl:message name="requestResetPasswordRequest">
 		<wsdl:part name="request" element="clkio:requestResetPasswordRequest" />
 	</wsdl:message>
@@ -217,8 +206,8 @@
 		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:getTimeCardRequest" />
 	</wsdl:message>
-	<wsdl:message name="getTimeCardResponse">
-		<wsdl:part name="result" element="clkio:getTimeCardResponse" />
+	<wsdl:message name="timeCardResponse">
+		<wsdl:part name="result" element="clkio:timeCardResponse" />
 	</wsdl:message>
 	<wsdl:message name="punchClockRequest">
 		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
@@ -255,13 +244,6 @@
 	<wsdl:message name="setExpectedHoursRequest">
 		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
 		<wsdl:part name="request" element="clkio:setExpectedHoursRequest" />
-	</wsdl:message>
-	<wsdl:message name="getTotalTimeMonthlyRequest">
-		<wsdl:part name="clkioLoginCode" element="clkio:clkioLoginCode"/>
-		<wsdl:part name="request" element="clkio:getTotalTimeMonthlyRequest" />
-	</wsdl:message>
-	<wsdl:message name="getTotalTimeMonthlyResponse">
-		<wsdl:part name="result" element="clkio:getTotalTimeMonthlyResponse" />
 	</wsdl:message>
 	
 	<!-- port types -->
@@ -378,65 +360,55 @@
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:portType name="TimeCardPort">
-		<wsdl:operation name="getTotalTime">
-			<wsdl:input message="clkws:getTotalTimeRequest"/>
-			<wsdl:output message="clkws:getTotalTimeResponse"/>
-			<wsdl:fault message="clkws:responseException" name="getTotalTimeException" />
-		</wsdl:operation>
 		<wsdl:operation name="getTimeCard">
 			<wsdl:input message="clkws:getTimeCardRequest"/>
-			<wsdl:output message="clkws:getTimeCardResponse"/>
+			<wsdl:output message="clkws:timeCardResponse"/>
 			<wsdl:fault message="clkws:responseException" name="getTimeCardException" />
 		</wsdl:operation>
 		<wsdl:operation name="punchClock">
 			<wsdl:input message="clkws:punchClockRequest"/>
-			<wsdl:output message="clkws:responseCreated"/>
+			<wsdl:output message="clkws:timeCardResponse"/>
 			<wsdl:fault message="clkws:responseException" name="punchClockException" />
 		</wsdl:operation>
 		<wsdl:operation name="insertClockinClockout">
 			<wsdl:input message="clkws:insertClockinClockoutRequest"/>
-			<wsdl:output message="clkws:responseCreated"/>
+			<wsdl:output message="clkws:timeCardResponse"/>
 			<wsdl:fault message="clkws:responseException" name="insertClockinClockoutException" />
 		</wsdl:operation>
 		<wsdl:operation name="updateClockinClockout">
 			<wsdl:input message="clkws:updateClockinClockoutRequest"/>
-			<wsdl:output message="clkws:response"/>
+			<wsdl:output message="clkws:timeCardResponse"/>
 			<wsdl:fault message="clkws:responseException" name="updateClockinClockoutException" />
 		</wsdl:operation>
 		<wsdl:operation name="deleteClockinClockout">
 			<wsdl:input message="clkws:deleteClockinClockoutRequest"/>
-			<wsdl:output message="clkws:response"/>
+			<wsdl:output message="clkws:timeCardResponse"/>
 			<wsdl:fault message="clkws:responseException" name="deleteClockinClockoutException" />
 		</wsdl:operation>
 		<wsdl:operation name="insertManualEntering">
 			<wsdl:input message="clkws:insertManualEnteringRequest"/>
-			<wsdl:output message="clkws:responseCreated"/>
+			<wsdl:output message="clkws:timeCardResponse"/>
 			<wsdl:fault message="clkws:responseException" name="insertManualEnteringException" />
 		</wsdl:operation>
 		<wsdl:operation name="updateManualEntering">
 			<wsdl:input message="clkws:updateManualEnteringRequest"/>
-			<wsdl:output message="clkws:response"/>
+			<wsdl:output message="clkws:timeCardResponse"/>
 			<wsdl:fault message="clkws:responseException" name="updateManualEnteringException" />
 		</wsdl:operation>
 		<wsdl:operation name="deleteManualEntering">
 			<wsdl:input message="clkws:deleteManualEnteringRequest"/>
-			<wsdl:output message="clkws:response"/>
+			<wsdl:output message="clkws:timeCardResponse"/>
 			<wsdl:fault message="clkws:responseException" name="deleteManualEnteringException" />
 		</wsdl:operation>
 		<wsdl:operation name="setNotes">
 			<wsdl:input message="clkws:setNotesRequest"/>
-			<wsdl:output message="clkws:response"/>
+			<wsdl:output message="clkws:timeCardResponse"/>
 			<wsdl:fault message="clkws:responseException" name="setNotesException" />
 		</wsdl:operation>
 		<wsdl:operation name="setExpectedHours">
 			<wsdl:input message="clkws:setExpectedHoursRequest"/>
-			<wsdl:output message="clkws:response"/>
+			<wsdl:output message="clkws:timeCardResponse"/>
 			<wsdl:fault message="clkws:responseException" name="setExpectedHoursException" />
-		</wsdl:operation>
-		<wsdl:operation name="getTotalTimeMonthly">
-			<wsdl:input message="clkws:getTotalTimeMonthlyRequest"/>
-			<wsdl:output message="clkws:getTotalTimeMonthlyResponse"/>
-			<wsdl:fault message="clkws:responseException" name="getTotalTimeMonthlyException" />
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:portType name="ResetPasswordPort">
@@ -735,19 +707,6 @@
 	</wsdl:binding>
 	<wsdl:binding name="TimeCardBinding" type="clkws:TimeCardPort">
 		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
-		<wsdl:operation name="getTotalTime">
-			<soap:operation soapAction="" />
-			<wsdl:input>
-				<soap:header part="clkioLoginCode" message="clkws:getTotalTimeRequest" use="literal"/>
-				<soap:body use="literal" parts="request"/>
-			</wsdl:input>
-			<wsdl:output>
-				<soap:body use="literal" />
-			</wsdl:output>
-			<wsdl:fault name="getTotalTimeException">
-				<soap:fault name="getTotalTimeException" use="literal" />
-			</wsdl:fault>
-		</wsdl:operation>
 		<wsdl:operation name="getTimeCard">
 			<soap:operation soapAction="" />
 			<wsdl:input>
@@ -876,19 +835,6 @@
 			</wsdl:output>
 			<wsdl:fault name="setExpectedHoursException">
 				<soap:fault name="setExpectedHoursException" use="literal" />
-			</wsdl:fault>
-		</wsdl:operation>
-		<wsdl:operation name="getTotalTimeMonthly">
-			<soap:operation soapAction="" />
-			<wsdl:input>
-				<soap:header part="clkioLoginCode" message="clkws:getTotalTimeMonthlyRequest" use="literal"/>
-				<soap:body use="literal" parts="request"/>
-			</wsdl:input>
-			<wsdl:output>
-				<soap:body use="literal" />
-			</wsdl:output>
-			<wsdl:fault name="getTotalTimeMonthlyException">
-				<soap:fault name="getTotalTimeMonthlyException" use="literal" />
 			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>

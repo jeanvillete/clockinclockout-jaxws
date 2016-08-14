@@ -12,9 +12,7 @@ import com.clkio.ws.domain.login.LoginResponse;
 import com.clkio.ws.domain.profile.ListProfileResponse;
 import com.clkio.ws.domain.reason.ListManualEnteringReasonResponse;
 import com.clkio.ws.domain.resetpassword.ConfirmResetPasswordResponse;
-import com.clkio.ws.domain.timecard.GetTimeCardResponse;
-import com.clkio.ws.domain.timecard.GetTotalTimeMonthlyResponse;
-import com.clkio.ws.domain.timecard.GetTotalTimeResponse;
+import com.clkio.ws.domain.timecard.TimeCardResponse;
 
 
 /**
@@ -41,12 +39,10 @@ import com.clkio.ws.domain.timecard.GetTotalTimeResponse;
     "message"
 })
 @XmlSeeAlso({
+    TimeCardResponse.class,
     ListEmailResponse.class,
-    GetTotalTimeResponse.class,
-    GetTotalTimeMonthlyResponse.class,
     ListManualEnteringReasonResponse.class,
     LoginResponse.class,
-    GetTimeCardResponse.class,
     ListAdjustingResponse.class,
     ListProfileResponse.class,
     ConfirmResetPasswordResponse.class,

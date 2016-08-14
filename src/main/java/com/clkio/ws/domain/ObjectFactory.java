@@ -39,16 +39,12 @@ import com.clkio.ws.domain.resetpassword.ResetPasswordRequest;
 import com.clkio.ws.domain.timecard.DeleteClockinClockoutRequest;
 import com.clkio.ws.domain.timecard.DeleteManualEnteringRequest;
 import com.clkio.ws.domain.timecard.GetTimeCardRequest;
-import com.clkio.ws.domain.timecard.GetTimeCardResponse;
-import com.clkio.ws.domain.timecard.GetTotalTimeMonthlyRequest;
-import com.clkio.ws.domain.timecard.GetTotalTimeMonthlyResponse;
-import com.clkio.ws.domain.timecard.GetTotalTimeRequest;
-import com.clkio.ws.domain.timecard.GetTotalTimeResponse;
 import com.clkio.ws.domain.timecard.InsertClockinClockoutRequest;
 import com.clkio.ws.domain.timecard.InsertManualEnteringRequest;
 import com.clkio.ws.domain.timecard.PunchClockRequest;
 import com.clkio.ws.domain.timecard.SetExpectedHoursRequest;
 import com.clkio.ws.domain.timecard.SetNotesRequest;
+import com.clkio.ws.domain.timecard.TimeCardResponse;
 import com.clkio.ws.domain.timecard.UpdateClockinClockoutRequest;
 import com.clkio.ws.domain.timecard.UpdateManualEnteringRequest;
 import com.clkio.ws.domain.user.InsertUserRequest;
@@ -71,13 +67,10 @@ import com.clkio.ws.domain.user.InsertUserRequest;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _GetTotalTimeRequest_QNAME = new QName("http://schemas.clkio.com", "getTotalTimeRequest");
+    private final static QName _TimeCardResponse_QNAME = new QName("http://schemas.clkio.com", "timeCardResponse");
     private final static QName _UpdateClockinClockoutRequest_QNAME = new QName("http://schemas.clkio.com", "updateClockinClockoutRequest");
     private final static QName _ListEmailResponse_QNAME = new QName("http://schemas.clkio.com", "listEmailResponse");
-    private final static QName _GetTotalTimeMonthlyRequest_QNAME = new QName("http://schemas.clkio.com", "getTotalTimeMonthlyRequest");
     private final static QName _ConfirmEmailRequest_QNAME = new QName("http://schemas.clkio.com", "confirmEmailRequest");
-    private final static QName _GetTotalTimeResponse_QNAME = new QName("http://schemas.clkio.com", "getTotalTimeResponse");
-    private final static QName _GetTotalTimeMonthlyResponse_QNAME = new QName("http://schemas.clkio.com", "getTotalTimeMonthlyResponse");
     private final static QName _InsertClockinClockoutRequest_QNAME = new QName("http://schemas.clkio.com", "insertClockinClockoutRequest");
     private final static QName _InsertAdjustingRequest_QNAME = new QName("http://schemas.clkio.com", "insertAdjustingRequest");
     private final static QName _SetExpectedHoursRequest_QNAME = new QName("http://schemas.clkio.com", "setExpectedHoursRequest");
@@ -94,7 +87,6 @@ public class ObjectFactory {
     private final static QName _UpdateProfileRequest_QNAME = new QName("http://schemas.clkio.com", "updateProfileRequest");
     private final static QName _UpdateManualEnteringRequest_QNAME = new QName("http://schemas.clkio.com", "updateManualEnteringRequest");
     private final static QName _LoginResponse_QNAME = new QName("http://schemas.clkio.com", "loginResponse");
-    private final static QName _GetTimeCardResponse_QNAME = new QName("http://schemas.clkio.com", "getTimeCardResponse");
     private final static QName _InsertManualEnteringRequest_QNAME = new QName("http://schemas.clkio.com", "insertManualEnteringRequest");
     private final static QName _DoLogoutRequest_QNAME = new QName("http://schemas.clkio.com", "doLogoutRequest");
     private final static QName _DeleteProfileRequest_QNAME = new QName("http://schemas.clkio.com", "deleteProfileRequest");
@@ -128,12 +120,12 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetTotalTimeRequest }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link TimeCardResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "getTotalTimeRequest")
-    public JAXBElement<GetTotalTimeRequest> createGetTotalTimeRequest(GetTotalTimeRequest value) {
-        return new JAXBElement<GetTotalTimeRequest>(_GetTotalTimeRequest_QNAME, GetTotalTimeRequest.class, null, value);
+    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "timeCardResponse")
+    public JAXBElement<TimeCardResponse> createTimeCardResponse(TimeCardResponse value) {
+        return new JAXBElement<TimeCardResponse>(_TimeCardResponse_QNAME, TimeCardResponse.class, null, value);
     }
 
     /**
@@ -155,39 +147,12 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetTotalTimeMonthlyRequest }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "getTotalTimeMonthlyRequest")
-    public JAXBElement<GetTotalTimeMonthlyRequest> createGetTotalTimeMonthlyRequest(GetTotalTimeMonthlyRequest value) {
-        return new JAXBElement<GetTotalTimeMonthlyRequest>(_GetTotalTimeMonthlyRequest_QNAME, GetTotalTimeMonthlyRequest.class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link ConfirmEmailRequest }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "confirmEmailRequest")
     public JAXBElement<ConfirmEmailRequest> createConfirmEmailRequest(ConfirmEmailRequest value) {
         return new JAXBElement<ConfirmEmailRequest>(_ConfirmEmailRequest_QNAME, ConfirmEmailRequest.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetTotalTimeResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "getTotalTimeResponse")
-    public JAXBElement<GetTotalTimeResponse> createGetTotalTimeResponse(GetTotalTimeResponse value) {
-        return new JAXBElement<GetTotalTimeResponse>(_GetTotalTimeResponse_QNAME, GetTotalTimeResponse.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetTotalTimeMonthlyResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "getTotalTimeMonthlyResponse")
-    public JAXBElement<GetTotalTimeMonthlyResponse> createGetTotalTimeMonthlyResponse(GetTotalTimeMonthlyResponse value) {
-        return new JAXBElement<GetTotalTimeMonthlyResponse>(_GetTotalTimeMonthlyResponse_QNAME, GetTotalTimeMonthlyResponse.class, null, value);
     }
 
     /**
@@ -332,15 +297,6 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "loginResponse")
     public JAXBElement<LoginResponse> createLoginResponse(LoginResponse value) {
         return new JAXBElement<LoginResponse>(_LoginResponse_QNAME, LoginResponse.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetTimeCardResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://schemas.clkio.com", name = "getTimeCardResponse")
-    public JAXBElement<GetTimeCardResponse> createGetTimeCardResponse(GetTimeCardResponse value) {
-        return new JAXBElement<GetTimeCardResponse>(_GetTimeCardResponse_QNAME, GetTimeCardResponse.class, null, value);
     }
 
     /**

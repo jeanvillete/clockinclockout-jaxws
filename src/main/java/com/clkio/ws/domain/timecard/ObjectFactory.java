@@ -30,11 +30,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetTotalTimeRequest }
+     * Create an instance of {@link TimeCardResponse }
      * 
      */
-    public GetTotalTimeRequest createGetTotalTimeRequest() {
-        return new GetTotalTimeRequest();
+    public TimeCardResponse createTimeCardResponse() {
+        return new TimeCardResponse();
     }
 
     /**
@@ -43,30 +43,6 @@ public class ObjectFactory {
      */
     public UpdateClockinClockoutRequest createUpdateClockinClockoutRequest() {
         return new UpdateClockinClockoutRequest();
-    }
-
-    /**
-     * Create an instance of {@link GetTotalTimeMonthlyRequest }
-     * 
-     */
-    public GetTotalTimeMonthlyRequest createGetTotalTimeMonthlyRequest() {
-        return new GetTotalTimeMonthlyRequest();
-    }
-
-    /**
-     * Create an instance of {@link GetTotalTimeResponse }
-     * 
-     */
-    public GetTotalTimeResponse createGetTotalTimeResponse() {
-        return new GetTotalTimeResponse();
-    }
-
-    /**
-     * Create an instance of {@link GetTotalTimeMonthlyResponse }
-     * 
-     */
-    public GetTotalTimeMonthlyResponse createGetTotalTimeMonthlyResponse() {
-        return new GetTotalTimeMonthlyResponse();
     }
 
     /**
@@ -115,14 +91,6 @@ public class ObjectFactory {
      */
     public UpdateManualEnteringRequest createUpdateManualEnteringRequest() {
         return new UpdateManualEnteringRequest();
-    }
-
-    /**
-     * Create an instance of {@link GetTimeCardResponse }
-     * 
-     */
-    public GetTimeCardResponse createGetTimeCardResponse() {
-        return new GetTimeCardResponse();
     }
 
     /**

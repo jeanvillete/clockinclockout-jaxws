@@ -9,16 +9,16 @@ import com.clkio.ws.domain.common.Response;
 
 
 /**
- * <p>Java class for getTotalTimeMonthlyResponse complex type.
+ * <p>Java class for timeCardResponse complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="getTotalTimeMonthlyResponse">
+ * &lt;complexType name="timeCardResponse">
  *   &lt;complexContent>
  *     &lt;extension base="{http://schemas.clkio.com/common}response">
  *       &lt;sequence>
- *         &lt;element name="totalTimeMonthly" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="timeCard" type="{http://schemas.clkio.com/timecard}timeCard"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -28,47 +28,47 @@ import com.clkio.ws.domain.common.Response;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "getTotalTimeMonthlyResponse", propOrder = {
-    "totalTimeMonthly"
+@XmlType(name = "timeCardResponse", propOrder = {
+    "timeCard"
 })
-public class GetTotalTimeMonthlyResponse
+public class TimeCardResponse
     extends Response
 {
 
     @XmlElement(required = true)
-    protected String totalTimeMonthly;
+    protected TimeCard timeCard;
 
-    public GetTotalTimeMonthlyResponse() {
+    public TimeCardResponse() {
     	super();
     }
     
-    public GetTotalTimeMonthlyResponse( String totalTimeMonthly ) {
+    public TimeCardResponse( TimeCard timeCard ) {
 		super();
-		this.totalTimeMonthly = totalTimeMonthly;
+		this.timeCard = timeCard;
 	}
 
 	/**
-     * Gets the value of the totalTimeMonthly property.
+     * Gets the value of the timeCard property.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link TimeCard }
      *     
      */
-    public String getTotalTimeMonthly() {
-        return totalTimeMonthly;
+    public TimeCard getTimeCard() {
+        return timeCard;
     }
 
     /**
-     * Sets the value of the totalTimeMonthly property.
+     * Sets the value of the timeCard property.
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link TimeCard }
      *     
      */
-    public void setTotalTimeMonthly(String value) {
-        this.totalTimeMonthly = value;
+    public void setTimeCard(TimeCard value) {
+        this.timeCard = value;
     }
 
 }
