@@ -279,6 +279,8 @@ public class TimeCardServiceImpl implements TimeCardService, InitializingBean {
 			throw new ValidationException( "Argument 'date' is mandatory." );
 		if( expectedHours == null )
 			throw new ValidationException( "Argument 'expectedHours' is mandatory." );
+		if ( expectedHours.compareTo( Duration.ofHours( 24 ) ) > 0 )
+			throw new ValidationException( "Argument 'expectedHours' must be less than 24 hours." );
 		
 		Day day = this.dayService.get( profile, date );
 		if ( day == null )
